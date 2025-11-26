@@ -54,15 +54,18 @@ export default function SignUpAccountType({
     const active = selected === value;
     return (
       <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={() => setSelected(value)}
-        className={`w-full p-4 rounded-2xl border-2 flex-row items-center ${
-          active
-            ? "border-yellow-300 bg-yellow-300/20"
-            : "border-white/40 bg-white/10"
-        }`}
-        style={{ marginBottom: 12, gap: 12 }}
-      >
+  activeOpacity={0.8}
+  onPress={() => {
+    setSelected(value);
+    i18n.changeLanguage(value === "English" ? "en" : "es");
+  }}
+  className={`w-full p-4 rounded-2xl border-2 flex-row items-center ${
+    active
+      ? "border-yellow-300 bg-yellow-300/20"
+      : "border-white/40 bg-white/10"
+  }`}
+  style={{ marginBottom: 12, gap: 12 }}
+>
         <Image source={image} className="w-10 h-10 mb-3" />
         <Text className="font-madimi text-base font-semibold text-white mb-1 drop-shadow-md">
           {title}
@@ -84,7 +87,7 @@ export default function SignUpAccountType({
       <View className="flex-1 items-center justify-center p-5">
         <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
           <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
-            Please select your language
+           {t("language.selectLanguage")}
           </Text>
 
           <Option
@@ -106,7 +109,7 @@ export default function SignUpAccountType({
           ) : null}
 
           <MainButton
-            title={t("continue")}
+            title={t("language.continue")}
             variant="primary"
             size="medium"
             customStyle={{

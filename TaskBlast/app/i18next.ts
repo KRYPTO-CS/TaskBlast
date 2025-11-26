@@ -4,12 +4,18 @@ import { initReactI18next } from "react-i18next";
 i18n
   .use(initReactI18next)
   .init({
-    compatibilityJSON: "v3",
-    lng: "es",
-    fallbackLng: "es",
+    compatibilityJSON: "v4",
+    lng: "en",
+    fallbackLng: "en",
     resources: {
-      en: require("./locales/en/translation.json"),
-      es: require("./locales/es/translation.json"),
+      en: 
+      {
+        translation: require("./locales/en/translation.json"),
+      },
+      es: 
+      {
+       translation: require("./locales/es/translation.json"),
+      }
     },
   });
 

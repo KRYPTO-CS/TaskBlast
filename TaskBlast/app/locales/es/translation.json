@@ -1,5 +1,15 @@
 {
+  "language": {  
   "selectLanguage": "Por favor selecciona tu idioma",
   "continue": "Continuar",
   "backToLogin": "Volver al inicio de sesión"
+  },
+  "birthdate": {
+    "title": "Cuál es tu fecha de nacimiento",
+    "notice": "Debes tener al menos 13 años para crear una cuenta.",
+    "month": "Mes",
+    "day": "Día",
+    "year": "Año",
+    "continue": "Continuar"
+  }
 }

@@ -1,5 +1,15 @@
 {
+  "language": {
   "selectLanguage": "Please select your language",
   "continue": "Continue",
   "backToLogin": "Back to Login"
+  },
+  "birthdate": {
+    "title": "What's Your Birthdate",
+    "notice": "You must be at least 13 years old to register",
+    "month": "Month",
+    "day": "Day",
+    "year": "Year",
+    "continue": "Continue"
+  }
 }
