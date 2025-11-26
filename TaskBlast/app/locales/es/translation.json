@@ -11,5 +11,15 @@
     "day": "Día",
     "year": "Año",
     "continue": "Continuar"
+  },
+  "AccountType": {
+    "title": "¿Quién usará TaskBlast?",
+    "type": "Elige el tipo de cuenta que mejor describa al usuario principal de TaskBlast.",
+    "managetitle": "Cuenta gestionada",
+    "managedesc": "Para dependientes. Algunas funciones están restringidas y controladas por un PIN de padre/tutor.",
+    "indetitle": "Cuenta independiente",
+    "indedesc": "Para aprendices individuales. Acceso completo sin restricciones.",
+    "continue": "Continuar"
   }
+
 }

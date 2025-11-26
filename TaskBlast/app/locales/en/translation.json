@@ -11,5 +11,14 @@
     "day": "Day",
     "year": "Year",
     "continue": "Continue"
+  },
+  "AccountType": {
+    "title": "Who will be using TaskBlast?",
+    "type": "Choose the account type that best describes the primary user of TaskBlast.",
+    "managetitle": "Managed Account",
+    "managedesc": "For depends. SOme features are restricted and controlled by a parent/guardian PIN.",
+    "indetitle": "Independent Account",
+    "indedesc": "For individual learners. Full access without restrictions.",
+    "continue": "continue"
   }
 }

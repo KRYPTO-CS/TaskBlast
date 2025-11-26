@@ -6,6 +6,9 @@ import {
   ImageBackground,
 } from "react-native";
 import MainButton from "../components/MainButton";
+import { useTranslation } from "react-i18next";
+
+
 
 interface SignUpAccountTypeProps {
   onSubmit: (accountType: "managed" | "independent") => void;
@@ -20,6 +23,7 @@ export default function SignUpAccountType({
     null
   );
   const [error, setError] = useState("");
+    const {t ,i18n} = useTranslation();
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -75,24 +79,23 @@ export default function SignUpAccountType({
       <View className="flex-1 items-center justify-center p-5">
         <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
           <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
-            Who will be using TaskBlast?
+            {t("AccountType.title")}
           </Text>
 
           <Text className="font-madimi text-sm text-white/90 mb-6 text-left">
-            Choose the account type that best describes the primary user of
-            TaskBlask.
+            {t("AccountType.type")}
           </Text>
 
           <Option
             value="managed"
-            title="Managed Account"
-            description="For dependents. Some features are restricted and controlled by a parent/guardian PIN."
+            title={t("AccountType.managetitle")}
+            description={t("AccountType.managedesc")}
           />
 
           <Option
             value="independent"
-            title="Independent Account"
-            description="For individual learners. Full access without restrictions."
+            title={t("AccountType.indetitle")}
+            description={t("AccountType.indedesc")}
           />
 
           {error ? (
@@ -102,7 +105,7 @@ export default function SignUpAccountType({
           ) : null}
 
           <MainButton
-            title="Continue"
+            title={t("AccountType.continue")}
             variant="primary"
             size="medium"
             customStyle={{
