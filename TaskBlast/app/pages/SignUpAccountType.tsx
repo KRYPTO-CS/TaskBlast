@@ -30,7 +30,7 @@ export default function SignUpAccountType({
   const handleContinue = () => {
     setError("");
     if (!selected) {
-      setError("Please choose an account type to continue");
+      setError(t("AccountType.error"));
       return;
     }
     console.log("Account type submitted:", selected);
@@ -121,9 +121,9 @@ export default function SignUpAccountType({
               className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
               onPress={onBack}
             >
-              Back to{" "}
+              {t("language.backTo")}
               <Text className="font-semibold text-yellow-300">
-                Previous Step
+                {" "}{t("birthdate.previousStep")}
               </Text>
             </Text>
           </View>

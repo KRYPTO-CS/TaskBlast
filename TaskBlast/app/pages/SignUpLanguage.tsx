@@ -125,9 +125,9 @@ export default function SignUpAccountType({
               className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
               onPress={onBack}
             >
-              Back to{" "}
+              {t("language.backTo")}
               <Text className="font-semibold text-yellow-300">
-                Login
+                {" "}{t("language.Login")}
               </Text>
             </Text>
           </View>

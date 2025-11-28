@@ -32,6 +32,7 @@ import {
   updateProfile,
   sendEmailVerification
 } from "firebase/auth";
+import { useTranslation } from "react-i18next";
 
 type Screen =
   | "login"
@@ -54,6 +55,7 @@ export default function Login() {
   const [currentScreen, setCurrentScreen] = useState<Screen>("login");
   const [resetEmail, setResetEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
+  const [t, i18n] = useTranslation();
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -417,7 +419,7 @@ export default function Login() {
           {/* Login Container */}
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
             <Text className="text-4xl font-madimi font-semibold text-white mb-8 text-center drop-shadow-md">
-              Login
+              {t("Login.title")}
             </Text>
 
             <View className="mb-4">
@@ -430,7 +432,7 @@ export default function Login() {
                 />
                 <TextInput
                   className="font-madimi flex-1 text-base text-white"
-                  placeholder="Email or Username"
+                  placeholder={t("Login.emailPlaceholder")}
                   placeholderTextColor="rgba(255,255,255,0.6)"
                   value={username}
                   onChangeText={setUsername}
@@ -450,7 +452,7 @@ export default function Login() {
                 />
                 <TextInput
                   className="font-madimi flex-1 text-base text-white"
-                  placeholder="Password"
+                  placeholder={t("Login.passwordPlaceholder")}
                   placeholderTextColor="rgba(255,255,255,0.6)"
                   value={password}
                   onChangeText={setPassword}
@@ -463,7 +465,7 @@ export default function Login() {
           </View>
 
           <MainButton
-            title="Submit"
+            title={t("Login.signUp")}
             variant="primary"
             size="medium"
             customStyle={{ width: "60%", alignSelf: "center", marginTop: -15 }}
@@ -474,8 +476,8 @@ export default function Login() {
           <View className="mt-8 items-center">
             <TouchableOpacity onPress={handleSignUp} className="my-2">
               <Text className="font-madimi text-sm text-white drop-shadow-md">
-                Don't have an account?{" "}
-                <Text className="font-semibold text-yellow-300">Sign Up</Text>
+                {t("Login.noAccount")}{" "}
+                <Text className="font-semibold text-yellow-300">{t("Login.signUp")}</Text>
               </Text>
             </TouchableOpacity>
 
@@ -512,7 +514,7 @@ export default function Login() {
 
             <TouchableOpacity onPress={handleForgotPassword} className="my-2">
               <Text className="font-madimi text-sm text-white/80 drop-shadow-md">
-                Forgot Your Password?
+                {t("Login.forgotPassword")}
               </Text>
             </TouchableOpacity>
           </View>
