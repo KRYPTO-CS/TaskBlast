@@ -24,7 +24,7 @@ describe("Login Process", () => {
     it("should render login screen with all required fields", () => {
       const { getByPlaceholderText, getByText } = render(<Login />);
 
-      expect(getByPlaceholderText("Username")).toBeTruthy();
+  expect(getByPlaceholderText("Email or Username")).toBeTruthy();
       expect(getByPlaceholderText("Password")).toBeTruthy();
       expect(getByText("Submit")).toBeTruthy();
       expect(getByText(/Don't have an account\?/i)).toBeTruthy();
@@ -55,7 +55,7 @@ describe("Login Process", () => {
 
       const { getByPlaceholderText, getByText } = render(<Login />);
 
-      const usernameInput = getByPlaceholderText("Username");
+      const usernameInput = getByPlaceholderText("Email or Username");
       const passwordInput = getByPlaceholderText("Password");
       const submitButton = getByText("Submit");
 
@@ -85,7 +85,7 @@ describe("Login Process", () => {
       const { getByPlaceholderText, getByText, queryByPlaceholderText } =
         render(<Login />);
 
-      const usernameInput = getByPlaceholderText("Username");
+      const usernameInput = getByPlaceholderText("Email or Username");
       const passwordInput = getByPlaceholderText("Password");
       const submitButton = getByText("Submit");
 
@@ -115,7 +115,7 @@ describe("Login Process", () => {
 
       const { getByPlaceholderText, getByText } = render(<Login />);
 
-      const usernameInput = getByPlaceholderText("Username");
+  const usernameInput = getByPlaceholderText("Email or Username");
       const passwordInput = getByPlaceholderText("Password");
       const submitButton = getByText("Submit");
 
@@ -139,7 +139,7 @@ describe("Login Process", () => {
         <Login />
       );
 
-      const usernameInput = getByPlaceholderText("Username");
+  const usernameInput = getByPlaceholderText("Email or Username");
       const passwordInput = getByPlaceholderText("Password");
       const submitButton = getByText("Submit");
 
@@ -155,9 +155,9 @@ describe("Login Process", () => {
     });
 
     it("should handle bypass login case-insensitively", async () => {
-      const { getByPlaceholderText, getByText } = render(<Login />);
+  const { getByPlaceholderText, getByText } = render(<Login />);
 
-      const usernameInput = getByPlaceholderText("Username");
+  const usernameInput = getByPlaceholderText("Email or Username");
       const passwordInput = getByPlaceholderText("Password");
       const submitButton = getByText("Submit");
 
@@ -171,9 +171,9 @@ describe("Login Process", () => {
     });
 
     it("should handle bypass login with whitespace", async () => {
-      const { getByPlaceholderText, getByText } = render(<Login />);
+  const { getByPlaceholderText, getByText } = render(<Login />);
 
-      const usernameInput = getByPlaceholderText("Username");
+  const usernameInput = getByPlaceholderText("Email or Username");
       const passwordInput = getByPlaceholderText("Password");
       const submitButton = getByText("Submit");
 
@@ -201,9 +201,9 @@ describe("Login Process", () => {
     });
 
     it("should not proceed with empty password", () => {
-      const { getByPlaceholderText, getByText } = render(<Login />);
+  const { getByPlaceholderText, getByText } = render(<Login />);
 
-      const usernameInput = getByPlaceholderText("Username");
+  const usernameInput = getByPlaceholderText("Email or Username");
       const submitButton = getByText("Submit");
 
       fireEvent.changeText(usernameInput, "test@example.com");
@@ -222,9 +222,9 @@ describe("Login Process", () => {
         mockError
       );
 
-      const { getByPlaceholderText, getByText } = render(<Login />);
+  const { getByPlaceholderText, getByText } = render(<Login />);
 
-      const usernameInput = getByPlaceholderText("Username");
+  const usernameInput = getByPlaceholderText("Email or Username");
       const passwordInput = getByPlaceholderText("Password");
       const submitButton = getByText("Submit");
 
@@ -249,7 +249,7 @@ describe("Login Process", () => {
 
       const { getByPlaceholderText, getByText } = render(<Login />);
 
-      const usernameInput = getByPlaceholderText("Username");
+  const usernameInput = getByPlaceholderText("Email or Username");
       const passwordInput = getByPlaceholderText("Password");
       const submitButton = getByText("Submit");
 
@@ -288,7 +288,7 @@ describe("Login Process", () => {
     it("should accept email format for username", () => {
       const { getByPlaceholderText } = render(<Login />);
 
-      const usernameInput = getByPlaceholderText("Username");
+  const usernameInput = getByPlaceholderText("Email or Username");
       fireEvent.changeText(usernameInput, "test@example.com");
 
       expect(usernameInput.props.value).toBe("test@example.com");

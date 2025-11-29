@@ -6,8 +6,11 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ImageBackground,
+  NativeSyntheticEvent,
+  TextInputKeyPressEventData,
 } from "react-native";
 import MainButton from "../components/MainButton";
+import { useTranslation } from "react-i18next";
 
 interface SignUpBirthdateProps {
   onSubmit: (birthdate: string) => void;
@@ -22,6 +25,12 @@ export default function SignUpBirthdate({
   const [day, setDay] = useState("");
   const [year, setYear] = useState("");
   const [error, setError] = useState("");
+  const {t ,i18n} = useTranslation();
+
+  // Refs for birthdate inputs to implement auto-advance
+  const monthRef = useRef<TextInput | null>(null);
+  const dayRef = useRef<TextInput | null>(null);
+  const yearRef = useRef<TextInput | null>(null);
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -29,7 +38,7 @@ export default function SignUpBirthdate({
     setError("");
 
     if (!month.trim() || !day.trim() || !year.trim()) {
-      setError("Please fill in all fields");
+      setError(t("birthdate.empty"));
       return;
     }
 
@@ -49,7 +58,7 @@ export default function SignUpBirthdate({
       yearNum < 1900 ||
       yearNum > new Date().getFullYear()
     ) {
-      setError("Please enter a valid date");
+      setError(t("birthdate.error"));
       return;
     }
 
@@ -68,7 +77,7 @@ export default function SignUpBirthdate({
 
     // COPPA compliance - must be 13 or older
     if (age < 13) {
-      setError("Please give the device to a parent or guardian");
+      setError(t("birthdate.age"));
       return;
     }
 
@@ -95,59 +104,98 @@ export default function SignUpBirthdate({
           {/* Birthdate Container */}
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
             <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
-              What's Your Birthdate?
+             {t("birthdate.title")}
             </Text>
 
             <Text className="font-madimi text-sm text-white/90 mb-8 text-left">
-              You must be at least 13 years old to register
+              {t("birthdate.notice")}
             </Text>
 
             <View className="flex-row justify-between mb-4" style={{ gap: 10 }}>
               <View className="flex-1">
                 <Text className="font-madimi text-xs text-white/80 mb-2">
-                  Month
+                  {t("birthdate.month")}
                 </Text>
                 <TextInput
                   className="font-madimi w-full h-12 bg-white/20 border-2 border-white/40 rounded-2xl px-4 text-base text-white shadow-lg"
                   placeholder="MM"
                   placeholderTextColor="rgba(255,255,255,0.5)"
                   value={month}
-                  onChangeText={(text) => setMonth(text.replace(/[^0-9]/g, ""))}
+                  onChangeText={(text) => {
+                    const cleaned = text.replace(/[^0-9]/g, "");
+                    setMonth(cleaned);
+                    // Auto-advance to day when month is filled (2 digits)
+                    if (cleaned.length >= 2) {
+                      dayRef.current?.focus();
+                    }
+                  }}
                   keyboardType="number-pad"
                   maxLength={2}
-                  onSubmitEditing={() => Keyboard.dismiss()}
+                  ref={(ref) => { monthRef.current = ref; }}
+                  onSubmitEditing={() => dayRef.current?.focus()}
+                  onKeyPress={(e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+                    // If user deletes from empty, nothing to do here for month
+                  }}
                 />
               </View>
 
               <View className="flex-1">
                 <Text className="font-madimi text-xs text-white/80 mb-2">
-                  Day
+                  {t("birthdate.day")}
                 </Text>
                 <TextInput
                   className="font-madimi w-full h-12 bg-white/20 border-2 border-white/40 rounded-2xl px-4 text-base text-white shadow-lg"
                   placeholder="DD"
                   placeholderTextColor="rgba(255,255,255,0.5)"
                   value={day}
-                  onChangeText={(text) => setDay(text.replace(/[^0-9]/g, ""))}
+                  onChangeText={(text) => {
+                    const cleaned = text.replace(/[^0-9]/g, "");
+                    setDay(cleaned);
+                    // Auto-advance to year when day is filled (2 digits)
+                    if (cleaned.length >= 2) {
+                      yearRef.current?.focus();
+                    }
+                  }}
                   keyboardType="number-pad"
                   maxLength={2}
-                  onSubmitEditing={() => Keyboard.dismiss()}
+                  ref={(ref) => { dayRef.current = ref; }}
+                  onSubmitEditing={() => yearRef.current?.focus()}
+                  onKeyPress={(e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+                    // If user presses backspace on empty day, move focus to month
+                    if (e.nativeEvent.key === "Backspace" && day.length === 0) {
+                      monthRef.current?.focus();
+                    }
+                  }}
                 />
               </View>
 
               <View className="flex-1">
                 <Text className="font-madimi text-xs text-white/80 mb-2">
-                  Year
+                  {t("birthdate.year")}
                 </Text>
                 <TextInput
                   className="font-madimi w-full h-12 bg-white/20 border-2 border-white/40 rounded-2xl px-4 text-base text-white shadow-lg"
                   placeholder="YYYY"
                   placeholderTextColor="rgba(255,255,255,0.5)"
                   value={year}
-                  onChangeText={(text) => setYear(text.replace(/[^0-9]/g, ""))}
+                  onChangeText={(text) => {
+                    const cleaned = text.replace(/[^0-9]/g, "");
+                    setYear(cleaned);
+                    // Optionally blur when year is complete
+                    if (cleaned.length >= 4) {
+                      yearRef.current?.blur();
+                    }
+                  }}
                   keyboardType="number-pad"
                   maxLength={4}
+                  ref={(ref) => { yearRef.current = ref; }}
                   onSubmitEditing={() => Keyboard.dismiss()}
+                  onKeyPress={(e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+                    // If user presses backspace on empty year, move focus to day
+                    if (e.nativeEvent.key === "Backspace" && year.length === 0) {
+                      dayRef.current?.focus();
+                    }
+                  }}
                 />
               </View>
             </View>
@@ -159,7 +207,7 @@ export default function SignUpBirthdate({
             ) : null}
 
             <MainButton
-              title="Continue"
+              title={t("birthdate.continue")}
               variant="primary"
               size="medium"
               customStyle={{
@@ -177,8 +225,8 @@ export default function SignUpBirthdate({
               className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
               onPress={onBack}
             >
-              Back to{" "}
-              <Text className="font-semibold text-yellow-300">Login</Text>
+              {t("language.backTo")}
+              <Text className="font-semibold text-yellow-300"> {t("birthdate.previousStep")}</Text>
             </Text>
           </View>
         </View>

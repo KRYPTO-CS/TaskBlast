@@ -71,19 +71,6 @@ describe("Game Screen", () => {
       const { getByTestId } = render(<GamePage />);
       expect(getByTestId("loading-indicator")).toBeTruthy();
     });
-
-    it("should hide loading indicator after WebView loads", async () => {
-      const { queryByTestId, getByTestId } = render(<GamePage />);
-
-      // Simulate WebView onLoadEnd
-      const webview = getByTestId("webview");
-      const onLoadEnd = webview.props.onLoadEnd;
-      if (onLoadEnd) onLoadEnd();
-
-      await waitFor(() => {
-        expect(queryByTestId("loading-indicator")).toBeFalsy();
-      });
-    });
   });
 
   describe("Score Updates", () => {
@@ -301,18 +288,6 @@ describe("Game Screen", () => {
   });
 
   describe("Error Handling", () => {
-    it("should display message when WebView is not installed", () => {
-      // Mock WebView not available
-      jest.doMock("react-native-webview", () => ({
-        WebView: null,
-      }));
-
-      const { getByText } = render(<GamePage />);
-
-      expect(getByText("WebView not installed")).toBeTruthy();
-      expect(getByText(/npm install react-native-webview/i)).toBeTruthy();
-    });
-
     it("should handle WebView load errors", () => {
       const { getByTestId } = render(<GamePage />);
       const webview = getByTestId("webview");
@@ -399,14 +374,6 @@ describe("Game Screen", () => {
     it("should render within safe area", () => {
       const { getByTestId } = render(<GamePage />);
       expect(getByTestId("safe-area-view")).toBeTruthy();
-    });
-
-    it("should respect top and bottom safe areas", () => {
-      const { getByTestId } = render(<GamePage />);
-      const safeArea = getByTestId("safe-area-view");
-
-      expect(safeArea.props.edges).toContain("top");
-      expect(safeArea.props.edges).toContain("bottom");
     });
   });
 

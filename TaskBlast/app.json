@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "TaskBlast",
-    "slug": "TaskBlast",
+    "slug": "taskblast",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -19,7 +19,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.TaskBlast"
     },
     "web": {
       "output": "static",
@@ -43,6 +44,19 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "1d14bad2-cc91-43fa-835f-75baeb593246"
+      }
+    },
+    "owner": "krypto-cs",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/1d14bad2-cc91-43fa-835f-75baeb593246"
     }
   }
 }

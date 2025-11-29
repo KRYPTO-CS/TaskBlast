@@ -8,6 +8,7 @@ import {
   Keyboard,
   Image,
   ImageBackground,
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../components/MainButton";
@@ -19,7 +20,8 @@ import SignUpAccountType from "./SignUpAccountType";
 import SignUpManagerPin from "./SignUpManagerPin";
 import SignUpName from "./SignUpName";
 import SignUpEmail from "./SignUpEmail";
-import SignUpVerifyEmail from "./SignUpVerifyEmail";
+import SignUpLanguage from "./SignUpLanguage";
+// Skipping verification code entry screen; SignUpVerifyEmail removed from flow
 import SignUpCreatePassword from "./SignUpCreatePassword";
 import HomeScreen from "./HomeScreen";
 import { auth, db, firestore } from "../../server/firebase";
@@ -28,13 +30,17 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   updateProfile,
+  sendEmailVerification,
+  onAuthStateChanged,
 } from "firebase/auth";
+import { useTranslation } from "react-i18next";
 
 type Screen =
   | "login"
   | "forgotPassword"
   | "verifyCode"
   | "resetPassword"
+  | "signUpLanguage"
   | "signUpBirthdate"
   | "signUpAccountType"
   | "signUpManagerPin"
@@ -50,6 +56,7 @@ export default function Login() {
   const [currentScreen, setCurrentScreen] = useState<Screen>("login");
   const [resetEmail, setResetEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
+  const [t, i18n] = useTranslation();
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -65,6 +72,19 @@ export default function Login() {
     managerialPin: null as string | null,
   });
   const [signUpLoading, setSignUpLoading] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user && user.emailVerified) {
+        // User is signed in and verified - go straight to home
+        console.log("Auto-login: User already authenticated:", user.email);
+        setCurrentScreen("homeScreen");
+      }
+    });
+
+    // Cleanup subscription
+    return () => unsubscribe();
+  }, []);
 
   const handleLogin = () => {
     // Normalize inputs to make bypass resilient to whitespace/casing
@@ -83,13 +103,23 @@ export default function Login() {
       return;
     }
 
-    // Handle normal login logic here
+    // handle login logic here
     signInWithEmailAndPassword(auth, username.trim(), p)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         // Signed in
         const user = userCredential.user;
         console.log("Login successful:", user.email);
-        setCurrentScreen("homeScreen");
+        // no home screen unless email verified
+        if (user.emailVerified) {
+          setCurrentScreen("homeScreen");
+        } else {
+          Alert.alert(
+            "Verify Your Email",
+            "A verification email was sent. Please verify your email before signing in.",
+            [{ text: "OK" }]
+          );
+          setCurrentScreen("login");
+        }
       })
       .catch((error) => {
         // display error to user here
@@ -105,7 +135,7 @@ export default function Login() {
 
   const handleSignUp = () => {
     // Navigate to sign up flow
-    setCurrentScreen("signUpBirthdate");
+    setCurrentScreen("signUpLanguage");
   };
 
   const handleEmailSubmit = (email: string) => {
@@ -133,6 +163,12 @@ export default function Login() {
   };
 
   // Sign Up Flow Handlers
+
+  const handleLanguageSubmit = (language: string) => {
+    // For future use - currently not stored
+    setCurrentScreen("signUpBirthdate");
+  };
+
   const handleBirthdateSubmit = (birthdate: string) => {
     setSignUpData({ ...signUpData, birthdate });
     setCurrentScreen("signUpAccountType");
@@ -160,12 +196,8 @@ export default function Login() {
   };
 
   const handleSignUpEmailSubmit = (email: string) => {
+    // Save email and skip code entry screen: go straight to password creation
     setSignUpData({ ...signUpData, email });
-    setCurrentScreen("signUpVerifyEmail");
-  };
-
-  const handleSignUpVerifyEmailSubmit = (code: string) => {
-    setSignUpData({ ...signUpData, verificationCode: code });
     setCurrentScreen("signUpCreatePassword");
   };
 
@@ -196,6 +228,18 @@ export default function Login() {
       await updateProfile(user, {
         displayName: `${payload.firstName} ${payload.lastName}`,
       });
+
+      // send email verification via Firebase
+      try {
+        await sendEmailVerification(user);
+        console.log("Verification email sent to:", user.email);
+        Alert.alert(
+          "Verification Email Sent",
+          "A verification email has been sent to your address. Please check your email and verify your account."
+        );
+      } catch (verifErr) {
+        console.error("Failed to send verification email:", verifErr);
+      }
 
       console.log(
         "auth.currentUser uid:",
@@ -236,8 +280,12 @@ export default function Login() {
         ...payload,
         password: "***",
       });
-      // Navigate to home screen
-      setCurrentScreen("homeScreen");
+      // only allow home screen if email verified (no code needed anymore)
+      if (user.emailVerified) {
+        setCurrentScreen("homeScreen");
+      } else {
+        setCurrentScreen("login");
+      }
     } catch (error: any) {
       console.error("Sign up error:", error?.code ?? error?.message ?? error);
       return;
@@ -287,11 +335,20 @@ export default function Login() {
   }
 
   // Render sign up flow screens
+  if (currentScreen === "signUpLanguage") {
+    return (
+      <SignUpLanguage
+        onSubmit={handleLanguageSubmit}
+        onBack={handleBackToLoginFromSignUp}
+      />
+    );
+  }
+
   if (currentScreen === "signUpBirthdate") {
     return (
       <SignUpBirthdate
         onSubmit={handleBirthdateSubmit}
-        onBack={handleBackToLoginFromSignUp}
+        onBack={() => setCurrentScreen("signUpLanguage")}
       />
     );
   }
@@ -332,21 +389,12 @@ export default function Login() {
     );
   }
 
-  if (currentScreen === "signUpVerifyEmail") {
-    return (
-      <SignUpVerifyEmail
-        email={signUpData.email}
-        onSubmit={handleSignUpVerifyEmailSubmit}
-        onBack={() => setCurrentScreen("signUpEmail")}
-      />
-    );
-  }
-
   if (currentScreen === "signUpCreatePassword") {
     return (
       <SignUpCreatePassword
         onSubmit={handleSignUpPasswordSubmit}
-        onBack={() => setCurrentScreen("signUpVerifyEmail")}
+        // Since we skip the verification code screen, back should return to the email entry
+        onBack={() => setCurrentScreen("signUpEmail")}
       />
     );
   }
@@ -384,7 +432,7 @@ export default function Login() {
           {/* Login Container */}
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
             <Text className="text-4xl font-madimi font-semibold text-white mb-8 text-center drop-shadow-md">
-              Login
+              {t("Login.title")}
             </Text>
 
             <View className="mb-4">
@@ -397,7 +445,7 @@ export default function Login() {
                 />
                 <TextInput
                   className="font-madimi flex-1 text-base text-white"
-                  placeholder="Username"
+                  placeholder={t("Login.emailPlaceholder")}
                   placeholderTextColor="rgba(255,255,255,0.6)"
                   value={username}
                   onChangeText={setUsername}
@@ -417,7 +465,7 @@ export default function Login() {
                 />
                 <TextInput
                   className="font-madimi flex-1 text-base text-white"
-                  placeholder="Password"
+                  placeholder={t("Login.passwordPlaceholder")}
                   placeholderTextColor="rgba(255,255,255,0.6)"
                   value={password}
                   onChangeText={setPassword}
@@ -430,7 +478,7 @@ export default function Login() {
           </View>
 
           <MainButton
-            title="Submit"
+            title={t("Login.signUp")}
             variant="primary"
             size="medium"
             customStyle={{ width: "60%", alignSelf: "center", marginTop: -15 }}
@@ -441,8 +489,10 @@ export default function Login() {
           <View className="mt-8 items-center">
             <TouchableOpacity onPress={handleSignUp} className="my-2">
               <Text className="font-madimi text-sm text-white drop-shadow-md">
-                Don't have an account?{" "}
-                <Text className="font-semibold text-yellow-300">Sign Up</Text>
+                {t("Login.noAccount")}{" "}
+                <Text className="font-semibold text-yellow-300">
+                  {t("Login.signUp")}
+                </Text>
               </Text>
             </TouchableOpacity>
 
@@ -479,7 +529,7 @@ export default function Login() {
 
             <TouchableOpacity onPress={handleForgotPassword} className="my-2">
               <Text className="font-madimi text-sm text-white/80 drop-shadow-md">
-                Forgot Your Password?
+                {t("Login.forgotPassword")}
               </Text>
             </TouchableOpacity>
           </View>

@@ -7,11 +7,13 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../components/MainButton";
 import { auth } from "../../server/firebase";
 import { sendPasswordResetEmail } from "firebase/auth";
+import { useTranslation } from "react-i18next";
 
 interface ForgotPasswordProps {
   onSubmit: (email: string) => void;
@@ -26,6 +28,7 @@ export default function ForgotPassword({
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [emailSent, setEmailSent] = useState(false);
+  const [t, i18n] = useTranslation();
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -50,10 +53,16 @@ export default function ForgotPassword({
 
     try {
       await sendPasswordResetEmail(auth, trimmedEmail);
-      setSuccessMessage(
-        "Check your email for a reset link. Please check your email and click the link to reset your password."
-      );
+      const successText =
+        "Check your email for a reset link. Please check your email and click the link to reset your password.";
+      setSuccessMessage(successText);
       setEmailSent(true);
+
+      // Show a system alert so the user knows to check their email
+      Alert.alert("Reset Email Sent", successText, [{ text: "OK" }]);
+
+      // Notify parent (Login) only after a successful send so it can navigate back to login
+      onSubmit(trimmedEmail);
     } catch (error: any) {
       if (error.code === "auth/user-not-found") {
         setErrorMessage("No account found with this email address.");
@@ -69,8 +78,7 @@ export default function ForgotPassword({
       }
     }
 
-    // Always call onSubmit with the trimmed email after validation
-    onSubmit(trimmedEmail);
+    // note: onSubmit is only called on success above
   };
 
   const handleResend = async () => {
@@ -92,12 +100,11 @@ export default function ForgotPassword({
           {/* Forgot Password Container */}
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
             <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
-              Forgot Your Password?
+              {t("ForgotPassword.title")}
             </Text>
 
             <Text className="font-madimi text-sm text-white/90 mb-8 text-left">
-              Enter your email address and we'll send you a code to reset your
-              password.
+              {t("ForgotPassword.desc")}
             </Text>
 
             <View className="mb-8">
@@ -110,7 +117,7 @@ export default function ForgotPassword({
                 />
                 <TextInput
                   className="font-madimi flex-1 text-base text-white"
-                  placeholder="Email Address"
+                  placeholder={t('ForgotPassword.emailPlaceholder')}
                   placeholderTextColor="rgba(255,255,255,0.6)"
                   value={email}
                   onChangeText={setEmail}
@@ -133,7 +140,7 @@ export default function ForgotPassword({
             ) : null}
 
             <MainButton
-              title="Submit"
+              title={t("ForgotPassword.submit")}
               variant="primary"
               size="medium"
               customStyle={{
@@ -162,8 +169,10 @@ export default function ForgotPassword({
               className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
               onPress={onBack}
             >
-              Back to{" "}
-              <Text className="font-semibold text-yellow-300">Login</Text>
+              {t("language.backTo")}
+              <Text className="font-semibold text-yellow-300">
+                {" "}{t("language.Login")}
+              </Text>
             </Text>
           </View>
         </View>

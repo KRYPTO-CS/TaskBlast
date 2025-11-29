@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,34 +6,112 @@ import {
   Image,
   ImageBackground,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import MainButton from "../components/MainButton";
+import EditProfileModal from "../components/EditProfileModal";
+import TraitsModal from "../components/TraitsModal";
+import { updateProfilePicture } from "../../server/storageUtils";
+import { auth } from "../../server/firebase";
+import {
+  getUserProfile,
+  updateUserProfilePicture,
+  type UserProfile,
+} from "../../server/userProfileUtils";
 
 export default function ProfileScreen() {
   const router = useRouter();
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
-  // Example data - replace with actual user data
-  const [userName] = useState("Space Explorer");
-  const [userTraits] = useState([
-    "Focused",
-    "Persistent",
-    "Creative",
-    "Goal-Oriented",
-  ]);
-  const [userAwards] = useState([
-    "🏆 First Mission",
-    "⭐ 10 Tasks Complete",
-    "🚀 Speed Runner",
-    "💎 Rock Collector",
-  ]);
+  // User data state
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [isTraitsModalVisible, setIsTraitsModalVisible] = useState(false);
+
+  // Load user profile on component mount
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      try {
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+          const profile = await getUserProfile(currentUser.uid);
+          if (profile) {
+            setUserProfile(profile);
+          } else {
+            // Set default profile if none exists
+            setUserProfile({
+              uid: currentUser.uid,
+              firstName: "Space",
+              lastName: "Explorer",
+              displayName: "Space",
+              email: currentUser.email || "",
+              traits: ["Focused", "Persistent", "Creative", "Goal-Oriented"],
+              awards: [
+                "🏆 First Mission",
+                "⭐ 10 Tasks Complete",
+                "🚀 Speed Runner",
+                "💎 Rock Collector",
+              ],
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error loading user profile:", error);
+      } finally {
+        setIsLoadingProfile(false);
+      }
+    };
+
+    loadUserProfile();
+  }, []);
 
   const handleLogout = () => {
     // Add logout logic here
     console.log("Logging out...");
     router.push("/pages/Login");
+  };
+
+  const handleProfilePicturePress = async () => {
+    if (isUploadingImage || !userProfile) return;
+
+    setIsUploadingImage(true);
+    try {
+      const currentUser = auth.currentUser;
+      if (!currentUser) {
+        alert("You must be logged in to update your profile picture");
+        return;
+      }
+
+      const newImageUrl = await updateProfilePicture(
+        userProfile.profilePicture || undefined
+      );
+
+      if (newImageUrl) {
+        // Save to Firestore
+        await updateUserProfilePicture(currentUser.uid, newImageUrl);
+
+        // Update local state
+        setUserProfile({
+          ...userProfile,
+          profilePicture: newImageUrl,
+        });
+
+        console.log("Profile picture updated successfully!");
+      }
+    } catch (error) {
+      console.error("Error updating profile picture:", error);
+      alert("Failed to update profile picture. Please try again.");
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
+  const handleProfileUpdate = (updatedProfile: UserProfile) => {
+    setUserProfile(updatedProfile);
   };
 
   return (
@@ -70,13 +148,15 @@ export default function ProfileScreen() {
               textShadowRadius: 20,
             }}
           >
-            {userName}
+            {userProfile?.displayName ||
+              userProfile?.firstName ||
+              "Space Explorer"}
           </Text>
 
           {/* Profile Image */}
           <View className="items-center mb-6">
-            <View
-              className="w-32 h-32 rounded-full items-center justify-center"
+            <TouchableOpacity
+              className="w-32 h-32 rounded-full items-center justify-center overflow-hidden"
               style={{
                 backgroundColor: "#7c3aed",
                 shadowColor: "#a855f7",
@@ -84,9 +164,21 @@ export default function ProfileScreen() {
                 shadowOpacity: 0.6,
                 shadowRadius: 16,
               }}
+              onPress={handleProfilePicturePress}
+              disabled={isUploadingImage}
             >
-              <Ionicons name="person" size={64} color="white" />
-            </View>
+              {isUploadingImage ? (
+                <ActivityIndicator size="large" color="white" />
+              ) : userProfile?.profilePicture ? (
+                <Image
+                  source={{ uri: userProfile.profilePicture }}
+                  className="w-full h-full"
+                  resizeMode="cover"
+                />
+              ) : (
+                <Ionicons name="person" size={64} color="white" />
+              )}
+            </TouchableOpacity>
           </View>
 
           {/* Edit Profile Button */}
@@ -103,8 +195,7 @@ export default function ProfileScreen() {
                 shadowRadius: 8,
               }}
               onPress={() => {
-                // Add edit profile logic
-                console.log("Edit profile pressed");
+                setIsEditModalVisible(true);
               }}
             >
               <Ionicons
@@ -121,16 +212,37 @@ export default function ProfileScreen() {
 
           {/* Traits Container */}
           <View className="mb-6">
-            <Text
-              className="font-orbitron-semibold text-xl text-white text-xl mb-4"
-              style={{
-                textShadowColor: "rgba(59, 130, 246, 0.6)",
-                textShadowOffset: { width: 0, height: 0 },
-                textShadowRadius: 10,
-              }}
-            >
-              Traits
-            </Text>
+            <View className="flex-row justify-between items-center mb-4">
+              <Text
+                className="font-orbitron-semibold text-xl text-white"
+                style={{
+                  textShadowColor: "rgba(59, 130, 246, 0.6)",
+                  textShadowOffset: { width: 0, height: 0 },
+                  textShadowRadius: 10,
+                }}
+              >
+                Traits
+              </Text>
+              <TouchableOpacity
+                onPress={() => setIsTraitsModalVisible(true)}
+                className="flex-row items-center px-3 py-2 rounded-full"
+                style={{
+                  backgroundColor: "rgba(59, 130, 246, 0.3)",
+                  borderWidth: 1,
+                  borderColor: "rgba(96, 165, 250, 0.5)",
+                }}
+              >
+                <Ionicons
+                  name="add"
+                  size={16}
+                  color="white"
+                  style={{ marginRight: 4 }}
+                />
+                <Text className="font-orbitron-semibold text-white text-xs">
+                  Edit
+                </Text>
+              </TouchableOpacity>
+            </View>
             <View
               className="p-4 rounded-2xl"
               style={{
@@ -144,7 +256,7 @@ export default function ProfileScreen() {
               }}
             >
               <View className="flex-row flex-wrap gap-2">
-                {userTraits.map((trait, index) => (
+                {userProfile?.traits?.map((trait: string, index: number) => (
                   <View
                     key={index}
                     className="px-4 py-2 rounded-full"
@@ -188,7 +300,7 @@ export default function ProfileScreen() {
               }}
             >
               <View className="flex-row flex-wrap gap-2">
-                {userAwards.map((award, index) => (
+                {userProfile?.awards?.map((award: string, index: number) => (
                   <View
                     key={index}
                     className="px-4 py-2 rounded-full"
@@ -218,6 +330,26 @@ export default function ProfileScreen() {
           </View>
         </View>
       </ScrollView>
+
+      {/* Edit Profile Modal */}
+      {userProfile && (
+        <EditProfileModal
+          visible={isEditModalVisible}
+          onClose={() => setIsEditModalVisible(false)}
+          userProfile={userProfile}
+          onProfileUpdate={handleProfileUpdate}
+        />
+      )}
+
+      {/* Traits Modal */}
+      {userProfile && (
+        <TraitsModal
+          visible={isTraitsModalVisible}
+          onClose={() => setIsTraitsModalVisible(false)}
+          userProfile={userProfile}
+          onTraitsUpdate={handleProfileUpdate}
+        />
+      )}
     </View>
   );
 }

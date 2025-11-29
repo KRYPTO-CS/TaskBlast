@@ -10,14 +10,24 @@ import {
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
+import { getAuth } from "firebase/auth";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  updateDoc,
+  increment,
+} from "firebase/firestore";
 import { useAudioPlayer } from "expo-audio";
 import MainButton from "../components/MainButton";
 import TaskListModal from "../components/TaskListModal";
 import SettingsModal from "../components/SettingsModal";
 import { useRouter } from "expo-router";
+import { useAudio } from "../context/AudioContext";
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { musicEnabled } = useAudio();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
   const [rocks, setRocks] = useState<number>(0);
@@ -31,23 +41,43 @@ export default function HomeScreen() {
 
   const loadScore = useCallback(async () => {
     try {
-      const val = await AsyncStorage.getItem("game_score");
-      const n = val ? Number(val) : 0;
-      setRocks(isNaN(n) ? 0 : Math.max(0, Math.floor(n)));
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (!user) {
+        setRocks(0);
+        return;
+      }
+
+      const db = getFirestore();
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const rocksValue = userData.rocks || 0;
+        setRocks(isNaN(rocksValue) ? 0 : Math.max(0, Math.floor(rocksValue)));
+      } else {
+        setRocks(0);
+      }
     } catch (err) {
-      console.warn("Failed to load game score", err);
+      console.warn("Failed to load rocks from database", err);
       setRocks(0);
     }
   }, []);
 
   // Play background music on mount and loop it
   useEffect(() => {
-    if (musicPlayer) {
+    if (musicPlayer && musicEnabled) {
       try {
         musicPlayer.loop = true;
         musicPlayer.play();
       } catch (error) {
         console.warn("Failed to play music on mount:", error);
+      }
+    } else if (musicPlayer && !musicEnabled) {
+      try {
+        musicPlayer.pause();
+      } catch (error) {
+        console.warn("Failed to pause music:", error);
       }
     }
 
@@ -60,7 +90,7 @@ export default function HomeScreen() {
         }
       }
     };
-  }, [musicPlayer]);
+  }, [musicPlayer, musicEnabled]);
 
   useEffect(() => {
     loadScore();
@@ -68,7 +98,7 @@ export default function HomeScreen() {
     const handleAppState = (nextState: string) => {
       if (nextState === "active") {
         loadScore();
-        if (musicPlayer) {
+        if (musicPlayer && musicEnabled) {
           try {
             musicPlayer.play();
           } catch (error) {
@@ -96,13 +126,13 @@ export default function HomeScreen() {
         sub.remove();
       }
     };
-  }, [loadScore, musicPlayer]);
+  }, [loadScore, musicPlayer, musicEnabled]);
 
   useFocusEffect(
     useCallback(() => {
       loadScore();
       // Resume music when screen comes into focus
-      if (musicPlayer) {
+      if (musicPlayer && musicEnabled) {
         try {
           musicPlayer.play();
         } catch (error) {
@@ -119,7 +149,7 @@ export default function HomeScreen() {
           }
         }
       };
-    }, [loadScore, musicPlayer])
+    }, [loadScore, musicPlayer, musicEnabled])
   );
 
   return (
@@ -217,6 +247,7 @@ export default function HomeScreen() {
         <TaskListModal
           visible={isTaskModalVisible}
           onClose={() => setIsTaskModalVisible(false)}
+          onRocksChange={loadScore}
         />
 
         {/* Settings Modal */}

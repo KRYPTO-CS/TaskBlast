@@ -369,10 +369,9 @@ describe("Sign Up Process", () => {
 
       expect(getByText("What's Your Email?")).toBeTruthy();
       expect(getByPlaceholderText("Email Address")).toBeTruthy();
-      expect(getByText("Send Code")).toBeTruthy();
     });
 
-    it("should accept valid email", () => {
+  it("should accept valid email", async () => {
       const mockOnSubmit = jest.fn();
       const mockOnBack = jest.fn();
 
@@ -381,15 +380,19 @@ describe("Sign Up Process", () => {
       );
 
       const emailInput = getByPlaceholderText("Email Address");
-      const sendCodeButton = getByText("Send Code");
 
       fireEvent.changeText(emailInput, "john.doe@example.com");
-      fireEvent.press(sendCodeButton);
 
-      expect(mockOnSubmit).toHaveBeenCalledWith("john.doe@example.com");
+      // Press the Send Link button to trigger validation and submit
+      const sendButton = getByText("Send Link");
+      fireEvent.press(sendButton);
+
+      await waitFor(() => {
+        expect(mockOnSubmit).toHaveBeenCalledWith("john.doe@example.com");
+      });
     });
 
-    it("should validate email format", () => {
+  it("should validate email format", async () => {
       const mockOnSubmit = jest.fn();
       const mockOnBack = jest.fn();
 
@@ -398,16 +401,20 @@ describe("Sign Up Process", () => {
       );
 
       const emailInput = getByPlaceholderText("Email Address");
-      const sendCodeButton = getByText("Send Code");
 
       fireEvent.changeText(emailInput, "invalid-email");
-      fireEvent.press(sendCodeButton);
 
-      expect(getByText(/valid email/i)).toBeTruthy();
-      expect(mockOnSubmit).not.toHaveBeenCalled();
+      // Trigger validation by pressing the Send Link button
+      const sendButton = getByText("Send Link");
+      fireEvent.press(sendButton);
+
+      await waitFor(() => {
+        expect(getByText(/valid email/i)).toBeTruthy();
+        expect(mockOnSubmit).not.toHaveBeenCalled();
+      });
     });
 
-    it("should require email to be filled", () => {
+  it("should require email to be filled", async () => {
       const mockOnSubmit = jest.fn();
       const mockOnBack = jest.fn();
 
@@ -415,11 +422,14 @@ describe("Sign Up Process", () => {
         <SignUpEmail onSubmit={mockOnSubmit} onBack={mockOnBack} />
       );
 
-      const sendCodeButton = getByText("Send Code");
-      fireEvent.press(sendCodeButton);
+      // Press Send Link without entering an email to trigger the required-field error
+      const sendButton = getByText("Send Link");
+      fireEvent.press(sendButton);
 
-      expect(getByText(/enter your email/i)).toBeTruthy();
-      expect(mockOnSubmit).not.toHaveBeenCalled();
+      await waitFor(() => {
+        expect(getByText(/enter your email/i)).toBeTruthy();
+        expect(mockOnSubmit).not.toHaveBeenCalled();
+      });
     });
   });
 

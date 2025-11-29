@@ -8,12 +8,15 @@ import {
   ImageBackground,
 } from "react-native";
 import MainButton from "../components/MainButton";
+import { useTranslation } from "react-i18next";
 
 interface VerifyCodeProps {
   email: string;
   onSubmit: (code: string) => void;
   onBack: () => void;
 }
+
+// CURRENTLY UNUSED - STORED FOR POTENTIAL FUTURE USE
 
 export default function VerifyCode({
   email,
@@ -22,6 +25,7 @@ export default function VerifyCode({
 }: VerifyCodeProps) {
   const [code, setCode] = useState(["", "", "", "", ""]);
   const inputRefs = useRef<(TextInput | null)[]>([]);
+  const [t, i18n] = useTranslation();
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -84,11 +88,11 @@ export default function VerifyCode({
           {/* Verify Code Container */}
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
             <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
-              Verify Code
+              {t("VerifyCode.title")}
             </Text>
 
             <Text className="font-madimi text-sm text-white/90 mb-8 text-left">
-              Enter the 5-digit code sent to {email}
+              {t("VerifyCode.desc")} {email}
             </Text>
 
             <View className="flex-row justify-between mb-8" style={{ gap: 10 }}>
@@ -112,12 +116,12 @@ export default function VerifyCode({
             </View>
 
             <Text className="font-madimi text-xs text-white/80 text-left mb-4">
-              Didn't receive the code?{" "}
-              <Text className="font-semibold text-yellow-300">Resend</Text>
+              {t("VerifyCode.notreceived")}{" "}
+              <Text className="font-semibold text-yellow-300">{t("VerifyCode.resend")}</Text>
             </Text>
 
             <MainButton
-              title="Submit"
+              title={t("VerifyCode.submit")}
               variant="primary"
               size="medium"
               customStyle={{
@@ -135,9 +139,9 @@ export default function VerifyCode({
               className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
               onPress={onBack}
             >
-              Back to{" "}
+              {t("language.backTo")}
               <Text className="font-semibold text-yellow-300">
-                Previous Step
+                {" "}{t("birthdate.previousStep")}
               </Text>
             </Text>
           </View>
