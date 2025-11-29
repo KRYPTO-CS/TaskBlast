@@ -17,16 +17,19 @@ interface SettingsModalProps {
   visible: boolean;
   onClose: () => void;
   onLogout?: () => void;
+  musicEnabled: boolean; // controlled by parent
+  onMusicToggle: (value: boolean) => void; // callback to parent
 }
 
 export default function SettingsModal({
   visible,
   onClose,
   onLogout,
+  musicEnabled,
+  onMusicToggle,
 }: SettingsModalProps) {
   // Settings state
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [musicEnabled, setMusicEnabled] = useState(true);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [darkModeEnabled, setDarkModeEnabled] = useState(false);
 
@@ -157,7 +160,7 @@ export default function SettingsModal({
               </View>
               <Switch
                 value={musicEnabled}
-                onValueChange={setMusicEnabled}
+                onValueChange={onMusicToggle}
                 trackColor={{ false: "#334155", true: "#8b5cf6" }}
                 thumbColor={musicEnabled ? "#a855f7" : "#64748b"}
               />
