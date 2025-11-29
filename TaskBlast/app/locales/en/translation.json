@@ -1,0 +1,89 @@
+{
+  "language": {
+  "selectLanguage": "Please select your language",
+  "continue": "Continue",
+  "backTo": "Back to",
+  "Login": "Login"
+  },
+  "birthdate": {
+    "title": "What's Your Birthdate",
+    "notice": "You must be at least 13 years old to register",
+    "month": "Month",
+    "day": "Day",
+    "year": "Year",
+    "continue": "Continue",
+    "previousStep": "Previous Step",
+    "error": "Please enter a valid date",
+    "age": "Please give the device to a parent or guardian",
+    "empty": "Please fill out all fields"
+  },
+  "AccountType": {
+    "title": "Who will be using TaskBlast?",
+    "type": "Choose the account type that best describes the primary user of TaskBlast.",
+    "managetitle": "Managed Account",
+    "managedesc": "For depends. SOme features are restricted and controlled by a parent/guardian PIN.",
+    "indetitle": "Independent Account",
+    "indedesc": "For individual learners. Full access without restrictions.",
+    "continue": "continue",
+    "error": "Please choose an account type to continue"
+  },
+  "Name": {
+    "title": "What's your name?",
+    "desc": "Let us know what to call you while using TaskBlast",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "continue": "Continue"
+  },
+  "Email": {
+    "title": "What's Your Email?",
+    "desc": "We'll send you a verification code to confirm your email address",
+    "emailPlaceholder": "Email Address",
+    "send": "Send Link"
+  },
+  "Password": {
+    "title": "Create A Password",
+    "desc": "Choose a strong password to protect your account",
+    "passwordPlaceholder": "Password",
+    "ConfirmPasswordPlaceholder": "Confirm Password",
+    "submit": "Create Account",
+    "match": "Passwords do not match",
+    "length": "Password must be at least 8 characters long"
+  },
+  "Login": {
+    "title": "Login",
+    "emailPlaceholder": "Email or Username",
+    "passwordPlaceholder": "Password",
+    "forgotPassword": "Forgot Your Password?",
+    "loginButton": "Submit",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign Up"
+  },
+  "ForgotPassword": {
+    "title": "Forgot Your Password?",
+    "desc": "Enter your email address and we will sendy our a code to reset your password",
+    "emailPlaceholder": "Email Address",
+    "submit": "Submit"
+  },
+  "VerifyCode": {
+    "title": "Verify Code",
+    "desc": "Enter the 5-digit code sent to",
+    "notreceived": "Didn't receive the code?",
+    "resend": "Resend",
+    "submit": "Submit"
+  },
+  "ResetPassword": {
+    "title": "Create New Password",
+    "desc": "Enter your new password below",
+    "newPasswordPlaceholder": "New Password",
+    "confirmPasswordPlaceholder": "Confirm Password",
+    "submit": "Reset Password"
+  },
+  "ManagerPin": {
+    "title": "Create a Manager PIN",
+    "desc": "This 4-digit PIN lets a parent or guardian manage the account and create tasks for the learner. Keep it secret.",
+    "pin": "PIN (4 digits)",
+    "confirmPinPlaceholder": "Confirm PIN",
+    "continue": "Continue"
+  }
+
+}

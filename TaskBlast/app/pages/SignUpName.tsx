@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../components/MainButton";
+import { useTranslation } from "react-i18next";
 
 interface SignUpNameProps {
   onSubmit: (firstName: string, lastName: string) => void;
@@ -19,6 +20,7 @@ export default function SignUpName({ onSubmit, onBack }: SignUpNameProps) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
+  const [t, i18n] = useTranslation();
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -29,7 +31,7 @@ export default function SignUpName({ onSubmit, onBack }: SignUpNameProps) {
     const trimmedLastName = lastName.trim();
 
     if (!trimmedFirstName || !trimmedLastName) {
-      setError("Please enter both first and last name");
+      setError(t("birthdate.empty"));
       return;
     }
 
@@ -52,11 +54,11 @@ export default function SignUpName({ onSubmit, onBack }: SignUpNameProps) {
           {/* Name Container */}
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
             <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
-              What's Your Name?
+              {t("Name.title")};
             </Text>
 
             <Text className="font-madimi text-sm text-white/90 mb-8 text-left">
-              Let us know what to call you while using TaskBlast
+              {t("Name.desc")}
             </Text>
 
             <View className="mb-4">
@@ -69,7 +71,7 @@ export default function SignUpName({ onSubmit, onBack }: SignUpNameProps) {
                 />
                 <TextInput
                   className="font-madimi flex-1 text-base text-white"
-                  placeholder="First Name"
+                  placeholder={t("Name.firstName")}
                   placeholderTextColor="rgba(255,255,255,0.6)"
                   value={firstName}
                   onChangeText={setFirstName}
@@ -89,7 +91,7 @@ export default function SignUpName({ onSubmit, onBack }: SignUpNameProps) {
                 />
                 <TextInput
                   className="font-madimi flex-1 text-base text-white"
-                  placeholder="Last Name"
+                  placeholder={t("Name.lastName")}
                   placeholderTextColor="rgba(255,255,255,0.6)"
                   value={lastName}
                   onChangeText={setLastName}
@@ -106,7 +108,7 @@ export default function SignUpName({ onSubmit, onBack }: SignUpNameProps) {
             ) : null}
 
             <MainButton
-              title="Continue"
+              title={t("Name.continue")}
               variant="primary"
               size="medium"
               customStyle={{
@@ -124,9 +126,9 @@ export default function SignUpName({ onSubmit, onBack }: SignUpNameProps) {
               className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
               onPress={onBack}
             >
-              Back to{" "}
+              {t("language.backTo")}
               <Text className="font-semibold text-yellow-300">
-                Previous Step
+                {" "}{t("birthdate.previousStep")}
               </Text>
             </Text>
           </View>

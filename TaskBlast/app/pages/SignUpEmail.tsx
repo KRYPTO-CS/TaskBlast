@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../components/MainButton";
+import { useTranslation } from "react-i18next";
 
 interface SignUpEmailProps {
   onSubmit: (email: string) => void;
@@ -18,14 +19,14 @@ interface SignUpEmailProps {
 export default function SignUpEmail({ onSubmit, onBack }: SignUpEmailProps) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-
+  const [t, i18n] = useTranslation();
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
   const handleSubmit = () => {
     setError("");
 
     if (!email.trim()) {
-      setError("Please enter your email address");
+      setError(t("birthdate.empty"));
       return;
     }
 
@@ -55,11 +56,11 @@ export default function SignUpEmail({ onSubmit, onBack }: SignUpEmailProps) {
           {/* Email Container */}
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
             <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
-              What's Your Email?
+              {t("Email.title")}
             </Text>
 
             <Text className="font-madimi text-sm text-white/90 mb-8 text-left">
-              We'll send you a verification code to confirm your email address
+              {t("Email.desc")}
             </Text>
 
             <View className="mb-4">
@@ -72,7 +73,7 @@ export default function SignUpEmail({ onSubmit, onBack }: SignUpEmailProps) {
                 />
                 <TextInput
                   className="font-madimi flex-1 text-base text-white"
-                  placeholder="Email Address"
+                  placeholder={t("Email.emailPlaceholder")}
                   placeholderTextColor="rgba(255,255,255,0.6)"
                   value={email}
                   onChangeText={setEmail}
@@ -90,7 +91,7 @@ export default function SignUpEmail({ onSubmit, onBack }: SignUpEmailProps) {
             ) : null}
 
             <MainButton
-              title="Send Link"
+              title={t("Email.send")}
               variant="primary"
               size="medium"
               customStyle={{
@@ -108,9 +109,9 @@ export default function SignUpEmail({ onSubmit, onBack }: SignUpEmailProps) {
               className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
               onPress={onBack}
             >
-              Back to{" "}
+              {t("language.backTo")}
               <Text className="font-semibold text-yellow-300">
-                Previous Step
+                {" "}{t("birthdate.previousStep")}
               </Text>
             </Text>
           </View>
