@@ -1,0 +1,89 @@
+{
+  "language": {  
+  "selectLanguage": "Por favor selecciona tu idioma",
+  "continue": "Continuar",
+  "backTo": "Volver al",
+  "Login": "Inicio de sesión"
+  },
+  "birthdate": {
+    "title": "Cuál es tu fecha de nacimiento",
+    "notice": "Debes tener al menos 13 años para crear una cuenta.",
+    "month": "Mes",
+    "day": "Día",
+    "year": "Año",
+    "continue": "Continuar",
+    "previousStep": "Paso anterior",
+    "error": "Por favor ingresa una fecha válida",
+    "age": "Por favor entrega el dispositivo a un padre o tutor",
+    "empty": "Por favor completa todos los campos"
+  },
+  "AccountType": {
+    "title": "¿Quién usará TaskBlast?",
+    "type": "Elige el tipo de cuenta que mejor describa al usuario principal de TaskBlast.",
+    "managetitle": "Cuenta gestionada",
+    "managedesc": "Para dependientes. Algunas funciones están restringidas y controladas por un PIN de padre/tutor.",
+    "indetitle": "Cuenta independiente",
+    "indedesc": "Para aprendices individuales. Acceso completo sin restricciones.",
+    "continue": "Continuar",
+    "error": "Por favor elige un tipo de cuenta para continuar"
+  },
+  "Name": {
+    "title": "¿Cómo te llamas?",
+    "desc": "Como quieres que te llamen en TaskBlast",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "continue": "Continuar"
+  },
+  "Email": {
+    "title": "¿Cuál es tu correo electrónico?",
+    "desc": "Te enviaremos un código de verificación para confirmar tu dirección de correo electrónico",
+    "emailPlaceholder": "Dirección de correo electrónico",
+    "send": "Enviar enlace"
+  },
+  "Password": {
+    "title": "Crea Una Contraseña",
+    "desc": "Elige una contraseña segura para proteger tu cuenta",
+    "passwordPlaceholder": "Contraseña",
+    "ConfirmPasswordPlaceholder": "Confirmar contraseña",
+    "submit": "Crear cuenta",
+    "match": "Las contraseñas no coinciden",
+    "length": "La contraseña debe tener al menos 8 caracteres"
+  },
+  "Login" : {
+    "title": "Iniciar sesión",
+    "emailPlaceholder": "Correo electrónico o nombre de usuario",
+    "passwordPlaceholder": "Contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "loginButton": "Enviar",
+    "noAccount": "¿No tienes una cuenta?",
+    "signUp": "Regístrate"
+  },
+  "ForgotPassword": {
+    "title": "¿Olvidaste tu contraseña?",
+    "desc": "Ingresa tu dirección de correo electrónico y te enviaremos un código para restablecer tu contraseña",
+    "emailPlaceholder": "Correo electrónico",
+    "submit": "Enviar"
+  },
+  "VerifyCode": {
+    "title": "Verificar código",
+    "desc": "Ingresa el código que enviamos a tu correo electrónico",
+    "notreceived": "¿No recibiste el código?",
+    "resend": "Reenviar código",
+    "submit": "Enviar"
+  },
+  "ResetPassword": {
+    "title": "Restablecer contraseña",
+    "desc": "Ingresa tu nueva contraseña a continuación",
+    "newPasswordPlaceholder": "Nueva contraseña",
+    "confirmPasswordPlaceholder": "Confirmar nueva contraseña",
+    "submit": "Restablecer contraseña"
+  },
+  "ManagedPIN": {
+    "title": "Configurar PIN de tutor",
+    "desc": "Crea un PIN de 4 dígitos que tu tutor utilizará para gestionar tu cuenta.",
+    "pin": "Ingrese PIN de 4 dígitos",
+    "confirmPinPlaceholder": "Confirma el PIN",
+    "continue": "Continuar"
+  }
+
+}
