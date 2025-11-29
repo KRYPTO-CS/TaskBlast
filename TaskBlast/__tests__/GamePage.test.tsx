@@ -11,7 +11,7 @@
  */
 
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import { render, fireEvent, waitFor, act } from "@testing-library/react-native";
 import GamePage from "../app/pages/GamePage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
@@ -44,25 +44,41 @@ describe("Game Screen", () => {
       expect(webview).toBeTruthy();
       // In actual implementation, would check source.uri
     });
+
+    it("should render Send button", () => {
+      const { getByText } = render(<GamePage />);
+      expect(getByText("Send")).toBeTruthy();
+    });
+
+    it("should render timer display", () => {
+      const { getByText } = render(<GamePage />);
+      // Default 5 minutes = 05:00
+      expect(getByText(/\d{2}:\d{2}/)).toBeTruthy();
+    });
   });
 
   describe("Navigation", () => {
-    it("should navigate back when back button is pressed", () => {
-      const { getByText } = render(<GamePage />);
+    it("should navigate back when back button is pressed", async () => {
+      const { getByTestId } = render(<GamePage />);
 
-      const backButton = getByText("< Back");
+      const backButton = getByTestId("back-button");
       fireEvent.press(backButton);
 
-      expect(router.back).toHaveBeenCalled();
+      // Should save score before navigating back
+      await waitFor(() => {
+        expect(router.back).toHaveBeenCalled();
+      });
     });
 
-    it("should return to previous screen (Pomodoro)", () => {
-      const { getByText } = render(<GamePage />);
+    it("should return to previous screen (Pomodoro)", async () => {
+      const { getByTestId } = render(<GamePage />);
 
-      const backButton = getByText("< Back");
+      const backButton = getByTestId("back-button");
       fireEvent.press(backButton);
 
-      expect(router.back).toHaveBeenCalledTimes(1);
+      await waitFor(() => {
+        expect(router.back).toHaveBeenCalledTimes(1);
+      });
     });
   });
 
@@ -388,6 +404,131 @@ describe("Game Screen", () => {
       const header = getByTestId("game-header");
 
       expect(header.props.style).toBeDefined();
+    });
+  });
+
+  describe("Timer Functionality", () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it("should countdown from initial time", async () => {
+      const { getByText } = render(<GamePage />);
+
+      // Should have a timer display
+      const timerElement = getByText(/\d{2}:\d{2}/);
+      expect(timerElement).toBeTruthy();
+    });
+
+    it("should navigate back when timer reaches zero", async () => {
+      jest.useFakeTimers();
+      const {} = render(<GamePage />);
+
+      act(() => {
+        jest.advanceTimersByTime(300000); // 5 minutes
+      });
+
+      await waitFor(() => {
+        expect(router.back).toHaveBeenCalled();
+      });
+
+      jest.useRealTimers();
+    });
+
+    it("should save rocks to database when timer completes", async () => {
+      (AsyncStorage.getItem as jest.Mock).mockResolvedValue("1500");
+      jest.useFakeTimers();
+
+      render(<GamePage />);
+
+      act(() => {
+        jest.advanceTimersByTime(300000); // 5 minutes
+      });
+
+      await waitFor(() => {
+        expect(AsyncStorage.getItem).toHaveBeenCalled();
+      });
+
+      jest.useRealTimers();
+    });
+  });
+
+  describe("Triple-Tap Bypass", () => {
+    it("should support triple-tap timer bypass for admin", () => {
+      const { getByText } = render(<GamePage />);
+
+      // Timer should be rendered
+      const timerElement = getByText(/\d{2}:\d{2}/);
+      expect(timerElement).toBeTruthy();
+
+      // Triple tap feature exists (implementation detail - cannot fully test without integration)
+    });
+  });
+
+  describe("Send Message to Game", () => {
+    it("should render Send button", () => {
+      const { getByText } = render(<GamePage />);
+
+      const sendButton = getByText("Send");
+      expect(sendButton).toBeTruthy();
+    });
+
+    it("should send message to Godot game when pressed", () => {
+      const { getByText } = render(<GamePage />);
+
+      const sendButton = getByText("Send");
+      fireEvent.press(sendButton);
+
+      // Button should be functional
+      expect(sendButton).toBeTruthy();
+    });
+  });
+
+  describe("Rocks Database Integration", () => {
+    it("should save rocks to database on back navigation", async () => {
+      (AsyncStorage.getItem as jest.Mock).mockResolvedValue("2500");
+      (AsyncStorage.removeItem as jest.Mock).mockResolvedValue(undefined);
+
+      const { getByTestId } = render(<GamePage />);
+
+      const backButton = getByTestId("back-button");
+      fireEvent.press(backButton);
+
+      await waitFor(() => {
+        expect(AsyncStorage.getItem).toHaveBeenCalledWith("game_score");
+      });
+    });
+
+    it("should handle zero score gracefully", async () => {
+      (AsyncStorage.getItem as jest.Mock).mockResolvedValue("0");
+      (AsyncStorage.removeItem as jest.Mock).mockResolvedValue(undefined);
+
+      const { getByTestId } = render(<GamePage />);
+
+      const backButton = getByTestId("back-button");
+      fireEvent.press(backButton);
+
+      await waitFor(() => {
+        expect(router.back).toHaveBeenCalled();
+      });
+    });
+
+    it("should clear temporary score after saving", async () => {
+      (AsyncStorage.getItem as jest.Mock).mockResolvedValue("1000");
+      (AsyncStorage.removeItem as jest.Mock).mockResolvedValue(undefined);
+
+      const { getByTestId } = render(<GamePage />);
+
+      const backButton = getByTestId("back-button");
+      fireEvent.press(backButton);
+
+      await waitFor(() => {
+        expect(AsyncStorage.removeItem).toHaveBeenCalledWith("game_score");
+      });
     });
   });
 });

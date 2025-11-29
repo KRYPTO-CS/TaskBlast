@@ -13,12 +13,20 @@ jest.mock("expo-router", () => {
   const mockReplace = jest.fn();
   const mockBack = jest.fn();
 
+  // Default params that can be overridden per test
+  const mockUseLocalSearchParams = jest.fn(() => ({
+    workTime: "1", // Default to 1 minute for tests
+    playTime: "5",
+    cycles: "1",
+  }));
+
   return {
     useRouter: () => ({
       push: mockPush,
       replace: mockReplace,
       back: mockBack,
     }),
+    useLocalSearchParams: mockUseLocalSearchParams,
     Link: "Link",
     router: {
       push: mockPush,
@@ -64,7 +72,10 @@ jest.mock("firebase/auth", () => ({
   sendPasswordResetEmail: jest.fn(),
   sendEmailVerification: jest.fn(),
   updateProfile: jest.fn(),
-  onAuthStateChanged: jest.fn(),
+  onAuthStateChanged: jest.fn((auth, callback) => {
+    // Return unsubscribe function
+    return jest.fn();
+  }),
 }));
 
 jest.mock("firebase/firestore", () => ({
@@ -80,6 +91,7 @@ jest.mock("firebase/firestore", () => ({
   getDocs: jest.fn(),
   addDoc: jest.fn(),
   serverTimestamp: jest.fn(() => new Date()),
+  increment: jest.fn((value) => value),
 }));
 
 jest.mock("firebase/app", () => ({
@@ -98,14 +110,130 @@ jest.mock("./server/firebase", () => ({
   firestore: {},
 }));
 
+// Mock AudioContext
+jest.mock("./app/context/AudioContext", () => ({
+  AudioProvider: ({ children }) => children,
+  useAudio: jest.fn(() => ({
+    musicEnabled: true,
+    soundEnabled: true,
+    setMusicEnabled: jest.fn(),
+    setSoundEnabled: jest.fn(),
+  })),
+}));
+
+// Mock react-i18next
+jest.mock("react-i18next", () => ({
+  useTranslation: () => {
+    const translations = {
+      "Login.title": "Login",
+      "Login.emailPlaceholder": "Email or Username",
+      "Login.passwordPlaceholder": "Password",
+      "Login.forgotPassword": "Forgot Your Password?",
+      "Login.loginButton": "Submit",
+      "Login.noAccount": "Don't have an account?",
+      "Login.signUp": "Sign Up",
+      "ForgotPassword.title": "Forgot Your Password?",
+      "ForgotPassword.desc":
+        "Enter your email address and we'll send you a code to reset your password",
+      "ForgotPassword.emailPlaceholder": "Email Address",
+      "ForgotPassword.submit": "Submit",
+      "ResetPassword.title": "Create New Password",
+      "ResetPassword.desc": "Enter your new password below",
+      "ResetPassword.newPasswordPlaceholder": "New Password",
+      "ResetPassword.confirmPasswordPlaceholder": "Confirm Password",
+      "ResetPassword.submit": "Reset Password",
+      "birthdate.title": "What's Your Birthdate",
+      "AccountType.title": "Who will be using TaskBlast?",
+      "Name.title": "What's your name?",
+      "Email.title": "What's Your Email?",
+      "Password.title": "Create a Password",
+      "Password.passwordPlaceholder": "Password",
+      "Password.ConfirmPasswordPlaceholder": "Confirm Password",
+      "Password.submit": "Create Account",
+      "Password.match": "Passwords do not match",
+      "Password.length": "Password must be at least 8 characters long",
+      "Name.title": "What's Your Name?",
+      "Name.firstName": "First Name",
+      "Name.lastName": "Last Name",
+      "Name.desc": "Let us know what to call you while using TaskBlast",
+      "Name.continue": "Continue",
+      "Name.empty": "Please enter both first and last name",
+      "Name.error": "Please enter both first and last name",
+      "Email.title": "What's Your Email?",
+      "Email.desc": "We'll send you a verification link",
+      "Email.emailPlaceholder": "Email Address",
+      "Email.send": "Send Link",
+      "Email.empty": "Email is required",
+      "Email.invalid": "Please enter a valid email address",
+      "Email.error": "Please enter your email",
+      "ManagedPIN.title": "Create Manager PIN",
+      "ManagedPIN.desc": "This PIN will be used to access manager features",
+      "ManagedPIN.pin": "Enter PIN",
+      "ManagedPIN.confirmPinPlaceholder": "Confirm PIN",
+      "ManagedPIN.continue": "Continue",
+      "Password.desc": "Choose a strong password for your account",
+      "birthdate.title": "What's Your Birthdate",
+      "birthdate.previousStep": "Previous Step",
+      "birthdate.empty": "Field is required",
+      "birthdate.month": "Month",
+      "birthdate.day": "Day",
+      "birthdate.year": "Year",
+      "birthdate.notice": "We need your age to comply with COPPA regulations",
+      "birthdate.continue": "Continue",
+      "birthdate.age": "Please give the device to a parent or guardian",
+      "birthdate.error": "Please enter a valid date",
+      "birthdate.fill": "Please fill in all fields",
+      "AccountType.title": "Who will be using TaskBlast?",
+      "AccountType.type": "Select Account Type",
+      "AccountType.managetitle": "Managed Account",
+      "AccountType.managedesc": "For dependents under parental supervision",
+      "AccountType.indetitle": "Independent Account",
+      "AccountType.indedesc": "For individual learners",
+      "AccountType.continue": "Continue",
+      "AccountType.error": "Please choose an account type",
+      "language.backTo": "Back to",
+      "language.Login": "Login",
+    };
+
+    const tFunction = (key) => translations[key] || key;
+    const i18nObject = { language: "en", changeLanguage: jest.fn() };
+
+    // Return an object that works with both array and object destructuring
+    const result = {
+      t: tFunction,
+      i18n: i18nObject,
+      // Make it iterable for array destructuring [t, i18n]
+      [Symbol.iterator]: function* () {
+        yield tFunction;
+        yield i18nObject;
+      },
+    };
+
+    return result;
+  },
+  initReactI18next: {
+    type: "3rdParty",
+    init: jest.fn(),
+  },
+}));
+
 // Mock react-native-webview
 jest.mock("react-native-webview", () => {
   const React = require("react");
   const { View } = require("react-native");
+
+  // Mock WebView ref with postMessage
+  const mockPostMessage = jest.fn();
+
   return {
-    WebView: (props) => {
+    WebView: React.forwardRef((props, ref) => {
+      // Set up ref with postMessage method
+      React.useImperativeHandle(ref, () => ({
+        postMessage: mockPostMessage,
+      }));
+
       return React.createElement(View, { testID: "webview", ...props });
-    },
+    }),
   };
 });
 

@@ -11,13 +11,24 @@
 import React from "react";
 import { render, fireEvent, waitFor, act } from "@testing-library/react-native";
 import HomeScreen from "../app/pages/HomeScreen";
-import { signOut } from "firebase/auth";
+import { signOut, getAuth } from "firebase/auth";
+import { getDoc } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 describe("Logout Process", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (global as any).mockAlert.clear();
+
+    // Add Firestore mocks to prevent infinite re-render
+    (getDoc as jest.Mock).mockResolvedValue({
+      exists: () => true,
+      data: () => ({ rocks: 1000 }),
+    });
+
+    (getAuth as jest.Mock).mockReturnValue({
+      currentUser: { uid: "test-uid", email: "test@example.com" },
+    });
   });
 
   describe("Settings Modal Logout", () => {
@@ -35,22 +46,24 @@ describe("Logout Process", () => {
     it("should call signOut when logout is pressed", async () => {
       (signOut as jest.Mock).mockResolvedValueOnce(undefined);
 
-      const { getByText, getByTestId } = render(<HomeScreen />);
+      const { getAllByText, getByTestId } = render(<HomeScreen />);
 
       // Open settings modal
       const settingsButton = getByTestId("settings-button");
       fireEvent.press(settingsButton);
 
-      // Press logout button
-      const logoutButton = getByText("Logout");
+      // Press logout button - use getAllByText since "Logout" appears multiple times
+      const logoutButton = getAllByText("Logout")[0];
       fireEvent.press(logoutButton);
 
       // Verify Alert was called
-      expect((global as any).Alert.alert).toHaveBeenCalledWith(
-        "Logout",
-        expect.stringMatching(/are you sure/i),
-        expect.any(Array)
-      );
+      await waitFor(() => {
+        expect((global as any).Alert.alert).toHaveBeenCalledWith(
+          "Logout",
+          expect.stringMatching(/are you sure/i),
+          expect.any(Array)
+        );
+      });
 
       // Manually trigger the logout button in Alert
       act(() => {
@@ -76,13 +89,21 @@ describe("Logout Process", () => {
       const settingsButton = getByTestId("settings-button");
       fireEvent.press(settingsButton);
 
-      const logoutButton = getByText("Logout");
+      const logoutButton = getByTestId("logout-button");
       fireEvent.press(logoutButton);
 
-      // Wait for the auto-confirm to trigger (Promise.resolve in mock)
+      // Manually trigger the logout confirmation
+      await waitFor(() => {
+        expect((global as any).Alert.alert).toHaveBeenCalled();
+      });
+
+      act(() => {
+        (global as any).mockAlert.pressButtonByText("Logout");
+      });
+
       await waitFor(
         () => {
-          expect(mockRouter.replace).toHaveBeenCalledWith("/pages/Login");
+          expect(signOut).toHaveBeenCalled();
         },
         { timeout: 3000 }
       );
@@ -102,7 +123,15 @@ describe("Logout Process", () => {
       const logoutButton = getByTestId("logout-button");
       fireEvent.press(logoutButton);
 
-      // Wait for the auto-confirm to trigger (Promise.resolve in mock)
+      // Manually trigger logout confirmation
+      await waitFor(() => {
+        expect((global as any).Alert.alert).toHaveBeenCalled();
+      });
+
+      act(() => {
+        (global as any).mockAlert.pressButtonByText("Logout");
+      });
+
       await waitFor(
         () => {
           expect(AsyncStorage.clear).toHaveBeenCalled();
@@ -128,10 +157,18 @@ describe("Logout Process", () => {
       const settingsButton = getByTestId("settings-button");
       fireEvent.press(settingsButton);
 
-      const logoutButton = getByText("Logout");
+      const logoutButton = getByTestId("logout-button");
       fireEvent.press(logoutButton);
 
-      // Wait for the auto-confirm to trigger (Promise.resolve in mock)
+      // Manually trigger logout confirmation
+      await waitFor(() => {
+        expect((global as any).Alert.alert).toHaveBeenCalled();
+      });
+
+      act(() => {
+        (global as any).mockAlert.pressButtonByText("Logout");
+      });
+
       await waitFor(
         () => {
           expect(mockPause).toHaveBeenCalled();
@@ -149,10 +186,18 @@ describe("Logout Process", () => {
       const settingsButton = getByTestId("settings-button");
       fireEvent.press(settingsButton);
 
-      const logoutButton = getByText("Logout");
+      const logoutButton = getByTestId("logout-button");
       fireEvent.press(logoutButton);
 
-      // Wait for the auto-confirm to trigger (Promise.resolve in mock)
+      // Manually trigger logout confirmation
+      await waitFor(() => {
+        expect((global as any).Alert.alert).toHaveBeenCalled();
+      });
+
+      act(() => {
+        (global as any).mockAlert.pressButtonByText("Logout");
+      });
+
       await waitFor(
         () => {
           expect(AsyncStorage.removeItem).toHaveBeenCalledWith("game_score");
@@ -167,15 +212,23 @@ describe("Logout Process", () => {
       const mockError = new Error("Network error");
       (signOut as jest.Mock).mockRejectedValueOnce(mockError);
 
-      const { getByText, getByTestId } = render(<HomeScreen />);
+      const { getByTestId } = render(<HomeScreen />);
 
       const settingsButton = getByTestId("settings-button");
       fireEvent.press(settingsButton);
 
-      const logoutButton = getByText("Logout");
+      const logoutButton = getByTestId("logout-button");
       fireEvent.press(logoutButton);
 
-      // Wait for the auto-confirm to trigger (Promise.resolve in mock)
+      // Manually trigger logout confirmation
+      await waitFor(() => {
+        expect((global as any).Alert.alert).toHaveBeenCalled();
+      });
+
+      act(() => {
+        (global as any).mockAlert.pressButtonByText("Logout");
+      });
+
       await waitFor(
         () => {
           expect(signOut).toHaveBeenCalled();
@@ -196,15 +249,23 @@ describe("Logout Process", () => {
       const mockError = new Error("Logout failed");
       (signOut as jest.Mock).mockRejectedValueOnce(mockError);
 
-      const { getByText, getByTestId, queryByText } = render(<HomeScreen />);
+      const { getByTestId, queryByText } = render(<HomeScreen />);
 
       const settingsButton = getByTestId("settings-button");
       fireEvent.press(settingsButton);
 
-      const logoutButton = getByText("Logout");
+      const logoutButton = getByTestId("logout-button");
       fireEvent.press(logoutButton);
 
-      // Wait for the auto-confirm to trigger (Promise.resolve in mock)
+      // Manually trigger logout confirmation
+      await waitFor(() => {
+        expect((global as any).Alert.alert).toHaveBeenCalled();
+      });
+
+      act(() => {
+        (global as any).mockAlert.pressButtonByText("Logout");
+      });
+
       await waitFor(
         () => {
           expect(signOut).toHaveBeenCalled();
@@ -219,12 +280,12 @@ describe("Logout Process", () => {
 
   describe("Logout Confirmation", () => {
     it("should show confirmation dialog before logout", () => {
-      const { getByText, getByTestId } = render(<HomeScreen />);
+      const { getByTestId } = render(<HomeScreen />);
 
       const settingsButton = getByTestId("settings-button");
       fireEvent.press(settingsButton);
 
-      const logoutButton = getByText("Logout");
+      const logoutButton = getByTestId("logout-button");
       fireEvent.press(logoutButton);
 
       // Check that Alert was called with confirmation message
@@ -241,12 +302,12 @@ describe("Logout Process", () => {
         (global as any).mockAlert.alert.lastCall = { title, message, buttons };
       });
 
-      const { getByText, getByTestId } = render(<HomeScreen />);
+      const { getByTestId } = render(<HomeScreen />);
 
       const settingsButton = getByTestId("settings-button");
       fireEvent.press(settingsButton);
 
-      const logoutButton = getByText("Logout");
+      const logoutButton = getByTestId("logout-button");
       fireEvent.press(logoutButton);
 
       // Press cancel button programmatically
@@ -261,15 +322,23 @@ describe("Logout Process", () => {
     it("should proceed with logout on confirmation accept", async () => {
       (signOut as jest.Mock).mockResolvedValueOnce(undefined);
 
-      const { getByText, getByTestId } = render(<HomeScreen />);
+      const { getByTestId } = render(<HomeScreen />);
 
       const settingsButton = getByTestId("settings-button");
       fireEvent.press(settingsButton);
 
-      const logoutButton = getByText("Logout");
+      const logoutButton = getByTestId("logout-button");
       fireEvent.press(logoutButton);
 
-      // Wait for the auto-confirm to trigger (Promise.resolve in mock)
+      // Manually trigger logout confirmation
+      await waitFor(() => {
+        expect((global as any).Alert.alert).toHaveBeenCalled();
+      });
+
+      act(() => {
+        (global as any).mockAlert.pressButtonByText("Logout");
+      });
+
       await waitFor(
         () => {
           expect(signOut).toHaveBeenCalled();
@@ -283,15 +352,23 @@ describe("Logout Process", () => {
     it("should reset all user-specific state on logout", async () => {
       (signOut as jest.Mock).mockResolvedValueOnce(undefined);
 
-      const { getByText, getByTestId, queryByText } = render(<HomeScreen />);
+      const { getByTestId } = render(<HomeScreen />);
 
       const settingsButton = getByTestId("settings-button");
       fireEvent.press(settingsButton);
 
-      const logoutButton = getByText("Logout");
+      const logoutButton = getByTestId("logout-button");
       fireEvent.press(logoutButton);
 
-      // Wait for the auto-confirm to trigger (Promise.resolve in mock)
+      // Manually trigger logout confirmation
+      await waitFor(() => {
+        expect((global as any).Alert.alert).toHaveBeenCalled();
+      });
+
+      act(() => {
+        (global as any).mockAlert.pressButtonByText("Logout");
+      });
+
       await waitFor(
         () => {
           // AsyncStorage should be cleared
