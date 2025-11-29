@@ -74,17 +74,17 @@ export default function Login() {
   const [signUpLoading, setSignUpLoading] = useState(false);
 
   useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (user) => {
-    if (user && user.emailVerified) {
-      // User is signed in and verified - go straight to home
-      console.log("Auto-login: User already authenticated:", user.email);
-      setCurrentScreen("homeScreen");
-    }
-  });
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user && user.emailVerified) {
+        // User is signed in and verified - go straight to home
+        console.log("Auto-login: User already authenticated:", user.email);
+        setCurrentScreen("homeScreen");
+      }
+    });
 
-  // Cleanup subscription
-  return () => unsubscribe();
-}, []);
+    // Cleanup subscription
+    return () => unsubscribe();
+  }, []);
 
   const handleLogin = () => {
     // Normalize inputs to make bypass resilient to whitespace/casing
@@ -167,7 +167,7 @@ export default function Login() {
   const handleLanguageSubmit = (language: string) => {
     // For future use - currently not stored
     setCurrentScreen("signUpBirthdate");
-  }
+  };
 
   const handleBirthdateSubmit = (birthdate: string) => {
     setSignUpData({ ...signUpData, birthdate });
@@ -337,10 +337,10 @@ export default function Login() {
   // Render sign up flow screens
   if (currentScreen === "signUpLanguage") {
     return (
-      <SignUpLanguage 
+      <SignUpLanguage
         onSubmit={handleLanguageSubmit}
         onBack={handleBackToLoginFromSignUp}
-        />
+      />
     );
   }
 
@@ -388,7 +388,6 @@ export default function Login() {
       />
     );
   }
-
 
   if (currentScreen === "signUpCreatePassword") {
     return (
@@ -491,7 +490,9 @@ export default function Login() {
             <TouchableOpacity onPress={handleSignUp} className="my-2">
               <Text className="font-madimi text-sm text-white drop-shadow-md">
                 {t("Login.noAccount")}{" "}
-                <Text className="font-semibold text-yellow-300">{t("Login.signUp")}</Text>
+                <Text className="font-semibold text-yellow-300">
+                  {t("Login.signUp")}
+                </Text>
               </Text>
             </TouchableOpacity>
 
@@ -534,7 +535,7 @@ export default function Login() {
           </View>
         </View>
       </View>
-    </View>
+      r
     </TouchableWithoutFeedback>
   );
 }
