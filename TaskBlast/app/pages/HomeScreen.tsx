@@ -13,7 +13,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
 import { getFirestore, doc, getDoc, updateDoc, increment } from "firebase/firestore";
 import { useAudioPlayer } from "expo-audio";
-import { useAudioSettings } from "../context/AudioSettingsContext";
 import MainButton from "../components/MainButton";
 import TaskListModal from "../components/TaskListModal";
 import SettingsModal from "../components/SettingsModal";
@@ -24,7 +23,6 @@ export default function HomeScreen() {
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
   const [rocks, setRocks] = useState<number>(0);
-  const { musicEnabled, setMusicEnabled } = useAudioSettings();
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -58,22 +56,17 @@ export default function HomeScreen() {
     }
   }, []);
 
-  // Load persisted music setting
-  // musicEnabled now comes from context (already persisted)
-
-  // Apply music state whenever player or setting changes
+  // Play background music on mount and loop it
   useEffect(() => {
-    if (!musicPlayer) return;
-    try {
-      if (musicEnabled) {
+    if (musicPlayer) {
+      try {
         musicPlayer.loop = true;
         musicPlayer.play();
-      } else {
-        musicPlayer.pause();
+      } catch (error) {
+        console.warn("Failed to play music on mount:", error);
       }
-    } catch (error) {
-      console.warn("Failed to apply music state:", error);
     }
+
     return () => {
       if (musicPlayer) {
         try {
@@ -83,7 +76,7 @@ export default function HomeScreen() {
         }
       }
     };
-  }, [musicPlayer, musicEnabled]);
+  }, [musicPlayer]);
 
   useEffect(() => {
     loadScore();
@@ -91,7 +84,7 @@ export default function HomeScreen() {
     const handleAppState = (nextState: string) => {
       if (nextState === "active") {
         loadScore();
-        if (musicPlayer && musicEnabled) {
+        if (musicPlayer) {
           try {
             musicPlayer.play();
           } catch (error) {
@@ -119,13 +112,13 @@ export default function HomeScreen() {
         sub.remove();
       }
     };
-  }, [loadScore, musicPlayer, musicEnabled]);
+  }, [loadScore, musicPlayer]);
 
   useFocusEffect(
     useCallback(() => {
       loadScore();
       // Resume music when screen comes into focus
-      if (musicPlayer && musicEnabled) {
+      if (musicPlayer) {
         try {
           musicPlayer.play();
         } catch (error) {
@@ -142,24 +135,8 @@ export default function HomeScreen() {
           }
         }
       };
-    }, [loadScore, musicPlayer, musicEnabled])
+    }, [loadScore, musicPlayer])
   );
-
-  const handleMusicToggle = (value: boolean) => {
-    setMusicEnabled(value);
-    if (musicPlayer) {
-      try {
-        if (value) {
-          musicPlayer.loop = true;
-          musicPlayer.play();
-        } else {
-          musicPlayer.pause();
-        }
-      } catch (error) {
-        console.warn("Music toggle playback error", error);
-      }
-    }
-  };
 
   return (
     <View className="flex-1">
@@ -263,8 +240,6 @@ export default function HomeScreen() {
         <SettingsModal
           visible={isSettingsModalVisible}
           onClose={() => setIsSettingsModalVisible(false)}
-          musicEnabled={musicEnabled}
-          onMusicToggle={handleMusicToggle}
         />
       </View>
     </View>

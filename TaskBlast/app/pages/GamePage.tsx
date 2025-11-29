@@ -11,7 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, updateDoc, increment, runTransaction, getDoc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc, increment } from "firebase/firestore";
 
 let WebView: any = null;
 try {
@@ -43,37 +43,11 @@ export default function GamePage() {
 
       const db = getFirestore();
       const userRef = doc(db, "users", user.uid);
-
-      // add rocks and update all-time rocks atomically
-      // Atomically compute the new allTimeRocks and append it to the array (allow duplicates)
-      await runTransaction(db, async (tx) => {
-        const snap = await tx.get(userRef);
-        const data = snap.exists() ? snap.data() : {} as any;
-        const currentTotal = Number(data.allTimeRocks ?? 0);
-        const newTotal = currentTotal + Math.max(0, Math.floor(score));
-        const arr = Array.isArray(data.allTimeRocksArr) ? [...data.allTimeRocksArr] : [];
-        arr.push(newTotal);
-
-        tx.update(userRef, {
-          rocks: increment(score),
-          allTimeRocks: increment(score),
-          allTimeRocksArr: arr,
-        });
+      
+      // Add the score to the user's rocks
+      await updateDoc(userRef, {
+        rocks: increment(score)
       });
-
-      // Also record play session duration (minutes) for stats, allowing duplicates
-      try {
-        const minutes = Math.max(0, Math.floor(playTime));
-        const snap = await getDoc(userRef);
-        const current = snap.exists() && Array.isArray(snap.data().playTimeMinutesArr)
-          ? [...snap.data().playTimeMinutesArr]
-          : [];
-        current.push(minutes);
-        await setDoc(userRef, { playTimeMinutesArr: current }, { merge: true });
-        console.log(`Recorded play session: ${minutes} minutes`);
-      } catch (e) {
-        console.warn("Failed to record play session", e);
-      }
       
       console.log(`Added ${score} rocks to user's account`);
     } catch (err) {
