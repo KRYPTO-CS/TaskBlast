@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../components/MainButton";
+import { useTranslation } from "react-i18next";
 
 interface SignUpCreatePasswordProps {
   onSubmit: (password: string) => void;
@@ -23,6 +24,7 @@ export default function SignUpCreatePassword({
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [t, i18n] = useTranslation();
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -30,17 +32,17 @@ export default function SignUpCreatePassword({
     setError("");
 
     if (!password.trim() || !confirmPassword.trim()) {
-      setError("Please fill in all fields");
+      setError(t("birthdate.empty"));
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError(t("Password.match"));
       return;
     }
 
     if (password.length < 8) {
-      setError("Password must be at least 8 characters");
+      setError(t("Password.length"));
       return;
     }
 
@@ -63,11 +65,11 @@ export default function SignUpCreatePassword({
           {/* Create Password Container */}
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
             <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
-              Create a Password
+              {t("Password.title")}
             </Text>
 
             <Text className="font-madimi text-sm text-white/90 mb-8 text-left">
-              Choose a strong password to secure your account
+              {t("Password.desc")}
             </Text>
 
             <View className="mb-4">
@@ -80,7 +82,7 @@ export default function SignUpCreatePassword({
                 />
                 <TextInput
                   className="font-madimi flex-1 text-base text-white"
-                  placeholder="Password"
+                  placeholder={t("Password.passwordPlaceholder")}
                   placeholderTextColor="rgba(255,255,255,0.6)"
                   value={password}
                   onChangeText={setPassword}
@@ -101,7 +103,7 @@ export default function SignUpCreatePassword({
                 />
                 <TextInput
                   className="font-madimi flex-1 text-base text-white"
-                  placeholder="Confirm Password"
+                  placeholder={t("Password.ConfirmPasswordPlaceholder")}
                   placeholderTextColor="rgba(255,255,255,0.6)"
                   value={confirmPassword}
                   onChangeText={setConfirmPassword}
@@ -119,7 +121,7 @@ export default function SignUpCreatePassword({
             ) : null}
 
             <MainButton
-              title="Create Account"
+              title={t("Password.submit")}
               variant="primary"
               size="medium"
               customStyle={{
@@ -137,9 +139,9 @@ export default function SignUpCreatePassword({
               className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
               onPress={onBack}
             >
-              Back to{" "}
+              {t("language.backTo")}
               <Text className="font-semibold text-yellow-300">
-                Previous Step
+                {" "}{t("birthdate.previousStep")}
               </Text>
             </Text>
           </View>

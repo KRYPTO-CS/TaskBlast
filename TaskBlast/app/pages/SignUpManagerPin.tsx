@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../components/MainButton";
+import { useTranslation } from "react-i18next";
 
 interface SignUpManagerPinProps {
   onSubmit: (pin: string | null) => void;
@@ -22,6 +23,7 @@ export default function SignUpManagerPin({
   const [pin, setPin] = useState("");
   const [confirmPin, setConfirmPin] = useState("");
   const [error, setError] = useState("");
+  const [t, i18n] = useTranslation();
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -53,16 +55,15 @@ export default function SignUpManagerPin({
         <View className="flex-1 items-center justify-center p-5">
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
             <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
-              Create a Manager PIN
+              {t("ManagedPIN.title")}
             </Text>
 
             <Text className="font-madimi text-sm text-white/90 mb-6 text-left">
-              This 4-digit PIN lets a parent or guardian manage the account and
-              create tasks for the learner. Keep it secret.
+              {t("ManagedPIN.desc")}
             </Text>
 
             <Text className="font-madimi text-xs text-white/80 mb-2">
-              PIN (4 digits)
+              {t("ManagedPIN.pin")}
             </Text>
             <View className="mb-4">
               <View className="flex-row items-center bg-white/20 border-2 border-white/40 rounded-2xl px-4 h-14 shadow-lg">
@@ -89,7 +90,7 @@ export default function SignUpManagerPin({
             </View>
 
             <Text className="font-madimi text-xs text-white/80 mb-2">
-              Confirm PIN
+              {t("ManagedPIN.confirmPinPlaceholder")}
             </Text>
             <View className="mb-4">
               <View className="flex-row items-center bg-white/20 border-2 border-white/40 rounded-2xl px-4 h-14 shadow-lg">
@@ -101,7 +102,7 @@ export default function SignUpManagerPin({
                 />
                 <TextInput
                   className="font-madimi flex-1 text-base text-white"
-                  placeholder="Confirm PIN"
+                  placeholder={t("ManagedPIN.confirmPinPlaceholder")}
                   placeholderTextColor="rgba(255,255,255,0.5)"
                   value={confirmPin}
                   onChangeText={(t) =>
@@ -122,7 +123,7 @@ export default function SignUpManagerPin({
             ) : null}
 
             <MainButton
-              title="Continue"
+              title={t("ManagedPIN.continue")}
               variant="primary"
               size="medium"
               customStyle={{
