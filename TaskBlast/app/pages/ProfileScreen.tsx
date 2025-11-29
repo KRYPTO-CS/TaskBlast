@@ -1,19 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
-  Image,
   ImageBackground,
   ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { signOut } from "firebase/auth";
+import { auth } from "../../server/firebase";
 import MainButton from "../components/MainButton";
 
 export default function ProfileScreen() {
   const router = useRouter();
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
+
+  const [currentProfileType, setCurrentProfileType] = useState<"parent" | "child">("parent");
+  const [currentChildUsername, setCurrentChildUsername] = useState<string | null>(null);
 
   // Example data - replace with actual user data
   const [userName] = useState("Space Explorer");
@@ -30,10 +35,37 @@ export default function ProfileScreen() {
     "💎 Rock Collector",
   ]);
 
-  const handleLogout = () => {
-    // Add logout logic here
-    console.log("Logging out...");
-    router.push("/pages/Login");
+  // Load current profile on mount
+  useEffect(() => {
+    loadCurrentProfile();
+  }, []);
+
+  const loadCurrentProfile = async () => {
+    const activeChild = await AsyncStorage.getItem("activeChildProfile");
+    if (activeChild) {
+      setCurrentProfileType("child");
+      setCurrentChildUsername(activeChild);
+    } else {
+      setCurrentProfileType("parent");
+      setCurrentChildUsername(null);
+    }
+  };
+
+  const handleSwitchProfile = () => {
+    router.push("/pages/ProfileSelection");
+  };
+
+  const handleLogout = async () => {
+    try {
+      // Clear active profile
+      await AsyncStorage.removeItem("activeChildProfile");
+      // Sign out from Firebase
+      await signOut(auth);
+      // Navigate to login
+      router.push("/pages/Login");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   return (
@@ -61,9 +93,33 @@ export default function ProfileScreen() {
             <Ionicons name="arrow-back" size={24} color="white" />
           </TouchableOpacity>
 
+          {/* Profile Type Badge */}
+          <View className="items-center mt-2 mb-4">
+            <View
+              className="px-4 py-2 rounded-full"
+              style={{
+                backgroundColor:
+                  currentProfileType === "parent"
+                    ? "rgba(59, 130, 246, 0.4)"
+                    : "rgba(168, 85, 247, 0.4)",
+                borderWidth: 1,
+                borderColor:
+                  currentProfileType === "parent"
+                    ? "rgba(96, 165, 250, 0.6)"
+                    : "rgba(192, 132, 252, 0.6)",
+              }}
+            >
+              <Text className="font-orbitron-semibold text-white text-xs">
+                {currentProfileType === "parent"
+                  ? "👤 Parent Account"
+                  : `👶 ${currentChildUsername}`}
+              </Text>
+            </View>
+          </View>
+
           {/* User Name - Centered */}
           <Text
-            className="font-orbitron-semibold text-xl text-white text-center text-3xl mt-8 mb-8"
+            className="font-orbitron-semibold text-xl text-white text-center text-3xl mt-4 mb-8"
             style={{
               textShadowColor: "rgba(147, 51, 234, 0.8)",
               textShadowOffset: { width: 0, height: 0 },
@@ -103,7 +159,6 @@ export default function ProfileScreen() {
                 shadowRadius: 8,
               }}
               onPress={() => {
-                // Add edit profile logic
                 console.log("Edit profile pressed");
               }}
             >
@@ -205,6 +260,26 @@ export default function ProfileScreen() {
                 ))}
               </View>
             </View>
+          </View>
+
+          {/* Add Child Button - NEW */}
+          <View className="items-center mb-4">
+            <MainButton
+            title="Add Child Account"
+            variant="primary"
+            onPress={() => router.push("/pages/CreateChildAccount")}
+            customStyle={{ width: "80%" }}
+            />
+          </View>      
+
+          {/* Switch Profile Button */}
+          <View className="items-center mb-4">
+            <MainButton
+              title="Switch Profile"
+              variant="secondary"
+              onPress={handleSwitchProfile}
+              customStyle={{ width: "80%" }}
+            />
           </View>
 
           {/* Logout Button */}
