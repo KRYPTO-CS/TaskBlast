@@ -211,6 +211,15 @@ export const buttons = {
     justifyContent: 'center' as const,
     ...shadows.small,
   },
+  info: {
+    backgroundColor: '#3b82f6',
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+    borderRadius: borderRadius.md,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+    ...shadows.small,
+  },
   // Size variants
   small: {
     paddingVertical: spacing.sm,
@@ -261,6 +270,12 @@ export const buttonText = {
     fontWeight: fontWeight.semibold,
   },
   warning: {
+    color: colors.text.inverse,
+    fontSize: fontSize.md,
+    fontFamily: fontFamily.orbitron.medium,
+    fontWeight: fontWeight.semibold,
+  },
+  info: {
     color: colors.text.inverse,
     fontSize: fontSize.md,
     fontFamily: fontFamily.orbitron.medium,

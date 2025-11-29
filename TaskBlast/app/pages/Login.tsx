@@ -30,7 +30,8 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   updateProfile,
-  sendEmailVerification
+  sendEmailVerification,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { useTranslation } from "react-i18next";
 
@@ -71,6 +72,19 @@ export default function Login() {
     managerialPin: null as string | null,
   });
   const [signUpLoading, setSignUpLoading] = useState(false);
+
+  useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
+    if (user && user.emailVerified) {
+      // User is signed in and verified - go straight to home
+      console.log("Auto-login: User already authenticated:", user.email);
+      setCurrentScreen("homeScreen");
+    }
+  });
+
+  // Cleanup subscription
+  return () => unsubscribe();
+}, []);
 
   const handleLogin = () => {
     // Normalize inputs to make bypass resilient to whitespace/casing
@@ -520,6 +534,7 @@ export default function Login() {
           </View>
         </View>
       </View>
+    </View>
     </TouchableWithoutFeedback>
   );
 }

@@ -19,7 +19,8 @@ type ButtonVariant =
   | "ghost"
   | "success"
   | "error"
-  | "warning";
+  | "warning"
+  | "info";
 type ButtonSize = "small" | "medium" | "large";
 
 interface MainButtonProps extends TouchableOpacityProps {
@@ -79,6 +80,7 @@ export default function MainButton({
       success: "#25a25a", // Darker green
       error: "#c0392b", // Darker red
       warning: "#d68910", // Darker orange
+      info: "#2563eb", // Darker blue
     };
     return colorMap[variant];
   };

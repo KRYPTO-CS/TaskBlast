@@ -9,17 +9,12 @@ It is important to configure our Firebase security rules as time goes on to prot
 
 */
 
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-//import { getAnalytics } from "firebase/analytics";
-import { getAuth, initializeAuth, type Auth } from "firebase/auth";
+import { initializeAuth, getReactNativePersistence } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 import { getFirestore } from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyAJ5Ftr3TNWIgC6UTWNqiJAz77iYBg2Hpg",
   authDomain: "krypto-project-e3a46.firebaseapp.com",
@@ -33,30 +28,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-//const analytics = getAnalytics(app);
 
-let auth: Auth;
-try {
-  const AsyncStorage = require('@react-native-async-storage/async-storage').default;
+// Initialize Auth with AsyncStorage persistence
+export const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage)
+});
 
-  let getRNPersistence: any = undefined;
-  try {
-    getRNPersistence = require('firebase/auth/react-native').getReactNativePersistence;
-  } catch (e) {
-    getRNPersistence = undefined;
-  }
-
-  if (AsyncStorage && getRNPersistence) {
-    auth = initializeAuth(app, {
-      persistence: getRNPersistence(AsyncStorage),
-    });
-  } else {
-    auth = getAuth(app);
-  }
-} catch (e) {
-  auth = getAuth(app);
-}
-
-export { auth };
 export const db = getDatabase(app);
 export const firestore = getFirestore(app);
