@@ -13,8 +13,9 @@ import {
 import { useRouter, useLocalSearchParams } from "expo-router";
 import MainButton from "../components/MainButton";
 import { useAudioPlayer } from "expo-audio";
+import { useAudioSettings } from "../context/AudioSettingsContext";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, updateDoc, increment, getDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc, increment, getDoc, arrayUnion, setDoc } from "firebase/firestore";
 
 export default function PomodoroScreen() {
   const router = useRouter();
@@ -40,6 +41,7 @@ export default function PomodoroScreen() {
   const backgroundTime = useRef<number | null>(null);
   const tapCount = useRef(0);
   const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hasRecordedRef = useRef(false);
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -95,7 +97,8 @@ export default function PomodoroScreen() {
     outputRange: [0, windowHeight],
   });
 
-  // Music state
+  // Music state via global settings
+  const { musicEnabled } = useAudioSettings();
   const player = useAudioPlayer(require("../../assets/music/pomodoroLoop.mp3"));
 
   // Player floating animation
@@ -130,18 +133,19 @@ export default function PomodoroScreen() {
     return () => floatLoop.stop();
   }, [floatAnim]);
 
-  // Play music on mount
+  // Apply music preference
   useEffect(() => {
+    if (!player) return;
     try {
-      player.play();
+      if (musicEnabled && !isPaused) {
+        player.play();
+      } else {
+        player.pause();
+      }
     } catch (error) {
-      console.warn("Failed to play music:", error);
+      console.warn("Failed to apply pomodoro music state:", error);
     }
-    return () => {
-      // Cleanup is handled by expo-audio automatically
-      // Don't manually pause/seek in cleanup to avoid stale reference issues
-    };
-  }, []);
+  }, [player, musicEnabled, isPaused]);
 
   // Function to increment completedCycles in database
   const incrementCompletedCycles = async () => {
@@ -185,6 +189,30 @@ export default function PomodoroScreen() {
     }
   };
 
+  // Record completed work session minutes to user profile for stats
+  const recordWorkSession = async (minutes: number) => {
+    try {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const db = getFirestore();
+      const userRef = doc(db, "users", user.uid);
+      const value = Math.max(0, Math.floor(minutes));
+
+      // arrayUnion de-duplicates identical primitives; to allow repeated values, manually append
+      const snap = await getDoc(userRef);
+      const current = snap.exists() && Array.isArray(snap.data().workTimeMinutesArr)
+        ? [...snap.data().workTimeMinutesArr]
+        : [];
+      current.push(value);
+      await setDoc(userRef, { workTimeMinutesArr: current }, { merge: true });
+      console.log(`Recorded work session: ${minutes} minutes`);
+    } catch (err) {
+      console.warn("Failed to record work session", err);
+    }
+  };
+
   // Timer logic
   useEffect(() => {
     let interval: ReturnType<typeof setInterval> | null = null;
@@ -201,8 +229,14 @@ export default function PomodoroScreen() {
               console.warn("Audio player error on timer finish:", e);
             }
             setFinished(true);
-            // Increment completed cycles
-            incrementCompletedCycles();
+            // Guard: only record once per finished cycle
+            if (!hasRecordedRef.current) {
+              hasRecordedRef.current = true;
+              // Increment completed cycles
+              incrementCompletedCycles();
+              // Record this work session (in minutes)
+              recordWorkSession(workTime);
+            }
             return 0;
           }
           return prev - 1;
@@ -248,7 +282,7 @@ export default function PomodoroScreen() {
           backgroundTime.current = null;
         }
         // Resume music when app becomes active, but only if timer is not paused
-        if (!isPaused) {
+        if (!isPaused && musicEnabled) {
           try {
             player.play();
           } catch (e) {
@@ -276,7 +310,7 @@ export default function PomodoroScreen() {
     try {
       if (!isPaused) {
         player.pause();
-      } else {
+      } else if (musicEnabled) {
         player.play();
       }
     } catch (e) {
@@ -318,8 +352,9 @@ export default function PomodoroScreen() {
     setIsPaused(false);
     setFinished(false);
     setHasPlayedGame(false);
+    hasRecordedRef.current = false;
     try {
-      player.play();
+      if (musicEnabled) player.play();
     } catch (e) {
       console.warn("Audio player error on resume:", e);
     }
