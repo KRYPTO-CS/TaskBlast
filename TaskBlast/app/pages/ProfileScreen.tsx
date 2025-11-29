@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,9 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import MainButton from "../components/MainButton";
+import { WebView } from "react-native-webview";
+import { getAuth } from "firebase/auth";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 import EditProfileModal from "../components/EditProfileModal";
 import TraitsModal from "../components/TraitsModal";
 import { updateProfilePicture } from "../../server/storageUtils";
@@ -31,6 +34,16 @@ export default function ProfileScreen() {
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isTraitsModalVisible, setIsTraitsModalVisible] = useState(false);
+
+  // Stats state
+  const [statsValues, setStatsValues] = useState<number[]>([]);
+  const [statsLabels, setStatsLabels] = useState<string[]>([]);
+  const [workTimes, setWorkTimes] = useState<number[]>([]);
+  const [workLabels, setWorkLabels] = useState<string[]>([]);
+  const [playTimes, setPlayTimes] = useState<number[]>([]);
+  const [playLabels, setPlayLabels] = useState<string[]>([]);
+  const [totalRocksAllTime, setTotalRocksAllTime] = useState<number>(0);
+  const [currentRocks, setCurrentRocks] = useState<number>(0);
 
   // Load user profile on component mount
   useEffect(() => {
@@ -67,7 +80,165 @@ export default function ProfileScreen() {
     };
 
     loadUserProfile();
+    loadAllTimeStats();
   }, []);
+
+  const loadAllTimeStats = useCallback(async () => {
+    try {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (!user) return;
+      const db = getFirestore();
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (userDoc.exists()) {
+        const data = userDoc.data();
+        const rocksArr: number[] = data.allTimeRocksArr || [];
+        const wtArr: number[] = data.workTimeMinutesArr || [];
+        const ptArr: number[] = data.playTimeMinutesArr || [];
+        const totalAllTime = Number(data.allTimeRocks ?? 0);
+        setTotalRocksAllTime(Number.isNaN(totalAllTime) ? 0 : totalAllTime);
+        setCurrentRocks(Number.isNaN(data.rocks) ? 0 : Math.max(0, Math.floor(data.rocks)));
+        setStatsLabels(rocksArr.map((_, i) => `#${i + 1}`));
+        setWorkLabels(wtArr.map((_, i) => `#${i + 1}`));
+        setPlayLabels(ptArr.map((_, i) => `#${i + 1}`));
+        setStatsValues(rocksArr);
+        setWorkTimes(wtArr);
+        setPlayTimes(ptArr);
+      }
+    } catch (e) {
+      console.warn("Failed to load stats", e);
+    }
+  }, []);
+
+  // Chart template helpers
+  const totalRocksChart = (labels: string[], values: number[]) => `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { margin:0; padding:0; background:transparent; font-family:'Orbitron',sans-serif; color:#fff; }
+    .wrap { padding:2%; border:4px solid rgba(85,247,104,0.5); border-radius:40px; height:100%; box-sizing:border-box; }
+    canvas { width:100%!important; height:100%!important; }
+  </style>
+ </head>
+ <body>
+  <div class="wrap">
+    <canvas id="c"></canvas>
+  </div>
+  <script>
+    const labels = ${JSON.stringify(labels)};
+    const values = ${JSON.stringify(values)};
+    const ctx = document.getElementById('c').getContext('2d');
+    const gradient = ctx.createLinearGradient(0,0,0,300);
+    gradient.addColorStop(0,'rgba(59,246,112,0.35)');
+    gradient.addColorStop(1,'rgba(59,246,112,0.05)');
+    // Global font defaults (restore original appearance)
+    Chart.defaults.font.family = 'Orbitron';
+    Chart.defaults.font.size = 12;
+    Chart.defaults.color = '#e5e7eb';
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            data: values,
+            borderColor: 'rgba(59,246,112,1)',
+            backgroundColor: gradient,
+            borderWidth: 4,
+            tension: 0.35,
+            pointRadius: 5,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: 'Total Rocks Over Time', color: '#fff', font: { family:'Orbitron', size: 22, weight: '700' } },
+          tooltip: { titleFont:{family:'Orbitron', size:14, weight:'600'}, bodyFont:{family:'Orbitron', size:13} }
+        },
+        scales: {
+          y: { beginAtZero: true, ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: 'Rocks', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } },
+          x: { ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: 'Attempt #', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } }
+        }
+      }
+    });
+  </script>
+ </body>
+</html>
+`.trim();
+
+  const cumulativeChart = (title: string, yLabel: string, labels: string[], values: number[]) => {
+    const cumulative = values.map((v, i) => values.slice(0, i + 1).reduce((a, b) => a + b, 0));
+    return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { margin:0; padding:0; background:transparent; font-family:'Orbitron',sans-serif; color:#fff; }
+    .wrap { padding:2%; border:4px solid rgba(85,247,104,0.5); border-radius:40px; height:100%; box-sizing:border-box; }
+    canvas { width:100%!important; height:100%!important; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <canvas id="c"></canvas>
+  </div>
+  <script>
+    const labels = ${JSON.stringify(labels)};
+    const cumulative = ${JSON.stringify(cumulative)};
+    const ctx = document.getElementById('c').getContext('2d');
+    const gradient = ctx.createLinearGradient(0,0,0,300);
+    gradient.addColorStop(0,'rgba(59,246,112,0.35)');
+    gradient.addColorStop(1,'rgba(59,246,112,0.05)');
+    // Global font defaults (restore original appearance)
+    Chart.defaults.font.family = 'Orbitron';
+    Chart.defaults.font.size = 12;
+    Chart.defaults.color = '#e5e7eb';
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            data: cumulative,
+            borderColor: 'rgba(59,246,112,1)',
+            backgroundColor: gradient,
+            borderWidth: 4,
+            tension: 0.35,
+            pointRadius: 5,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: '${title}', color: '#fff', font: { family:'Orbitron', size: 22, weight: '700' } },
+          tooltip: { titleFont:{family:'Orbitron', size:14, weight:'600'}, bodyFont:{family:'Orbitron', size:13} }
+        },
+        scales: {
+          y: { beginAtZero: true, ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: '${yLabel}', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } },
+          x: { ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: 'Cycle #', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+`.trim();
+  };
 
   const handleLogout = () => {
     // Add logout logic here
@@ -315,6 +486,54 @@ export default function ProfileScreen() {
                     </Text>
                   </View>
                 ))}
+              </View>
+            </View>
+          </View>
+
+          {/* Analytics Container */}
+          <View className="mb-8">
+            <Text className="font-orbitron-semibold text-xl text-white mb-4" style={{ textShadowColor: "rgba(59,246,112,0.6)", textShadowOffset:{width:0,height:0}, textShadowRadius:10 }}>Your Stats</Text>
+            <View className="p-4 rounded-2xl" style={{ backgroundColor:"rgba(30,138,43,0.30)", borderWidth:2, borderColor:"rgba(59,246,112,0.35)", shadowColor:"#3bf670", shadowOffset:{width:0,height:6}, shadowOpacity:0.35, shadowRadius:12 }}>
+              {/* Total Rocks */}
+              <View className="px-4 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
+                <Text className="font-orbitron-semibold text-white">Total Rocks Earned: {totalRocksAllTime}</Text>
+              </View>
+              {/* Rocks Spent */}
+              <View className="px-4 py-2 rounded-full mt-2" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
+                <Text className="font-orbitron-semibold text-white">Total Rocks Spent: {Math.max(0, totalRocksAllTime - currentRocks)}</Text>
+              </View>
+              {/* Rocks Chart */}
+              <View style={{ height:200, borderRadius:16, overflow:"hidden", marginTop:16, marginBottom:16 }}>
+                {statsValues.length ? (
+                  <WebView originWhitelist={["*"]} source={{ html: totalRocksChart(statsLabels, statsValues) }} scrollEnabled={false} style={{ backgroundColor:"transparent" }} />
+                ) : (<Text className="text-white">No rock stats yet.</Text>)}
+              </View>
+              {/* Work Time Chart */}
+              <View style={{ height:200, borderRadius:16, overflow:"hidden", marginTop:8, marginBottom:16 }}>
+                {workTimes.length ? (
+                  <WebView originWhitelist={["*"]} source={{ html: cumulativeChart("Cumulative Work Time", "Minutes", workLabels, workTimes) }} scrollEnabled={false} style={{ backgroundColor:"transparent" }} />
+                ) : (<Text className="text-white">No work sessions yet.</Text>)}
+              </View>
+              {/* Play Time Chart */}
+              <View style={{ height:200, borderRadius:16, overflow:"hidden", marginTop:8, marginBottom:16 }}>
+                {playTimes.length ? (
+                  <WebView originWhitelist={["*"]} source={{ html: cumulativeChart("Cumulative Play Time", "Minutes", playLabels, playTimes) }} scrollEnabled={false} style={{ backgroundColor:"transparent" }} />
+                ) : (<Text className="text-white">No play sessions yet.</Text>)}
+              </View>
+              {/* Averages */}
+              <View className="flex-row flex-wrap gap-2 mt-2">
+                <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
+                  <Text className="font-orbitron-semibold text-white text-xs">Avg Work Cycle Length: {workTimes.length ? Math.round(workTimes.reduce((a,b)=>a+b,0)/workTimes.length) : 0}m</Text>
+                </View>
+                <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
+                  <Text className="font-orbitron-semibold text-white text-xs">Avg Play Cycle Length: {playTimes.length ? Math.round(playTimes.reduce((a,b)=>a+b,0)/playTimes.length) : 0}m</Text>
+                </View>
+                <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
+                  <Text className="font-orbitron-semibold text-white text-xs">Work/Play Ratio: {playTimes.length && workTimes.length ? ((workTimes.reduce((a,b)=>a+b,0)/workTimes.length)/(playTimes.reduce((a,b)=>a+b,0)/playTimes.length)).toFixed(2) : 0}</Text>
+                </View>
+                <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
+                  <Text className="font-orbitron-semibold text-white text-xs">Total Time Spent on Tasks: {(() => { const t = workTimes.reduce((a,b)=>a+b,0)+playTimes.reduce((a,b)=>a+b,0); return `${(t/60).toFixed(1)}h`; })()}</Text>
+                </View>
               </View>
             </View>
           </View>
