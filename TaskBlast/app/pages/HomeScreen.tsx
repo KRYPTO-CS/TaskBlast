@@ -11,15 +11,23 @@ import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, getDoc, updateDoc, increment } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  updateDoc,
+  increment,
+} from "firebase/firestore";
 import { useAudioPlayer } from "expo-audio";
 import MainButton from "../components/MainButton";
 import TaskListModal from "../components/TaskListModal";
 import SettingsModal from "../components/SettingsModal";
 import { useRouter } from "expo-router";
+import { useAudio } from "../context/AudioContext";
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { musicEnabled } = useAudio();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
   const [rocks, setRocks] = useState<number>(0);
@@ -42,7 +50,7 @@ export default function HomeScreen() {
 
       const db = getFirestore();
       const userDoc = await getDoc(doc(db, "users", user.uid));
-      
+
       if (userDoc.exists()) {
         const userData = userDoc.data();
         const rocksValue = userData.rocks || 0;
@@ -58,12 +66,18 @@ export default function HomeScreen() {
 
   // Play background music on mount and loop it
   useEffect(() => {
-    if (musicPlayer) {
+    if (musicPlayer && musicEnabled) {
       try {
         musicPlayer.loop = true;
         musicPlayer.play();
       } catch (error) {
         console.warn("Failed to play music on mount:", error);
+      }
+    } else if (musicPlayer && !musicEnabled) {
+      try {
+        musicPlayer.pause();
+      } catch (error) {
+        console.warn("Failed to pause music:", error);
       }
     }
 
@@ -76,7 +90,7 @@ export default function HomeScreen() {
         }
       }
     };
-  }, [musicPlayer]);
+  }, [musicPlayer, musicEnabled]);
 
   useEffect(() => {
     loadScore();
@@ -84,7 +98,7 @@ export default function HomeScreen() {
     const handleAppState = (nextState: string) => {
       if (nextState === "active") {
         loadScore();
-        if (musicPlayer) {
+        if (musicPlayer && musicEnabled) {
           try {
             musicPlayer.play();
           } catch (error) {
@@ -112,13 +126,13 @@ export default function HomeScreen() {
         sub.remove();
       }
     };
-  }, [loadScore, musicPlayer]);
+  }, [loadScore, musicPlayer, musicEnabled]);
 
   useFocusEffect(
     useCallback(() => {
       loadScore();
       // Resume music when screen comes into focus
-      if (musicPlayer) {
+      if (musicPlayer && musicEnabled) {
         try {
           musicPlayer.play();
         } catch (error) {
@@ -135,7 +149,7 @@ export default function HomeScreen() {
           }
         }
       };
-    }, [loadScore, musicPlayer])
+    }, [loadScore, musicPlayer, musicEnabled])
   );
 
   return (

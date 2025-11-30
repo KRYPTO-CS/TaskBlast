@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   ImageBackground,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -12,6 +13,17 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signOut } from "firebase/auth";
 import { auth } from "../../server/firebase";
 import MainButton from "../components/MainButton";
+import { WebView } from "react-native-webview";
+import { getAuth } from "firebase/auth";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import EditProfileModal from "../components/EditProfileModal";
+import TraitsModal from "../components/TraitsModal";
+import { updateProfilePicture } from "../../server/storageUtils";
+import {
+  getUserProfile,
+  updateUserProfilePicture,
+  type UserProfile,
+} from "../../server/userProfileUtils";
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -20,20 +32,217 @@ export default function ProfileScreen() {
   const [currentProfileType, setCurrentProfileType] = useState<"parent" | "child">("parent");
   const [currentChildUsername, setCurrentChildUsername] = useState<string | null>(null);
 
-  // Example data - replace with actual user data
-  const [userName] = useState("Space Explorer");
-  const [userTraits] = useState([
-    "Focused",
-    "Persistent",
-    "Creative",
-    "Goal-Oriented",
-  ]);
-  const [userAwards] = useState([
-    "🏆 First Mission",
-    "⭐ 10 Tasks Complete",
-    "🚀 Speed Runner",
-    "💎 Rock Collector",
-  ]);
+  // User data state
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [isTraitsModalVisible, setIsTraitsModalVisible] = useState(false);
+
+  // Stats state
+  const [statsValues, setStatsValues] = useState<number[]>([]);
+  const [statsLabels, setStatsLabels] = useState<string[]>([]);
+  const [workTimes, setWorkTimes] = useState<number[]>([]);
+  const [workLabels, setWorkLabels] = useState<string[]>([]);
+  const [playTimes, setPlayTimes] = useState<number[]>([]);
+  const [playLabels, setPlayLabels] = useState<string[]>([]);
+  const [totalRocksAllTime, setTotalRocksAllTime] = useState<number>(0);
+  const [currentRocks, setCurrentRocks] = useState<number>(0);
+
+  // Load user profile on component mount
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      try {
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+          const profile = await getUserProfile(currentUser.uid);
+          if (profile) {
+            setUserProfile(profile);
+          } else {
+            // Set default profile if none exists
+            setUserProfile({
+              uid: currentUser.uid,
+              firstName: "Space",
+              lastName: "Explorer",
+              displayName: "Space",
+              email: currentUser.email || "",
+              traits: ["Focused", "Persistent", "Creative", "Goal-Oriented"],
+              awards: [
+                "🏆 First Mission",
+                "⭐ 10 Tasks Complete",
+                "🚀 Speed Runner",
+                "💎 Rock Collector",
+              ],
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error loading user profile:", error);
+      } finally {
+        setIsLoadingProfile(false);
+      }
+    };
+
+    loadUserProfile();
+    loadAllTimeStats();
+  }, []);
+
+  const loadAllTimeStats = useCallback(async () => {
+    try {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (!user) return;
+      const db = getFirestore();
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (userDoc.exists()) {
+        const data = userDoc.data();
+        const rocksArr: number[] = data.allTimeRocksArr || [];
+        const wtArr: number[] = data.workTimeMinutesArr || [];
+        const ptArr: number[] = data.playTimeMinutesArr || [];
+        const totalAllTime = Number(data.allTimeRocks ?? 0);
+        setTotalRocksAllTime(Number.isNaN(totalAllTime) ? 0 : totalAllTime);
+        setCurrentRocks(Number.isNaN(data.rocks) ? 0 : Math.max(0, Math.floor(data.rocks)));
+        setStatsLabels(rocksArr.map((_, i) => `#${i + 1}`));
+        setWorkLabels(wtArr.map((_, i) => `#${i + 1}`));
+        setPlayLabels(ptArr.map((_, i) => `#${i + 1}`));
+        setStatsValues(rocksArr);
+        setWorkTimes(wtArr);
+        setPlayTimes(ptArr);
+      }
+    } catch (e) {
+      console.warn("Failed to load stats", e);
+    }
+  }, []);
+
+  // Chart template helpers
+  const totalRocksChart = (labels: string[], values: number[]) => `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { margin:0; padding:0; background:transparent; font-family:'Orbitron',sans-serif; color:#fff; }
+    .wrap { padding:2%; border:4px solid rgba(85,247,104,0.5); border-radius:40px; height:100%; box-sizing:border-box; }
+    canvas { width:100%!important; height:100%!important; }
+  </style>
+ </head>
+ <body>
+  <div class="wrap">
+    <canvas id="c"></canvas>
+  </div>
+  <script>
+    const labels = ${JSON.stringify(labels)};
+    const values = ${JSON.stringify(values)};
+    const ctx = document.getElementById('c').getContext('2d');
+    const gradient = ctx.createLinearGradient(0,0,0,300);
+    gradient.addColorStop(0,'rgba(59,246,112,0.35)');
+    gradient.addColorStop(1,'rgba(59,246,112,0.05)');
+    // Global font defaults (restore original appearance)
+    Chart.defaults.font.family = 'Orbitron';
+    Chart.defaults.font.size = 12;
+    Chart.defaults.color = '#e5e7eb';
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            data: values,
+            borderColor: 'rgba(59,246,112,1)',
+            backgroundColor: gradient,
+            borderWidth: 4,
+            tension: 0.35,
+            pointRadius: 5,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: 'Total Rocks Over Time', color: '#fff', font: { family:'Orbitron', size: 22, weight: '700' } },
+          tooltip: { titleFont:{family:'Orbitron', size:14, weight:'600'}, bodyFont:{family:'Orbitron', size:13} }
+        },
+        scales: {
+          y: { beginAtZero: true, ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: 'Rocks', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } },
+          x: { ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: 'Attempt #', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } }
+        }
+      }
+    });
+  </script>
+ </body>
+</html>
+`.trim();
+
+  const cumulativeChart = (title: string, yLabel: string, labels: string[], values: number[]) => {
+    const cumulative = values.map((v, i) => values.slice(0, i + 1).reduce((a, b) => a + b, 0));
+    return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { margin:0; padding:0; background:transparent; font-family:'Orbitron',sans-serif; color:#fff; }
+    .wrap { padding:2%; border:4px solid rgba(85,247,104,0.5); border-radius:40px; height:100%; box-sizing:border-box; }
+    canvas { width:100%!important; height:100%!important; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <canvas id="c"></canvas>
+  </div>
+  <script>
+    const labels = ${JSON.stringify(labels)};
+    const cumulative = ${JSON.stringify(cumulative)};
+    const ctx = document.getElementById('c').getContext('2d');
+    const gradient = ctx.createLinearGradient(0,0,0,300);
+    gradient.addColorStop(0,'rgba(59,246,112,0.35)');
+    gradient.addColorStop(1,'rgba(59,246,112,0.05)');
+    // Global font defaults (restore original appearance)
+    Chart.defaults.font.family = 'Orbitron';
+    Chart.defaults.font.size = 12;
+    Chart.defaults.color = '#e5e7eb';
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            data: cumulative,
+            borderColor: 'rgba(59,246,112,1)',
+            backgroundColor: gradient,
+            borderWidth: 4,
+            tension: 0.35,
+            pointRadius: 5,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: '${title}', color: '#fff', font: { family:'Orbitron', size: 22, weight: '700' } },
+          tooltip: { titleFont:{family:'Orbitron', size:14, weight:'600'}, bodyFont:{family:'Orbitron', size:13} }
+        },
+        scales: {
+          y: { beginAtZero: true, ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: '${yLabel}', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } },
+          x: { ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: 'Cycle #', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+`.trim();
+  };
 
   // Load current profile on mount
   useEffect(() => {
@@ -66,6 +275,45 @@ export default function ProfileScreen() {
     } catch (error) {
       console.error("Logout error:", error);
     }
+  };
+
+  const handleProfilePicturePress = async () => {
+    if (isUploadingImage || !userProfile) return;
+
+    setIsUploadingImage(true);
+    try {
+      const currentUser = auth.currentUser;
+      if (!currentUser) {
+        alert("You must be logged in to update your profile picture");
+        return;
+      }
+
+      const newImageUrl = await updateProfilePicture(
+        userProfile.profilePicture || undefined
+      );
+
+      if (newImageUrl) {
+        // Save to Firestore
+        await updateUserProfilePicture(currentUser.uid, newImageUrl);
+
+        // Update local state
+        setUserProfile({
+          ...userProfile,
+          profilePicture: newImageUrl,
+        });
+
+        console.log("Profile picture updated successfully!");
+      }
+    } catch (error) {
+      console.error("Error updating profile picture:", error);
+      alert("Failed to update profile picture. Please try again.");
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
+  const handleProfileUpdate = (updatedProfile: UserProfile) => {
+    setUserProfile(updatedProfile);
   };
 
   return (
@@ -126,13 +374,15 @@ export default function ProfileScreen() {
               textShadowRadius: 20,
             }}
           >
-            {userName}
+            {userProfile?.displayName ||
+              userProfile?.firstName ||
+              "Space Explorer"}
           </Text>
 
           {/* Profile Image */}
           <View className="items-center mb-6">
-            <View
-              className="w-32 h-32 rounded-full items-center justify-center"
+            <TouchableOpacity
+              className="w-32 h-32 rounded-full items-center justify-center overflow-hidden"
               style={{
                 backgroundColor: "#7c3aed",
                 shadowColor: "#a855f7",
@@ -140,9 +390,21 @@ export default function ProfileScreen() {
                 shadowOpacity: 0.6,
                 shadowRadius: 16,
               }}
+              onPress={handleProfilePicturePress}
+              disabled={isUploadingImage}
             >
-              <Ionicons name="person" size={64} color="white" />
-            </View>
+              {isUploadingImage ? (
+                <ActivityIndicator size="large" color="white" />
+              ) : userProfile?.profilePicture ? (
+                <Image
+                  source={{ uri: userProfile.profilePicture }}
+                  className="w-full h-full"
+                  resizeMode="cover"
+                />
+              ) : (
+                <Ionicons name="person" size={64} color="white" />
+              )}
+            </TouchableOpacity>
           </View>
 
           {/* Edit Profile Button */}
@@ -159,7 +421,7 @@ export default function ProfileScreen() {
                 shadowRadius: 8,
               }}
               onPress={() => {
-                console.log("Edit profile pressed");
+                setIsEditModalVisible(true);
               }}
             >
               <Ionicons
@@ -176,16 +438,37 @@ export default function ProfileScreen() {
 
           {/* Traits Container */}
           <View className="mb-6">
-            <Text
-              className="font-orbitron-semibold text-xl text-white text-xl mb-4"
-              style={{
-                textShadowColor: "rgba(59, 130, 246, 0.6)",
-                textShadowOffset: { width: 0, height: 0 },
-                textShadowRadius: 10,
-              }}
-            >
-              Traits
-            </Text>
+            <View className="flex-row justify-between items-center mb-4">
+              <Text
+                className="font-orbitron-semibold text-xl text-white"
+                style={{
+                  textShadowColor: "rgba(59, 130, 246, 0.6)",
+                  textShadowOffset: { width: 0, height: 0 },
+                  textShadowRadius: 10,
+                }}
+              >
+                Traits
+              </Text>
+              <TouchableOpacity
+                onPress={() => setIsTraitsModalVisible(true)}
+                className="flex-row items-center px-3 py-2 rounded-full"
+                style={{
+                  backgroundColor: "rgba(59, 130, 246, 0.3)",
+                  borderWidth: 1,
+                  borderColor: "rgba(96, 165, 250, 0.5)",
+                }}
+              >
+                <Ionicons
+                  name="add"
+                  size={16}
+                  color="white"
+                  style={{ marginRight: 4 }}
+                />
+                <Text className="font-orbitron-semibold text-white text-xs">
+                  Edit
+                </Text>
+              </TouchableOpacity>
+            </View>
             <View
               className="p-4 rounded-2xl"
               style={{
@@ -199,7 +482,7 @@ export default function ProfileScreen() {
               }}
             >
               <View className="flex-row flex-wrap gap-2">
-                {userTraits.map((trait, index) => (
+                {userProfile?.traits?.map((trait: string, index: number) => (
                   <View
                     key={index}
                     className="px-4 py-2 rounded-full"
@@ -243,7 +526,7 @@ export default function ProfileScreen() {
               }}
             >
               <View className="flex-row flex-wrap gap-2">
-                {userAwards.map((award, index) => (
+                {userProfile?.awards?.map((award: string, index: number) => (
                   <View
                     key={index}
                     className="px-4 py-2 rounded-full"
@@ -258,6 +541,54 @@ export default function ProfileScreen() {
                     </Text>
                   </View>
                 ))}
+              </View>
+            </View>
+          </View>
+
+          {/* Analytics Container */}
+          <View className="mb-8">
+            <Text className="font-orbitron-semibold text-xl text-white mb-4" style={{ textShadowColor: "rgba(59,246,112,0.6)", textShadowOffset:{width:0,height:0}, textShadowRadius:10 }}>Your Stats</Text>
+            <View className="p-4 rounded-2xl" style={{ backgroundColor:"rgba(30,138,43,0.30)", borderWidth:2, borderColor:"rgba(59,246,112,0.35)", shadowColor:"#3bf670", shadowOffset:{width:0,height:6}, shadowOpacity:0.35, shadowRadius:12 }}>
+              {/* Total Rocks */}
+              <View className="px-4 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
+                <Text className="font-orbitron-semibold text-white">Total Rocks Earned: {totalRocksAllTime}</Text>
+              </View>
+              {/* Rocks Spent */}
+              <View className="px-4 py-2 rounded-full mt-2" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
+                <Text className="font-orbitron-semibold text-white">Total Rocks Spent: {Math.max(0, totalRocksAllTime - currentRocks)}</Text>
+              </View>
+              {/* Rocks Chart */}
+              <View style={{ height:200, borderRadius:16, overflow:"hidden", marginTop:16, marginBottom:16 }}>
+                {statsValues.length ? (
+                  <WebView originWhitelist={["*"]} source={{ html: totalRocksChart(statsLabels, statsValues) }} scrollEnabled={false} style={{ backgroundColor:"transparent" }} />
+                ) : (<Text className="text-white">No rock stats yet.</Text>)}
+              </View>
+              {/* Work Time Chart */}
+              <View style={{ height:200, borderRadius:16, overflow:"hidden", marginTop:8, marginBottom:16 }}>
+                {workTimes.length ? (
+                  <WebView originWhitelist={["*"]} source={{ html: cumulativeChart("Cumulative Work Time", "Minutes", workLabels, workTimes) }} scrollEnabled={false} style={{ backgroundColor:"transparent" }} />
+                ) : (<Text className="text-white">No work sessions yet.</Text>)}
+              </View>
+              {/* Play Time Chart */}
+              <View style={{ height:200, borderRadius:16, overflow:"hidden", marginTop:8, marginBottom:16 }}>
+                {playTimes.length ? (
+                  <WebView originWhitelist={["*"]} source={{ html: cumulativeChart("Cumulative Play Time", "Minutes", playLabels, playTimes) }} scrollEnabled={false} style={{ backgroundColor:"transparent" }} />
+                ) : (<Text className="text-white">No play sessions yet.</Text>)}
+              </View>
+              {/* Averages */}
+              <View className="flex-row flex-wrap gap-2 mt-2">
+                <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
+                  <Text className="font-orbitron-semibold text-white text-xs">Avg Work Cycle Length: {workTimes.length ? Math.round(workTimes.reduce((a,b)=>a+b,0)/workTimes.length) : 0}m</Text>
+                </View>
+                <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
+                  <Text className="font-orbitron-semibold text-white text-xs">Avg Play Cycle Length: {playTimes.length ? Math.round(playTimes.reduce((a,b)=>a+b,0)/playTimes.length) : 0}m</Text>
+                </View>
+                <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
+                  <Text className="font-orbitron-semibold text-white text-xs">Work/Play Ratio: {playTimes.length && workTimes.length ? ((workTimes.reduce((a,b)=>a+b,0)/workTimes.length)/(playTimes.reduce((a,b)=>a+b,0)/playTimes.length)).toFixed(2) : 0}</Text>
+                </View>
+                <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
+                  <Text className="font-orbitron-semibold text-white text-xs">Total Time Spent on Tasks: {(() => { const t = workTimes.reduce((a,b)=>a+b,0)+playTimes.reduce((a,b)=>a+b,0); return `${(t/60).toFixed(1)}h`; })()}</Text>
+                </View>
               </View>
             </View>
           </View>
@@ -293,6 +624,26 @@ export default function ProfileScreen() {
           </View>
         </View>
       </ScrollView>
+
+      {/* Edit Profile Modal */}
+      {userProfile && (
+        <EditProfileModal
+          visible={isEditModalVisible}
+          onClose={() => setIsEditModalVisible(false)}
+          userProfile={userProfile}
+          onProfileUpdate={handleProfileUpdate}
+        />
+      )}
+
+      {/* Traits Modal */}
+      {userProfile && (
+        <TraitsModal
+          visible={isTraitsModalVisible}
+          onClose={() => setIsTraitsModalVisible(false)}
+          userProfile={userProfile}
+          onTraitsUpdate={handleProfileUpdate}
+        />
+      )}
     </View>
   );
 }

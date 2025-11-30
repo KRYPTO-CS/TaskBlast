@@ -181,7 +181,7 @@ export default function Login() {
   const handleLanguageSubmit = (language: string) => {
     // For future use - currently not stored
     setCurrentScreen("signUpBirthdate");
-  }
+  };
 
   const handleBirthdateSubmit = (birthdate: string) => {
     setSignUpData({ ...signUpData, birthdate });
@@ -351,10 +351,10 @@ export default function Login() {
   // Render sign up flow screens
   if (currentScreen === "signUpLanguage") {
     return (
-      <SignUpLanguage 
+      <SignUpLanguage
         onSubmit={handleLanguageSubmit}
         onBack={handleBackToLoginFromSignUp}
-        />
+      />
     );
   }
 
@@ -402,7 +402,6 @@ export default function Login() {
       />
     );
   }
-
 
   if (currentScreen === "signUpCreatePassword") {
     return (
@@ -505,7 +504,9 @@ export default function Login() {
             <TouchableOpacity onPress={handleSignUp} className="my-2">
               <Text className="font-madimi text-sm text-white drop-shadow-md">
                 {t("Login.noAccount")}{" "}
-                <Text className="font-semibold text-yellow-300">{t("Login.signUp")}</Text>
+                <Text className="font-semibold text-yellow-300">
+                  {t("Login.signUp")}
+                </Text>
               </Text>
             </TouchableOpacity>
 

@@ -12,6 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../../server/firebase";
 import { signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAudio } from "../context/AudioContext";
 
 interface SettingsModalProps {
   visible: boolean;
@@ -24,11 +25,21 @@ export default function SettingsModal({
   onClose,
   onLogout,
 }: SettingsModalProps) {
-  // Settings state
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const [musicEnabled, setMusicEnabled] = useState(true);
+  // Get audio context for global audio control
+  const { soundEnabled, musicEnabled, setSoundEnabled, setMusicEnabled } =
+    useAudio();
+
+  // Other settings state
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [darkModeEnabled, setDarkModeEnabled] = useState(false);
+
+  const handleSoundToggle = async (value: boolean) => {
+    await setSoundEnabled(value);
+  };
+
+  const handleMusicToggle = async (value: boolean) => {
+    await setMusicEnabled(value);
+  };
 
   const handleLogout = () => {
     Alert.alert("Logout", "Are you sure you want to logout?", [
@@ -129,7 +140,7 @@ export default function SettingsModal({
               </View>
               <Switch
                 value={soundEnabled}
-                onValueChange={setSoundEnabled}
+                onValueChange={handleSoundToggle}
                 trackColor={{ false: "#334155", true: "#8b5cf6" }}
                 thumbColor={soundEnabled ? "#a855f7" : "#64748b"}
               />
@@ -157,7 +168,7 @@ export default function SettingsModal({
               </View>
               <Switch
                 value={musicEnabled}
-                onValueChange={setMusicEnabled}
+                onValueChange={handleMusicToggle}
                 trackColor={{ false: "#334155", true: "#8b5cf6" }}
                 thumbColor={musicEnabled ? "#a855f7" : "#64748b"}
               />
@@ -191,65 +202,11 @@ export default function SettingsModal({
               />
             </View>
 
-            {/* Dark Mode */}
-            <View
-              className="flex-row justify-between items-center p-4 rounded-xl mb-3"
-              style={{
-                backgroundColor: "rgba(59, 130, 246, 0.2)",
-                borderWidth: 1,
-                borderColor: "rgba(59, 130, 246, 0.3)",
-              }}
-            >
-              <View className="flex-row items-center flex-1">
-                <Ionicons
-                  name="moon"
-                  size={24}
-                  color="#60a5fa"
-                  style={{ marginRight: 12 }}
-                />
-                <Text className="font-orbitron-semibold text-white text-base">
-                  Dark Mode
-                </Text>
-              </View>
-              <Switch
-                value={darkModeEnabled}
-                onValueChange={setDarkModeEnabled}
-                trackColor={{ false: "#334155", true: "#8b5cf6" }}
-                thumbColor={darkModeEnabled ? "#a855f7" : "#64748b"}
-              />
-            </View>
-
             {/* Divider */}
             <View
               className="h-px my-4"
               style={{ backgroundColor: "rgba(139, 92, 246, 0.3)" }}
             />
-
-            {/* Additional Options */}
-            <TouchableOpacity
-              className="flex-row items-center p-4 rounded-xl mb-3"
-              style={{
-                backgroundColor: "rgba(236, 72, 153, 0.2)",
-                borderWidth: 1,
-                borderColor: "rgba(236, 72, 153, 0.3)",
-              }}
-              onPress={() => {
-                // Add account settings navigation
-                console.log("Account Settings pressed");
-              }}
-            >
-              <Ionicons
-                name="person-circle"
-                size={24}
-                color="#ec4899"
-                style={{ marginRight: 12 }}
-              />
-              <Text className="font-orbitron-medium text-white text-base flex-1">
-                Account Settings
-              </Text>
-              <Ionicons name="chevron-forward" size={20} color="#ec4899" />
-            </TouchableOpacity>
-
             <TouchableOpacity
               className="flex-row items-center p-4 rounded-xl mb-3"
               style={{
