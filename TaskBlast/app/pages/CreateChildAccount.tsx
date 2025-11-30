@@ -27,20 +27,24 @@ export default function CreateChildAccount() {
   const [confirmPin, setConfirmPin] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const checkUsernameAvailable = async (username: string): Promise<boolean> => {
-    try {
-      // Search across ALL children subcollections for this username
-      const childrenQuery = query(
-        collectionGroup(firestore, "children"),
-        where("username", "==", username.toLowerCase())
-      );
-      const snapshot = await getDocs(childrenQuery);
-      return snapshot.empty; // Available if no results
-    } catch (error) {
-      console.error("Error checking username:", error);
-      return false;
-    }
-  };
+const checkUsernameAvailable = async (username: string): Promise<boolean> => {
+  try {
+    const user = auth.currentUser;
+    if (!user) return false;
+    
+    // check children
+    const childrenRef = collection(firestore, `users/${user.uid}/children`);
+    const childrenQuery = query(
+      childrenRef,
+      where("username", "==", username.toLowerCase())
+    );
+    const snapshot = await getDocs(childrenQuery);
+    return snapshot.empty;
+  } catch (error) {
+    console.error("Error checking username:", error);
+    return false;
+  }
+};
 
   const handleCreateChild = async () => {
     // Validation

@@ -129,7 +129,7 @@ export default function Login() {
         } else {
           Alert.alert(
             "Verify Your Email",
-            "A verification email was sent. Please verify your email before signing in.",
+            "A verification email was sent. Please verify your email before signing in. Make sure to check spam/junk folders if you don't see it.",
             [{ text: "OK" }]
           );
           setCurrentScreen("login");
