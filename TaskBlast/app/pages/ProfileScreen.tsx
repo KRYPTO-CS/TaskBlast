@@ -3,21 +3,23 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Image,
   ImageBackground,
   ScrollView,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { signOut } from "firebase/auth";
+import { auth } from "../../server/firebase";
 import MainButton from "../components/MainButton";
 import { WebView } from "react-native-webview";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs  } from "firebase/firestore";
 import EditProfileModal from "../components/EditProfileModal";
 import TraitsModal from "../components/TraitsModal";
 import { updateProfilePicture } from "../../server/storageUtils";
-import { auth } from "../../server/firebase";
 import {
   getUserProfile,
   updateUserProfilePicture,
@@ -27,6 +29,9 @@ import {
 export default function ProfileScreen() {
   const router = useRouter();
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
+
+  const [currentProfileType, setCurrentProfileType] = useState<"parent" | "child">("parent");
+  const [currentChildUsername, setCurrentChildUsername] = useState<string | null>(null);
 
   // User data state
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -46,69 +51,129 @@ export default function ProfileScreen() {
   const [currentRocks, setCurrentRocks] = useState<number>(0);
 
   // Load user profile on component mount
-  useEffect(() => {
-    const loadUserProfile = async () => {
-      try {
-        const currentUser = auth.currentUser;
-        if (currentUser) {
-          const profile = await getUserProfile(currentUser.uid);
-          if (profile) {
-            setUserProfile(profile);
-          } else {
-            // Set default profile if none exists
-            setUserProfile({
-              uid: currentUser.uid,
-              firstName: "Space",
-              lastName: "Explorer",
-              displayName: "Space",
-              email: currentUser.email || "",
-              traits: ["Focused", "Persistent", "Creative", "Goal-Oriented"],
-              awards: [
-                "🏆 First Mission",
-                "⭐ 10 Tasks Complete",
-                "🚀 Speed Runner",
-                "💎 Rock Collector",
-              ],
-            });
-          }
-        }
-      } catch (error) {
-        console.error("Error loading user profile:", error);
-      } finally {
-        setIsLoadingProfile(false);
-      }
-    };
-
-    loadUserProfile();
-    loadAllTimeStats();
-  }, []);
-
-  const loadAllTimeStats = useCallback(async () => {
+ useEffect(() => {
+  const loadUserProfile = async () => {
     try {
-      const auth = getAuth();
-      const user = auth.currentUser;
-      if (!user) return;
+      const currentUser = auth.currentUser;
+      if (!currentUser) return;
+      
       const db = getFirestore();
-      const userDoc = await getDoc(doc(db, "users", user.uid));
-      if (userDoc.exists()) {
-        const data = userDoc.data();
-        const rocksArr: number[] = data.allTimeRocksArr || [];
-        const wtArr: number[] = data.workTimeMinutesArr || [];
-        const ptArr: number[] = data.playTimeMinutesArr || [];
-        const totalAllTime = Number(data.allTimeRocks ?? 0);
-        setTotalRocksAllTime(Number.isNaN(totalAllTime) ? 0 : totalAllTime);
-        setCurrentRocks(Number.isNaN(data.rocks) ? 0 : Math.max(0, Math.floor(data.rocks)));
-        setStatsLabels(rocksArr.map((_, i) => `#${i + 1}`));
-        setWorkLabels(wtArr.map((_, i) => `#${i + 1}`));
-        setPlayLabels(ptArr.map((_, i) => `#${i + 1}`));
-        setStatsValues(rocksArr);
-        setWorkTimes(wtArr);
-        setPlayTimes(ptArr);
+      
+      // Check if a child profile is active
+      const activeChild = await AsyncStorage.getItem("activeChildProfile");
+      
+      let profileData = null;
+      
+      if (activeChild) {
+        // Child is active - load from child's document
+        const childrenRef = collection(db, "users", currentUser.uid, "children");
+        const childQuery = query(childrenRef, where("username", "==", activeChild));
+        const childSnapshot = await getDocs(childQuery);
+        
+        if (!childSnapshot.empty) {
+          const childDoc = childSnapshot.docs[0];
+          const childData = childDoc.data();
+          
+          // Map child data to UserProfile format
+          profileData = {
+            uid: currentUser.uid,
+            firstName: childData.firstName || "",
+            lastName: childData.lastName || "",
+            displayName: childData.firstName || "Child", // Use firstName as display name for children
+            email: currentUser.email || "",
+            birthdate: childData.birthdate || "",
+            profilePicture: childData.profilePicture,
+            traits: childData.traits || [],
+            awards: childData.awards || [],
+          };
+        }
+      } else {
+        // Parent is active - load from parent's document
+        profileData = await getUserProfile(currentUser.uid);
       }
-    } catch (e) {
-      console.warn("Failed to load stats", e);
+      
+      if (profileData) {
+        setUserProfile(profileData);
+      } else {
+        // Set default profile if none exists
+        setUserProfile({
+          uid: currentUser.uid,
+          firstName: "Space",
+          lastName: "Explorer",
+          displayName: "Space",
+          email: currentUser.email || "",
+          traits: ["Focused", "Persistent", "Creative", "Goal-Oriented"],
+          awards: [
+            "🏆 First Mission",
+            "⭐ 10 Tasks Complete",
+            "🚀 Speed Runner",
+            "💎 Rock Collector",
+          ],
+        });
+      }
+    } catch (error) {
+      console.error("Error loading user profile:", error);
+    } finally {
+      setIsLoadingProfile(false);
     }
-  }, []);
+  };
+
+  loadUserProfile();
+  loadAllTimeStats();
+}, []);
+
+ const loadAllTimeStats = useCallback(async () => {
+  try {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const db = getFirestore();
+    
+    // Check if a child profile is active
+    const activeChild = await AsyncStorage.getItem("activeChildProfile");
+    
+    let userDoc;
+    
+    if (activeChild) {
+      // Child is active - load from child's document
+      const { collection, query, where, getDocs } = await import("firebase/firestore");
+      const childrenRef = collection(db, "users", user.uid, "children");
+      const childQuery = query(childrenRef, where("username", "==", activeChild));
+      const childSnapshot = await getDocs(childQuery);
+      
+      if (!childSnapshot.empty) {
+        const childDocData = childSnapshot.docs[0];
+        userDoc = childDocData;
+      } else {
+        console.warn("Child profile not found");
+        return;
+      }
+    } else {
+      // Parent is active - load from parent's document
+      userDoc = await getDoc(doc(db, "users", user.uid));
+    }
+    
+    if (userDoc && userDoc.exists()) {
+      const data = userDoc.data();
+      const rocksArr: number[] = data.allTimeRocksArr || [];
+      const wtArr: number[] = data.workTimeMinutesArr || [];
+      const ptArr: number[] = data.playTimeMinutesArr || [];
+      const totalAllTime = Number(data.allTimeRocks ?? 0);
+      
+      setTotalRocksAllTime(Number.isNaN(totalAllTime) ? 0 : totalAllTime);
+      setCurrentRocks(Number.isNaN(data.rocks) ? 0 : Math.max(0, Math.floor(data.rocks)));
+      setStatsLabels(rocksArr.map((_, i) => `#${i + 1}`));
+      setWorkLabels(wtArr.map((_, i) => `#${i + 1}`));
+      setPlayLabels(ptArr.map((_, i) => `#${i + 1}`));
+      setStatsValues(rocksArr);
+      setWorkTimes(wtArr);
+      setPlayTimes(ptArr);
+    }
+  } catch (e) {
+    console.warn("Failed to load stats", e);
+  }
+}, []);
 
   // Chart template helpers
   const totalRocksChart = (labels: string[], values: number[]) => `
@@ -240,10 +305,37 @@ export default function ProfileScreen() {
 `.trim();
   };
 
-  const handleLogout = () => {
-    // Add logout logic here
-    console.log("Logging out...");
-    router.push("/pages/Login");
+  // Load current profile on mount
+  useEffect(() => {
+    loadCurrentProfile();
+  }, []);
+
+  const loadCurrentProfile = async () => {
+    const activeChild = await AsyncStorage.getItem("activeChildProfile");
+    if (activeChild) {
+      setCurrentProfileType("child");
+      setCurrentChildUsername(activeChild);
+    } else {
+      setCurrentProfileType("parent");
+      setCurrentChildUsername(null);
+    }
+  };
+
+  const handleSwitchProfile = () => {
+    router.push("/pages/ProfileSelection");
+  };
+
+  const handleLogout = async () => {
+    try {
+      // Clear active profile
+      await AsyncStorage.removeItem("activeChildProfile");
+      // Sign out from Firebase
+      await signOut(auth);
+      // Navigate to login
+      router.push("/pages/Login");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   const handleProfilePicturePress = async () => {
@@ -310,9 +402,33 @@ export default function ProfileScreen() {
             <Ionicons name="arrow-back" size={24} color="white" />
           </TouchableOpacity>
 
+          {/* Profile Type Badge */}
+          <View className="items-center mt-2 mb-4">
+            <View
+              className="px-4 py-2 rounded-full"
+              style={{
+                backgroundColor:
+                  currentProfileType === "parent"
+                    ? "rgba(59, 130, 246, 0.4)"
+                    : "rgba(168, 85, 247, 0.4)",
+                borderWidth: 1,
+                borderColor:
+                  currentProfileType === "parent"
+                    ? "rgba(96, 165, 250, 0.6)"
+                    : "rgba(192, 132, 252, 0.6)",
+              }}
+            >
+              <Text className="font-orbitron-semibold text-white text-xs">
+                {currentProfileType === "parent"
+                  ? "👤 Parent Account"
+                  : `👶 ${currentChildUsername}`}
+              </Text>
+            </View>
+          </View>
+
           {/* User Name - Centered */}
           <Text
-            className="font-orbitron-semibold text-xl text-white text-center text-3xl mt-8 mb-8"
+            className="font-orbitron-semibold text-xl text-white text-center text-3xl mt-4 mb-8"
             style={{
               textShadowColor: "rgba(147, 51, 234, 0.8)",
               textShadowOffset: { width: 0, height: 0 },
@@ -536,6 +652,26 @@ export default function ProfileScreen() {
                 </View>
               </View>
             </View>
+          </View>
+
+          {/* Add Child Button - NEW */}
+          <View className="items-center mb-4">
+            <MainButton
+            title="Add Child Account"
+            variant="primary"
+            onPress={() => router.push("/pages/CreateChildAccount")}
+            customStyle={{ width: "80%" }}
+            />
+          </View>      
+
+          {/* Switch Profile Button */}
+          <View className="items-center mb-4">
+            <MainButton
+              title="Switch Profile"
+              variant="secondary"
+              onPress={handleSwitchProfile}
+              customStyle={{ width: "80%" }}
+            />
           </View>
 
           {/* Logout Button */}
