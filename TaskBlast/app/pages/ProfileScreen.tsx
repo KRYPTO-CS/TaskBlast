@@ -6,6 +6,7 @@ import {
   ImageBackground,
   ScrollView,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -15,7 +16,7 @@ import { auth } from "../../server/firebase";
 import MainButton from "../components/MainButton";
 import { WebView } from "react-native-webview";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs  } from "firebase/firestore";
 import EditProfileModal from "../components/EditProfileModal";
 import TraitsModal from "../components/TraitsModal";
 import { updateProfilePicture } from "../../server/storageUtils";
@@ -50,69 +51,129 @@ export default function ProfileScreen() {
   const [currentRocks, setCurrentRocks] = useState<number>(0);
 
   // Load user profile on component mount
-  useEffect(() => {
-    const loadUserProfile = async () => {
-      try {
-        const currentUser = auth.currentUser;
-        if (currentUser) {
-          const profile = await getUserProfile(currentUser.uid);
-          if (profile) {
-            setUserProfile(profile);
-          } else {
-            // Set default profile if none exists
-            setUserProfile({
-              uid: currentUser.uid,
-              firstName: "Space",
-              lastName: "Explorer",
-              displayName: "Space",
-              email: currentUser.email || "",
-              traits: ["Focused", "Persistent", "Creative", "Goal-Oriented"],
-              awards: [
-                "🏆 First Mission",
-                "⭐ 10 Tasks Complete",
-                "🚀 Speed Runner",
-                "💎 Rock Collector",
-              ],
-            });
-          }
-        }
-      } catch (error) {
-        console.error("Error loading user profile:", error);
-      } finally {
-        setIsLoadingProfile(false);
-      }
-    };
-
-    loadUserProfile();
-    loadAllTimeStats();
-  }, []);
-
-  const loadAllTimeStats = useCallback(async () => {
+ useEffect(() => {
+  const loadUserProfile = async () => {
     try {
-      const auth = getAuth();
-      const user = auth.currentUser;
-      if (!user) return;
+      const currentUser = auth.currentUser;
+      if (!currentUser) return;
+      
       const db = getFirestore();
-      const userDoc = await getDoc(doc(db, "users", user.uid));
-      if (userDoc.exists()) {
-        const data = userDoc.data();
-        const rocksArr: number[] = data.allTimeRocksArr || [];
-        const wtArr: number[] = data.workTimeMinutesArr || [];
-        const ptArr: number[] = data.playTimeMinutesArr || [];
-        const totalAllTime = Number(data.allTimeRocks ?? 0);
-        setTotalRocksAllTime(Number.isNaN(totalAllTime) ? 0 : totalAllTime);
-        setCurrentRocks(Number.isNaN(data.rocks) ? 0 : Math.max(0, Math.floor(data.rocks)));
-        setStatsLabels(rocksArr.map((_, i) => `#${i + 1}`));
-        setWorkLabels(wtArr.map((_, i) => `#${i + 1}`));
-        setPlayLabels(ptArr.map((_, i) => `#${i + 1}`));
-        setStatsValues(rocksArr);
-        setWorkTimes(wtArr);
-        setPlayTimes(ptArr);
+      
+      // Check if a child profile is active
+      const activeChild = await AsyncStorage.getItem("activeChildProfile");
+      
+      let profileData = null;
+      
+      if (activeChild) {
+        // Child is active - load from child's document
+        const childrenRef = collection(db, "users", currentUser.uid, "children");
+        const childQuery = query(childrenRef, where("username", "==", activeChild));
+        const childSnapshot = await getDocs(childQuery);
+        
+        if (!childSnapshot.empty) {
+          const childDoc = childSnapshot.docs[0];
+          const childData = childDoc.data();
+          
+          // Map child data to UserProfile format
+          profileData = {
+            uid: currentUser.uid,
+            firstName: childData.firstName || "",
+            lastName: childData.lastName || "",
+            displayName: childData.firstName || "Child", // Use firstName as display name for children
+            email: currentUser.email || "",
+            birthdate: childData.birthdate || "",
+            profilePicture: childData.profilePicture,
+            traits: childData.traits || [],
+            awards: childData.awards || [],
+          };
+        }
+      } else {
+        // Parent is active - load from parent's document
+        profileData = await getUserProfile(currentUser.uid);
       }
-    } catch (e) {
-      console.warn("Failed to load stats", e);
+      
+      if (profileData) {
+        setUserProfile(profileData);
+      } else {
+        // Set default profile if none exists
+        setUserProfile({
+          uid: currentUser.uid,
+          firstName: "Space",
+          lastName: "Explorer",
+          displayName: "Space",
+          email: currentUser.email || "",
+          traits: ["Focused", "Persistent", "Creative", "Goal-Oriented"],
+          awards: [
+            "🏆 First Mission",
+            "⭐ 10 Tasks Complete",
+            "🚀 Speed Runner",
+            "💎 Rock Collector",
+          ],
+        });
+      }
+    } catch (error) {
+      console.error("Error loading user profile:", error);
+    } finally {
+      setIsLoadingProfile(false);
     }
-  }, []);
+  };
+
+  loadUserProfile();
+  loadAllTimeStats();
+}, []);
+
+ const loadAllTimeStats = useCallback(async () => {
+  try {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const db = getFirestore();
+    
+    // Check if a child profile is active
+    const activeChild = await AsyncStorage.getItem("activeChildProfile");
+    
+    let userDoc;
+    
+    if (activeChild) {
+      // Child is active - load from child's document
+      const { collection, query, where, getDocs } = await import("firebase/firestore");
+      const childrenRef = collection(db, "users", user.uid, "children");
+      const childQuery = query(childrenRef, where("username", "==", activeChild));
+      const childSnapshot = await getDocs(childQuery);
+      
+      if (!childSnapshot.empty) {
+        const childDocData = childSnapshot.docs[0];
+        userDoc = childDocData;
+      } else {
+        console.warn("Child profile not found");
+        return;
+      }
+    } else {
+      // Parent is active - load from parent's document
+      userDoc = await getDoc(doc(db, "users", user.uid));
+    }
+    
+    if (userDoc && userDoc.exists()) {
+      const data = userDoc.data();
+      const rocksArr: number[] = data.allTimeRocksArr || [];
+      const wtArr: number[] = data.workTimeMinutesArr || [];
+      const ptArr: number[] = data.playTimeMinutesArr || [];
+      const totalAllTime = Number(data.allTimeRocks ?? 0);
+      
+      setTotalRocksAllTime(Number.isNaN(totalAllTime) ? 0 : totalAllTime);
+      setCurrentRocks(Number.isNaN(data.rocks) ? 0 : Math.max(0, Math.floor(data.rocks)));
+      setStatsLabels(rocksArr.map((_, i) => `#${i + 1}`));
+      setWorkLabels(wtArr.map((_, i) => `#${i + 1}`));
+      setPlayLabels(ptArr.map((_, i) => `#${i + 1}`));
+      setStatsValues(rocksArr);
+      setWorkTimes(wtArr);
+      setPlayTimes(ptArr);
+    }
+  } catch (e) {
+    console.warn("Failed to load stats", e);
+  }
+}, []);
 
   // Chart template helpers
   const totalRocksChart = (labels: string[], values: number[]) => `
