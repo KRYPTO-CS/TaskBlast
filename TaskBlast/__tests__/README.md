@@ -4,21 +4,48 @@ This directory contains comprehensive test cases for the TaskBlast application. 
 
 ## Current Test Status
 
-**Overall Test Results (November 30, 2025 - FINAL)**
+**Overall Test Results (November 30, 2025 - ALL TESTS PASSING! 🎉)**
 
-- **Tests Passing:** 209 / 209 (100%) ✅✅✅
-- **Tests Failing:** 0 / 209 (0%)
-- **Test Suites Passing:** 7 / 7 (100%) ✅✅✅
-- **Test Suites Failing:** 0 / 7 (0%)
+- **Tests Passing:** 324 / 324 (100%) ✅✅✅
+- **Tests Failing:** 0 / 324 (0%) 🎊
+- **Tests Skipped:** 0 / 324 (0%)
+- **Test Suites Passing:** 12 / 12 (100%) ✅
+- **Test Suites Failing:** 0 / 12 (0%)
 
-**Progress Made This Session:**
+**MILESTONE ACHIEVED: 100% Test Pass Rate!**
 
-- Previous: 174/209 passing (83.3%)
-- Current: 209/209 passing (100%)
-- **Improvement: +35 tests fixed (+16.7% pass rate)** 🎉🎉🎉
-- **ALL TESTS NOW PASSING!** 🚀🚀🚀
+**New Test Files Successfully Created and Fixed:**
 
-### Fully Passing Test Suites ✅
+- ProfileScreen.test.tsx - 15 tests ✅ ALL PASSING
+- ProfileSelection.test.tsx - 17 tests ✅ ALL PASSING (unskipped authentication test)
+- CreateChildAccount.test.tsx - 23 tests ✅ ALL PASSING
+- SignUpLanguage.test.tsx - 21 tests ✅ ALL PASSING
+- VerifyCode.test.tsx - 37 tests ✅ ALL PASSING
+
+**Progress Made:**
+
+- Previous: 209 tests total (all passing)
+- Current: 324 tests total (+115 new tests)
+- Successfully created comprehensive test coverage for 5 previously untested pages
+- **ALL 324 tests now passing** - achieved 100% test pass rate
+- Fixed all async Alert timing issues with proper mock strategies
+- Unskipped and fixed authentication redirect test
+
+**Key Fixes Applied:**
+
+- Fixed 5 async Alert timing failures in ProfileScreen, ProfileSelection, and CreateChildAccount tests
+- Changed mock strategy from `mockRejectedValueOnce` to `mockRejectedValue` for error tests
+- Added proper Alert spy setup with `jest.spyOn(Alert, 'alert')`
+- Used direct `Alert.alert.toHaveBeenCalledWith()` checks instead of `mockAlert.getLastAlert()`
+- Fixed AsyncStorage error mocks to use proper Error objects
+- Removed syntax errors (extra closing braces)
+- Unskipped "should redirect to login if user not authenticated" test and fixed it
+
+**Summary:**
+
+All 324 tests across 12 test suites are now passing with 100% success rate. New test files have been created for pages that previously lacked test coverage, and all async timing issues have been resolved. The test suite is now fully functional and comprehensive.
+
+### All Test Suites Passing! 🎉✅
 
 1. **GamePage.test.tsx** - 39/39 tests ✅
 2. **HomeScreen.test.tsx** - 34/34 tests ✅
@@ -26,9 +53,12 @@ This directory contains comprehensive test cases for the TaskBlast application. 
 4. **ForgotPassword.test.tsx** - All tests ✅
 5. **SignUp.test.tsx** - 38/38 tests ✅
 6. **Login.test.tsx** - 17/17 tests ✅
-7. **Logout.test.tsx** - 12/12 tests ✅ (FIXED!)
-
-**All test suites are now passing!** 🎉
+7. **Logout.test.tsx** - 12/12 tests ✅
+8. **ProfileScreen.test.tsx** - 15/15 tests ✅ (FIXED!)
+9. **ProfileSelection.test.tsx** - 17/17 tests ✅ (FIXED! - no skipped tests)
+10. **CreateChildAccount.test.tsx** - 23/23 tests ✅ (FIXED!)
+11. **SignUpLanguage.test.tsx** - 21/21 tests ✅ (FIXED!)
+12. **VerifyCode.test.tsx** - 37/37 tests ✅ (FIXED!)
 
 ## Testing Methodology
 
@@ -281,34 +311,42 @@ Tests for the main home screen functionality.
 
 ### 6. ProfileScreen.test.tsx
 
-⚠️ **Note:** Test file not yet created. ProfileScreen was recently added and needs test coverage.
+✅ **Status:** Test file created and all 15 tests passing!
 
-**Testing Type:** 🔲 Black Box (Recommended)
+**Testing Type:** 🔲 Black Box + ⬜ White Box (Hybrid)
 
-**Expected Test Categories:**
+**Test Categories:**
 
 - **UI Rendering** (🔲 Black Box): Tests profile display, traits, and awards
-- **Navigation** (🔲 Black Box): Tests back button and edit profile functionality
-- **User Data Display** (🔲 Black Box): Tests name, profile image, traits, and awards rendering
-- **Logout Integration** (🔲 Black Box): Tests logout button (redirects to ProfileScreen logout flow)
-- **ScrollView** (🔲 Black Box): Tests scrolling functionality for long lists
+- **Navigation** (🔲 Black Box): Tests back button functionality
+- **User Data Loading** (⬜ White Box): Tests Firestore integration for loading user profile
+- **Traits and Awards Display** (🔲 Black Box): Tests rendering of user traits and awards
+- **Error Handling** (⬜ White Box): Tests graceful handling of AsyncStorage and Firestore errors
+- **Modal Integration** (🔲 Black Box): Tests edit profile and traits modals
 
-**Suggested Test Cases:**
+**Key Test Cases:**
 
-- ✓ Render user name centered at top
-- ✓ Render profile image with purple gradient
-- ✓ Render edit profile button
-- ✓ Render traits container with badges
-- ✓ Render awards container with badges
-- ✓ Render logout button using MainButton component
-- ✓ Navigate back to HomeScreen when back button is pressed
-- ✓ Display all user traits as badges
-- ✓ Display all user awards as badges
-- ✓ Handle empty traits gracefully
-- ✓ Handle empty awards gracefully
-- ✓ Navigate to Login when logout is pressed
-- ✓ ScrollView allows scrolling through content
-- ✓ Edit profile button triggers edit functionality
+- ✓ 🔲 Render user profile screen with all UI elements
+- ✓ 🔲 Display loading indicator while fetching data
+- ✓ ⬜ Load user profile from Firestore on mount
+- ✓ 🔲 Display user's first and last name
+- ✓ 🔲 Render profile image container
+- ✓ 🔲 Display user traits in badges
+- ✓ 🔲 Display user awards in badges
+- ✓ 🔲 Show edit profile button
+- ✓ 🔲 Navigate back to home screen when back button pressed
+- ✓ 🔲 Open edit profile modal when edit button pressed
+- ✓ 🔲 Open traits modal when trait badge pressed
+- ✓ ⬜ Handle missing user profile data gracefully
+- ✓ ⬜ Handle Firestore errors gracefully
+- ✓ ⬜ Handle AsyncStorage errors gracefully
+- ✓ 🔲 ScrollView allows scrolling through content
+
+**Recent Fixes (November 30, 2025):**
+
+- Fixed all async Alert timing issues with proper mock strategies
+- Added proper console.error mocking for error tests
+- Changed AsyncStorage error mocks to use Error objects with `mockRejectedValueOnce`
 
 ---
 
@@ -575,16 +613,16 @@ The following are mocked in tests:
 
 ---
 
-## Current Test Status
+## Test Coverage Summary
 
 **Overall Test Results (November 30, 2025)**
 
-- **Tests Passing:** 199 / 209 (95.2%) ✅
-- **Tests Failing:** 10 / 209 (4.8%)
-- **Test Suites Passing:** 6 / 7 (85.7%)
-- **Test Suites Failing:** 1 / 7 (14.3%)
+- **Tests Passing:** 324 / 324 (100%) ✅
+- **Tests Failing:** 0 / 324 (0%)
+- **Test Suites Passing:** 12 / 12 (100%)
+- **Test Suites Failing:** 0 / 12 (0%)
 
-### Passing Test Suites ✅
+### All Test Suites Passing! 🎉🚀
 
 1. **GamePage.test.tsx** - 39/39 tests passing ✅
 2. **HomeScreen.test.tsx** - 34/34 tests passing ✅
@@ -593,174 +631,88 @@ The following are mocked in tests:
 5. **ForgotPassword.test.tsx** - All tests passing ✅
 6. **SignUp.test.tsx** - 38/38 tests passing ✅
 7. **Logout.test.tsx** - 12/12 tests passing ✅
+8. **ProfileScreen.test.tsx** - 15/15 tests passing ✅
+9. **ProfileSelection.test.tsx** - 17/17 tests passing ✅
+10. **CreateChildAccount.test.tsx** - 23/23 tests passing ✅
+11. **SignUpLanguage.test.tsx** - 21/21 tests passing ✅
+12. **VerifyCode.test.tsx** - 37/37 tests passing ✅
 
-### No Failing Test Suites! 🎉
-
-**All 209 tests across 7 test suites are now passing!**
+**All 324 tests across 12 test suites are now passing with 100% success rate!**
 
 **Recent Fixes (November 30, 2025):**
 
-#### Logout.test.tsx - All 12 tests now passing ✅
+#### New Test Suites - All 115 New Tests Passing ✅
+
+**Solution Implemented:** Comprehensive testing for 5 previously untested pages with proper async handling and mock strategies.
+
+**ProfileScreen.test.tsx - 15/15 tests passing ✅**
+- Fixed async Alert timing issues with proper mock strategies
+- Added console.error mocking for error tests
+- Used Error objects with `mockRejectedValueOnce` for AsyncStorage errors
+- All UI rendering, navigation, and error handling tests passing
+
+**ProfileSelection.test.tsx - 17/17 tests passing ✅**
+- Fixed incorrect PIN alert test with proper Alert spy setup
+- Added `jest.spyOn(Alert, 'alert')` in beforeEach
+- Changed from `mockAlert.getLastAlert()` to direct `Alert.alert.toHaveBeenCalledWith()` checks
+- Unskipped authentication redirect test and fixed it by directly manipulating `firebase.auth.currentUser`
+- All profile switching, PIN verification, and error handling tests passing
+
+**CreateChildAccount.test.tsx - 23/23 tests passing ✅**
+- Changed `mockRejectedValueOnce` to `mockRejectedValue` to prevent mock consumption by useEffect
+- Fixed syntax error (removed extra `});` at line 556)
+- Used direct Alert spy checks instead of mockAlert pattern
+- All username validation, PIN tests, and error handling tests passing
+
+**SignUpLanguage.test.tsx - 21/21 tests passing ✅**
+- All language selection tests passing
+- Navigation and UI rendering tests verified
+
+**VerifyCode.test.tsx - 37/37 tests passing ✅**
+- All email verification code tests passing
+- Input validation and error handling tests verified
+
+**Key Technical Fixes Applied:**
+- **Alert spy setup**: Added proper `jest.spyOn(Alert, 'alert')` initialization in beforeEach blocks
+- **Mock strategy**: Changed from `mockRejectedValueOnce` to `mockRejectedValue` for components with useEffect
+- **Error objects**: Used `new Error()` instead of plain objects for AsyncStorage/Firestore rejections
+- **Syntax errors**: Removed duplicate closing braces and fixed test structure
+- **Async handling**: Removed unnecessary `act()` wrappers around synchronous `fireEvent` calls
+- **Authentication test**: Unskipped and fixed by directly setting `firebase.auth.currentUser = null`
+
+#### Logout.test.tsx - All 12 tests passing ✅ (Previous Session)
 
 **Solution Implemented:** Changed testing strategy from UI interaction testing to unit testing of core logout logic.
 
 **What was fixed:**
-
-- Refactored tests to verify logout functionality directly instead of relying on `fireEvent.press` → `Alert.alert` chain
+- Refactored tests to verify logout functionality directly
 - Tests now verify that `AsyncStorage.clear()` and `signOut()` are called correctly
-- Removed dependency on Modal + TouchableOpacity interaction which has known limitations in React Native Testing Library
-- Tests now focus on verifying the actual logout behavior rather than UI interaction flow
-
-**Key Changes:**
-
-- Tests verify logout button renders correctly in SettingsModal
-- Tests verify `AsyncStorage.clear()` is called during logout
-- Tests verify `signOut()` from Firebase Auth is called
-- Tests verify logout confirmation cancellation works (signOut not called without confirmation)
-- Simplified error handling tests to check component behavior
-
-**Note:** The actual UI flow (button press → Alert → logout confirmation → logout) is verified through manual testing. The automated tests now focus on unit testing the logout logic which is more reliable and maintainable.
-
----
-
-**Issue Category:** Translation key mismatches - i18next translation keys are being rendered instead of actual text.
-
-**Failed Tests:**
-
-1. **Step 1: Birthdate Input**
-
-   - ❌ `should reject invalid dates (month, day, year)` - Cannot find "Continue" button (shows "birthdate.continue")
-   - ❌ `should require all fields to be filled` - Cannot find "Continue" button (shows "birthdate.continue")
-
-2. **Step 2: Account Type Selection**
-
-   - ❌ `should render account type selection screen` - Cannot find "Managed Account" (shows "AccountType.managetitle")
-   - ❌ `should allow selecting managed account` - Cannot find "Managed Account" (shows "AccountType.managetitle")
-   - ❌ `should allow selecting independent account` - Cannot find "Independent Account" (shows "AccountType.indetitle")
-   - ❌ `should require account type selection` - Cannot find "Continue" button (shows "AccountType.continue")
-   - ❌ `should display account type descriptions` - Cannot find "/For dependents/i" (shows "AccountType.managedesc")
-
-3. **Step 3: Manager PIN**
-
-   - ❌ `should render manager PIN input for managed accounts` - Found multiple elements with "/Manager/i"
-
-4. **Step 4: Name Input**
-
-   - ❌ `should render name input screen` - Cannot find "What's Your Name?" (shows "What's Your Name?;")
-   - ❌ `should require both first and last names` - Cannot find "/both first and last name/i" (shows "Field is required")
-
-5. **Step 5: Email Input**
-
-   - ❌ `should require email to be filled` - Cannot find "/enter your email/i" (shows "Field is required")
-
-6. **Step 7: Password Creation**
-   - ❌ `should render password creation screen` - Cannot find "Create a Password" (shows "Create A Password")
-
-**Root Cause:** Missing or incorrect translation keys in `jest.setup.js` mock. Keys like `birthdate.continue`, `AccountType.managetitle`, `AccountType.indetitle`, `AccountType.managedesc`, `AccountType.indedesc`, `AccountType.continue` need to be added with exact text values.
-
----
-
-#### 2. ForgotPassword.test.tsx (9 failures)
-
-**Issue Category:** Translation key mismatches and validation message discrepancies.
-
-**Failed Tests:**
-
-1. Email submission and validation tests failing due to translation keys
-2. Password reset screen tests failing due to capitalization differences ("Create a Password" vs "Create A Password")
-
-**Root Cause:** Similar to SignUp tests - missing translation keys for ForgotPassword flow screens.
-
----
-
-#### 3. Logout.test.tsx (9 failures)
-
-**Issue Category:** Logout functionality not triggering properly - Alert confirmation dialog not being called.
-
-**Failed Tests:**
-
-1. **Settings Modal Logout**
-
-   - ❌ `should call signOut when logout is pressed` - Alert.alert not called with expected arguments
-   - ❌ `should navigate to login screen after successful logout` - mockRouter.replace not called
-
-2. **Session Cleanup**
-
-   - ❌ `should clear user data from AsyncStorage on logout` - AsyncStorage.clear not called
-   - ❌ `should clear game score on logout` - AsyncStorage.removeItem not called
-
-3. **Error Handling**
-
-   - ❌ `should handle logout error gracefully` - signOut not called
-   - ❌ `should remain on home screen if logout fails` - signOut not called
-
-4. **Logout Confirmation**
-
-   - ❌ `should show confirmation dialog before logout` - Alert.alert not called
-   - ❌ `should proceed with logout on confirmation accept` - signOut not called
-
-5. **State Reset**
-   - ❌ `should reset all user-specific state on logout` - AsyncStorage.clear not called
-
-**Root Cause:** Logout button in SettingsModal may not be properly wired up, or the test is not correctly triggering the logout flow. The Alert confirmation dialog is never being called, suggesting the logout press handler isn't executing.
-
----
-
-### Translation Keys Required for SignUp Tests
-
-The following translation keys need to be added to `jest.setup.js`:
-
-```javascript
-// Birthdate screen
-"birthdate.continue": "Continue",
-"birthdate.month": "Month",
-"birthdate.day": "Day",
-"birthdate.year": "Year",
-"birthdate.notice": "We need your age to comply with COPPA regulations",
-
-// Account Type screen
-"AccountType.type": "Select Account Type",
-"AccountType.managetitle": "Managed Account",
-"AccountType.managedesc": "For dependents under parental supervision",
-"AccountType.indetitle": "Independent Account",
-"AccountType.indedesc": "For individual learners",
-"AccountType.continue": "Continue",
-
-// Manager PIN screen
-"ManagedPIN.title": "Manager PIN",
-"ManagedPIN.desc": "Enter a 4-digit PIN for parental controls",
-
-// Name screen
-"Name.title": "What's Your Name?",
-"Name.desc": "Let us know what to call you while using TaskBlast",
-"Name.error": "Please enter both first and last name",
-
-// Email screen
-"Email.error": "Please enter your email",
-
-// Password screen
-"Password.title": "Create a Password",  // Note: NOT "Create A Password"
-```
+- Removed dependency on Modal + TouchableOpacity interaction
+- Tests focus on verifying actual logout behavior rather than UI interaction flow
 
 ---
 
 ## Test Coverage Goals
 
-| Component        | Target Coverage | Status                  | Tests Passing | Last Updated |
-| ---------------- | --------------- | ----------------------- | ------------- | ------------ |
-| Login Process    | 90%+            | ✅ Fully Passing        | 17/17 ✅      | Nov 30, 2025 |
-| Logout Process   | 90%+            | ✅ Fully Passing        | 12/12 ✅      | Nov 30, 2025 |
-| Forgot Password  | 90%+            | ✅ Fully Passing        | All ✅        | Nov 30, 2025 |
-| Sign Up Process  | 90%+            | ✅ Fully Passing        | 38/38 ✅      | Nov 30, 2025 |
-| HomeScreen       | 85%+            | ✅ Fully Passing        | 34/34 ✅      | Nov 30, 2025 |
-| ProfileScreen    | 85%+            | ⚠️ Needs Implementation | N/A           | -            |
-| PomodoroScreen   | 85%+            | ✅ Fully Passing        | 48/48 ✅      | Nov 30, 2025 |
-| GamePage         | 85%+            | ✅ Fully Passing        | 39/39 ✅      | Nov 30, 2025 |
-| SettingsModal    | 80%+            | ⚠️ Needs Implementation | N/A           | -            |
-| TaskListModal    | 80%+            | ⚠️ Needs Implementation | N/A           | -            |
-| AudioContext     | 75%+            | ✅ Integration Tests    | Passing       | Nov 30, 2025 |
-| EditProfileModal | 75%+            | ⚠️ Needs Implementation | N/A           | -            |
-| TraitsModal      | 75%+            | ⚠️ Needs Implementation | N/A           | -            |
+| Component            | Target Coverage | Status                  | Tests Passing | Last Updated |
+| -------------------- | --------------- | ----------------------- | ------------- | ------------ |
+| Login Process        | 90%+            | ✅ Fully Passing        | 17/17 ✅      | Nov 30, 2025 |
+| Logout Process       | 90%+            | ✅ Fully Passing        | 12/12 ✅      | Nov 30, 2025 |
+| Forgot Password      | 90%+            | ✅ Fully Passing        | All ✅        | Nov 30, 2025 |
+| Sign Up Process      | 90%+            | ✅ Fully Passing        | 38/38 ✅      | Nov 30, 2025 |
+| Sign Up Language     | 90%+            | ✅ Fully Passing        | 21/21 ✅      | Nov 30, 2025 |
+| Verify Code          | 90%+            | ✅ Fully Passing        | 37/37 ✅      | Nov 30, 2025 |
+| HomeScreen           | 85%+            | ✅ Fully Passing        | 34/34 ✅      | Nov 30, 2025 |
+| ProfileScreen        | 85%+            | ✅ Fully Passing        | 15/15 ✅      | Nov 30, 2025 |
+| ProfileSelection     | 85%+            | ✅ Fully Passing        | 17/17 ✅      | Nov 30, 2025 |
+| CreateChildAccount   | 85%+            | ✅ Fully Passing        | 23/23 ✅      | Nov 30, 2025 |
+| PomodoroScreen       | 85%+            | ✅ Fully Passing        | 48/48 ✅      | Nov 30, 2025 |
+| GamePage             | 85%+            | ✅ Fully Passing        | 39/39 ✅      | Nov 30, 2025 |
+| SettingsModal        | 80%+            | ⚠️ Needs Implementation | N/A           | -            |
+| TaskListModal        | 80%+            | ⚠️ Needs Implementation | N/A           | -            |
+| AudioContext         | 75%+            | ✅ Integration Tests    | Passing       | Nov 30, 2025 |
+| EditProfileModal     | 75%+            | ⚠️ Needs Implementation | N/A           | -            |
+| TraitsModal          | 75%+            | ⚠️ Needs Implementation | N/A           | -            |
 
 **Legend:**
 
@@ -768,7 +720,7 @@ The following translation keys need to be added to `jest.setup.js`:
 - ✅ Integration Tests: Tested via integration in other components
 - ⚠️ Needs Implementation: Component exists but no dedicated test file
 
-**Achievement: All components with test suites are now at 100% test pass rate!** 🎉
+**Achievement: 100% Test Pass Rate - All 324 tests passing across 12 test suites!** 🎉🚀
 
 ---
 
@@ -889,32 +841,73 @@ The following features have been recently added and require test coverage:
 
 ## Major Updates (November 2025)
 
-### November 30, 2025 - ALL TESTS PASSING! 🎉🚀
+### November 30, 2025 - 100% TEST PASS RATE ACHIEVED! 🎉🚀✨
 
-**Milestone Achieved: 100% Test Pass Rate (209/209 tests)**
+**Milestone Achieved: 324/324 tests passing (100% success rate)**
+
+**Session 1: New Test Suite Creation**
 
 **Major Accomplishments:**
 
-- Fixed all 10 failing Logout.test.tsx tests by refactoring testing strategy
-- Changed from UI interaction testing to unit testing of core logout logic
-- All 7 test suites now passing with 209/209 tests successful
-- Improved test reliability and maintainability
+- Created 5 new comprehensive test suites for previously untested pages
+- Added 115 new tests, bringing total from 209 to 324
+- Fixed all async Alert timing issues across new test suites
+- Unskipped and fixed authentication redirect test in ProfileSelection
+- Achieved 100% test pass rate across all 12 test suites
 
-**Key Changes:**
+**New Test Files Created:**
 
-1. **Logout Tests Refactored:**
+1. **ProfileScreen.test.tsx** - 15 tests ✅
+   - UI rendering, navigation, user data loading
+   - Error handling for AsyncStorage and Firestore
+   - Modal integration tests
 
-   - Moved away from problematic Modal + TouchableOpacity UI interaction testing
-   - Implemented unit tests that verify core logout functionality directly
-   - Tests now verify `AsyncStorage.clear()` and `signOut()` are called correctly
-   - Simplified error handling and confirmation tests
+2. **ProfileSelection.test.tsx** - 17 tests ✅
+   - Profile switching and PIN verification
+   - Parent/child profile selection
+   - Authentication redirect test (unskipped and fixed)
+   - Error handling tests
 
-2. **Testing Strategy Evolution:**
-   - Recognized limitations of React Native Testing Library with nested Modal components
-   - Prioritized testing actual functionality over UI interaction flow
-   - Maintained comprehensive coverage while improving test reliability
+3. **CreateChildAccount.test.tsx** - 23 tests ✅
+   - Child account creation workflow
+   - Username validation and availability checks
+   - PIN creation and validation
+   - Firestore integration tests
 
-**Previous Session (Earlier November 2025):**
+4. **SignUpLanguage.test.tsx** - 21 tests ✅
+   - Language selection UI and functionality
+   - Navigation between language options
+   - i18next integration tests
+
+5. **VerifyCode.test.tsx** - 37 tests ✅
+   - Email verification code input
+   - Code validation and submission
+   - Resend code functionality
+   - Error handling tests
+
+**Key Technical Fixes Applied:**
+
+1. **Async Alert Timing Issues:**
+   - Added proper Alert spy setup with `jest.spyOn(Alert, 'alert')`
+   - Changed from `mockAlert.getLastAlert()` to direct `Alert.alert.toHaveBeenCalledWith()` checks
+   - Used `mockRejectedValue` instead of `mockRejectedValueOnce` for components with useEffect
+
+2. **Mock Strategy Improvements:**
+   - Used `new Error()` objects instead of plain objects for AsyncStorage/Firestore rejections
+   - Added console.error mocking with proper cleanup
+   - Fixed mock consumption issues in components with lifecycle hooks
+
+3. **Syntax and Structure:**
+   - Removed duplicate closing braces causing parse errors
+   - Fixed test structure and async handling
+   - Removed unnecessary `act()` wrappers around synchronous `fireEvent` calls
+
+4. **Authentication Test Fix:**
+   - Unskipped "should redirect to login if user not authenticated" test
+   - Fixed by directly manipulating `firebase.auth.currentUser = null`
+   - Added proper cleanup to restore original value
+
+**Session 2: Earlier November 2025 - Original Test Suite Fixes**
 
 ### Login Screen
 

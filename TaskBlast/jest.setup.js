@@ -361,10 +361,10 @@ global.mockAlert = {
 // Increase timeout for async tests
 jest.setTimeout(10000);
 
-// Global test utilities
+// Suppress console errors in tests (tests can spy if needed)
 global.console = {
   ...console,
   error: jest.fn(),
   warn: jest.fn(),
-  log: jest.fn(),
+  // Keep log for debugging
 };
