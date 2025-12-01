@@ -510,9 +510,7 @@ describe("CreateChildAccount", () => {
     it("should handle username check error gracefully", async () => {
       jest.spyOn(console, "error").mockImplementation(() => {});
       // Mock getDocs to always reject during this test
-      (getDocs as jest.Mock).mockRejectedValue(
-        new Error("Firestore error")
-      );
+      (getDocs as jest.Mock).mockRejectedValue(new Error("Firestore error"));
 
       render(<CreateChildAccount />);
 

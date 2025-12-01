@@ -646,12 +646,14 @@ The following are mocked in tests:
 **Solution Implemented:** Comprehensive testing for 5 previously untested pages with proper async handling and mock strategies.
 
 **ProfileScreen.test.tsx - 15/15 tests passing ✅**
+
 - Fixed async Alert timing issues with proper mock strategies
 - Added console.error mocking for error tests
 - Used Error objects with `mockRejectedValueOnce` for AsyncStorage errors
 - All UI rendering, navigation, and error handling tests passing
 
 **ProfileSelection.test.tsx - 17/17 tests passing ✅**
+
 - Fixed incorrect PIN alert test with proper Alert spy setup
 - Added `jest.spyOn(Alert, 'alert')` in beforeEach
 - Changed from `mockAlert.getLastAlert()` to direct `Alert.alert.toHaveBeenCalledWith()` checks
@@ -659,20 +661,24 @@ The following are mocked in tests:
 - All profile switching, PIN verification, and error handling tests passing
 
 **CreateChildAccount.test.tsx - 23/23 tests passing ✅**
+
 - Changed `mockRejectedValueOnce` to `mockRejectedValue` to prevent mock consumption by useEffect
 - Fixed syntax error (removed extra `});` at line 556)
 - Used direct Alert spy checks instead of mockAlert pattern
 - All username validation, PIN tests, and error handling tests passing
 
 **SignUpLanguage.test.tsx - 21/21 tests passing ✅**
+
 - All language selection tests passing
 - Navigation and UI rendering tests verified
 
 **VerifyCode.test.tsx - 37/37 tests passing ✅**
+
 - All email verification code tests passing
 - Input validation and error handling tests verified
 
 **Key Technical Fixes Applied:**
+
 - **Alert spy setup**: Added proper `jest.spyOn(Alert, 'alert')` initialization in beforeEach blocks
 - **Mock strategy**: Changed from `mockRejectedValueOnce` to `mockRejectedValue` for components with useEffect
 - **Error objects**: Used `new Error()` instead of plain objects for AsyncStorage/Firestore rejections
@@ -685,6 +691,7 @@ The following are mocked in tests:
 **Solution Implemented:** Changed testing strategy from UI interaction testing to unit testing of core logout logic.
 
 **What was fixed:**
+
 - Refactored tests to verify logout functionality directly
 - Tests now verify that `AsyncStorage.clear()` and `signOut()` are called correctly
 - Removed dependency on Modal + TouchableOpacity interaction
@@ -694,25 +701,25 @@ The following are mocked in tests:
 
 ## Test Coverage Goals
 
-| Component            | Target Coverage | Status                  | Tests Passing | Last Updated |
-| -------------------- | --------------- | ----------------------- | ------------- | ------------ |
-| Login Process        | 90%+            | ✅ Fully Passing        | 17/17 ✅      | Nov 30, 2025 |
-| Logout Process       | 90%+            | ✅ Fully Passing        | 12/12 ✅      | Nov 30, 2025 |
-| Forgot Password      | 90%+            | ✅ Fully Passing        | All ✅        | Nov 30, 2025 |
-| Sign Up Process      | 90%+            | ✅ Fully Passing        | 38/38 ✅      | Nov 30, 2025 |
-| Sign Up Language     | 90%+            | ✅ Fully Passing        | 21/21 ✅      | Nov 30, 2025 |
-| Verify Code          | 90%+            | ✅ Fully Passing        | 37/37 ✅      | Nov 30, 2025 |
-| HomeScreen           | 85%+            | ✅ Fully Passing        | 34/34 ✅      | Nov 30, 2025 |
-| ProfileScreen        | 85%+            | ✅ Fully Passing        | 15/15 ✅      | Nov 30, 2025 |
-| ProfileSelection     | 85%+            | ✅ Fully Passing        | 17/17 ✅      | Nov 30, 2025 |
-| CreateChildAccount   | 85%+            | ✅ Fully Passing        | 23/23 ✅      | Nov 30, 2025 |
-| PomodoroScreen       | 85%+            | ✅ Fully Passing        | 48/48 ✅      | Nov 30, 2025 |
-| GamePage             | 85%+            | ✅ Fully Passing        | 39/39 ✅      | Nov 30, 2025 |
-| SettingsModal        | 80%+            | ⚠️ Needs Implementation | N/A           | -            |
-| TaskListModal        | 80%+            | ⚠️ Needs Implementation | N/A           | -            |
-| AudioContext         | 75%+            | ✅ Integration Tests    | Passing       | Nov 30, 2025 |
-| EditProfileModal     | 75%+            | ⚠️ Needs Implementation | N/A           | -            |
-| TraitsModal          | 75%+            | ⚠️ Needs Implementation | N/A           | -            |
+| Component          | Target Coverage | Status                  | Tests Passing | Last Updated |
+| ------------------ | --------------- | ----------------------- | ------------- | ------------ |
+| Login Process      | 90%+            | ✅ Fully Passing        | 17/17 ✅      | Nov 30, 2025 |
+| Logout Process     | 90%+            | ✅ Fully Passing        | 12/12 ✅      | Nov 30, 2025 |
+| Forgot Password    | 90%+            | ✅ Fully Passing        | All ✅        | Nov 30, 2025 |
+| Sign Up Process    | 90%+            | ✅ Fully Passing        | 38/38 ✅      | Nov 30, 2025 |
+| Sign Up Language   | 90%+            | ✅ Fully Passing        | 21/21 ✅      | Nov 30, 2025 |
+| Verify Code        | 90%+            | ✅ Fully Passing        | 37/37 ✅      | Nov 30, 2025 |
+| HomeScreen         | 85%+            | ✅ Fully Passing        | 34/34 ✅      | Nov 30, 2025 |
+| ProfileScreen      | 85%+            | ✅ Fully Passing        | 15/15 ✅      | Nov 30, 2025 |
+| ProfileSelection   | 85%+            | ✅ Fully Passing        | 17/17 ✅      | Nov 30, 2025 |
+| CreateChildAccount | 85%+            | ✅ Fully Passing        | 23/23 ✅      | Nov 30, 2025 |
+| PomodoroScreen     | 85%+            | ✅ Fully Passing        | 48/48 ✅      | Nov 30, 2025 |
+| GamePage           | 85%+            | ✅ Fully Passing        | 39/39 ✅      | Nov 30, 2025 |
+| SettingsModal      | 80%+            | ⚠️ Needs Implementation | N/A           | -            |
+| TaskListModal      | 80%+            | ⚠️ Needs Implementation | N/A           | -            |
+| AudioContext       | 75%+            | ✅ Integration Tests    | Passing       | Nov 30, 2025 |
+| EditProfileModal   | 75%+            | ⚠️ Needs Implementation | N/A           | -            |
+| TraitsModal        | 75%+            | ⚠️ Needs Implementation | N/A           | -            |
 
 **Legend:**
 
@@ -858,23 +865,27 @@ The following features have been recently added and require test coverage:
 **New Test Files Created:**
 
 1. **ProfileScreen.test.tsx** - 15 tests ✅
+
    - UI rendering, navigation, user data loading
    - Error handling for AsyncStorage and Firestore
    - Modal integration tests
 
 2. **ProfileSelection.test.tsx** - 17 tests ✅
+
    - Profile switching and PIN verification
    - Parent/child profile selection
    - Authentication redirect test (unskipped and fixed)
    - Error handling tests
 
 3. **CreateChildAccount.test.tsx** - 23 tests ✅
+
    - Child account creation workflow
    - Username validation and availability checks
    - PIN creation and validation
    - Firestore integration tests
 
 4. **SignUpLanguage.test.tsx** - 21 tests ✅
+
    - Language selection UI and functionality
    - Navigation between language options
    - i18next integration tests
@@ -888,16 +899,19 @@ The following features have been recently added and require test coverage:
 **Key Technical Fixes Applied:**
 
 1. **Async Alert Timing Issues:**
+
    - Added proper Alert spy setup with `jest.spyOn(Alert, 'alert')`
    - Changed from `mockAlert.getLastAlert()` to direct `Alert.alert.toHaveBeenCalledWith()` checks
    - Used `mockRejectedValue` instead of `mockRejectedValueOnce` for components with useEffect
 
 2. **Mock Strategy Improvements:**
+
    - Used `new Error()` objects instead of plain objects for AsyncStorage/Firestore rejections
    - Added console.error mocking with proper cleanup
    - Fixed mock consumption issues in components with lifecycle hooks
 
 3. **Syntax and Structure:**
+
    - Removed duplicate closing braces causing parse errors
    - Fixed test structure and async handling
    - Removed unnecessary `act()` wrappers around synchronous `fireEvent` calls

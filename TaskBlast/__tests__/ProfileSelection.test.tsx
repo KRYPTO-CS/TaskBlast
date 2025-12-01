@@ -19,13 +19,13 @@ import { Alert } from "react-native";
 
 describe("ProfileSelection", () => {
   let alertSpy: jest.SpyInstance;
-  
+
   beforeEach(() => {
     jest.clearAllMocks();
     (global as any).mockAlert.clear();
-    
+
     // Spy on Alert.alert
-    alertSpy = jest.spyOn(Alert, 'alert');
+    alertSpy = jest.spyOn(Alert, "alert");
 
     // Mock authenticated user
     (getAuth as jest.Mock).mockReturnValue({
@@ -57,7 +57,7 @@ describe("ProfileSelection", () => {
       },
     });
   });
-  
+
   afterEach(() => {
     if (alertSpy) {
       alertSpy.mockRestore();
@@ -185,10 +185,10 @@ describe("ProfileSelection", () => {
       });
 
       const continueButton = getByText("Continue");
-      
+
       // Press button and wait for async handler to complete
       fireEvent.press(continueButton);
-      
+
       // Wait for the alert to be called
       await waitFor(
         () => {
@@ -284,7 +284,7 @@ describe("ProfileSelection", () => {
       await waitFor(() => {
         expect(mockRouter.push).toHaveBeenCalledWith("/pages/Login");
       });
-      
+
       // Restore original currentUser
       firebase.auth.currentUser = originalCurrentUser;
     });
@@ -307,7 +307,7 @@ describe("ProfileSelection", () => {
       // Since the component doesn't have try-catch for AsyncStorage.setItem,
       // we'll test that the function is at least called, even if it would fail
       // This is a limitation of the current component implementation
-      
+
       const { getByText, getByPlaceholderText } = render(<ProfileSelection />);
 
       await waitFor(() => {
@@ -328,7 +328,7 @@ describe("ProfileSelection", () => {
         () => {
           expect(AsyncStorage.setItem).toHaveBeenCalledWith(
             "activeChildProfile",
-            "Child1"  // Username, not firstName
+            "Child1" // Username, not firstName
           );
         },
         { timeout: 3000 }
