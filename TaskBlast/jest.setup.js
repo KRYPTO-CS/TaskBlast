@@ -96,6 +96,7 @@ jest.mock("firebase/firestore", () => ({
   where: jest.fn(),
   getDocs: jest.fn(),
   addDoc: jest.fn(),
+  onSnapshot: jest.fn(() => jest.fn()), // Return unsubscribe function
   serverTimestamp: jest.fn(() => new Date()),
   increment: jest.fn((value) => value),
 }));
