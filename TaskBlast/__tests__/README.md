@@ -2,19 +2,19 @@
 
 This directory contains comprehensive test cases for the TaskBlast application. All tests are written using Jest and React Native Testing Library.
 
-## Current Test Status
+## **Current Test Status**
 
-**Overall Test Results (November 30, 2025 - ALL TESTS PASSING! 🎉)**
+**Overall Test Results (December 1, 2025 - ALL 386 TESTS PASSING! 🎉)**
 
-- **Tests Passing:** 324 / 324 (100%) ✅✅✅
-- **Tests Failing:** 0 / 324 (0%) 🎊
-- **Tests Skipped:** 0 / 324 (0%)
-- **Test Suites Passing:** 12 / 12 (100%) ✅
-- **Test Suites Failing:** 0 / 12 (0%)
+- **Tests Passing:** 386 / 386 (100%) ✅✅✅
+- **Tests Failing:** 0 / 386 (0%) 🎊
+- **Tests Skipped:** 0 / 386 (0%)
+- **Test Suites Passing:** 14 / 14 (100%) ✅
+- **Test Suites Failing:** 0 / 14 (0%)
 
-**MILESTONE ACHIEVED: 100% Test Pass Rate!**
+**NEW MILESTONE: 386 Tests Across 14 Suites - 100% Pass Rate!**
 
-**New Test Files Successfully Created and Fixed:**
+**Sprint 3 Test Files (November 30, 2025):**
 
 - ProfileScreen.test.tsx - 15 tests ✅ ALL PASSING
 - ProfileSelection.test.tsx - 17 tests ✅ ALL PASSING (unskipped authentication test)
@@ -22,12 +22,18 @@ This directory contains comprehensive test cases for the TaskBlast application. 
 - SignUpLanguage.test.tsx - 21 tests ✅ ALL PASSING
 - VerifyCode.test.tsx - 37 tests ✅ ALL PASSING
 
+**Sprint 3 (continued) Test Files (December 1, 2025):**
+
+- ResetPassword.test.tsx - 25 tests ✅ ALL PASSING
+- TaskListModal.test.tsx - 37 tests ✅ ALL PASSING
+
 **Progress Made:**
 
-- Previous: 209 tests total (all passing)
-- Current: 324 tests total (+115 new tests)
-- Successfully created comprehensive test coverage for 5 previously untested pages
-- **ALL 324 tests now passing** - achieved 100% test pass rate
+- Sprint 1-2: 209 tests total (all passing)
+- Sprint 3: +115 tests (324 total, all passing)
+- Sprint 3 (continued): +62 tests (386 total, all passing)
+- Successfully created comprehensive test coverage for 7 previously untested pages/components
+- **ALL 349 tests now passing** - maintained 100% test pass rate
 - Fixed all async Alert timing issues with proper mock strategies
 - Unskipped and fixed authentication redirect test
 
@@ -43,7 +49,7 @@ This directory contains comprehensive test cases for the TaskBlast application. 
 
 **Summary:**
 
-All 324 tests across 12 test suites are now passing with 100% success rate. New test files have been created for pages that previously lacked test coverage, and all async timing issues have been resolved. The test suite is now fully functional and comprehensive.
+All 386 tests across 14 test suites are now passing with 100% success rate! Sprint 3 continued work added 2 new test suites: ResetPassword (25 tests ✅) and TaskListModal (37 tests ✅). Successfully configured onSnapshot mock in jest.setup.js to support Firestore real-time listeners. The test suite provides comprehensive coverage across all critical features.
 
 ### All Test Suites Passing! 🎉✅
 
@@ -54,11 +60,13 @@ All 324 tests across 12 test suites are now passing with 100% success rate. New 
 5. **SignUp.test.tsx** - 38/38 tests ✅
 6. **Login.test.tsx** - 17/17 tests ✅
 7. **Logout.test.tsx** - 12/12 tests ✅
-8. **ProfileScreen.test.tsx** - 15/15 tests ✅ (FIXED!)
-9. **ProfileSelection.test.tsx** - 17/17 tests ✅ (FIXED! - no skipped tests)
-10. **CreateChildAccount.test.tsx** - 23/23 tests ✅ (FIXED!)
-11. **SignUpLanguage.test.tsx** - 21/21 tests ✅ (FIXED!)
-12. **VerifyCode.test.tsx** - 37/37 tests ✅ (FIXED!)
+8. **ProfileScreen.test.tsx** - 15/15 tests ✅
+9. **ProfileSelection.test.tsx** - 17/17 tests ✅
+10. **CreateChildAccount.test.tsx** - 23/23 tests ✅
+11. **SignUpLanguage.test.tsx** - 21/21 tests ✅
+12. **VerifyCode.test.tsx** - 37/37 tests ✅
+13. **ResetPassword.test.tsx** - 25/25 tests ✅ **NEW!**
+14. **TaskListModal.test.tsx** - 37/37 tests ✅ **NEW!**
 
 ## Testing Methodology
 
@@ -432,7 +440,125 @@ Tests for the Pomodoro timer screen.
 
 ---
 
-### 8. GamePage.test.tsx
+### 8. ResetPassword.test.tsx
+
+✅ **Status:** Test file created December 1, 2025 - all 25 tests passing!
+
+**Testing Type:** 🔲 Black Box + ⬜ White Box (Hybrid)
+
+Tests for the password reset functionality (accessed from ForgotPassword flow).
+
+**Test Categories:**
+
+- **UI Rendering** (🔲 Black Box): Tests form elements, placeholders, icons, and layout
+- **Password Input** (🔲 Black Box): Tests input acceptance, masking, and auto-capitalization
+- **Password Validation** (⬜ White Box): Tests length requirements, matching logic, empty checks
+- **Successful Reset** (⬜ White Box): Tests onSubmit callback with valid inputs
+- **Navigation** (🔲 Black Box): Tests back to login navigation
+- **Error State Management** (⬜ White Box): Tests error display, clearing, and initial state
+- **Internationalization** (🔲 Black Box): Tests i18next translation support
+
+**Key Test Cases:**
+
+- ✓ 🔲 Render reset password screen with new password and confirm password inputs
+- ✓ 🔲 Display title "Create New Password" and description text
+- ✓ 🔲 Render submit button labeled "Reset Password"
+- ✓ 🔲 Render back to login link
+- ✓ 🔲 Display lock icons for password fields
+- ✓ 🔲 Accept password input in both fields
+- ✓ 🔲 Mask password inputs (secureTextEntry=true)
+- ✓ 🔲 Disable auto-capitalization
+- ✓ ⬜ Show error "Field is required" when passwords are empty
+- ✓ ⬜ Show error "Passwords do not match" when passwords differ
+- ✓ ⬜ Show error "Password must be at least 8 characters long" when too short
+- ✓ ⬜ Accept password with exactly 8 characters
+- ✓ ⬜ Trim whitespace from password inputs (treat "   " as empty)
+- ✓ ⬜ Call onSubmit with valid matching passwords (8+ chars)
+- ✓ ⬜ Log success message on valid submission
+- ✓ ⬜ Accept passwords with special characters (P@ssw0rd!#$%)
+- ✓ ⬜ Accept long passwords (50+ characters)
+- ✓ 🔲 Call onBack when back link is pressed
+- ✓ 🔲 Call onBack when "Login" text is pressed
+- ✓ ⬜ Clear previous error when submitting again with valid input
+- ✓ ⬜ Not show error message initially (clean state)
+- ✓ 🔲 Use i18next translation function for all text
+- ✓ 🔲 Display translated placeholders
+- ✓ 🔲 Dismiss keyboard when touching outside (TouchableWithoutFeedback)
+
+**Note:** This component is a presentation layer. Actual Firebase password update happens in parent component (ForgotPassword flow).
+
+---
+
+### 9. TaskListModal.test.tsx
+
+✅ **Status:** Test file created December 1, 2025 - all 37 tests passing!
+
+**Testing Type:** 🔲 Black Box + ⬜ White Box (Hybrid)
+
+Tests for the task management modal - a complex component with CRUD operations, child profile support, and PIN protection.
+
+**Test Categories:**
+
+- **UI Rendering** (🔲 Black Box): Tests modal visibility, buttons, and mode toggles
+- **Mode Switching** (🔲 Black Box): Tests normal/edit/archive mode transitions
+- **Edit Mode - Independent Account** (⬜ White Box): Tests edit mode without PIN
+- **Edit Mode - Managed Account PIN** (⬜ White Box): Tests PIN verification for managed accounts
+- **Empty State** (🔲 Black Box): Tests empty task list messages
+- **Task Display** (🔲 Black Box): Tests task rendering (name, reward, cycles)
+- **Task Actions - Normal Mode** (⬜ White Box): Tests start, complete, info buttons
+- **Task Archiving** (⬜ White Box): Tests archive system with rocks rewards
+- **Child Profile Task Isolation** (⬜ White Box): Tests child-specific Firestore paths
+- **Unarchive with PIN** (⬜ White Box): Tests unarchive PIN requirement
+- **Triple-Tap Reset** (⬜ White Box): Tests admin bypass for completedCycles
+- **Error Handling** (⬜ White Box): Tests Firestore errors and unauthenticated state
+- **Task Form Modal** (🔲 Black Box): Tests add/edit task form UI
+- **Task Info Modal** (🔲 Black Box): Tests task details display
+
+**Key Test Cases:**
+
+- ✓ 🔲 Render task modal when visible prop is true
+- ✓ 🔲 Not render when visible=false
+- ✓ 🔲 Render close button
+- ✓ 🔲 Render mode toggle buttons (Normal, Edit, Archive)
+- ✓ ⬜ Show loading state while fetching child profile
+- ✓ 🔲 Close modal when close button pressed
+- ✓ 🔲 Start in normal mode by default
+- ✓ 🔲 Switch to archive mode when archive button pressed
+- ✓ 🔲 Switch back to normal mode from any other mode
+- ✓ ⬜ Reset to normal mode when modal becomes visible
+- ✓ ⬜ Switch to edit mode without PIN for independent account
+- ✓ 🔲 Show "Add New Task" button in edit mode
+- ✓ ⬜ Show PIN modal when switching to edit mode (managed account)
+- ✓ ⬜ Show error on incorrect PIN entry
+- ✓ 🔲 Cancel PIN entry and stay in normal mode
+- ✓ 🔲 Show "No tasks yet. Add your first task!" when empty (normal mode)
+- ✓ 🔲 Show "No archived tasks." when archive mode is empty
+- ✓ 🔲 Display task name and reward (rocks)
+- ✓ 🔲 Display cycle progress (e.g., "1/3")
+- ✓ 🔲 Display infinite cycles symbol (e.g., "5/∞")
+- ✓ ⬜ Navigate to PomodoroScreen when start button pressed
+- ✓ 🔲 Show info modal when info button pressed
+- ✓ ⬜ Mark task complete when checkmark pressed (cycles met)
+- ✓ ⬜ Archive task and award rocks to parent account
+- ✓ ⬜ Call onRocksChange callback after archiving
+- ✓ ⬜ Load child profile when activeChildProfile is set in AsyncStorage
+- ✓ ⬜ Use child tasks collection (users/{parentId}/children/{childId}/tasks)
+- ✓ ⬜ Add rocks to child document when child archives task
+- ✓ ⬜ Show PIN modal when unarchiving (managed account)
+- ✓ ⬜ Reset completedCycles to 0 on triple-tap (admin bypass)
+- ✓ ⬜ Show error "Failed to load tasks" on Firestore error
+- ✓ ⬜ Show error "Please log in to view tasks" when not authenticated
+- ✓ ⬜ Handle add task error gracefully (Alert.alert)
+- ✓ ⬜ Handle delete task error gracefully
+- ✓ 🔲 Open task form modal when "Add New Task" pressed
+- ✓ 🔲 Close task form when cancel is pressed
+- ✓ 🔲 Display task details in info modal (name, description, reward, pomodoro settings)
+
+**Note:** This component manages parent AND child tasks with isolated Firestore collections based on active profile.
+
+---
+
+### 10. GamePage.test.tsx
 
 **Testing Type:** 🔲 Black Box + ⬜ White Box (Hybrid)
 
