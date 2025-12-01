@@ -9,6 +9,17 @@
  * - Firebase authentication integration
  */
 
+// Mock HomeScreen to prevent infinite loops when navigating to home
+jest.mock("../app/pages/HomeScreen", () => {
+  const React = require("react");
+  const { View, Text } = require("react-native");
+  return jest.fn(() =>
+    React.createElement(View, { testID: "home-screen" }, [
+      React.createElement(Text, { key: "home-text" }, "Home Screen"),
+    ])
+  );
+});
+
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import Login from "../app/pages/Login";
@@ -281,8 +292,9 @@ describe("Login Process", () => {
       const signUpLink = getAllByText("Sign Up")[1];
       fireEvent.press(signUpLink);
 
-      // Should navigate to SignUpBirthdate screen
-      expect(getByText("What's Your Birthdate")).toBeTruthy();
+      // Should navigate to SignUpLanguage screen (first step in signup flow)
+      expect(getByText("English")).toBeTruthy();
+      expect(getByText("Español")).toBeTruthy();
     });
   });
 
