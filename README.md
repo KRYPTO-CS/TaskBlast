@@ -143,5 +143,6 @@ TaskBlast/
 
 ## Additional Documentation
 
-- [Styling Guide](TaskBlast/STYLING_GUIDE.md)
-- [Fonts Guide](TaskBlast/FONTS_GUIDE.md)
+- [Testing Guide](TaskBlast/__tests__/README.md) - Comprehensive test suite documentation
+- [Styling Guide](TaskBlast/STYLING_GUIDE.md) - NativeWind and TailwindCSS styling conventions
+- [Fonts Guide](TaskBlast/FONTS_GUIDE.md) - Custom fonts and typography guide
