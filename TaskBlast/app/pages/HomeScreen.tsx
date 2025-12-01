@@ -17,6 +17,10 @@ import {
   getDoc,
   updateDoc,
   increment,
+  collection,
+  query,
+  where,
+  getDocs,
 } from "firebase/firestore";
 import { useAudioPlayer } from "expo-audio";
 import MainButton from "../components/MainButton";
@@ -31,6 +35,10 @@ export default function HomeScreen() {
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
   const [rocks, setRocks] = useState<number>(0);
+  
+  // Child profile state
+  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(null);
+  const [childDocId, setChildDocId] = useState<string | null>(null);
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -49,9 +57,35 @@ export default function HomeScreen() {
       }
 
       const db = getFirestore();
-      const userDoc = await getDoc(doc(db, "users", user.uid));
+      
+      // Check if a child profile is active
+      const activeChild = await AsyncStorage.getItem("activeChildProfile");
+      setActiveChildProfile(activeChild);
+      
+      let userDoc;
+      
+      if (activeChild) {
+        // Child is active - find child's document
+        const childrenRef = collection(db, "users", user.uid, "children");
+        const childQuery = query(childrenRef, where("username", "==", activeChild));
+        const childSnapshot = await getDocs(childQuery);
+        
+        if (!childSnapshot.empty) {
+          const childDocData = childSnapshot.docs[0];
+          setChildDocId(childDocData.id);
+          userDoc = childDocData;
+        } else {
+          console.warn("Child profile not found");
+          setRocks(0);
+          return;
+        }
+      } else {
+        // Parent is active - load from parent's document
+        setChildDocId(null);
+        userDoc = await getDoc(doc(db, "users", user.uid));
+      }
 
-      if (userDoc.exists()) {
+      if (userDoc && userDoc.exists()) {
         const userData = userDoc.data();
         const rocksValue = userData.rocks || 0;
         setRocks(isNaN(rocksValue) ? 0 : Math.max(0, Math.floor(rocksValue)));

@@ -12,12 +12,14 @@ import {
   Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { updateProfilePicture } from "../../server/storageUtils";
 import {
   updateUserProfile,
   type UserProfile,
 } from "../../server/userProfileUtils";
 import { auth } from "../../server/firebase";
+import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
 
 interface EditProfileModalProps {
   visible: boolean;
@@ -43,6 +45,36 @@ export default function EditProfileModal({
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState("");
+  
+  // Child profile state
+  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(null);
+  const [childDocId, setChildDocId] = useState<string | null>(null);
+
+  // Check for active child profile
+  useEffect(() => {
+    const checkActiveProfile = async () => {
+      const activeChild = await AsyncStorage.getItem("activeChildProfile");
+      setActiveChildProfile(activeChild);
+      
+      if (activeChild && auth.currentUser) {
+        // Find child's document ID
+        const db = getFirestore();
+        const childrenRef = collection(db, "users", auth.currentUser.uid, "children");
+        const childQuery = query(childrenRef, where("username", "==", activeChild));
+        const childSnapshot = await getDocs(childQuery);
+        
+        if (!childSnapshot.empty) {
+          setChildDocId(childSnapshot.docs[0].id);
+        }
+      } else {
+        setChildDocId(null);
+      }
+    };
+    
+    if (visible) {
+      checkActiveProfile();
+    }
+  }, [visible]);
 
   // Update local state when userProfile prop changes
   useEffect(() => {
@@ -93,15 +125,18 @@ export default function EditProfileModal({
       return;
     }
 
-    if (!email.trim()) {
-      setError("Email is required");
-      return;
-    }
+    // Email validation - only for parent accounts
+    if (!activeChildProfile) {
+      if (!email.trim()) {
+        setError("Email is required");
+        return;
+      }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError("Please enter a valid email address");
-      return;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        setError("Please enter a valid email address");
+        return;
+      }
     }
 
     setIsSaving(true);
@@ -112,15 +147,28 @@ export default function EditProfileModal({
         return;
       }
 
-      // Update profile in Firestore
-      await updateUserProfile(currentUser.uid, {
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        displayName: displayName.trim(),
-        email: email.trim(),
-        birthdate: birthdate.trim(),
-        profilePicture,
-      });
+      if (childDocId && activeChildProfile) {
+        // Update child profile
+        const db = getFirestore();
+        const childRef = doc(db, "users", currentUser.uid, "children", childDocId);
+        
+        await updateDoc(childRef, {
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          birthdate: birthdate.trim(),
+          ...(profilePicture && { profilePicture }),
+        });
+      } else {
+        // Update parent profile
+        await updateUserProfile(currentUser.uid, {
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          displayName: displayName.trim(),
+          email: email.trim(),
+          birthdate: birthdate.trim(),
+          profilePicture,
+        });
+      }
 
       // Create updated profile object
       const updatedProfile: UserProfile = {
@@ -289,57 +337,61 @@ export default function EditProfileModal({
                 </View>
               </View>
 
-              {/* Display Name */}
-              <View className="mb-4">
-                <Text className="font-orbitron-semibold text-white text-sm mb-2">
-                  Display Name (Nickname)
-                </Text>
-                <View
-                  className="flex-row items-center bg-white/10 border-2 rounded-xl px-4 h-14"
-                  style={{ borderColor: "rgba(147, 51, 234, 0.4)" }}
-                >
-                  <Ionicons
-                    name="star-outline"
-                    size={20}
-                    color="white"
-                    style={{ marginRight: 10 }}
-                  />
-                  <TextInput
-                    className="font-madimi flex-1 text-base text-white"
-                    placeholder="Display Name"
-                    placeholderTextColor="rgba(255,255,255,0.4)"
-                    value={displayName}
-                    onChangeText={setDisplayName}
-                  />
+              {/* Display Name - Only for parent */}
+              {!activeChildProfile && (
+                <View className="mb-4">
+                  <Text className="font-orbitron-semibold text-white text-sm mb-2">
+                    Display Name (Nickname)
+                  </Text>
+                  <View
+                    className="flex-row items-center bg-white/10 border-2 rounded-xl px-4 h-14"
+                    style={{ borderColor: "rgba(147, 51, 234, 0.4)" }}
+                  >
+                    <Ionicons
+                      name="star-outline"
+                      size={20}
+                      color="white"
+                      style={{ marginRight: 10 }}
+                    />
+                    <TextInput
+                      className="font-madimi flex-1 text-base text-white"
+                      placeholder="Display Name"
+                      placeholderTextColor="rgba(255,255,255,0.4)"
+                      value={displayName}
+                      onChangeText={setDisplayName}
+                    />
+                  </View>
                 </View>
-              </View>
+              )}
 
-              {/* Email */}
-              <View className="mb-4">
-                <Text className="font-orbitron-semibold text-white text-sm mb-2">
-                  Email
-                </Text>
-                <View
-                  className="flex-row items-center bg-white/10 border-2 rounded-xl px-4 h-14"
-                  style={{ borderColor: "rgba(147, 51, 234, 0.4)" }}
-                >
-                  <Ionicons
-                    name="mail-outline"
-                    size={20}
-                    color="white"
-                    style={{ marginRight: 10 }}
-                  />
-                  <TextInput
-                    className="font-madimi flex-1 text-base text-white"
-                    placeholder="Email"
-                    placeholderTextColor="rgba(255,255,255,0.4)"
-                    value={email}
-                    onChangeText={setEmail}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                  />
+              {/* Email - Only for parent */}
+              {!activeChildProfile && (
+                <View className="mb-4">
+                  <Text className="font-orbitron-semibold text-white text-sm mb-2">
+                    Email
+                  </Text>
+                  <View
+                    className="flex-row items-center bg-white/10 border-2 rounded-xl px-4 h-14"
+                    style={{ borderColor: "rgba(147, 51, 234, 0.4)" }}
+                  >
+                    <Ionicons
+                      name="mail-outline"
+                      size={20}
+                      color="white"
+                      style={{ marginRight: 10 }}
+                    />
+                    <TextInput
+                      className="font-madimi flex-1 text-base text-white"
+                      placeholder="Email"
+                      placeholderTextColor="rgba(255,255,255,0.4)"
+                      value={email}
+                      onChangeText={setEmail}
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                    />
+                  </View>
                 </View>
-              </View>
+              )}
 
               {/* Birthdate */}
               <View className="mb-6">

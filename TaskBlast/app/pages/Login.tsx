@@ -34,6 +34,7 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { useTranslation } from "react-i18next";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Screen =
   | "login"
@@ -74,17 +75,30 @@ export default function Login() {
   const [signUpLoading, setSignUpLoading] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+  const checkAuthAndProfile = async () => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user && user.emailVerified) {
-        // User is signed in and verified - go straight to home
-        console.log("Auto-login: User already authenticated:", user.email);
-        setCurrentScreen("homeScreen");
+        // Check if there's an active child profile
+        const activeChildProfile = await AsyncStorage.getItem("activeChildProfile");
+        
+        if (activeChildProfile) {
+          // Child profile is active - load child view
+          console.log("Auto-login: Child profile active:", activeChildProfile);
+          // TODO: Navigate to child home screen with activeChildProfile
+          setCurrentScreen("homeScreen"); // For now - we'll make this child-specific later
+        } else {
+          // No child profile - default to parent view
+          console.log("Auto-login: Parent profile active:", user.email);
+          setCurrentScreen("homeScreen");
+        }
       }
     });
-
-    // Cleanup subscription
     return () => unsubscribe();
-  }, []);
+  };
+
+  checkAuthAndProfile();
+}, []);
+
 
   const handleLogin = () => {
     // Normalize inputs to make bypass resilient to whitespace/casing
@@ -115,7 +129,7 @@ export default function Login() {
         } else {
           Alert.alert(
             "Verify Your Email",
-            "A verification email was sent. Please verify your email before signing in.",
+            "A verification email was sent. Please verify your email before signing in. Make sure to check spam/junk folders if you don't see it.",
             [{ text: "OK" }]
           );
           setCurrentScreen("login");
