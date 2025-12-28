@@ -54,7 +54,7 @@ export default function SignUpName({ onSubmit, onBack }: SignUpNameProps) {
           {/* Name Container */}
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
             <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
-              {t("Name.title")};
+              {t("Name.title")}
             </Text>
 
             <Text className="font-madimi text-sm text-white/90 mb-8 text-left">
@@ -128,7 +128,8 @@ export default function SignUpName({ onSubmit, onBack }: SignUpNameProps) {
             >
               {t("language.backTo")}
               <Text className="font-semibold text-yellow-300">
-                {" "}{t("birthdate.previousStep")}
+                {" "}
+                {t("birthdate.previousStep")}
               </Text>
             </Text>
           </View>
