@@ -4,7 +4,7 @@ import { initReactI18next } from "react-i18next";
 i18n
   .use(initReactI18next)
   .init({
-    compatibilityJSON: "v4",
+   
     lng: "en",
     fallbackLng: "en",
     resources: {
@@ -15,7 +15,18 @@ i18n
       es: 
       {
        translation: require("./locales/es/translation.json"),
+      },
+      pt:
+      {
+       translation: require("./locales/pt/translation.json"),
+      },
+      fr:
+      {
+       translation: require("./locales/fr/translation.json"),
       }
+    },
+    interpolation: {
+      escapeValue: false, 
     },
   });
 

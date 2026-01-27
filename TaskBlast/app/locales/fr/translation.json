@@ -1,0 +1,88 @@
+{
+  "language": {
+    "selectLanguage": "Veuillez sélectionner votre langue",
+    "continue": "Continuer",
+    "backTo": "Retour à",
+    "Login": "Connexion"
+  },
+  "birthdate": {
+    "title": "Quelle est votre date de naissance ?",
+    "notice": "Vous devez avoir au moins 13 ans pour vous inscrire",
+    "month": "Mois",
+    "day": "Jour",
+    "year": "Année",
+    "continue": "Continuer",
+    "previousStep": "Étape précédente",
+    "error": "Veuillez entrer une date valide",
+    "age": "Veuillez remettre l’appareil à un parent ou tuteur",
+    "empty": "Veuillez remplir tous les champs"
+  },
+  "AccountType": {
+    "title": "Qui utilisera TaskBlast ?",
+    "type": "Choisissez le type de compte qui décrit le mieux l’utilisateur principal de TaskBlast.",
+    "managetitle": "Compte géré",
+    "managedesc": "Pour les personnes à charge. Certaines fonctionnalités sont restreintes et contrôlées par un code PIN parental.",
+    "indetitle": "Compte indépendant",
+    "indedesc": "Pour les apprenants individuels. Accès complet sans restrictions.",
+    "continue": "Continuer",
+    "error": "Veuillez choisir un type de compte pour continuer"
+  },
+  "Name": {
+    "title": "Quel est votre nom ?",
+    "desc": "Dites-nous comment vous appeler lors de l’utilisation de TaskBlast",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "continue": "Continuer"
+  },
+  "Email": {
+    "title": "Quelle est votre adresse e-mail ?",
+    "desc": "Nous vous enverrons un code de vérification pour confirmer votre adresse e-mail",
+    "emailPlaceholder": "Adresse e-mail",
+    "send": "Envoyer le lien"
+  },
+  "Password": {
+    "title": "Créer un mot de passe",
+    "desc": "Choisissez un mot de passe fort pour protéger votre compte",
+    "passwordPlaceholder": "Mot de passe",
+    "ConfirmPasswordPlaceholder": "Confirmer le mot de passe",
+    "submit": "Créer un compte",
+    "match": "Les mots de passe ne correspondent pas",
+    "length": "Le mot de passe doit contenir au moins 8 caractères"
+  },
+  "Login": {
+    "title": "Connexion",
+    "emailPlaceholder": "E-mail ou nom d’utilisateur",
+    "passwordPlaceholder": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "loginButton": "Envoyer",
+    "noAccount": "Vous n’avez pas de compte ?",
+    "signUp": "S’inscrire"
+  },
+  "ForgotPassword": {
+    "title": "Mot de passe oublié ?",
+    "desc": "Entrez votre adresse e-mail et nous vous enverrons un code pour réinitialiser votre mot de passe",
+    "emailPlaceholder": "Adresse e-mail",
+    "submit": "Envoyer"
+  },
+  "VerifyCode": {
+    "title": "Vérifier le code",
+    "desc": "Entrez le code à 5 chiffres envoyé à",
+    "notreceived": "Vous n’avez pas reçu le code ?",
+    "resend": "Renvoyer",
+    "submit": "Envoyer"
+  },
+  "ResetPassword": {
+    "title": "Créer un nouveau mot de passe",
+    "desc": "Entrez votre nouveau mot de passe ci-dessous",
+    "newPasswordPlaceholder": "Nouveau mot de passe",
+    "confirmPasswordPlaceholder": "Confirmer le mot de passe",
+    "submit": "Réinitialiser le mot de passe"
+  },
+  "ManagerPin": {
+    "title": "Créer un code PIN parent",
+    "desc": "Ce code PIN à 4 chiffres permet à un parent ou tuteur de gérer le compte et de créer des tâches pour l’apprenant. Gardez-le secret.",
+    "pin": "PIN (4 chiffres)",
+    "confirmPinPlaceholder": "Confirmer le PIN",
+    "continue": "Continuer"
+  }
+}

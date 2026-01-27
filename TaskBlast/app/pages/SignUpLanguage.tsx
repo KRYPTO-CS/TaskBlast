@@ -10,8 +10,18 @@ import MainButton from "../components/MainButton";
 import { useTranslation } from "react-i18next";
 
 
+
+const Lang_Map = {
+    English: "en",
+    Spanish: "es",
+    Portuguese: "pt",
+    French: "fr",
+  } as const;
+
+type language = keyof typeof Lang_Map;
+
 interface SignUpAccountTypeProps {
-  onSubmit: (accountType: "English" | "Spanish") => void;
+  onSubmit: (accountType: language) => void;
   onBack: () => void;
 }
 
@@ -19,7 +29,7 @@ export default function SignUpAccountType({
   onSubmit,
   onBack,
 }: SignUpAccountTypeProps) {
-  const [selected, setSelected] = useState<"English" | "Spanish" | null>(
+  const [selected, setSelected] = useState<language | null>(
     null
   );
   const [error, setError] = useState("");
@@ -27,18 +37,20 @@ export default function SignUpAccountType({
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
   const USA = require("../../assets/images/united-states.png");
   const Mexico = require("../../assets/images/mexico.png");
-  
+  const Brazil = require("../../assets/images/brazil-flag.png");
+  const France = require("../../assets/images/france.png");
   const {t ,i18n} = useTranslation();
+  
 
   const handleContinue = () => {
     setError("");
     if (!selected) {
-      setError(t("selectLanguage"));
+      setError(t("language.selectLanguage"));
       return;
     }
 
 
-    i18n.changeLanguage(selected === "English" ? "en" : "es");
+    i18n.changeLanguage(Lang_Map[selected]);
     onSubmit(selected);
   };
 
@@ -47,7 +59,7 @@ export default function SignUpAccountType({
     image,
     title,
   }: {
-    value: "English" | "Spanish";
+    value: "English" | "Spanish" | "Portuguese" | "French";
     image?: any;
     title: string;
   }) => {
@@ -57,7 +69,6 @@ export default function SignUpAccountType({
   activeOpacity={0.8}
   onPress={() => {
     setSelected(value);
-    i18n.changeLanguage(value === "English" ? "en" : "es");
   }}
   className={`w-full p-4 rounded-2xl border-2 flex-row items-center ${
     active
@@ -100,6 +111,18 @@ export default function SignUpAccountType({
             value="Spanish"
             image={Mexico}
             title="Español"
+          />
+
+          <Option
+            value="Portuguese"
+            image={Brazil}
+            title="Português"
+          />
+
+          <Option
+            value="French"
+            image={France}
+            title="Français"
           />
 
           {error ? (
