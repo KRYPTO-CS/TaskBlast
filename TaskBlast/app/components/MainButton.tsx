@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { useAudioPlayer } from "expo-audio";
 import { buttons, buttonText } from "../styles/global";
+import { useSound } from "../hooks/useSound";
 
 type ButtonVariant =
   | "primary"
@@ -19,7 +20,8 @@ type ButtonVariant =
   | "ghost"
   | "success"
   | "error"
-  | "warning";
+  | "warning"
+  | "info";
 type ButtonSize = "small" | "medium" | "large";
 
 interface MainButtonProps extends TouchableOpacityProps {
@@ -45,10 +47,8 @@ export default function MainButton({
   const translateYAnim = useRef(new Animated.Value(0)).current;
   const borderOpacity = useRef(new Animated.Value(1)).current;
 
-  // Audio player setup - you'll need to add a sound file to your assets
-  const player = useAudioPlayer(
-    require("../../assets/music/button-click.mp3") // Update this path to your sound file
-  );
+  // Use the sound hook for button click sounds
+  const { playButtonClick, soundEnabled } = useSound();
 
   const getButtonStyle = (): ViewStyle => {
     const baseStyle = buttons[variant];
@@ -79,15 +79,15 @@ export default function MainButton({
       success: "#25a25a", // Darker green
       error: "#c0392b", // Darker red
       warning: "#d68910", // Darker orange
+      info: "#2563eb", // Darker blue
     };
     return colorMap[variant];
   };
 
   const handlePressIn = () => {
-    // Play sound if enabled
-    if (playSoundOnPress && player) {
-      player.seekTo(0); // Reset to beginning
-      player.play(); // Play the sound
+    // Play sound if enabled and sound setting is on
+    if (playSoundOnPress && soundEnabled) {
+      playButtonClick();
     }
 
     Animated.parallel([
