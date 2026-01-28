@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   Image,
+  ScrollView
 } from "react-native";
 import MainButton from "../components/MainButton";
 import { useTranslation } from "react-i18next";
@@ -16,6 +17,12 @@ const Lang_Map = {
     Spanish: "es",
     Portuguese: "pt",
     French: "fr",
+    German: "de",
+    Russian: "ru",
+    Arabic: "ar",
+    Bengali: "bn",
+    Chinese: "zh",
+    Hindi: "hi",
   } as const;
 
 type language = keyof typeof Lang_Map;
@@ -39,6 +46,12 @@ export default function SignUpAccountType({
   const Mexico = require("../../assets/images/mexico.png");
   const Brazil = require("../../assets/images/brazil-flag.png");
   const France = require("../../assets/images/france.png");
+  const Germany = require("../../assets/images/germany.png");
+  const Russia = require("../../assets/images/russia.png");
+  const Arabic = require("../../assets/images/saudi-arabia.png");
+  const Bengali = require("../../assets/images/bangladesh.png");
+  const China = require("../../assets/images/china.png");
+  const India = require("../../assets/images/india.png");
   const {t ,i18n} = useTranslation();
   
 
@@ -59,7 +72,7 @@ export default function SignUpAccountType({
     image,
     title,
   }: {
-    value: "English" | "Spanish" | "Portuguese" | "French";
+    value: "English" | "Spanish" | "Portuguese" | "French" | "German" | "Russian" | "Arabic" | "Bengali" | "Chinese" | "Hindi";
     image?: any;
     title: string;
   }) => {
@@ -96,7 +109,7 @@ export default function SignUpAccountType({
 
       {/* Content overlay */}
       <View className="flex-1 items-center justify-center p-5">
-        <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
+        <ScrollView className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
           <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
            {t("language.selectLanguage")}
           </Text>
@@ -123,6 +136,42 @@ export default function SignUpAccountType({
             value="French"
             image={France}
             title="Français"
+          />
+
+          <Option
+            value="German"
+            image={Germany}
+            title="Deutsch"
+          />
+
+          <Option
+            value="Russian"
+            image={Russia}
+            title="Русский"
+          />
+
+          <Option
+            value="Arabic"
+            image={Arabic}
+            title="العربية"
+          />
+
+          <Option
+            value="Bengali"
+            image={Bengali}
+            title="বাংলা"
+          />
+
+          <Option
+            value="Chinese"
+            image={China}
+            title="中文"
+          />
+
+          <Option
+            value="Hindi"
+            image={India}
+            title="हिन्दी"
           />
 
           {error ? (
@@ -154,7 +203,7 @@ export default function SignUpAccountType({
               </Text>
             </Text>
           </View>
-        </View>
+        </ScrollView>
       </View>
     </View>
   );

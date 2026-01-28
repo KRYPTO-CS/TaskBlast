@@ -23,6 +23,30 @@ i18n
       fr:
       {
        translation: require("./locales/fr/translation.json"),
+      },
+      de:
+      {
+       translation: require("./locales/de/translation.json"),
+      },
+      ru:
+      {
+       translation: require("./locales/ru/translation.json"),
+      },
+      zh:
+      {
+       translation: require("./locales/zh/translation.json"),
+      },
+      hi:
+      {
+       translation: require("./locales/hi/translation.json"),
+      },
+      bn:
+      {
+       translation: require("./locales/bn/translation.json"),
+      },
+      ar:
+      {
+       translation: require("./locales/ar/translation.json"),
       }
     },
     interpolation: {
