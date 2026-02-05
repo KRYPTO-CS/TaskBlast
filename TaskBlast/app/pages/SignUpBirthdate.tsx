@@ -103,19 +103,19 @@ export default function SignUpBirthdate({
         <View className="flex-1 items-center justify-center p-5">
           {/* Birthdate Container */}
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
-            <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
+            <SpeakableText className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
              {t("birthdate.title")}
-            </Text>
+            </SpeakableText>
 
-            <Text className="font-madimi text-sm text-white/90 mb-8 text-left">
+            <SpeakableText className="font-madimi text-sm text-white/90 mb-8 text-left">
               {t("birthdate.notice")}
-            </Text>
+            </SpeakableText>
 
             <View className="flex-row justify-between mb-4" style={{ gap: 10 }}>
               <View className="flex-1">
-                <Text className="font-madimi text-xs text-white/80 mb-2">
+                <SpeakableText className="font-madimi text-xs text-white/80 mb-2">
                   {t("birthdate.month")}
-                </Text>
+                </SpeakableText>
                 <TextInput
                   className="font-madimi w-full h-12 bg-white/20 border-2 border-white/40 rounded-2xl px-4 text-base text-white shadow-lg"
                   placeholder="MM"
@@ -140,9 +140,9 @@ export default function SignUpBirthdate({
               </View>
 
               <View className="flex-1">
-                <Text className="font-madimi text-xs text-white/80 mb-2">
+                <SpeakableText className="font-madimi text-xs text-white/80 mb-2">
                   {t("birthdate.day")}
-                </Text>
+                </SpeakableText>
                 <TextInput
                   className="font-madimi w-full h-12 bg-white/20 border-2 border-white/40 rounded-2xl px-4 text-base text-white shadow-lg"
                   placeholder="DD"
@@ -170,9 +170,9 @@ export default function SignUpBirthdate({
               </View>
 
               <View className="flex-1">
-                <Text className="font-madimi text-xs text-white/80 mb-2">
+                <SpeakableText className="font-madimi text-xs text-white/80 mb-2">
                   {t("birthdate.year")}
-                </Text>
+                </SpeakableText>
                 <TextInput
                   className="font-madimi w-full h-12 bg-white/20 border-2 border-white/40 rounded-2xl px-4 text-base text-white shadow-lg"
                   placeholder="YYYY"
@@ -201,9 +201,9 @@ export default function SignUpBirthdate({
             </View>
 
             {error ? (
-              <Text className="font-madimi text-sm text-red-300 mb-4 text-left drop-shadow-md">
+              <SpeakableText className="font-madimi text-sm text-red-300 mb-4 text-left drop-shadow-md">
                 {error}
-              </Text>
+              </SpeakableText>
             ) : null}
 
             <MainButton
@@ -221,13 +221,13 @@ export default function SignUpBirthdate({
 
           {/* Back Link */}
           <View className="mt-8 items-center">
-            <Text
+            <SpeakableText
               className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
               onPress={onBack}
             >
               {t("language.backTo")}
-              <Text className="font-semibold text-yellow-300"> {t("birthdate.previousStep")}</Text>
-            </Text>
+              <SpeakableText className="font-semibold text-yellow-300"> {t("birthdate.previousStep")}</SpeakableText>
+            </SpeakableText>
           </View>
         </View>
       </View>

@@ -25,6 +25,7 @@ import {
   updateUserProfilePicture,
   type UserProfile,
 } from "../../server/userProfileUtils";
+import { SpeakableText } from '../_utility/SpeakableText';
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -418,16 +419,16 @@ export default function ProfileScreen() {
                     : "rgba(192, 132, 252, 0.6)",
               }}
             >
-              <Text className="font-orbitron-semibold text-white text-xs">
+              <SpeakableText className="font-orbitron-semibold text-white text-xs">
                 {currentProfileType === "parent"
                   ? "👤 Parent Account"
                   : `👶 ${currentChildUsername}`}
-              </Text>
+              </SpeakableText>
             </View>
           </View>
 
           {/* User Name - Centered */}
-          <Text
+          <SpeakableText
             className="font-orbitron-semibold text-xl text-white text-center text-3xl mt-4 mb-8"
             style={{
               textShadowColor: "rgba(147, 51, 234, 0.8)",
@@ -438,7 +439,7 @@ export default function ProfileScreen() {
             {userProfile?.displayName ||
               userProfile?.firstName ||
               "Space Explorer"}
-          </Text>
+          </SpeakableText>
 
           {/* Profile Image */}
           <View className="items-center mb-6">
@@ -491,16 +492,16 @@ export default function ProfileScreen() {
                 color="white"
                 style={{ marginRight: 8 }}
               />
-              <Text className="font-orbitron-semibold text-xl text-white text-base">
+              <SpeakableText className="font-orbitron-semibold text-xl text-white text-base">
                 Edit Profile
-              </Text>
+              </SpeakableText>
             </TouchableOpacity>
           </View>
 
           {/* Traits Container */}
           <View className="mb-6">
             <View className="flex-row justify-between items-center mb-4">
-              <Text
+              <SpeakableText
                 className="font-orbitron-semibold text-xl text-white"
                 style={{
                   textShadowColor: "rgba(59, 130, 246, 0.6)",
@@ -509,7 +510,7 @@ export default function ProfileScreen() {
                 }}
               >
                 Traits
-              </Text>
+              </SpeakableText>
               <TouchableOpacity
                 onPress={() => setIsTraitsModalVisible(true)}
                 className="flex-row items-center px-3 py-2 rounded-full"
@@ -525,9 +526,9 @@ export default function ProfileScreen() {
                   color="white"
                   style={{ marginRight: 4 }}
                 />
-                <Text className="font-orbitron-semibold text-white text-xs">
+                <SpeakableText className="font-orbitron-semibold text-white text-xs">
                   Edit
-                </Text>
+                </SpeakableText>
               </TouchableOpacity>
             </View>
             <View
@@ -553,9 +554,9 @@ export default function ProfileScreen() {
                       borderColor: "rgba(96, 165, 250, 0.6)",
                     }}
                   >
-                    <Text className="font-orbitron-semibold text-xl text-white text-sm">
+                    <SpeakableText className="font-orbitron-semibold text-xl text-white text-sm">
                       {trait}
-                    </Text>
+                    </SpeakableText>
                   </View>
                 ))}
               </View>
@@ -564,7 +565,7 @@ export default function ProfileScreen() {
 
           {/* Awards Container */}
           <View className="mb-8">
-            <Text
+            <SpeakableText
               className="font-orbitron-semibold text-xl text-white text-xl mb-4"
               style={{
                 textShadowColor: "rgba(236, 72, 153, 0.6)",
@@ -573,7 +574,7 @@ export default function ProfileScreen() {
               }}
             >
               Awards
-            </Text>
+            </SpeakableText>
             <View
               className="p-4 rounded-2xl"
               style={{
@@ -597,9 +598,9 @@ export default function ProfileScreen() {
                       borderColor: "rgba(244, 114, 182, 0.6)",
                     }}
                   >
-                    <Text className="font-orbitron-semibold text-white text-">
+                    <SpeakableText className="font-orbitron-semibold text-white text-">
                       {award}
-                    </Text>
+                    </SpeakableText>
                   </View>
                 ))}
               </View>
@@ -608,53 +609,53 @@ export default function ProfileScreen() {
 
           {/* Analytics Container */}
           <View className="mb-8">
-            <Text className="font-orbitron-semibold text-xl text-white mb-4" style={{ textShadowColor: "rgba(59,246,112,0.6)", textShadowOffset:{width:0,height:0}, textShadowRadius:10 }}>Your Stats</Text>
+            <SpeakableText className="font-orbitron-semibold text-xl text-white mb-4" style={{ textShadowColor: "rgba(59,246,112,0.6)", textShadowOffset:{width:0,height:0}, textShadowRadius:10 }}>Your Stats</SpeakableText>
             <View className="p-4 rounded-2xl" style={{ backgroundColor:"rgba(30,138,43,0.30)", borderWidth:2, borderColor:"rgba(59,246,112,0.35)", shadowColor:"#3bf670", shadowOffset:{width:0,height:6}, shadowOpacity:0.35, shadowRadius:12 }}>
               {/* Total Rocks */}
               <View className="px-4 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                <Text className="font-orbitron-semibold text-white">Total Rocks Earned: {totalRocksAllTime}</Text>
+                <SpeakableText className="font-orbitron-semibold text-white">Total Rocks Earned: {totalRocksAllTime}</SpeakableText>
               </View>
               {/* Rocks Spent */}
               <View className="px-4 py-2 rounded-full mt-2" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                <Text className="font-orbitron-semibold text-white">Total Rocks Spent: {Math.max(0, totalRocksAllTime - currentRocks)}</Text>
+                <SpeakableText className="font-orbitron-semibold text-white">Total Rocks Spent: {Math.max(0, totalRocksAllTime - currentRocks)}</SpeakableText>
               </View>
               {/* Rocks Chart */}
               <View style={{ height:200, borderRadius:16, overflow:"hidden", marginTop:16, marginBottom:16 }}>
                 {statsValues.length ? (
                   <WebView originWhitelist={["*"]} source={{ html: totalRocksChart(statsLabels, statsValues) }} scrollEnabled={false} style={{ backgroundColor:"transparent" }} />
-                ) : (<Text className="text-white">No rock stats yet.</Text>)}
+                ) : (<SpeakableText className="text-white">No rock stats yet.</SpeakableText>)}
               </View>
               {/* Work Time Chart */}
               <View style={{ height:200, borderRadius:16, overflow:"hidden", marginTop:8, marginBottom:16 }}>
                 {workTimes.length ? (
                   <WebView originWhitelist={["*"]} source={{ html: cumulativeChart("Cumulative Work Time", "Minutes", workLabels, workTimes) }} scrollEnabled={false} style={{ backgroundColor:"transparent" }} />
-                ) : (<Text className="text-white">No work sessions yet.</Text>)}
+                ) : (<SpeakableText className="text-white">No work sessions yet.</SpeakableText>)}
               </View>
               {/* Play Time Chart */}
               <View style={{ height:200, borderRadius:16, overflow:"hidden", marginTop:8, marginBottom:16 }}>
                 {playTimes.length ? (
                   <WebView originWhitelist={["*"]} source={{ html: cumulativeChart("Cumulative Play Time", "Minutes", playLabels, playTimes) }} scrollEnabled={false} style={{ backgroundColor:"transparent" }} />
-                ) : (<Text className="text-white">No play sessions yet.</Text>)}
+                ) : (<SpeakableText className="text-white">No play sessions yet.</SpeakableText>)}
               </View>
               {/* Averages */}
               <View className="flex-row flex-wrap gap-2 mt-2">
                 <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                  <Text className="font-orbitron-semibold text-white text-xs">Avg Work Cycle Length: {workTimes.length ? Math.round(workTimes.reduce((a,b)=>a+b,0)/workTimes.length) : 0}m</Text>
+                  <SpeakableText className="font-orbitron-semibold text-white text-xs">Avg Work Cycle Length: {workTimes.length ? Math.round(workTimes.reduce((a,b)=>a+b,0)/workTimes.length) : 0}m</SpeakableText>
                 </View>
                 <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                  <Text className="font-orbitron-semibold text-white text-xs">Avg Play Cycle Length: {playTimes.length ? Math.round(playTimes.reduce((a,b)=>a+b,0)/playTimes.length) : 0}m</Text>
+                  <SpeakableText className="font-orbitron-semibold text-white text-xs">Avg Play Cycle Length: {playTimes.length ? Math.round(playTimes.reduce((a,b)=>a+b,0)/playTimes.length) : 0}m</SpeakableText>
                 </View>
                 <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                  <Text className="font-orbitron-semibold text-white text-xs">Work/Play Ratio: {playTimes.length && workTimes.length ? ((workTimes.reduce((a,b)=>a+b,0)/workTimes.length)/(playTimes.reduce((a,b)=>a+b,0)/playTimes.length)).toFixed(2) : 0}</Text>
+                  <SpeakableText className="font-orbitron-semibold text-white text-xs">Work/Play Ratio: {playTimes.length && workTimes.length ? ((workTimes.reduce((a,b)=>a+b,0)/workTimes.length)/(playTimes.reduce((a,b)=>a+b,0)/playTimes.length)).toFixed(2) : 0}</SpeakableText>
                 </View>
                 <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                  <Text className="font-orbitron-semibold text-white text-xs">Total Time Spent on Tasks: {(() => { const t = workTimes.reduce((a,b)=>a+b,0)+playTimes.reduce((a,b)=>a+b,0); return `${(t/60).toFixed(1)}h`; })()}</Text>
+                  <SpeakableText className="font-orbitron-semibold text-white text-xs">Total Time Spent on Tasks: {(() => { const t = workTimes.reduce((a,b)=>a+b,0)+playTimes.reduce((a,b)=>a+b,0); return `${(t/60).toFixed(1)}h`; })()}</SpeakableText>
                 </View>
               </View>
             </View>
           </View>
 
-          {/* Add Child Button - NEW */}
+          {/* Add Child Button */}
           <View className="items-center mb-4">
             <MainButton
             title="Add Child Account"

@@ -146,7 +146,7 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
             <Ionicons name="arrow-back" size={24} color="white" />
           </TouchableOpacity>
 
-          <Text
+          <SpeakableText
             className="text-4xl font-orbitron-bold text-white mb-8 text-center"
             style={{
               textShadowColor: "rgba(147, 51, 234, 0.8)",
@@ -155,11 +155,11 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
             }}
           >
             Create Child Account
-          </Text>
+          </SpeakableText>
 
           {/* First Name */}
           <View className="mb-4">
-            <Text className="text-white font-orbitron-semibold mb-2">First Name</Text>
+            <SpeakableText className="text-white font-orbitron-semibold mb-2">First Name</SpeakableText>
             <TextInput
               className="bg-white/20 text-white font-orbitron p-4 rounded-xl"
               placeholder="Enter first name"
@@ -171,7 +171,7 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
 
           {/* Last Name */}
           <View className="mb-4">
-            <Text className="text-white font-orbitron-semibold mb-2">Last Name</Text>
+            <SpeakableText className="text-white font-orbitron-semibold mb-2">Last Name</SpeakableText>
             <TextInput
               className="bg-white/20 text-white font-orbitron p-4 rounded-xl"
               placeholder="Enter last name"
@@ -183,7 +183,7 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
 
           {/* Birthdate */}
           <View className="mb-4">
-            <Text className="text-white font-orbitron-semibold mb-2">Birthdate</Text>
+            <SpeakableText className="text-white font-orbitron-semibold mb-2">Birthdate</SpeakableText>
             <TextInput
               className="bg-white/20 text-white font-orbitron p-4 rounded-xl"
               placeholder="MM/DD/YYYY"
@@ -195,7 +195,7 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
 
           {/* Username */}
           <View className="mb-4">
-            <Text className="text-white font-orbitron-semibold mb-2">Username</Text>
+            <SpeakableText className="text-white font-orbitron-semibold mb-2">Username</SpeakableText>
             <TextInput
               className="bg-white/20 text-white font-orbitron p-4 rounded-xl"
               placeholder="Choose a unique username"
@@ -208,7 +208,7 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
 
           {/* PIN */}
           <View className="mb-4">
-            <Text className="text-white font-orbitron-semibold mb-2">4-Digit PIN</Text>
+            <SpeakableText className="text-white font-orbitron-semibold mb-2">4-Digit PIN</SpeakableText>
             <TextInput
               className="bg-white/20 text-white font-orbitron p-4 rounded-xl text-center text-2xl"
               placeholder="****"
@@ -223,7 +223,7 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
 
           {/* Confirm PIN */}
           <View className="mb-8">
-            <Text className="text-white font-orbitron-semibold mb-2">Confirm PIN</Text>
+            <SpeakableText className="text-white font-orbitron-semibold mb-2">Confirm PIN</SpeakableText>
             <TextInput
               className="bg-white/20 text-white font-orbitron p-4 rounded-xl text-center text-2xl"
               placeholder="****"
@@ -249,9 +249,9 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
               shadowRadius: 8,
             }}
           >
-            <Text className="text-white text-center font-orbitron-bold text-xl">
+            <SpeakableText className="text-white text-center font-orbitron-bold text-xl">
               {loading ? "Creating..." : "Create Child Account"}
-            </Text>
+            </SpeakableText>
           </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>

@@ -99,13 +99,13 @@ export default function ForgotPassword({
         <View className="flex-1 items-center justify-center p-5">
           {/* Forgot Password Container */}
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
-            <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
+            <SpeakableText className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
               {t("ForgotPassword.title")}
-            </Text>
+            </SpeakableText>
 
-            <Text className="font-madimi text-sm text-white/90 mb-8 text-left">
+            <SpeakableText className="font-madimi text-sm text-white/90 mb-8 text-left">
               {t("ForgotPassword.desc")}
-            </Text>
+            </SpeakableText>
 
             <View className="mb-8">
               <View className="flex-row items-center bg-white/20 border-2 border-white/40 rounded-2xl px-4 h-14 shadow-lg">
@@ -128,15 +128,15 @@ export default function ForgotPassword({
             </View>
 
             {successMessage ? (
-              <Text className="font-madimi text-sm text-green-300 mb-4 text-center drop-shadow-md">
+              <SpeakableText className="font-madimi text-sm text-green-300 mb-4 text-center drop-shadow-md">
                 {successMessage}
-              </Text>
+              </SpeakableText>
             ) : null}
 
             {errorMessage ? (
-              <Text className="font-madimi text-sm text-red-300 mb-4 text-center drop-shadow-md">
+              <SpeakableText className="font-madimi text-sm text-red-300 mb-4 text-center drop-shadow-md">
                 {errorMessage}
-              </Text>
+              </SpeakableText>
             ) : null}
 
             <MainButton
@@ -156,24 +156,24 @@ export default function ForgotPassword({
                 onPress={handleResend}
                 style={{ marginTop: 16 }}
               >
-                <Text className="font-madimi text-sm text-yellow-300 text-center drop-shadow-md">
+                <SpeakableText className="font-madimi text-sm text-yellow-300 text-center drop-shadow-md">
                   Resend Email
-                </Text>
+                </SpeakableText>
               </TouchableOpacity>
             )}
           </View>
 
           {/* Back to Login Link */}
           <View className="mt-8 items-center">
-            <Text
+            <SpeakableText
               className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
               onPress={onBack}
             >
               {t("language.backTo")}
-              <Text className="font-semibold text-yellow-300">
+              <SpeakableText className="font-semibold text-yellow-300">
                 {" "}{t("language.Login")}
-              </Text>
-            </Text>
+              </SpeakableText>
+            </SpeakableText>
           </View>
         </View>
       </View>

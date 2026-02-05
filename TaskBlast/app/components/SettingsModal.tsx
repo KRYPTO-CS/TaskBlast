@@ -14,6 +14,7 @@ import { signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAudio } from "../context/AudioContext";
 import { useRouter } from "expo-router";
+import { SpeakableText } from '../_utility/SpeakableText';
 
 interface SettingsModalProps {
   visible: boolean;
@@ -126,7 +127,7 @@ export default function SettingsModal({
         >
           {/* Header */}
           <View className="flex-row justify-between items-center mb-6">
-            <Text
+            <SpeakableText
               className="font-orbitron-semibold text-white text-2xl"
               style={{
                 textShadowColor: "rgba(139, 92, 246, 0.8)",
@@ -135,7 +136,7 @@ export default function SettingsModal({
               }}
             >
               Settings
-            </Text>
+            </SpeakableText>
             <TouchableOpacity
               testID="close-settings-modal"
               onPress={onClose}
@@ -166,11 +167,11 @@ export default function SettingsModal({
                     : "rgba(192, 132, 252, 0.5)",
               }}
             >
-              <Text className="font-orbitron-semibold text-white text-xs">
+              <SpeakableText className="font-orbitron-semibold text-white text-xs">
                 {currentProfileType === "parent"
                   ? "👤 Parent Account"
                   : `👶 ${activeChildProfile}`}
-              </Text>
+              </SpeakableText>
             </View>
           </View>
 
@@ -191,9 +192,9 @@ export default function SettingsModal({
                   color="#60a5fa"
                   style={{ marginRight: 12 }}
                 />
-                <Text className="font-orbitron-semibold text-white text-base">
+                <SpeakableText className="font-orbitron-semibold text-white text-base">
                   Sound Effects
-                </Text>
+                </SpeakableText>
               </View>
               <Switch
                 value={soundEnabled}
@@ -219,9 +220,9 @@ export default function SettingsModal({
                   color="#60a5fa"
                   style={{ marginRight: 12 }}
                 />
-                <Text className="font-orbitron-medium text-white text-base">
+                <SpeakableText className="font-orbitron-medium text-white text-base">
                   Music
-                </Text>
+                </SpeakableText>
               </View>
               <Switch
                 value={musicEnabled}
@@ -247,9 +248,9 @@ export default function SettingsModal({
                   color="#60a5fa"
                   style={{ marginRight: 12 }}
                 />
-                <Text className="font-orbitron-medium text-white text-base">
+                <SpeakableText className="font-orbitron-medium text-white text-base">
                   Notifications
-                </Text>
+                </SpeakableText>
               </View>
               <Switch
                 value={notificationsEnabled}
@@ -285,9 +286,9 @@ export default function SettingsModal({
                   color="#ec4899"
                   style={{ marginRight: 12 }}
                 />
-                <Text className="font-orbitron-semibold text-white text-base flex-1">
+                <SpeakableText className="font-orbitron-semibold text-white text-base flex-1">
                   Privacy
-                </Text>
+                </SpeakableText>
                 <Ionicons name="chevron-forward" size={20} color="#ec4899" />
               </TouchableOpacity>
             )}
@@ -310,9 +311,9 @@ export default function SettingsModal({
                 color="#ec4899"
                 style={{ marginRight: 12 }}
               />
-              <Text className="font-orbitron-medium text-white text-base flex-1">
+              <SpeakableText className="font-orbitron-medium text-white text-base flex-1">
                 Help & Support
-              </Text>
+              </SpeakableText>
               <Ionicons name="chevron-forward" size={20} color="#ec4899" />
             </TouchableOpacity>
 
@@ -334,9 +335,9 @@ export default function SettingsModal({
                 color="#ec4899"
                 style={{ marginRight: 12 }}
               />
-              <Text className="font-orbitron-semibold text-white text-base flex-1">
+              <SpeakableText className="font-orbitron-semibold text-white text-base flex-1">
                 About
-              </Text>
+              </SpeakableText>
               <Ionicons name="chevron-forward" size={20} color="#ec4899" />
             </TouchableOpacity>
 
@@ -357,17 +358,17 @@ export default function SettingsModal({
                 color="#ef4444"
                 style={{ marginRight: 12 }}
               />
-              <Text className="font-orbitron-bold text-red-400 text-base">
+              <SpeakableText className="font-orbitron-bold text-red-400 text-base">
                 {currentProfileType === "child" ? "Switch Profile" : "Logout"}
-              </Text>
+              </SpeakableText>
             </TouchableOpacity>
           </ScrollView>
 
           {/* App Version */}
           <View className="items-center mt-6 pt-4 border-t border-purple-500/30">
-            <Text className="font-orbitron text-gray-400 text-xs">
+            <SpeakableText className="font-orbitron text-gray-400 text-xs">
               TaskBlast v1.0.0
-            </Text>
+            </SpeakableText>
           </View>
         </View>
       </View>

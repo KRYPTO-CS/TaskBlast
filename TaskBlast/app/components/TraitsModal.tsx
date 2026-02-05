@@ -15,6 +15,7 @@ import {
 } from "../../server/userProfileUtils";
 import { auth } from "../../server/firebase";
 import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
+import { SpeakableText } from '../_utility/SpeakableText';
 
 interface TraitsModalProps {
   visible: boolean;
@@ -167,7 +168,7 @@ export default function TraitsModal({
         >
           {/* Header */}
           <View className="flex-row justify-between items-center mb-6">
-            <Text
+            <SpeakableText
               className="font-orbitron-semibold text-2xl text-white"
               style={{
                 textShadowColor: "rgba(59, 130, 246, 0.8)",
@@ -176,7 +177,7 @@ export default function TraitsModal({
               }}
             >
               Select Traits
-            </Text>
+            </SpeakableText>
             <TouchableOpacity
               onPress={handleCancel}
               className="w-10 h-10 rounded-full items-center justify-center"
@@ -200,7 +201,7 @@ export default function TraitsModal({
                 borderColor: "rgba(239, 68, 68, 0.3)",
               }}
             >
-              <Text className="text-red-400 text-sm text-center">{error}</Text>
+              <SpeakableText className="text-red-400 text-sm text-center">{error}</SpeakableText>
             </View>
           ) : null}
 
@@ -232,7 +233,7 @@ export default function TraitsModal({
                       shadowRadius: 8,
                     }}
                   >
-                    <Text
+                    <SpeakableText
                       className="font-orbitron-semibold text-white text-base flex-1"
                       style={{
                         textShadowColor: isSelected
@@ -243,7 +244,7 @@ export default function TraitsModal({
                       }}
                     >
                       {trait}
-                    </Text>
+                    </SpeakableText>
                     {isSelected && (
                       <View
                         className="w-8 h-8 rounded-full items-center justify-center"
@@ -272,9 +273,9 @@ export default function TraitsModal({
                 borderColor: "rgba(156, 163, 175, 0.5)",
               }}
             >
-              <Text className="font-orbitron-semibold text-white text-base">
+              <SpeakableText className="font-orbitron-semibold text-white text-base">
                 Cancel
-              </Text>
+              </SpeakableText>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -296,9 +297,9 @@ export default function TraitsModal({
               {isSaving ? (
                 <ActivityIndicator size="small" color="white" />
               ) : (
-                <Text className="font-orbitron-semibold text-white text-base">
+                <SpeakableText className="font-orbitron-semibold text-white text-base">
                   Save Traits
-                </Text>
+                </SpeakableText>
               )}
             </TouchableOpacity>
           </View>

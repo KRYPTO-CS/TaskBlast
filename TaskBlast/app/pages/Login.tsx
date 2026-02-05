@@ -35,6 +35,7 @@ import {
 } from "firebase/auth";
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SpeakableText } from '../_utility/SpeakableText';
 
 type Screen =
   | "login"
@@ -431,7 +432,7 @@ export default function Login() {
         <View className="flex-1 items-center justify-center p-5">
           {/* Logo Section */}
           <View className="mb-12 items-center">
-            <Text
+            <SpeakableText
               className="text-6xl font-madimi text-white drop-shadow-lg"
               style={{
                 textShadowColor: "rgba(0,0,0,0.3)",
@@ -440,14 +441,14 @@ export default function Login() {
               }}
             >
               TaskBlast
-            </Text>
+            </SpeakableText>
           </View>
 
           {/* Login Container */}
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
-            <Text className="text-4xl font-madimi font-semibold text-white mb-8 text-center drop-shadow-md">
+            <SpeakableText className="text-4xl font-madimi font-semibold text-white mb-8 text-center drop-shadow-md">
               {t("Login.title")}
-            </Text>
+            </SpeakableText>
 
             <View className="mb-4">
               <View className="flex-row items-center bg-white/20 border-2 border-white/40 rounded-2xl px-4 h-14 shadow-lg">
@@ -502,12 +503,12 @@ export default function Login() {
           {/* Bottom Links */}
           <View className="mt-8 items-center">
             <TouchableOpacity onPress={handleSignUp} className="my-2">
-              <Text className="font-madimi text-sm text-white drop-shadow-md">
+              <SpeakableText className="font-madimi text-sm text-white drop-shadow-md">
                 {t("Login.noAccount")}{" "}
-                <Text className="font-semibold text-yellow-300">
+                <SpeakableText className="font-semibold text-yellow-300">
                   {t("Login.signUp")}
-                </Text>
-              </Text>
+                </SpeakableText>
+              </SpeakableText>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -536,15 +537,15 @@ export default function Login() {
                   marginRight: 10,
                 }}
               />
-              <Text className="font-madimi text-white">
+              <SpeakableText className="font-madimi text-white">
                 Sign in with Google
-              </Text>
+              </SpeakableText>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={handleForgotPassword} className="my-2">
-              <Text className="font-madimi text-sm text-white/80 drop-shadow-md">
+              <SpeakableText className="font-madimi text-sm text-white/80 drop-shadow-md">
                 {t("Login.forgotPassword")}
-              </Text>
+              </SpeakableText>
             </TouchableOpacity>
           </View>
         </View>

@@ -30,6 +30,7 @@ import {
   query,
 } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SpeakableText } from '../_utility/SpeakableText';
 
 interface Task {
   id: string;
@@ -609,9 +610,9 @@ export default function TaskListModal({
         >
           {/* Header */}
           <View className="flex-row justify-between items-center mb-4">
-            <Text className="font-orbitron-bold text-white text-2xl">
+            <SpeakableText className="font-orbitron-bold text-white text-2xl">
               Task List
-            </Text>
+            </SpeakableText>
             <TouchableOpacity
               testID="close-task-modal"
               onPress={onClose}
@@ -642,9 +643,9 @@ export default function TaskListModal({
                 !isEditMode && !isArchiveMode ? "bg-purple-500" : "bg-transparent"
               }`}
             >
-              <Text className="font-orbitron-bold text-white text-sm">
+              <SpeakableText className="font-orbitron-bold text-white text-sm">
                 Normal
-              </Text>
+              </SpeakableText>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={handleEditModeToggle}
@@ -652,9 +653,9 @@ export default function TaskListModal({
                 isEditMode ? "bg-yellow-600" : "bg-transparent"
               }`}
             >
-              <Text className="font-orbitron-bold text-white text-sm">
+              <SpeakableText className="font-orbitron-bold text-white text-sm">
                 Edit
-              </Text>
+              </SpeakableText>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -667,34 +668,34 @@ export default function TaskListModal({
                 isArchiveMode ? "bg-gray-600" : "bg-transparent"
               }`}
             >
-              <Text className="font-orbitron-bold text-white text-sm">
+              <SpeakableText className="font-orbitron-bold text-white text-sm">
                 Archive
-              </Text>
+              </SpeakableText>
             </TouchableOpacity>
           </View>
 
           {/* Error Message */}
           {error && (
             <View className="bg-red-500/20 border-2 border-red-400/30 p-4 rounded-2xl mb-4">
-              <Text className="font-madimi text-white text-base">{error}</Text>
+              <SpeakableText className="font-madimi text-white text-base">{error}</SpeakableText>
             </View>
           )}
 
           {/* Loading State */}
           {loading ? (
             <View className="items-center justify-center p-4">
-              <Text className="font-madimi text-white text-base">
+              <SpeakableText className="font-madimi text-white text-base">
                 Loading tasks...
-              </Text>
+              </SpeakableText>
             </View>
           ) : (
             /* Task List */
             <ScrollView className="max-h-96 mb-4">
               {displayedTasks.length === 0 ? (
                 <View className="items-center justify-center p-4">
-                  <Text className="font-madimi text-white text-base">
+                  <SpeakableText className="font-madimi text-white text-base">
                     {isArchiveMode ? "No archived tasks." : "No tasks yet. Add your first task!"}
-                  </Text>
+                  </SpeakableText>
                 </View>
               ) : (
                 displayedTasks.map((task) => (
@@ -715,13 +716,13 @@ export default function TaskListModal({
                       onPress={() => handleTaskTap(task.id)}
                       activeOpacity={1}
                     >
-                      <Text
+                      <SpeakableText
                         className={`font-madimi text-white text-base ${
                           task.completed ? "line-through opacity-60" : ""
                         }`}
                       >
                         {task.name}
-                      </Text>
+                      </SpeakableText>
                       <View className="flex-row items-center mt-1">
                         <Image
                           source={require("../../assets/images/sprites/rocks.png")}
@@ -729,18 +730,18 @@ export default function TaskListModal({
                           resizeMode="contain"
                           style={{ transform: [{ scale: 1 }] }}
                         />
-                        <Text
+                        <SpeakableText
                           className={`font-orbitron-bold text-sm ml-1 ${
                             isEditMode ? "text-yellow-300" : isArchiveMode ? "text-gray-300" : "text-purple-300"
                           }`}
                         >
                           {task.reward}
-                        </Text>
-                        <Text className={`font-orbitron-bold text-sm ml-3 ${
+                        </SpeakableText>
+                        <SpeakableText className={`font-orbitron-bold text-sm ml-3 ${
                           task.cycles === -1 ? "text-blue-400" : task.completedCycles >= task.cycles ? "text-green-400" : "text-yellow-400"
                         }`}>
                           {task.cycles === -1 ? `${task.completedCycles}/∞` : `${task.completedCycles}/${task.cycles}`}
-                        </Text>
+                        </SpeakableText>
                       </View>
                     </TouchableOpacity>
 
@@ -858,9 +859,9 @@ export default function TaskListModal({
             >
               <View className="flex-row items-center">
                 <Ionicons name="add-circle" size={24} color="white" />
-                <Text className="font-orbitron-bold text-white text-lg ml-2">
+                <SpeakableText className="font-orbitron-bold text-white text-lg ml-2">
                   Add New Task
-                </Text>
+                </SpeakableText>
               </View>
             </TouchableOpacity>
           )}
@@ -877,9 +878,9 @@ export default function TaskListModal({
         <View className="flex-1 bg-black/70 items-center justify-center p-5">
           <View className="bg-[#2a2416] w-full max-w-md rounded-3xl p-6 border-2 border-yellow-500/50 shadow-2xl">
             <View className="flex-row justify-between items-center mb-4">
-              <Text className="font-orbitron-bold text-yellow-300 text-2xl">
+              <SpeakableText className="font-orbitron-bold text-yellow-300 text-2xl">
                 {editingTaskId ? "Edit Task" : "New Task"}
-              </Text>
+              </SpeakableText>
               <TouchableOpacity
                 onPress={handleCancelAdd}
                 className="w-10 h-10 items-center justify-center"
@@ -919,9 +920,9 @@ export default function TaskListModal({
                 onPress={() => setNewTaskAllowMinimization(!newTaskAllowMinimization)}
                 className="flex-row items-center justify-between bg-white/10 border border-yellow-400/30 rounded-lg px-4 py-3 mb-3"
               >
-                <Text className="font-madimi text-white text-base">
+                <SpeakableText className="font-madimi text-white text-base">
                   Allow Minimization
-                </Text>
+                </SpeakableText>
                 <View
                   className={`w-12 h-6 rounded-full flex-row items-center px-1 ${
                     newTaskAllowMinimization ? "bg-green-500" : "bg-gray-500"
@@ -936,15 +937,15 @@ export default function TaskListModal({
               </TouchableOpacity>
 
               {/* Pomodoro Settings */}
-              <Text className="font-madimi text-yellow-200 text-sm mb-2">
+              <SpeakableText className="font-madimi text-yellow-200 text-sm mb-2">
                 Pomodoro Settings
-              </Text>
+              </SpeakableText>
               
               {/* Work Time */}
               <View className="bg-white/10 border border-yellow-400/30 rounded-lg px-4 py-3 mb-3">
-                <Text className="font-madimi text-white text-sm mb-2">
+                <SpeakableText className="font-madimi text-white text-sm mb-2">
                   Work Time (minutes)
-                </Text>
+                </SpeakableText>
                 <View className="flex-row items-center justify-between">
                   <TouchableOpacity
                     onPress={() => setNewTaskWorkTime(Math.max(5, newTaskWorkTime - 5))}
@@ -952,9 +953,9 @@ export default function TaskListModal({
                   >
                     <Ionicons name="remove" size={20} color="white" />
                   </TouchableOpacity>
-                  <Text className="font-orbitron-bold text-white text-xl">
+                  <SpeakableText className="font-orbitron-bold text-white text-xl">
                     {newTaskWorkTime}
-                  </Text>
+                  </SpeakableText>
                   <TouchableOpacity
                     onPress={() => setNewTaskWorkTime(newTaskWorkTime + 5)}
                     className="w-10 h-10 bg-yellow-600/40 border border-yellow-500/50 rounded-lg items-center justify-center"
@@ -966,9 +967,9 @@ export default function TaskListModal({
 
               {/* Play Time */}
               <View className="bg-white/10 border border-yellow-400/30 rounded-lg px-4 py-3 mb-3">
-                <Text className="font-madimi text-white text-sm mb-2">
+                <SpeakableText className="font-madimi text-white text-sm mb-2">
                   Play Time (minutes)
-                </Text>
+                </SpeakableText>
                 <View className="flex-row items-center justify-between">
                   <TouchableOpacity
                     onPress={() => setNewTaskPlayTime(Math.max(5, newTaskPlayTime - 5))}
@@ -976,9 +977,9 @@ export default function TaskListModal({
                   >
                     <Ionicons name="remove" size={20} color="white" />
                   </TouchableOpacity>
-                  <Text className="font-orbitron-bold text-white text-xl">
+                  <SpeakableText className="font-orbitron-bold text-white text-xl">
                     {newTaskPlayTime}
-                  </Text>
+                  </SpeakableText>
                   <TouchableOpacity
                     onPress={() => setNewTaskPlayTime(newTaskPlayTime + 5)}
                     className="w-10 h-10 bg-yellow-600/40 border border-yellow-500/50 rounded-lg items-center justify-center"
@@ -990,9 +991,9 @@ export default function TaskListModal({
 
               {/* Cycles */}
               <View className="bg-white/10 border border-yellow-400/30 rounded-lg px-4 py-3 mb-3">
-                <Text className="font-madimi text-white text-sm mb-2">
+                <SpeakableText className="font-madimi text-white text-sm mb-2">
                   Number of Cycles
-                </Text>
+                </SpeakableText>
                 <View className="flex-row items-center justify-between">
                   <TouchableOpacity
                     onPress={() => setNewTaskCycles(newTaskCycles <= 1 ? -1 : newTaskCycles - 1)}
@@ -1000,9 +1001,9 @@ export default function TaskListModal({
                   >
                     <Ionicons name="remove" size={20} color="white" />
                   </TouchableOpacity>
-                  <Text className="font-orbitron-bold text-white text-xl">
+                  <SpeakableText className="font-orbitron-bold text-white text-xl">
                     {newTaskCycles === -1 ? "∞" : newTaskCycles}
-                  </Text>
+                  </SpeakableText>
                   <TouchableOpacity
                     onPress={() => setNewTaskCycles(newTaskCycles === -1 ? 1 : newTaskCycles + 1)}
                     className="w-10 h-10 bg-yellow-600/40 border border-yellow-500/50 rounded-lg items-center justify-center"
@@ -1018,17 +1019,17 @@ export default function TaskListModal({
                 onPress={handleCancelAdd}
                 className="flex-1 bg-gray-500/30 py-3 rounded-xl items-center border-2 border-gray-400/30"
               >
-                <Text className="font-orbitron-bold text-white text-base">
+                <SpeakableText className="font-orbitron-bold text-white text-base">
                   Cancel
-                </Text>
+                </SpeakableText>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={editingTaskId ? handleSaveEdit : handleAddTask}
                 className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 py-3 rounded-xl items-center border-2 border-green-300/30"
               >
-                <Text className="font-orbitron-bold text-white text-base">
+                <SpeakableText className="font-orbitron-bold text-white text-base">
                   {editingTaskId ? "Save" : "Add"}
-                </Text>
+                </SpeakableText>
               </TouchableOpacity>
             </View>
           </View>
@@ -1048,14 +1049,14 @@ export default function TaskListModal({
               <View className="bg-yellow-500/20 rounded-full p-3 mb-3">
                 <Ionicons name="shield-checkmark" size={40} color="#fbbf24" />
               </View>
-              <Text className="font-orbitron-bold text-yellow-300 text-2xl text-center">
+              <SpeakableText className="font-orbitron-bold text-yellow-300 text-2xl text-center">
                 Manager Access
-              </Text>
+              </SpeakableText>
             </View>
-            <Text className="font-madimi text-yellow-100/80 text-sm mb-6 text-center">
+            <SpeakableText className="font-madimi text-yellow-100/80 text-sm mb-6 text-center">
               Enter the 4-digit PIN to access edit mode with elevated
               permissions.
-            </Text>
+            </SpeakableText>
 
             <View className="mb-4">
               <View className="flex-row justify-center gap-3">
@@ -1077,9 +1078,9 @@ export default function TaskListModal({
                       caretHidden={true}
                     />
                     <View className="absolute inset-0 items-center justify-center pointer-events-none">
-                      <Text className="font-orbitron-bold text-3xl text-yellow-100">
+                      <SpeakableText className="font-orbitron-bold text-3xl text-yellow-100">
                         {pinInput[index] ? "•" : ""}
-                      </Text>
+                      </SpeakableText>
                     </View>
                   </View>
                 ))}
@@ -1088,9 +1089,9 @@ export default function TaskListModal({
 
             {pinError && (
               <View className="bg-red-500/20 border-2 border-red-400/30 p-3 rounded-xl mb-4">
-                <Text className="font-madimi text-red-200 text-sm text-center">
+                <SpeakableText className="font-madimi text-red-200 text-sm text-center">
                   {pinError}
-                </Text>
+                </SpeakableText>
               </View>
             )}
 
@@ -1099,9 +1100,9 @@ export default function TaskListModal({
                 onPress={handlePinCancel}
                 className="flex-1 bg-gray-500/30 py-3 rounded-xl items-center border-2 border-gray-400/30"
               >
-                <Text className="font-orbitron-bold text-white text-base">
+                <SpeakableText className="font-orbitron-bold text-white text-base">
                   Cancel
-                </Text>
+                </SpeakableText>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={handlePinSubmit}
@@ -1112,9 +1113,9 @@ export default function TaskListModal({
                     : "bg-gray-500/20 border-gray-400/20"
                 }`}
               >
-                <Text className="font-orbitron-bold text-white text-base">
+                <SpeakableText className="font-orbitron-bold text-white text-base">
                   Unlock
-                </Text>
+                </SpeakableText>
               </TouchableOpacity>
             </View>
           </View>
@@ -1134,13 +1135,13 @@ export default function TaskListModal({
               <View className="bg-yellow-500/20 rounded-full p-3 mb-3">
                 <Ionicons name="shield-checkmark" size={40} color="#fbbf24" />
               </View>
-              <Text className="font-orbitron-bold text-yellow-300 text-2xl text-center">
+              <SpeakableText className="font-orbitron-bold text-yellow-300 text-2xl text-center">
                 Manager Access
-              </Text>
+              </SpeakableText>
             </View>
-            <Text className="font-madimi text-yellow-100/80 text-sm mb-6 text-center">
+            <SpeakableText className="font-madimi text-yellow-100/80 text-sm mb-6 text-center">
               Enter the 4-digit PIN to unarchive this task.
-            </Text>
+            </SpeakableText>
 
             <View className="mb-4">
               <View className="flex-row justify-center gap-3">
@@ -1162,9 +1163,9 @@ export default function TaskListModal({
                       caretHidden={true}
                     />
                     <View className="absolute inset-0 items-center justify-center pointer-events-none">
-                      <Text className="font-orbitron-bold text-3xl text-yellow-100">
+                      <SpeakableText className="font-orbitron-bold text-3xl text-yellow-100">
                         {pinInput[index] ? "•" : ""}
-                      </Text>
+                      </SpeakableText>
                     </View>
                   </View>
                 ))}
@@ -1173,9 +1174,9 @@ export default function TaskListModal({
 
             {pinError && (
               <View className="bg-red-500/20 border-2 border-red-400/30 p-3 rounded-xl mb-4">
-                <Text className="font-madimi text-red-200 text-sm text-center">
+                <SpeakableText className="font-madimi text-red-200 text-sm text-center">
                   {pinError}
-                </Text>
+                </SpeakableText>
               </View>
             )}
 
@@ -1184,9 +1185,9 @@ export default function TaskListModal({
                 onPress={handleUnarchivePinCancel}
                 className="flex-1 bg-gray-500/30 py-3 rounded-xl items-center border-2 border-gray-400/30"
               >
-                <Text className="font-orbitron-bold text-white text-base">
+                <SpeakableText className="font-orbitron-bold text-white text-base">
                   Cancel
-                </Text>
+                </SpeakableText>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={handleUnarchivePinSubmit}
@@ -1197,9 +1198,9 @@ export default function TaskListModal({
                     : "bg-gray-500/20 border-gray-400/20"
                 }`}
               >
-                <Text className="font-orbitron-bold text-white text-base">
+                <SpeakableText className="font-orbitron-bold text-white text-base">
                   Unlock
-                </Text>
+                </SpeakableText>
               </TouchableOpacity>
             </View>
           </View>
@@ -1216,9 +1217,9 @@ export default function TaskListModal({
         <View className="flex-1 bg-black/70 items-center justify-center p-5">
           <View className="bg-[#1a1f3a] w-full max-w-sm rounded-3xl p-6 border-2 border-purple-500/30 shadow-2xl">
             <View className="flex-row justify-between items-center mb-4">
-              <Text className="font-orbitron-bold text-white text-2xl">
+              <SpeakableText className="font-orbitron-bold text-white text-2xl">
                 Task Info
-              </Text>
+              </SpeakableText>
               <TouchableOpacity
                 onPress={handleCloseInfo}
                 className="w-10 h-10 items-center justify-center"
@@ -1230,27 +1231,27 @@ export default function TaskListModal({
             {selectedTask && (
               <View>
                 <View className="bg-purple-500/10 border-2 border-purple-400/30 rounded-2xl p-4 mb-4">
-                  <Text className="font-madimi text-purple-300 text-sm mb-1">
+                  <SpeakableText className="font-madimi text-purple-300 text-sm mb-1">
                     Task Name
-                  </Text>
-                  <Text className="font-orbitron-bold text-white text-lg mb-4">
+                  </SpeakableText>
+                  <SpeakableText className="font-orbitron-bold text-white text-lg mb-4">
                     {selectedTask.name}
-                  </Text>
+                  </SpeakableText>
 
                   {selectedTask.description && (
                     <>
-                      <Text className="font-madimi text-purple-300 text-sm mb-1">
+                      <SpeakableText className="font-madimi text-purple-300 text-sm mb-1">
                         Description
-                      </Text>
-                      <Text className="font-madimi text-white text-base mb-4">
+                      </SpeakableText>
+                      <SpeakableText className="font-madimi text-white text-base mb-4">
                         {selectedTask.description}
-                      </Text>
+                      </SpeakableText>
                     </>
                   )}
 
-                  <Text className="font-madimi text-purple-300 text-sm mb-1">
+                  <SpeakableText className="font-madimi text-purple-300 text-sm mb-1">
                     Reward
-                  </Text>
+                  </SpeakableText>
                   <View className="flex-row items-center mb-4">
                     <Image
                       source={require("../../assets/images/sprites/rocks.png")}
@@ -1258,14 +1259,14 @@ export default function TaskListModal({
                       resizeMode="contain"
                       style={{ transform: [{ scale: 1 }] }}
                     />
-                    <Text className="font-orbitron-bold text-white text-xl">
+                    <SpeakableText className="font-orbitron-bold text-white text-xl">
                       {selectedTask.reward}
-                    </Text>
+                    </SpeakableText>
                   </View>
 
-                  <Text className="font-madimi text-purple-300 text-sm mb-1">
+                  <SpeakableText className="font-madimi text-purple-300 text-sm mb-1">
                     Status
-                  </Text>
+                  </SpeakableText>
                   <View className="flex-row items-center mb-4">
                     <View
                       className={`px-3 py-1 rounded-full ${
@@ -1274,7 +1275,7 @@ export default function TaskListModal({
                           : "bg-gray-500/30 border border-gray-400/50"
                       }`}
                     >
-                      <Text
+                      <SpeakableText
                         className={`font-orbitron-bold text-sm ${
                           selectedTask.completed
                             ? "text-green-300"
@@ -1282,13 +1283,13 @@ export default function TaskListModal({
                         }`}
                       >
                         {selectedTask.completed ? "Complete" : "Incomplete"}
-                      </Text>
+                      </SpeakableText>
                     </View>
                   </View>
 
-                  <Text className="font-madimi text-purple-300 text-sm mb-1">
+                  <SpeakableText className="font-madimi text-purple-300 text-sm mb-1">
                     Allow Minimization
-                  </Text>
+                  </SpeakableText>
                   <View className="flex-row items-center mb-4">
                     <View
                       className={`px-3 py-1 rounded-full ${
@@ -1297,7 +1298,7 @@ export default function TaskListModal({
                           : "bg-red-500/30 border border-red-400/50"
                       }`}
                     >
-                      <Text
+                      <SpeakableText
                         className={`font-orbitron-bold text-sm ${
                           selectedTask.allowMinimization
                             ? "text-green-300"
@@ -1305,44 +1306,44 @@ export default function TaskListModal({
                         }`}
                       >
                         {selectedTask.allowMinimization ? "Yes" : "No"}
-                      </Text>
+                      </SpeakableText>
                     </View>
                   </View>
 
-                  <Text className="font-madimi text-purple-300 text-sm mb-1">
+                  <SpeakableText className="font-madimi text-purple-300 text-sm mb-1">
                     Pomodoro Settings
-                  </Text>
+                  </SpeakableText>
                   <View className="flex-row justify-between mb-4">
                     <View className="bg-purple-600/20 border border-purple-500/40 rounded-lg px-3 py-2 flex-1 mr-2">
-                      <Text className="font-madimi text-purple-300 text-xs mb-1">
+                      <SpeakableText className="font-madimi text-purple-300 text-xs mb-1">
                         Work Time
-                      </Text>
-                      <Text className="font-orbitron-bold text-white text-base">
+                      </SpeakableText>
+                      <SpeakableText className="font-orbitron-bold text-white text-base">
                         {selectedTask.workTime} min
-                      </Text>
+                      </SpeakableText>
                     </View>
                     <View className="bg-purple-600/20 border border-purple-500/40 rounded-lg px-3 py-2 flex-1 mr-2">
-                      <Text className="font-madimi text-purple-300 text-xs mb-1">
+                      <SpeakableText className="font-madimi text-purple-300 text-xs mb-1">
                         Play Time
-                      </Text>
-                      <Text className="font-orbitron-bold text-white text-base">
+                      </SpeakableText>
+                      <SpeakableText className="font-orbitron-bold text-white text-base">
                         {selectedTask.playTime} min
-                      </Text>
+                      </SpeakableText>
                     </View>
                     <View className="bg-purple-600/20 border border-purple-500/40 rounded-lg px-3 py-2 flex-1">
-                      <Text className="font-madimi text-purple-300 text-xs mb-1">
+                      <SpeakableText className="font-madimi text-purple-300 text-xs mb-1">
                         Cycles
-                      </Text>
-                      <Text className="font-orbitron-bold text-white text-base">
+                      </SpeakableText>
+                      <SpeakableText className="font-orbitron-bold text-white text-base">
                         {selectedTask.cycles === -1 ? `${selectedTask.completedCycles}/∞` : `${selectedTask.completedCycles}/${selectedTask.cycles}`}
-                      </Text>
+                      </SpeakableText>
                     </View>
                   </View>
 
-                  <Text className="font-madimi text-purple-300 text-sm mb-1">
+                  <SpeakableText className="font-madimi text-purple-300 text-sm mb-1">
                     Created
-                  </Text>
-                  <Text className="font-madimi text-white text-base mb-4">
+                  </SpeakableText>
+                  <SpeakableText className="font-madimi text-white text-base mb-4">
                     {new Date(selectedTask.createdAt.seconds * 1000).toLocaleDateString(
                       "en-US",
                       {
@@ -1353,16 +1354,16 @@ export default function TaskListModal({
                         minute: "2-digit",
                       }
                     )}
-                  </Text>
+                  </SpeakableText>
                 </View>
 
                 <TouchableOpacity
                   onPress={handleCloseInfo}
                   className="bg-purple-500 py-3 rounded-xl items-center border-2 border-purple-400/30"
                 >
-                  <Text className="font-orbitron-bold text-white text-base">
+                  <SpeakableText className="font-orbitron-bold text-white text-base">
                     Close
-                  </Text>
+                  </SpeakableText>
                 </TouchableOpacity>
               </View>
             )}

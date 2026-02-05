@@ -458,30 +458,30 @@ export default function PomodoroScreen() {
         {/* Time Left Display */}
         <View className="items-center mt-6">
           <View className="bg-gradient-to-br from-purple-600/80 to-pink-500/80 px-8 py-4 rounded-3xl shadow-lg shadow-purple-500/50 border-2 border-pink-300/30">
-            <Text
+            <SpeakableText
               testID="timer-display"
               className="font-orbitron-bold text-white text-4xl"
             >
               {formatTime(timeLeft)}
-            </Text>
+            </SpeakableText>
           </View>
-          <Text className="font-orbitron text-white/80 text-lg mt-2">
+          <SpeakableText className="font-orbitron text-white/80 text-lg mt-2">
             Time Remaining
-          </Text>
+          </SpeakableText>
           {taskName && (
             <View className="bg-purple-500/20 border-2 border-purple-400/30 px-4 py-2 rounded-xl mt-3">
-              <Text className="font-madimi text-white text-base">
+              <SpeakableText className="font-madimi text-white text-base">
                 {taskName}
-              </Text>
+              </SpeakableText>
             </View>
           )}
           {taskId && (
             <View className="bg-purple-500/20 border-2 border-purple-400/30 px-4 py-2 rounded-xl mt-2">
-              <Text className={`font-orbitron-bold text-base ${
+              <SpeakableText className={`font-orbitron-bold text-base ${
                 cycles === -1 ? "text-blue-400" : currentCompletedCycles >= cycles ? "text-green-400" : "text-yellow-400"
               }`}>
                 {cycles === -1 ? `${currentCompletedCycles}/∞` : `${currentCompletedCycles}/${cycles}`}
-              </Text>
+              </SpeakableText>
             </View>
           )}
         </View>

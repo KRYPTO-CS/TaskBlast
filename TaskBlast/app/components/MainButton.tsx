@@ -12,6 +12,7 @@ import {
 import { useAudioPlayer } from "expo-audio";
 import { buttons, buttonText } from "../styles/global";
 import { useSound } from "../hooks/useSound";
+import { useTTS } from '../context/TTSContext';
 
 type ButtonVariant =
   | "primary"
@@ -49,6 +50,9 @@ export default function MainButton({
 
   // Use the sound hook for button click sounds
   const { playButtonClick, soundEnabled } = useSound();
+
+  // Use TTS context to access speak function and TTS settings
+  const { speak, ttsEnabled } = useTTS();
 
   const getButtonStyle = (): ViewStyle => {
     const baseStyle = buttons[variant];
@@ -88,6 +92,10 @@ export default function MainButton({
     // Play sound if enabled and sound setting is on
     if (playSoundOnPress && soundEnabled) {
       playButtonClick();
+    }
+    // Speak the button title if TTS is enabled
+    if (ttsEnabled) {
+      speak(title);
     }
 
     Animated.parallel([

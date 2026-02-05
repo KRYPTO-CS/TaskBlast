@@ -14,6 +14,7 @@ import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { auth, firestore } from "../../server/firebase";
 import { collection, getDocs } from "firebase/firestore";
+import { SpeakableText } from '../_utility/SpeakableText';
 
 interface ChildProfile {
   id: string;
@@ -91,7 +92,7 @@ export default function ProfileSelection() {
     return (
       <View className="flex-1 items-center justify-center bg-gray-900">
         <ActivityIndicator size="large" color="#a855f7" />
-        <Text className="text-white text-lg font-orbitron mt-4">Loading profiles...</Text>
+        <SpeakableText className="text-white text-lg font-orbitron mt-4">Loading profiles...</SpeakableText>
       </View>
     );
   }
@@ -120,7 +121,7 @@ export default function ProfileSelection() {
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
 
-        <Text
+        <SpeakableText
           className="text-4xl font-orbitron-bold text-white text-center mb-8"
           style={{
             textShadowColor: "rgba(147, 51, 234, 0.8)",
@@ -129,7 +130,7 @@ export default function ProfileSelection() {
           }}
         >
           Who's using TaskBlast?
-        </Text>
+        </SpeakableText>
 
         {/* Parent Profile */}
         <TouchableOpacity
@@ -147,8 +148,8 @@ export default function ProfileSelection() {
         >
           <Ionicons name="person-circle" size={48} color="white" />
           <View className="ml-4">
-            <Text className="text-white text-xl font-orbitron-bold">Parent Account</Text>
-            <Text className="text-white/70 text-sm font-orbitron">{auth.currentUser?.email}</Text>
+            <SpeakableText className="text-white text-xl font-orbitron-bold">Parent Account</SpeakableText>
+            <SpeakableText className="text-white/70 text-sm font-orbitron">{auth.currentUser?.email}</SpeakableText>
           </View>
         </TouchableOpacity>
 
@@ -157,9 +158,9 @@ export default function ProfileSelection() {
           <>
             <View className="flex-row items-center my-4">
               <View className="flex-1 h-px bg-white/30" />
-              <Text className="text-white/70 text-sm font-orbitron-semibold mx-3">
+              <SpeakableText className="text-white/70 text-sm font-orbitron-semibold mx-3">
                 OR SELECT CHILD
-              </Text>
+              </SpeakableText>
               <View className="flex-1 h-px bg-white/30" />
             </View>
 
@@ -186,9 +187,9 @@ export default function ProfileSelection() {
                   }}
                 >
                   <Ionicons name="happy" size={48} color="white" />
-                  <Text className="text-white text-xl font-orbitron-bold ml-4">
+                  <SpeakableText className="text-white text-xl font-orbitron-bold ml-4">
                     {item.firstName || item.username}
-                  </Text>
+                  </SpeakableText>
                 </TouchableOpacity>
               )}
             />
@@ -196,9 +197,9 @@ export default function ProfileSelection() {
         )}
 
         {children.length === 0 && (
-          <Text className="text-white/50 text-center py-8 font-orbitron">
+          <SpeakableText className="text-white/50 text-center py-8 font-orbitron">
             No child accounts yet.{"\n"}Create one from the parent account.
-          </Text>
+          </SpeakableText>
         )}
 
         {/* PIN Entry for Selected Child */}
@@ -211,9 +212,9 @@ export default function ProfileSelection() {
               borderColor: "rgba(255, 255, 255, 0.3)",
             }}
           >
-            <Text className="text-white text-lg font-orbitron-semibold mb-4 text-center">
+            <SpeakableText className="text-white text-lg font-orbitron-semibold mb-4 text-center">
               Enter PIN for {selectedChild}
-            </Text>
+            </SpeakableText>
             <TextInput
               className="bg-white/20 text-white text-center text-2xl font-orbitron p-4 rounded-xl mb-4"
               placeholder="****"
@@ -235,9 +236,9 @@ export default function ProfileSelection() {
                 shadowRadius: 8,
               }}
             >
-              <Text className="text-white text-center font-orbitron-bold text-lg">
+              <SpeakableText className="text-white text-center font-orbitron-bold text-lg">
                 Continue
-              </Text>
+              </SpeakableText>
             </TouchableOpacity>
           </View>
         )}

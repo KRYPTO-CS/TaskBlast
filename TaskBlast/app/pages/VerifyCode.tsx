@@ -87,13 +87,13 @@ export default function VerifyCode({
         <View className="flex-1 items-center justify-center p-5">
           {/* Verify Code Container */}
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
-            <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
+            <SpeakableText className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
               {t("VerifyCode.title")}
-            </Text>
+            </SpeakableText>
 
-            <Text className="font-madimi text-sm text-white/90 mb-8 text-left">
+            <SpeakableText className="font-madimi text-sm text-white/90 mb-8 text-left">
               {t("VerifyCode.desc")} {email}
-            </Text>
+            </SpeakableText>
 
             <View className="flex-row justify-between mb-8" style={{ gap: 10 }}>
               {[0, 1, 2, 3, 4].map((index) => (
@@ -115,10 +115,10 @@ export default function VerifyCode({
               ))}
             </View>
 
-            <Text className="font-madimi text-xs text-white/80 text-left mb-4">
+            <SpeakableText className="font-madimi text-xs text-white/80 text-left mb-4">
               {t("VerifyCode.notreceived")}{" "}
-              <Text className="font-semibold text-yellow-300">{t("VerifyCode.resend")}</Text>
-            </Text>
+              <SpeakableText className="font-semibold text-yellow-300">{t("VerifyCode.resend")}</SpeakableText>
+            </SpeakableText>
 
             <MainButton
               title={t("VerifyCode.submit")}
@@ -135,15 +135,15 @@ export default function VerifyCode({
 
           {/* Back Link */}
           <View className="mt-8 items-center">
-            <Text
+            <SpeakableText
               className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
               onPress={onBack}
             >
               {t("language.backTo")}
-              <Text className="font-semibold text-yellow-300">
+              <SpeakableText className="font-semibold text-yellow-300">
                 {" "}{t("birthdate.previousStep")}
-              </Text>
-            </Text>
+              </SpeakableText>
+            </SpeakableText>
           </View>
         </View>
       </View>

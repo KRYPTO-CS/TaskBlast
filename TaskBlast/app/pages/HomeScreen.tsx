@@ -28,6 +28,7 @@ import TaskListModal from "../components/TaskListModal";
 import SettingsModal from "../components/SettingsModal";
 import { useRouter } from "expo-router";
 import { useAudio } from "../context/AudioContext";
+import { SpeakableText } from '../_utility/SpeakableText';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -225,9 +226,9 @@ export default function HomeScreen() {
               resizeMode="contain"
               style={{ transform: [{ scale: 1.4 }], marginBottom: 2 }}
             />
-            <Text className="font-orbitron-bold text-white text-md ml-2">
+            <SpeakableText className="font-orbitron-bold text-white text-md ml-2">
               20/20
-            </Text>
+            </SpeakableText>
           </View>
 
           {/* Rocks */}
@@ -238,9 +239,9 @@ export default function HomeScreen() {
               resizeMode="contain"
               style={{ transform: [{ scale: 1.4 }] }}
             />
-            <Text className="font-orbitron-bold text-white text-md ml-2">
+            <SpeakableText className="font-orbitron-bold text-white text-md ml-2">
               {String(rocks).padStart(4, "0")}
-            </Text>
+            </SpeakableText>
           </View>
         </View>
 

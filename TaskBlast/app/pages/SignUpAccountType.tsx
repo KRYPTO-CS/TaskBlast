@@ -58,10 +58,10 @@ export default function SignUpAccountType({
         }`}
         style={{ marginBottom: 12 }}
       >
-        <Text className="font-madimi text-base font-semibold text-white mb-1 drop-shadow-md">
+        <SpeakableText className="font-madimi text-base font-semibold text-white mb-1 drop-shadow-md">
           {title}
-        </Text>
-        <Text className="font-madimi text-sm text-white/80">{description}</Text>
+        </SpeakableText>
+        <SpeakableText className="font-madimi text-sm text-white/80">{description}</SpeakableText>
       </TouchableOpacity>
     );
   };
@@ -78,13 +78,13 @@ export default function SignUpAccountType({
       {/* Content overlay */}
       <View className="flex-1 items-center justify-center p-5">
         <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
-          <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
+          <SpeakableText className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
             {t("AccountType.title")}
-          </Text>
+          </SpeakableText>
 
-          <Text className="font-madimi text-sm text-white/90 mb-6 text-left">
+          <SpeakableText className="font-madimi text-sm text-white/90 mb-6 text-left">
             {t("AccountType.type")}
-          </Text>
+          </SpeakableText>
 
           <Option
             value="managed"
@@ -99,9 +99,9 @@ export default function SignUpAccountType({
           />
 
           {error ? (
-            <Text className="font-madimi text-sm text-red-300 mb-4 text-left drop-shadow-md">
+            <SpeakableText className="font-madimi text-sm text-red-300 mb-4 text-left drop-shadow-md">
               {error}
-            </Text>
+            </SpeakableText>
           ) : null}
 
           <MainButton
@@ -117,15 +117,15 @@ export default function SignUpAccountType({
           />
 
           <View className="mt-6">
-            <Text
+            <SpeakableText
               className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
               onPress={onBack}
             >
               {t("language.backTo")}
-              <Text className="font-semibold text-yellow-300">
+              <SpeakableText className="font-semibold text-yellow-300">
                 {" "}{t("birthdate.previousStep")}
-              </Text>
-            </Text>
+              </SpeakableText>
+            </SpeakableText>
           </View>
         </View>
       </View>

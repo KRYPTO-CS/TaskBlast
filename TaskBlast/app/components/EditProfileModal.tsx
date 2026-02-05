@@ -20,6 +20,7 @@ import {
 } from "../../server/userProfileUtils";
 import { auth } from "../../server/firebase";
 import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
+import { SpeakableText } from '../_utility/SpeakableText';
 
 interface EditProfileModalProps {
   visible: boolean;
@@ -217,9 +218,9 @@ export default function EditProfileModal({
               className="flex-row items-center justify-between p-6 border-b-2"
               style={{ borderBottomColor: "rgba(147, 51, 234, 0.3)" }}
             >
-              <Text className="font-orbitron-semibold text-2xl text-white">
+              <SpeakableText className="font-orbitron-semibold text-2xl text-white">
                 Edit Profile
-              </Text>
+              </SpeakableText>
               <TouchableOpacity
                 onPress={onClose}
                 className="w-10 h-10 rounded-full bg-white/10 items-center justify-center"
@@ -268,9 +269,9 @@ export default function EditProfileModal({
                 >
                   <Ionicons name="camera" size={20} color="white" />
                 </View>
-                <Text className="font-madimi text-sm text-white/60 mt-3">
+                <SpeakableText className="font-madimi text-sm text-white/60 mt-3">
                   Tap to change profile picture
-                </Text>
+                </SpeakableText>
               </View>
 
               {/* Error Message */}
@@ -279,17 +280,17 @@ export default function EditProfileModal({
                   className="mb-4 p-3 rounded-lg"
                   style={{ backgroundColor: "rgba(239, 68, 68, 0.2)" }}
                 >
-                  <Text className="font-madimi text-red-400 text-sm text-center">
+                  <SpeakableText className="font-madimi text-red-400 text-sm text-center">
                     {error}
-                  </Text>
+                  </SpeakableText>
                 </View>
               ) : null}
 
               {/* First Name */}
               <View className="mb-4">
-                <Text className="font-orbitron-semibold text-white text-sm mb-2">
+                <SpeakableText className="font-orbitron-semibold text-white text-sm mb-2">
                   First Name
-                </Text>
+                </SpeakableText>
                 <View
                   className="flex-row items-center bg-white/10 border-2 rounded-xl px-4 h-14"
                   style={{ borderColor: "rgba(147, 51, 234, 0.4)" }}
@@ -313,9 +314,9 @@ export default function EditProfileModal({
 
               {/* Last Name */}
               <View className="mb-4">
-                <Text className="font-orbitron-semibold text-white text-sm mb-2">
+                <SpeakableText className="font-orbitron-semibold text-white text-sm mb-2">
                   Last Name
-                </Text>
+                </SpeakableText>
                 <View
                   className="flex-row items-center bg-white/10 border-2 rounded-xl px-4 h-14"
                   style={{ borderColor: "rgba(147, 51, 234, 0.4)" }}
@@ -340,9 +341,9 @@ export default function EditProfileModal({
               {/* Display Name - Only for parent */}
               {!activeChildProfile && (
                 <View className="mb-4">
-                  <Text className="font-orbitron-semibold text-white text-sm mb-2">
+                  <SpeakableText className="font-orbitron-semibold text-white text-sm mb-2">
                     Display Name (Nickname)
-                  </Text>
+                  </SpeakableText>
                   <View
                     className="flex-row items-center bg-white/10 border-2 rounded-xl px-4 h-14"
                     style={{ borderColor: "rgba(147, 51, 234, 0.4)" }}
@@ -367,9 +368,9 @@ export default function EditProfileModal({
               {/* Email - Only for parent */}
               {!activeChildProfile && (
                 <View className="mb-4">
-                  <Text className="font-orbitron-semibold text-white text-sm mb-2">
+                  <SpeakableText className="font-orbitron-semibold text-white text-sm mb-2">
                     Email
-                  </Text>
+                  </SpeakableText>
                   <View
                     className="flex-row items-center bg-white/10 border-2 rounded-xl px-4 h-14"
                     style={{ borderColor: "rgba(147, 51, 234, 0.4)" }}
@@ -395,9 +396,9 @@ export default function EditProfileModal({
 
               {/* Birthdate */}
               <View className="mb-6">
-                <Text className="font-orbitron-semibold text-white text-sm mb-2">
+                <SpeakableText className="font-orbitron-semibold text-white text-sm mb-2">
                   Birthdate (MM/DD/YYYY)
-                </Text>
+                </SpeakableText>
                 <View
                   className="flex-row items-center bg-white/10 border-2 rounded-xl px-4 h-14"
                   style={{ borderColor: "rgba(147, 51, 234, 0.4)" }}
@@ -434,9 +435,9 @@ export default function EditProfileModal({
                 {isSaving ? (
                   <ActivityIndicator size="small" color="white" />
                 ) : (
-                  <Text className="font-orbitron-semibold text-white text-base">
+                  <SpeakableText className="font-orbitron-semibold text-white text-base">
                     Save Changes
-                  </Text>
+                  </SpeakableText>
                 )}
               </TouchableOpacity>
             </ScrollView>

@@ -198,12 +198,12 @@ export default function GamePage() {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.center}>
-          <Text style={styles.title}>WebView not installed</Text>
-          <Text style={styles.message}>
+          <SpeakableText style={styles.title}>WebView not installed</SpeakableText>
+          <SpeakableText style={styles.message}>
             This screen requires the `react-native-webview` package. Install it
             with your package manager and rebuild the app:
-          </Text>
-          <Text style={styles.command}>npm install react-native-webview</Text>
+          </SpeakableText>
+          <SpeakableText style={styles.command}>npm install react-native-webview</SpeakableText>
         </View>
       </SafeAreaView>
     );
@@ -218,13 +218,13 @@ export default function GamePage() {
           style={styles.backButton}
           testID="back-button"
         >
-          <Text style={styles.backText}>{"< Back"}</Text>
+          <SpeakableText style={styles.backText}>{"< Back"}</SpeakableText>
         </Pressable>
         <TouchableOpacity onPress={handleTimerTap} activeOpacity={1} style={styles.timerContainer}>
-          <Text style={styles.timerText}>{formatTime(timeLeft)}</Text>
+          <SpeakableText style={styles.timerText}>{formatTime(timeLeft)}</SpeakableText>
         </TouchableOpacity>
         <Pressable onPress={sendMessageToGodot} style={styles.rightButton}>
-          <Text style={styles.rightText}>Send</Text>
+          <SpeakableText style={styles.rightText}>Send</SpeakableText>
         </Pressable>
       </View>
       <View style={styles.container}>

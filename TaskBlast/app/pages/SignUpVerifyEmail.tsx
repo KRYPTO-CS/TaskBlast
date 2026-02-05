@@ -107,25 +107,25 @@ export default function SignUpVerifyEmail({
         <View className="flex-1 items-center justify-center p-5">
           {/* Verify Email Container */}
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
-            <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
+            <SpeakableText className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
               Verify Your Email
-            </Text>
+            </SpeakableText>
 
-            <Text className="font-madimi text-sm text-white/90 mb-8 text-left">
+            <SpeakableText className="font-madimi text-sm text-white/90 mb-8 text-left">
               We've sent a verification email to {email}. Please click the link
               in the email to verify your account.
-            </Text>
+            </SpeakableText>
 
             {error ? (
-              <Text className="font-madimi text-sm text-red-300 mb-4 text-left drop-shadow-md">
+              <SpeakableText className="font-madimi text-sm text-red-300 mb-4 text-left drop-shadow-md">
                 {error}
-              </Text>
+              </SpeakableText>
             ) : null}
 
             {emailSent ? (
-              <Text className="font-madimi text-sm text-green-300 mb-4 text-left drop-shadow-md">
+              <SpeakableText className="font-madimi text-sm text-green-300 mb-4 text-left drop-shadow-md">
                 Verification email sent! Check your inbox.
-              </Text>
+              </SpeakableText>
             ) : null}
 
             <View className="flex-row justify-between mb-8" style={{ gap: 10 }}>
@@ -152,10 +152,10 @@ export default function SignUpVerifyEmail({
               onPress={handleResend}
               style={{ marginBottom: 16 }}
             >
-              <Text className="font-madimi text-xs text-white/80 text-left">
+              <SpeakableText className="font-madimi text-xs text-white/80 text-left">
                 Didn't receive the email?{" "}
-                <Text className="font-semibold text-yellow-300">Resend</Text>
-              </Text>
+                <SpeakableText className="font-semibold text-yellow-300">Resend</SpeakableText>
+              </SpeakableText>
             </TouchableOpacity>
 
             <MainButton
@@ -173,15 +173,15 @@ export default function SignUpVerifyEmail({
 
           {/* Back Link */}
           <View className="mt-8 items-center">
-            <Text
+            <SpeakableText
               className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
               onPress={onBack}
             >
               Back to{" "}
-              <Text className="font-semibold text-yellow-300">
+              <SpeakableText className="font-semibold text-yellow-300">
                 Previous Step
-              </Text>
-            </Text>
+              </SpeakableText>
+            </SpeakableText>
           </View>
         </View>
       </View>
