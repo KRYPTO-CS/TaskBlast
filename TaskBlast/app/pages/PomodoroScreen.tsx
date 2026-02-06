@@ -22,11 +22,13 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { useAudio } from "../context/AudioContext";
+import { useNotifications } from "../context/NotificationContext";
 
 export default function PomodoroScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const { musicEnabled } = useAudio();
+  const { notifyTimerComplete } = useNotifications();
 
   // Extract task parameters from route params
   const taskName = (params.taskName as string) || "Work Session";
@@ -64,7 +66,7 @@ export default function PomodoroScreen() {
         duration,
         easing: Easing.linear,
         useNativeDriver: true,
-      })
+      }),
     );
     loop.start();
     return () => loop.stop();
@@ -132,7 +134,7 @@ export default function PomodoroScreen() {
           easing: Easing.inOut(Easing.sin),
           useNativeDriver: true,
         }),
-      ])
+      ]),
     );
     floatLoop.start();
     return () => floatLoop.stop();
@@ -219,6 +221,10 @@ export default function PomodoroScreen() {
             setFinished(true);
             // Increment completed cycles
             incrementCompletedCycles();
+            // Show positive completion notification
+            notifyTimerComplete(taskName, false).catch((err) =>
+              console.warn("Notification error:", err),
+            );
             return 0;
           }
           return prev - 1;
@@ -252,7 +258,7 @@ export default function PomodoroScreen() {
         // Calculate elapsed time if timer was running in background
         if (allowMinimization && backgroundTime.current !== null && !isPaused) {
           const elapsed = Math.floor(
-            (Date.now() - backgroundTime.current) / 1000
+            (Date.now() - backgroundTime.current) / 1000,
           );
           setTimeLeft((prev) => {
             const newTime = prev - elapsed;
@@ -318,6 +324,10 @@ export default function PomodoroScreen() {
     } catch (e) {
       console.warn("Audio player error on play game:", e);
     }
+    // Show break time notification with positive reinforcement
+    notifyTimerComplete(taskName, true).catch((err) =>
+      console.warn("Notification error:", err),
+    );
     // Mark that we're entering game mode
     setHasPlayedGame(true);
     router.push({
@@ -464,8 +474,8 @@ export default function PomodoroScreen() {
                   cycles === -1
                     ? "text-blue-400"
                     : currentCompletedCycles >= cycles
-                    ? "text-green-400"
-                    : "text-yellow-400"
+                      ? "text-green-400"
+                      : "text-yellow-400"
                 }`}
               >
                 {cycles === -1

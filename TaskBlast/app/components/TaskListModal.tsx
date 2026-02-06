@@ -25,6 +25,7 @@ import {
   getDoc,
   increment,
 } from "firebase/firestore";
+import { useNotifications } from "../context/NotificationContext";
 
 interface Task {
   id: string;
@@ -54,6 +55,7 @@ export default function TaskListModal({
   onRocksChange,
 }: TaskListModalProps) {
   const router = useRouter();
+  const { scheduleDailyDigest, preferences } = useNotifications();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -61,7 +63,9 @@ export default function TaskListModal({
   const [managerialPin, setManagerialPin] = useState<string | null>(null);
   const [showPinModal, setShowPinModal] = useState(false);
   const [showUnarchivePinModal, setShowUnarchivePinModal] = useState(false);
-  const [pendingUnarchiveTaskId, setPendingUnarchiveTaskId] = useState<string | null>(null);
+  const [pendingUnarchiveTaskId, setPendingUnarchiveTaskId] = useState<
+    string | null
+  >(null);
   const [pinInput, setPinInput] = useState("");
   const [pinError, setPinError] = useState("");
   const pinRefs = useRef<Array<TextInput | null>>([null, null, null, null]);
@@ -107,7 +111,7 @@ export default function TaskListModal({
         db,
         "users",
         auth.currentUser.uid,
-        "tasks"
+        "tasks",
       );
       const unsubscribe = onSnapshot(
         userTasksRef,
@@ -133,7 +137,9 @@ export default function TaskListModal({
           });
           // Filter tasks based on mode and sort by creation date, newest first
           const filteredTasks = taskList;
-          filteredTasks.sort((a, b) => b.createdAt.seconds - a.createdAt.seconds);
+          filteredTasks.sort(
+            (a, b) => b.createdAt.seconds - a.createdAt.seconds,
+          );
           setTasks(filteredTasks);
           setLoading(false);
           setError(null);
@@ -142,7 +148,7 @@ export default function TaskListModal({
           console.error("Error fetching tasks:", error);
           setError("Failed to load tasks");
           setLoading(false);
-        }
+        },
       );
       return () => unsubscribe();
     } catch (error) {
@@ -152,6 +158,24 @@ export default function TaskListModal({
     }
   }, [auth.currentUser]);
 
+  // Schedule daily digest when tasks or preferences change
+  useEffect(() => {
+    if (!loading && preferences.dailyDigestEnabled) {
+      // Count incomplete, non-archived tasks
+      const incompleteTaskCount = tasks.filter(
+        (task) => !task.completed && !task.archived,
+      ).length;
+
+      // Schedule daily digest with current task count
+      scheduleDailyDigest(incompleteTaskCount);
+    }
+  }, [
+    tasks,
+    preferences.dailyDigestEnabled,
+    preferences.dailyDigestTime,
+    loading,
+  ]);
+
   const [isEditMode, setIsEditMode] = useState(false);
   const [isArchiveMode, setIsArchiveMode] = useState(false);
   const [isAddingTask, setIsAddingTask] = useState(false);
@@ -159,20 +183,23 @@ export default function TaskListModal({
   const [newTaskName, setNewTaskName] = useState("");
   const [newTaskDescription, setNewTaskDescription] = useState("");
   const [newTaskReward, setNewTaskReward] = useState("");
-  const [newTaskAllowMinimization, setNewTaskAllowMinimization] = useState(false);
+  const [newTaskAllowMinimization, setNewTaskAllowMinimization] =
+    useState(false);
   const [newTaskWorkTime, setNewTaskWorkTime] = useState(25);
   const [newTaskPlayTime, setNewTaskPlayTime] = useState(5);
   const [newTaskCycles, setNewTaskCycles] = useState(1);
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [showTaskFormModal, setShowTaskFormModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-  const taskTapCount = useRef<{[key: string]: number}>({});
-  const taskTapTimer = useRef<{[key: string]: ReturnType<typeof setTimeout>}>({});
+  const taskTapCount = useRef<{ [key: string]: number }>({});
+  const taskTapTimer = useRef<{ [key: string]: ReturnType<typeof setTimeout> }>(
+    {},
+  );
 
   // Filter tasks based on current mode
-  const displayedTasks = isArchiveMode 
-    ? tasks.filter(task => task.archived)
-    : tasks.filter(task => !task.archived);
+  const displayedTasks = isArchiveMode
+    ? tasks.filter((task) => task.archived)
+    : tasks.filter((task) => !task.archived);
 
   const handleCompleteTask = async (taskId: string) => {
     if (!auth.currentUser) return;
@@ -181,10 +208,15 @@ export default function TaskListModal({
       if (task) {
         // Prevent marking as complete if cycles aren't fulfilled (only in normal mode)
         // Allow completion if cycles are infinite (-1) or cycles are met
-        if (!isEditMode && !task.completed && task.cycles !== -1 && task.completedCycles < task.cycles) {
+        if (
+          !isEditMode &&
+          !task.completed &&
+          task.cycles !== -1 &&
+          task.completedCycles < task.cycles
+        ) {
           return;
         }
-        
+
         const taskRef = doc(db, "users", auth.currentUser.uid, "tasks", taskId);
         await updateDoc(taskRef, {
           completed: !task.completed,
@@ -272,7 +304,7 @@ export default function TaskListModal({
           db,
           "users",
           auth.currentUser.uid,
-          "tasks"
+          "tasks",
         );
         await addDoc(userTasksRef, {
           name: newTaskName,
@@ -329,7 +361,7 @@ export default function TaskListModal({
           "users",
           auth.currentUser.uid,
           "tasks",
-          editingTaskId
+          editingTaskId,
         );
         await updateDoc(taskRef, {
           name: newTaskName,
@@ -428,13 +460,13 @@ export default function TaskListModal({
   const handlePinDigitChange = (digit: string, index: number) => {
     // Only allow single digit
     const sanitized = digit.replace(/[^0-9]/g, "").slice(0, 1);
-    
+
     const pinArray = pinInput.padEnd(4, " ").split("");
     pinArray[index] = sanitized;
     const newPin = pinArray.join("").replace(/\s/g, "");
-    
+
     setPinInput(newPin);
-    
+
     // Auto-focus next input if digit entered
     if (sanitized && index < 3) {
       // Small delay to prevent the number from showing
@@ -448,13 +480,13 @@ export default function TaskListModal({
     // Handle backspace to delete current and move to previous
     if (e.nativeEvent.key === "Backspace") {
       const pinArray = pinInput.padEnd(4, " ").split("");
-      
+
       if (pinInput[index]) {
         // Clear current digit
         pinArray[index] = "";
         const newPin = pinArray.join("").replace(/\s/g, "");
         setPinInput(newPin);
-        
+
         // Move to previous box (unless it's the last box)
         if (index > 0 && index < 3) {
           setTimeout(() => {
@@ -501,7 +533,7 @@ export default function TaskListModal({
     if (!taskTapCount.current[taskId]) {
       taskTapCount.current[taskId] = 0;
     }
-    
+
     taskTapCount.current[taskId] += 1;
 
     // Clear existing timer for this task
@@ -546,8 +578,8 @@ export default function TaskListModal({
             isEditMode
               ? "bg-[#2a2416] border-yellow-500/50"
               : isArchiveMode
-              ? "bg-[#1a1a1a] border-gray-500/50"
-              : "bg-[#1a1f3a] border-purple-500/30"
+                ? "bg-[#1a1a1a] border-gray-500/50"
+                : "bg-[#1a1f3a] border-purple-500/30"
           }`}
         >
           {/* Header */}
@@ -570,8 +602,8 @@ export default function TaskListModal({
               isEditMode
                 ? "bg-yellow-900/40 border-yellow-400/30"
                 : isArchiveMode
-                ? "bg-gray-800/40 border-gray-400/30"
-                : "bg-indigo-900/40 border-indigo-400/30"
+                  ? "bg-gray-800/40 border-gray-400/30"
+                  : "bg-indigo-900/40 border-indigo-400/30"
             }`}
           >
             <TouchableOpacity
@@ -582,7 +614,9 @@ export default function TaskListModal({
                 setEditingTaskId(null);
               }}
               className={`flex-1 py-3 rounded-xl items-center ${
-                !isEditMode && !isArchiveMode ? "bg-purple-500" : "bg-transparent"
+                !isEditMode && !isArchiveMode
+                  ? "bg-purple-500"
+                  : "bg-transparent"
               }`}
             >
               <Text className="font-orbitron-bold text-white text-sm">
@@ -636,7 +670,9 @@ export default function TaskListModal({
               {displayedTasks.length === 0 ? (
                 <View className="items-center justify-center p-4">
                   <Text className="font-madimi text-white text-base">
-                    {isArchiveMode ? "No archived tasks." : "No tasks yet. Add your first task!"}
+                    {isArchiveMode
+                      ? "No archived tasks."
+                      : "No tasks yet. Add your first task!"}
                   </Text>
                 </View>
               ) : (
@@ -647,13 +683,13 @@ export default function TaskListModal({
                       task.completed
                         ? "bg-green-500/20 border-green-400/30"
                         : isEditMode
-                        ? "bg-yellow-600/20 border-yellow-500/40"
-                        : isArchiveMode
-                        ? "bg-gray-700/20 border-gray-500/40"
-                        : "bg-purple-500/10 border-purple-400/30"
+                          ? "bg-yellow-600/20 border-yellow-500/40"
+                          : isArchiveMode
+                            ? "bg-gray-700/20 border-gray-500/40"
+                            : "bg-purple-500/10 border-purple-400/30"
                     }`}
                   >
-                    <TouchableOpacity 
+                    <TouchableOpacity
                       className="flex-1"
                       onPress={() => handleTaskTap(task.id)}
                       activeOpacity={1}
@@ -674,15 +710,27 @@ export default function TaskListModal({
                         />
                         <Text
                           className={`font-orbitron-bold text-sm ml-1 ${
-                            isEditMode ? "text-yellow-300" : isArchiveMode ? "text-gray-300" : "text-purple-300"
+                            isEditMode
+                              ? "text-yellow-300"
+                              : isArchiveMode
+                                ? "text-gray-300"
+                                : "text-purple-300"
                           }`}
                         >
                           {task.reward}
                         </Text>
-                        <Text className={`font-orbitron-bold text-sm ml-3 ${
-                          task.cycles === -1 ? "text-blue-400" : task.completedCycles >= task.cycles ? "text-green-400" : "text-yellow-400"
-                        }`}>
-                          {task.cycles === -1 ? `${task.completedCycles}/∞` : `${task.completedCycles}/${task.cycles}`}
+                        <Text
+                          className={`font-orbitron-bold text-sm ml-3 ${
+                            task.cycles === -1
+                              ? "text-blue-400"
+                              : task.completedCycles >= task.cycles
+                                ? "text-green-400"
+                                : "text-yellow-400"
+                          }`}
+                        >
+                          {task.cycles === -1
+                            ? `${task.completedCycles}/∞`
+                            : `${task.completedCycles}/${task.cycles}`}
                         </Text>
                       </View>
                     </TouchableOpacity>
@@ -744,13 +792,18 @@ export default function TaskListModal({
                         <View className="flex-row">
                           <TouchableOpacity
                             onPress={() => handleCompleteTask(task.id)}
-                            disabled={!task.completed && task.cycles !== -1 && task.completedCycles < task.cycles}
+                            disabled={
+                              !task.completed &&
+                              task.cycles !== -1 &&
+                              task.completedCycles < task.cycles
+                            }
                             className={`w-10 h-10 rounded-full items-center justify-center mr-1 ${
                               task.completed
                                 ? "bg-green-500"
-                                : task.cycles === -1 || task.completedCycles >= task.cycles
-                                ? "bg-green-500/30 border-2 border-green-400/30"
-                                : "bg-gray-500/20 border-2 border-gray-400/20"
+                                : task.cycles === -1 ||
+                                    task.completedCycles >= task.cycles
+                                  ? "bg-green-500/30 border-2 border-green-400/30"
+                                  : "bg-gray-500/20 border-2 border-gray-400/20"
                             }`}
                           >
                             <Ionicons
@@ -760,7 +813,13 @@ export default function TaskListModal({
                                   : "checkmark-outline"
                               }
                               size={20}
-                              color={!task.completed && task.cycles !== -1 && task.completedCycles < task.cycles ? "#666" : "white"}
+                              color={
+                                !task.completed &&
+                                task.cycles !== -1 &&
+                                task.completedCycles < task.cycles
+                                  ? "#666"
+                                  : "white"
+                              }
                             />
                           </TouchableOpacity>
 
@@ -844,7 +903,9 @@ export default function TaskListModal({
                 placeholder="Description (optional, max 200 characters)"
                 placeholderTextColor="#999"
                 value={newTaskDescription}
-                onChangeText={(text) => setNewTaskDescription(text.slice(0, 200))}
+                onChangeText={(text) =>
+                  setNewTaskDescription(text.slice(0, 200))
+                }
                 multiline
                 numberOfLines={3}
                 maxLength={200}
@@ -859,7 +920,9 @@ export default function TaskListModal({
                 keyboardType="numeric"
               />
               <TouchableOpacity
-                onPress={() => setNewTaskAllowMinimization(!newTaskAllowMinimization)}
+                onPress={() =>
+                  setNewTaskAllowMinimization(!newTaskAllowMinimization)
+                }
                 className="flex-row items-center justify-between bg-white/10 border border-yellow-400/30 rounded-lg px-4 py-3 mb-3"
               >
                 <Text className="font-madimi text-white text-base">
@@ -882,7 +945,7 @@ export default function TaskListModal({
               <Text className="font-madimi text-yellow-200 text-sm mb-2">
                 Pomodoro Settings
               </Text>
-              
+
               {/* Work Time */}
               <View className="bg-white/10 border border-yellow-400/30 rounded-lg px-4 py-3 mb-3">
                 <Text className="font-madimi text-white text-sm mb-2">
@@ -890,7 +953,9 @@ export default function TaskListModal({
                 </Text>
                 <View className="flex-row items-center justify-between">
                   <TouchableOpacity
-                    onPress={() => setNewTaskWorkTime(Math.max(5, newTaskWorkTime - 5))}
+                    onPress={() =>
+                      setNewTaskWorkTime(Math.max(5, newTaskWorkTime - 5))
+                    }
                     className="w-10 h-10 bg-yellow-600/40 border border-yellow-500/50 rounded-lg items-center justify-center"
                   >
                     <Ionicons name="remove" size={20} color="white" />
@@ -914,7 +979,9 @@ export default function TaskListModal({
                 </Text>
                 <View className="flex-row items-center justify-between">
                   <TouchableOpacity
-                    onPress={() => setNewTaskPlayTime(Math.max(5, newTaskPlayTime - 5))}
+                    onPress={() =>
+                      setNewTaskPlayTime(Math.max(5, newTaskPlayTime - 5))
+                    }
                     className="w-10 h-10 bg-yellow-600/40 border border-yellow-500/50 rounded-lg items-center justify-center"
                   >
                     <Ionicons name="remove" size={20} color="white" />
@@ -938,7 +1005,11 @@ export default function TaskListModal({
                 </Text>
                 <View className="flex-row items-center justify-between">
                   <TouchableOpacity
-                    onPress={() => setNewTaskCycles(newTaskCycles <= 1 ? -1 : newTaskCycles - 1)}
+                    onPress={() =>
+                      setNewTaskCycles(
+                        newTaskCycles <= 1 ? -1 : newTaskCycles - 1,
+                      )
+                    }
                     className="w-10 h-10 bg-yellow-600/40 border border-yellow-500/50 rounded-lg items-center justify-center"
                   >
                     <Ionicons name="remove" size={20} color="white" />
@@ -947,7 +1018,11 @@ export default function TaskListModal({
                     {newTaskCycles === -1 ? "∞" : newTaskCycles}
                   </Text>
                   <TouchableOpacity
-                    onPress={() => setNewTaskCycles(newTaskCycles === -1 ? 1 : newTaskCycles + 1)}
+                    onPress={() =>
+                      setNewTaskCycles(
+                        newTaskCycles === -1 ? 1 : newTaskCycles + 1,
+                      )
+                    }
                     className="w-10 h-10 bg-yellow-600/40 border border-yellow-500/50 rounded-lg items-center justify-center"
                   >
                     <Ionicons name="add" size={20} color="white" />
@@ -1008,10 +1083,14 @@ export default function TaskListModal({
                     className="bg-yellow-900/30 border-2 border-yellow-500/40 rounded-xl w-16 h-16 items-center justify-center"
                   >
                     <TextInput
-                      ref={(ref) => { pinRefs.current[index] = ref; }}
+                      ref={(ref) => {
+                        pinRefs.current[index] = ref;
+                      }}
                       className="font-orbitron-bold text-3xl text-yellow-100 text-center w-full opacity-0"
                       value={pinInput[index] || ""}
-                      onChangeText={(digit) => handlePinDigitChange(digit, index)}
+                      onChangeText={(digit) =>
+                        handlePinDigitChange(digit, index)
+                      }
                       onKeyPress={(e) => handlePinKeyPress(e, index)}
                       keyboardType="number-pad"
                       maxLength={1}
@@ -1093,10 +1172,14 @@ export default function TaskListModal({
                     className="bg-yellow-900/30 border-2 border-yellow-500/40 rounded-xl w-16 h-16 items-center justify-center"
                   >
                     <TextInput
-                      ref={(ref) => { pinRefs.current[index] = ref; }}
+                      ref={(ref) => {
+                        pinRefs.current[index] = ref;
+                      }}
                       className="font-orbitron-bold text-3xl text-yellow-100 text-center w-full opacity-0"
                       value={pinInput[index] || ""}
-                      onChangeText={(digit) => handlePinDigitChange(digit, index)}
+                      onChangeText={(digit) =>
+                        handlePinDigitChange(digit, index)
+                      }
                       onKeyPress={(e) => handlePinKeyPress(e, index)}
                       keyboardType="number-pad"
                       maxLength={1}
@@ -1277,7 +1360,9 @@ export default function TaskListModal({
                         Cycles
                       </Text>
                       <Text className="font-orbitron-bold text-white text-base">
-                        {selectedTask.cycles === -1 ? `${selectedTask.completedCycles}/∞` : `${selectedTask.completedCycles}/${selectedTask.cycles}`}
+                        {selectedTask.cycles === -1
+                          ? `${selectedTask.completedCycles}/∞`
+                          : `${selectedTask.completedCycles}/${selectedTask.cycles}`}
                       </Text>
                     </View>
                   </View>
@@ -1286,16 +1371,15 @@ export default function TaskListModal({
                     Created
                   </Text>
                   <Text className="font-madimi text-white text-base mb-4">
-                    {new Date(selectedTask.createdAt.seconds * 1000).toLocaleDateString(
-                      "en-US",
-                      {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      }
-                    )}
+                    {new Date(
+                      selectedTask.createdAt.seconds * 1000,
+                    ).toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </Text>
                 </View>
 
