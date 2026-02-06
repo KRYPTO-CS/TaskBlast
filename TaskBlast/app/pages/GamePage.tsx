@@ -151,8 +151,9 @@ export default function GamePage() {
             console.warn("Failed to persist game score", err);
           }
         })();
-      } else if (payload.type === "pingResponse") {
-        console.log("Pong received from Godot:", payload);
+      } else if (payload.type === "testMessage") {
+        console.log("Godot Initialized");
+        sendMessageToGodot();
       } else {
         console.log("Other message:", payload);
       }
@@ -162,11 +163,16 @@ export default function GamePage() {
   }, []);
 
   const sendMessageToGodot = () => {
-  console.log("Sending a ping to Godot.");
-  webviewRef.current?.postMessage(
-    JSON.stringify({ type: "incrementComm" })
-  );
-};
+    console.log("Sending skins message to Godot.");
+
+    webviewRef.current?.postMessage(
+      JSON.stringify({
+        type: "skins",
+        data1: "red",
+        data2: "blue",
+      })
+    );
+  };
 
   if (!WebView) {
     return (
@@ -197,9 +203,7 @@ export default function GamePage() {
         <TouchableOpacity onPress={handleTimerTap} activeOpacity={1} style={styles.timerContainer}>
           <Text style={styles.timerText}>{formatTime(timeLeft)}</Text>
         </TouchableOpacity>
-        <Pressable onPress={sendMessageToGodot} style={styles.rightButton}>
-          <Text style={styles.rightText}>Send</Text>
-        </Pressable>
+        <View style={styles.rightButton} />
       </View>
       <View style={styles.container}>
         {loading && (
@@ -277,7 +281,8 @@ const styles = StyleSheet.create({
   },
   backText: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 20,
+    fontWeight: "bold",
   },
   rightButton: {
     width: 80,
