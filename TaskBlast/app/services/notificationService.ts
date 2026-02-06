@@ -1,8 +1,6 @@
 /**
- * Notification Service for TaskBlast
+ * Notification Service
  * 
- * A neurodivergent-friendly notification system that provides gentle, 
- * predictable, and non-overwhelming reminders for tasks and timers.
  * 
  * Features:
  * - Task reminder notifications (before task start time)
@@ -26,7 +24,7 @@ export enum NotificationType {
   DAILY_DIGEST = 'DAILY_DIGEST',
 }
 
-// Reminder timing options (in minutes before task start)
+// Reminder timing options (in minutes before task start) for user preferences LATER
 export enum ReminderTiming {
   FIVE_MINUTES = 5,
   TEN_MINUTES = 10,
@@ -100,7 +98,7 @@ const POSITIVE_MESSAGES = {
 };
 
 /**
- * Configure notification handler (should be called at app startup)
+ * Configure notification handler called at app startup
  */
 export function configureNotificationHandler() {
   Notifications.setNotificationHandler({
@@ -114,7 +112,7 @@ export function configureNotificationHandler() {
 }
 
 /**
- * Request notification permissions
+ * Request notification permissions called at app startup
  */
 export async function requestNotificationPermissions(): Promise<boolean> {
   try {
@@ -165,7 +163,7 @@ export async function saveNotificationPreferences(
 }
 
 /**
- * Check notification rate limiting
+ * Check notification rate limiting (Optional)
  */
 async function checkRateLimit(preferences: NotificationPreferences): Promise<boolean> {
   try {
@@ -194,7 +192,6 @@ async function checkRateLimit(preferences: NotificationPreferences): Promise<boo
 
 /**
  * Get a random positive message for a notification type
- * Always uses emojis and positive language for neurodivergent-friendly design
  */
 function getPositiveMessage(
   type: NotificationType,
