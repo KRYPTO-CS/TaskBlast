@@ -242,13 +242,6 @@ export default function NotificationPreferencesModal({
                 value={localPrefs.vibrationEnabled}
                 onToggle={toggleVibration}
               />
-
-              <SettingRow
-                label="Visual Only Mode"
-                description="Silent notifications (no sound or vibration)"
-                value={localPrefs.visualOnly}
-                onToggle={toggleVisualOnly}
-              />
             </View>
 
             {/* Daily Digest Reminder */}
