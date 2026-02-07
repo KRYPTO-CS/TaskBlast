@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../components/MainButton";
+import { useTranslation } from "react-i18next";
 
 interface ResetPasswordProps {
   onSubmit: (newPassword: string) => void;
@@ -22,6 +23,7 @@ export default function ResetPassword({
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [t, i18n] = useTranslation();
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -29,17 +31,17 @@ export default function ResetPassword({
     setError("");
 
     if (!newPassword.trim() || !confirmPassword.trim()) {
-      setError("Please fill in all fields");
+     setError(t("birthdate.empty"));
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setError("Passwords do not match");
+      setError(t("Password.match"));
       return;
     }
 
     if (newPassword.length < 8) {
-      setError("Password must be at least 8 characters");
+      setError(t("Password.length"));
       return;
     }
 
@@ -62,11 +64,11 @@ export default function ResetPassword({
           {/* Reset Password Container */}
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
             <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
-              Create New Password
+              {t("ResetPassword.title")}
             </Text>
 
             <Text className="font-madimi text-sm text-white/90 mb-8 text-left">
-              Enter your new password below
+              {t("ResetPassword.desc")}
             </Text>
 
             <View className="mb-4">
@@ -79,7 +81,7 @@ export default function ResetPassword({
                 />
                 <TextInput
                   className="font-madimi flex-1 text-base text-white"
-                  placeholder="New Password"
+                  placeholder={t("ResetPassword.newPasswordPlaceholder")}
                   placeholderTextColor="rgba(255,255,255,0.6)"
                   value={newPassword}
                   onChangeText={setNewPassword}
@@ -99,7 +101,7 @@ export default function ResetPassword({
                 />
                 <TextInput
                   className="font-madimi flex-1 text-base text-white"
-                  placeholder="Confirm Password"
+                  placeholder={t("ResetPassword.confirmPasswordPlaceholder")}
                   placeholderTextColor="rgba(255,255,255,0.6)"
                   value={confirmPassword}
                   onChangeText={setConfirmPassword}
@@ -116,7 +118,7 @@ export default function ResetPassword({
             ) : null}
 
             <MainButton
-              title="Reset Password"
+              title={t("ResetPassword.submit")}
               variant="primary"
               size="medium"
               customStyle={{
@@ -134,8 +136,10 @@ export default function ResetPassword({
               className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
               onPress={onBack}
             >
-              Back to{" "}
-              <Text className="font-semibold text-yellow-300">Login</Text>
+              {t("language.backTo")}
+              <Text className="font-semibold text-yellow-300">
+                {" "}{t("language.Login")}
+              </Text>
             </Text>
           </View>
         </View>
