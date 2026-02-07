@@ -272,6 +272,11 @@ export default function Login() {
           accountType: payload.accountType,
           managerialPin: payload.managerialPin,
           createdAt: serverTimestamp(),
+          shopItems: {
+            body: [true, false, false],
+            wings: [false, true, false],
+          },
+          equipped: [0, 1],
         });
       } catch (writeErr) {
         console.error("Failed to write user document:", writeErr);

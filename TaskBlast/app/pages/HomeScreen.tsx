@@ -249,7 +249,7 @@ export default function HomeScreen() {
           {/* Crystals */}
           <TouchableOpacity
             className="flex-row items-center bg-gradient-to-r from-pink-600 to-pink-400 px-5 py-2.5 rounded-full shadow-lg shadow-pink-500/70 border-2 border-pink-300/30"
-            style={{ shadowOffset: { width: 0, height: 0 } }}
+            style={{ shadowOffset: { width: 0, height: 0 }, width: 140 }}
             onPress={() => setIsShopModalVisible(true)}
           >
             <Image
@@ -266,7 +266,7 @@ export default function HomeScreen() {
           {/* Galaxy Crystals */}
           <TouchableOpacity
             className="flex-row items-center bg-gradient-to-r from-indigo-900 to-indigo-700 px-5 py-2.5 rounded-full shadow-lg shadow-indigo-400/70 border-2 border-indigo-600/30"
-            style={{ shadowOffset: { width: 0, height: 0 } }}
+            style={{ shadowOffset: { width: 0, height: 0 }, width: 140 }}
             onPress={() => setIsShopModalVisible(true)}
           >
             <Image
@@ -318,6 +318,7 @@ export default function HomeScreen() {
         <ShopModal
           visible={isShopModalVisible}
           onClose={() => setIsShopModalVisible(false)}
+          onRocksChange={loadScore}
         />
       </View>
     </View>
