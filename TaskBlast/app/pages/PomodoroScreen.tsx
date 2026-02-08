@@ -241,6 +241,10 @@ export default function PomodoroScreen() {
               console.warn("Audio player error on timer finish:", e);
             }
             setFinished(true);
+            // Show completion notification
+            notifyTimerComplete(taskName, false).catch((err) =>
+              console.warn("Notification error:", err),
+            );
             // Increment completed cycles
             incrementCompletedCycles();
             return 0;
@@ -342,10 +346,6 @@ export default function PomodoroScreen() {
     } catch (e) {
       console.warn("Audio player error on play game:", e);
     }
-    // Show break time notification with positive reinforcement
-    notifyTimerComplete(taskName, true).catch((err) =>
-      console.warn("Notification error:", err),
-    );
     // Mark that we're entering game mode
     setHasPlayedGame(true);
     router.push({
