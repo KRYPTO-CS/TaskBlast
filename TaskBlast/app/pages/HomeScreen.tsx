@@ -203,7 +203,7 @@ export default function HomeScreen() {
         resizeMode="cover"
       />
       {/* All UI elements above the background */}
-      <View className="flex-1 p-5">
+      <View className="flex-1">
         {/* Top Right Section - Profile & Settings above Task Button */}
         <View className="absolute top-14 right-5 z-10 items-center">
           {/* Profile & Settings - Horizontal */}

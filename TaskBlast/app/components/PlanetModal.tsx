@@ -22,7 +22,7 @@ import {
 
 // TODO: move this to the DB eventually
 const PLANET_IMAGES: { [key: number]: any } = {
-    1: require("../../assets/images/sprites/planets/1.png"),
+    1: require("../../assets/images/sprites/planets/1.gif"),
     2: require("../../assets/images/sprites/planets/2.png"),
     3: require("../../assets/images/sprites/planets/3.png"),
     4: require("../../assets/images/sprites/planets/4.png"),
