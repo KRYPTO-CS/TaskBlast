@@ -23,9 +23,14 @@ import {
   serverTimestamp,
   Timestamp,
   getDoc,
+  getDocs,
+  setDoc,
   increment,
+  where,
+  query,
 } from "firebase/firestore";
 import { useNotifications } from "../context/NotificationContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Task {
   id: string;
@@ -72,6 +77,51 @@ export default function TaskListModal({
   const auth = getAuth();
   const db = getFirestore();
 
+  // Child profile state
+  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
+    null,
+  );
+  const [childDocId, setChildDocId] = useState<string | null>(null);
+
+  // Helper to get the correct tasks collection reference
+  const getTasksCollectionRef = () => {
+    if (!auth.currentUser) throw new Error("No authenticated user");
+
+    if (childDocId) {
+      // Child tasks: users/{parentId}/children/{childId}/tasks
+      return collection(
+        db,
+        "users",
+        auth.currentUser.uid,
+        "children",
+        childDocId,
+        "tasks",
+      );
+    } else {
+      // Parent tasks: users/{parentId}/tasks
+      return collection(db, "users", auth.currentUser.uid, "tasks");
+    }
+  };
+
+  // Helper to get task document reference
+  const getTaskDocRef = (taskId: string) => {
+    if (!auth.currentUser) throw new Error("No authenticated user");
+
+    if (childDocId) {
+      return doc(
+        db,
+        "users",
+        auth.currentUser.uid,
+        "children",
+        childDocId,
+        "tasks",
+        taskId,
+      );
+    } else {
+      return doc(db, "users", auth.currentUser.uid, "tasks", taskId);
+    }
+  };
+
   // Reset to normal mode when modal becomes visible
   useEffect(() => {
     if (visible) {
@@ -82,17 +132,46 @@ export default function TaskListModal({
     }
   }, [visible]);
 
+  // Load profile and fetch child doc ID if needed
   useEffect(() => {
-    if (!auth.currentUser) {
-      setError("Please log in to view tasks");
-      setLoading(false);
-      return;
-    }
+    const loadProfileAndTasks = async () => {
+      if (!auth.currentUser) {
+        setError("Please log in to view tasks");
+        setLoading(false);
+        return;
+      }
 
-    // Fetch user data to get accountType and managerialPin
-    const fetchUserData = async () => {
       try {
-        const userDocRef = doc(db, "users", auth.currentUser!.uid);
+        // Check if a child profile is active
+        const activeChild = await AsyncStorage.getItem("activeChildProfile");
+        setActiveChildProfile(activeChild);
+
+        // If child is active, find their document ID
+        if (activeChild) {
+          const childrenRef = collection(
+            db,
+            "users",
+            auth.currentUser.uid,
+            "children",
+          );
+          const childrenQuery = query(
+            childrenRef,
+            where("username", "==", activeChild),
+          );
+          const childrenSnapshot = await getDocs(childrenQuery);
+
+          if (!childrenSnapshot.empty) {
+            const childDoc = childrenSnapshot.docs[0];
+            setChildDocId(childDoc.id);
+          } else {
+            setChildDocId(null);
+          }
+        } else {
+          setChildDocId(null);
+        }
+
+        // Fetch user data to get accountType and managerialPin
+        const userDocRef = doc(db, "users", auth.currentUser.uid);
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
           const userData = userDoc.data();
@@ -100,21 +179,27 @@ export default function TaskListModal({
           setManagerialPin(userData.managerialPin || null);
         }
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Error loading profile:", error);
+        setError("Failed to load profile");
+        setLoading(false);
       }
     };
 
-    fetchUserData();
+    loadProfileAndTasks();
+  }, [auth.currentUser]);
+
+  // Separate useEffect for tasks listener (runs after childDocId is set)
+  useEffect(() => {
+    if (!auth.currentUser) return;
+    if (activeChildProfile !== null && childDocId === null) {
+      // Still loading child doc ID
+      return;
+    }
 
     try {
-      const userTasksRef = collection(
-        db,
-        "users",
-        auth.currentUser.uid,
-        "tasks",
-      );
+      const tasksRef = getTasksCollectionRef();
       const unsubscribe = onSnapshot(
-        userTasksRef,
+        tasksRef,
         (snapshot: any) => {
           const taskList: Task[] = [];
           snapshot.forEach((doc: any) => {
@@ -135,7 +220,6 @@ export default function TaskListModal({
               updatedAt: data.updatedAt || Timestamp.now(),
             });
           });
-          // Filter tasks based on mode and sort by creation date, newest first
           const filteredTasks = taskList;
           filteredTasks.sort(
             (a, b) => b.createdAt.seconds - a.createdAt.seconds,
@@ -156,7 +240,7 @@ export default function TaskListModal({
       setError("Failed to initialize task system");
       setLoading(false);
     }
-  }, [auth.currentUser]);
+  }, [auth.currentUser, childDocId, activeChildProfile]);
 
   // Schedule daily digest when tasks or preferences change
   useEffect(() => {
@@ -217,7 +301,7 @@ export default function TaskListModal({
           return;
         }
 
-        const taskRef = doc(db, "users", auth.currentUser.uid, "tasks", taskId);
+        const taskRef = getTaskDocRef(taskId);
         await updateDoc(taskRef, {
           completed: !task.completed,
           updatedAt: serverTimestamp(),
@@ -236,17 +320,40 @@ export default function TaskListModal({
       if (!task) return;
 
       // Update task to archived
-      const taskRef = doc(db, "users", auth.currentUser.uid, "tasks", taskId);
+      const taskRef = getTaskDocRef(taskId);
       await updateDoc(taskRef, {
         archived: true,
         updatedAt: serverTimestamp(),
       });
 
-      // Add rocks to user's account
-      const userRef = doc(db, "users", auth.currentUser.uid);
-      await updateDoc(userRef, {
-        rocks: increment(task.reward),
-      });
+      // Add rocks to the appropriate account
+      if (childDocId) {
+        // Child is active - add rocks to child's document
+        const childRef = doc(
+          db,
+          "users",
+          auth.currentUser.uid,
+          "children",
+          childDocId,
+        );
+        await setDoc(
+          childRef,
+          {
+            rocks: increment(task.reward),
+          },
+          { merge: true },
+        ); // ← CHANGED: setDoc with merge
+      } else {
+        // Parent is active - add rocks to parent's document
+        const userRef = doc(db, "users", auth.currentUser.uid);
+        await setDoc(
+          userRef,
+          {
+            rocks: increment(task.reward),
+          },
+          { merge: true },
+        ); // ← CHANGED: setDoc with merge
+      }
 
       // Notify parent component to update rocks display
       if (onRocksChange) {
@@ -261,7 +368,7 @@ export default function TaskListModal({
   const handleUnarchiveTask = async (taskId: string) => {
     if (!auth.currentUser) return;
     try {
-      const taskRef = doc(db, "users", auth.currentUser.uid, "tasks", taskId);
+      const taskRef = getTaskDocRef(taskId);
       await updateDoc(taskRef, {
         archived: false,
         completed: false,
@@ -288,7 +395,7 @@ export default function TaskListModal({
   const handleDeleteTask = async (taskId: string) => {
     if (!auth.currentUser) return;
     try {
-      const taskRef = doc(db, "users", auth.currentUser.uid, "tasks", taskId);
+      const taskRef = getTaskDocRef(taskId);
       await deleteDoc(taskRef);
     } catch (error) {
       console.error("Error deleting task:", error);
@@ -300,13 +407,8 @@ export default function TaskListModal({
     if (!auth.currentUser) return;
     if (newTaskName.trim() && newTaskReward.trim()) {
       try {
-        const userTasksRef = collection(
-          db,
-          "users",
-          auth.currentUser.uid,
-          "tasks",
-        );
-        await addDoc(userTasksRef, {
+        const tasksRef = getTasksCollectionRef();
+        await addDoc(tasksRef, {
           name: newTaskName,
           description: newTaskDescription,
           reward: parseInt(newTaskReward) || 0,
@@ -363,6 +465,7 @@ export default function TaskListModal({
           "tasks",
           editingTaskId,
         );
+        const taskRef = getTaskDocRef(editingTaskId);
         await updateDoc(taskRef, {
           name: newTaskName,
           description: newTaskDescription,
@@ -546,7 +649,7 @@ export default function TaskListModal({
       // Admin bypass: reset completedCycles to 0
       try {
         if (!auth.currentUser) return;
-        const taskRef = doc(db, "users", auth.currentUser.uid, "tasks", taskId);
+        const taskRef = getTaskDocRef(taskId);
         await updateDoc(taskRef, {
           completedCycles: 0,
           updatedAt: serverTimestamp(),

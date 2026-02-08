@@ -41,7 +41,7 @@ describe("Sign Up Process", () => {
         <SignUpBirthdate onSubmit={mockOnSubmit} onBack={mockOnBack} />
       );
 
-      expect(getByText("What's Your Birthdate?")).toBeTruthy();
+      expect(getByText("What's Your Birthdate")).toBeTruthy();
       expect(getByPlaceholderText("MM")).toBeTruthy();
       expect(getByPlaceholderText("DD")).toBeTruthy();
       expect(getByPlaceholderText("YYYY")).toBeTruthy();
@@ -136,7 +136,7 @@ describe("Sign Up Process", () => {
       const continueButton = getByText("Continue");
       fireEvent.press(continueButton);
 
-      expect(getByText(/fill in all fields/i)).toBeTruthy();
+      expect(getByText("Field is required")).toBeTruthy();
       expect(mockOnSubmit).not.toHaveBeenCalled();
     });
   });
@@ -226,7 +226,7 @@ describe("Sign Up Process", () => {
         <SignUpManagerPin onSubmit={mockOnSubmit} onBack={mockOnBack} />
       );
 
-      expect(getByText(/Manager/i)).toBeTruthy();
+      expect(getByText("Create Manager PIN")).toBeTruthy();
       expect(getByPlaceholderText(/PIN/i)).toBeTruthy();
     });
 
@@ -334,7 +334,7 @@ describe("Sign Up Process", () => {
       fireEvent.changeText(firstNameInput, "John");
       fireEvent.press(continueButton);
 
-      expect(getByText(/both first and last name/i)).toBeTruthy();
+      expect(getByText("Field is required")).toBeTruthy();
       expect(mockOnSubmit).not.toHaveBeenCalled();
     });
 
@@ -371,7 +371,7 @@ describe("Sign Up Process", () => {
       expect(getByPlaceholderText("Email Address")).toBeTruthy();
     });
 
-  it("should accept valid email", async () => {
+    it("should accept valid email", async () => {
       const mockOnSubmit = jest.fn();
       const mockOnBack = jest.fn();
 
@@ -392,7 +392,7 @@ describe("Sign Up Process", () => {
       });
     });
 
-  it("should validate email format", async () => {
+    it("should validate email format", async () => {
       const mockOnSubmit = jest.fn();
       const mockOnBack = jest.fn();
 
@@ -414,7 +414,7 @@ describe("Sign Up Process", () => {
       });
     });
 
-  it("should require email to be filled", async () => {
+    it("should require email to be filled", async () => {
       const mockOnSubmit = jest.fn();
       const mockOnBack = jest.fn();
 
@@ -427,7 +427,7 @@ describe("Sign Up Process", () => {
       fireEvent.press(sendButton);
 
       await waitFor(() => {
-        expect(getByText(/enter your email/i)).toBeTruthy();
+        expect(getByText("Field is required")).toBeTruthy();
         expect(mockOnSubmit).not.toHaveBeenCalled();
       });
     });

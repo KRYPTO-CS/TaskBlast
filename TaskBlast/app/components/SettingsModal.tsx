@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAudio } from "../context/AudioContext";
 import { useNotifications } from "../context/NotificationContext";
 import NotificationPreferencesModal from "./NotificationPreferencesModal";
+import { useRouter } from "expo-router";
 
 interface SettingsModalProps {
   visible: boolean;
@@ -27,6 +28,8 @@ export default function SettingsModal({
   onClose,
   onLogout,
 }: SettingsModalProps) {
+  const router = useRouter();
+
   // Get audio context for global audio control
   const { soundEnabled, musicEnabled, setSoundEnabled, setMusicEnabled } =
     useAudio();
@@ -39,6 +42,27 @@ export default function SettingsModal({
 
   // Other settings state
   const [darkModeEnabled, setDarkModeEnabled] = useState(false);
+
+  // Child profile state
+  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
+    null,
+  );
+  const [currentProfileType, setCurrentProfileType] = useState<
+    "parent" | "child"
+  >("parent");
+
+  // Check for active child profile when modal opens
+  useEffect(() => {
+    const checkActiveProfile = async () => {
+      if (visible) {
+        const activeChild = await AsyncStorage.getItem("activeChildProfile");
+        setActiveChildProfile(activeChild);
+        setCurrentProfileType(activeChild ? "child" : "parent");
+      }
+    };
+
+    checkActiveProfile();
+  }, [visible]);
 
   const handleSoundToggle = async (value: boolean) => {
     await setSoundEnabled(value);
@@ -53,32 +77,45 @@ export default function SettingsModal({
   };
 
   const handleLogout = () => {
-    Alert.alert("Logout", "Are you sure you want to logout?", [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "Logout",
-        style: "destructive",
-        onPress: async () => {
-          try {
-            // Clear AsyncStorage
-            await AsyncStorage.clear();
-            // Sign out from Firebase
-            await signOut(auth);
-            // Call onLogout callback if provided
-            if (onLogout) {
-              onLogout();
-            }
-            onClose();
-          } catch (error) {
-            console.error("Logout error:", error);
-            Alert.alert("Error", "Failed to logout. Please try again.");
-          }
+    const isChild = currentProfileType === "child";
+
+    Alert.alert(
+      isChild ? "Switch Profile" : "Logout",
+      isChild
+        ? "Return to profile selection?"
+        : "Are you sure you want to logout?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
         },
-      },
-    ]);
+        {
+          text: isChild ? "Switch" : "Logout",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              if (isChild) {
+                // Child "logout" - just clear active child profile
+                await AsyncStorage.removeItem("activeChildProfile");
+                onClose();
+                router.push("/pages/ProfileSelection");
+              } else {
+                // Parent logout - full logout
+                await AsyncStorage.clear();
+                await signOut(auth);
+                if (onLogout) {
+                  onLogout();
+                }
+                onClose();
+              }
+            } catch (error) {
+              console.error("Logout error:", error);
+              Alert.alert("Error", "Failed to logout. Please try again.");
+            }
+          },
+        },
+      ],
+    );
   };
 
   return (
@@ -126,6 +163,30 @@ export default function SettingsModal({
             >
               <Ionicons name="close" size={24} color="white" />
             </TouchableOpacity>
+          </View>
+
+          {/* Current Profile Badge */}
+          <View className="items-center mb-4">
+            <View
+              className="px-4 py-2 rounded-full"
+              style={{
+                backgroundColor:
+                  currentProfileType === "parent"
+                    ? "rgba(59, 130, 246, 0.3)"
+                    : "rgba(168, 85, 247, 0.3)",
+                borderWidth: 1,
+                borderColor:
+                  currentProfileType === "parent"
+                    ? "rgba(96, 165, 250, 0.5)"
+                    : "rgba(192, 132, 252, 0.5)",
+              }}
+            >
+              <Text className="font-orbitron-semibold text-white text-xs">
+                {currentProfileType === "parent"
+                  ? "👤 Parent Account"
+                  : `👶 ${activeChildProfile}`}
+              </Text>
+            </View>
           </View>
 
           <ScrollView showsVerticalScrollIndicator={false} className="max-h-96">
@@ -232,29 +293,33 @@ export default function SettingsModal({
               className="h-px my-4"
               style={{ backgroundColor: "rgba(139, 92, 246, 0.3)" }}
             />
-            <TouchableOpacity
-              className="flex-row items-center p-4 rounded-xl mb-3"
-              style={{
-                backgroundColor: "rgba(236, 72, 153, 0.2)",
-                borderWidth: 1,
-                borderColor: "rgba(236, 72, 153, 0.3)",
-              }}
-              onPress={() => {
-                // Add privacy settings navigation
-                console.log("Privacy pressed");
-              }}
-            >
-              <Ionicons
-                name="shield-checkmark"
-                size={24}
-                color="#ec4899"
-                style={{ marginRight: 12 }}
-              />
-              <Text className="font-orbitron-semibold text-white text-base flex-1">
-                Privacy
-              </Text>
-              <Ionicons name="chevron-forward" size={20} color="#ec4899" />
-            </TouchableOpacity>
+
+            {/* Privacy - Only show for parent */}
+            {currentProfileType === "parent" && (
+              <TouchableOpacity
+                className="flex-row items-center p-4 rounded-xl mb-3"
+                style={{
+                  backgroundColor: "rgba(236, 72, 153, 0.2)",
+                  borderWidth: 1,
+                  borderColor: "rgba(236, 72, 153, 0.3)",
+                }}
+                onPress={() => {
+                  // Add privacy settings navigation
+                  console.log("Privacy pressed");
+                }}
+              >
+                <Ionicons
+                  name="shield-checkmark"
+                  size={24}
+                  color="#ec4899"
+                  style={{ marginRight: 12 }}
+                />
+                <Text className="font-orbitron-semibold text-white text-base flex-1">
+                  Privacy
+                </Text>
+                <Ionicons name="chevron-forward" size={20} color="#ec4899" />
+              </TouchableOpacity>
+            )}
 
             <TouchableOpacity
               className="flex-row items-center p-4 rounded-xl mb-3"
@@ -304,7 +369,7 @@ export default function SettingsModal({
               <Ionicons name="chevron-forward" size={20} color="#ec4899" />
             </TouchableOpacity>
 
-            {/* Logout Button */}
+            {/* Logout/Switch Profile Button */}
             <TouchableOpacity
               testID="logout-button"
               className="flex-row items-center justify-center p-4 rounded-xl"
@@ -316,13 +381,17 @@ export default function SettingsModal({
               onPress={handleLogout}
             >
               <Ionicons
-                name="log-out-outline"
+                name={
+                  currentProfileType === "child"
+                    ? "swap-horizontal"
+                    : "log-out-outline"
+                }
                 size={24}
                 color="#ef4444"
                 style={{ marginRight: 12 }}
               />
               <Text className="font-orbitron-bold text-red-400 text-base">
-                Logout
+                {currentProfileType === "child" ? "Switch Profile" : "Logout"}
               </Text>
             </TouchableOpacity>
           </ScrollView>
