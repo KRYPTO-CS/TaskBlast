@@ -472,7 +472,7 @@ Tests for the password reset functionality (accessed from ForgotPassword flow).
 - ✓ ⬜ Show error "Passwords do not match" when passwords differ
 - ✓ ⬜ Show error "Password must be at least 8 characters long" when too short
 - ✓ ⬜ Accept password with exactly 8 characters
-- ✓ ⬜ Trim whitespace from password inputs (treat "   " as empty)
+- ✓ ⬜ Trim whitespace from password inputs (treat " " as empty)
 - ✓ ⬜ Call onSubmit with valid matching passwords (8+ chars)
 - ✓ ⬜ Log success message on valid submission
 - ✓ ⬜ Accept passwords with special characters (P@ssw0rd!#$%)
@@ -516,51 +516,36 @@ Tests for the task management modal - a complex component with CRUD operations, 
 
 **Key Test Cases:**
 
-- ✓ 🔲 Render task modal when visible prop is true
-- ✓ 🔲 Not render when visible=false
-- ✓ 🔲 Render close button
-- ✓ 🔲 Render mode toggle buttons (Normal, Edit, Archive)
-- ✓ ⬜ Show loading state while fetching child profile
-- ✓ 🔲 Close modal when close button pressed
-- ✓ 🔲 Start in normal mode by default
-- ✓ 🔲 Switch to archive mode when archive button pressed
-- ✓ 🔲 Switch back to normal mode from any other mode
-- ✓ ⬜ Reset to normal mode when modal becomes visible
-- ✓ ⬜ Switch to edit mode without PIN for independent account
-- ✓ 🔲 Show "Add New Task" button in edit mode
-- ✓ ⬜ Show PIN modal when switching to edit mode (managed account)
-- ✓ ⬜ Show error on incorrect PIN entry
-- ✓ 🔲 Cancel PIN entry and stay in normal mode
-- ✓ 🔲 Show "No tasks yet. Add your first task!" when empty (normal mode)
-- ✓ 🔲 Show "No archived tasks." when archive mode is empty
-- ✓ 🔲 Display task name and reward (rocks)
-- ✓ 🔲 Display cycle progress (e.g., "1/3")
-- ✓ 🔲 Display infinite cycles symbol (e.g., "5/∞")
-- ✓ ⬜ Navigate to PomodoroScreen when start button pressed
-- ✓ 🔲 Show info modal when info button pressed
-- ✓ ⬜ Mark task complete when checkmark pressed (cycles met)
-- ✓ ⬜ Archive task and award rocks to parent account
-- ✓ ⬜ Call onRocksChange callback after archiving
-- ✓ ⬜ Load child profile when activeChildProfile is set in AsyncStorage
-- ✓ ⬜ Use child tasks collection (users/{parentId}/children/{childId}/tasks)
-- ✓ ⬜ Add rocks to child document when child archives task
-- ✓ ⬜ Show PIN modal when unarchiving (managed account)
-- ✓ ⬜ Reset completedCycles to 0 on triple-tap (admin bypass)
-- ✓ ⬜ Show error "Failed to load tasks" on Firestore error
-- ✓ ⬜ Show error "Please log in to view tasks" when not authenticated
-- ✓ ⬜ Handle add task error gracefully (Alert.alert)
-- ✓ ⬜ Handle delete task error gracefully
-- ✓ 🔲 Open task form modal when "Add New Task" pressed
-- ✓ 🔲 Close task form when cancel is pressed
-- ✓ 🔲 Display task details in info modal (name, description, reward, pomodoro settings)
-
-**Note:** This component manages parent AND child tasks with isolated Firestore collections based on active profile.
+- ✓ Display initial time (01:00)
+- ✓ Render progress bar
+- ✓ Render animated spaceship
+- ✓ Render Pause button initially
+- ✓ Countdown from 1 minute
+- ✓ Format time correctly (MM:SS)
+- ✓ Countdown to zero (00:00)
+- ✓ Update every second
+- ✓ Progress bar starts at 100%
+- ✓ Progress decreases as time passes
+- ✓ Progress reaches 0% when timer completes
+- ✓ Pause timer when pause button is pressed
+- ✓ Change button to "Land" when paused
+- ✓ Pause music when paused
+- ✓ Navigate back to home when Land is pressed
+- ✓ Play background music on mount
+- ✓ Pause music when timer completes
+- ✓ Navigate to Game screen when timer reaches zero
+- ✓ Stop timer at zero
+- ✓ Pause timer when app goes to background
+- ✓ Pause timer when app becomes inactive
+- ✓ Apply floating animation to spaceship
+- ✓ Continuously scroll background
+- ✓ Handle navigation errors gracefully
+- ✓ Format single digit seconds with leading zero
+- ✓ Format single digit minutes with leading zero
 
 ---
 
-### 10. GamePage.test.tsx
-
-**Testing Type:** 🔲 Black Box + ⬜ White Box (Hybrid)
+### 7. GamePage.test.tsx
 
 Tests for the embedded game screen.
 
@@ -653,6 +638,7 @@ npm test ForgotPassword.test.tsx
 npm test SignUp.test.tsx
 npm test HomeScreen.test.tsx
 npm test PomodoroScreen.test.tsx
+npm test NotificationService.test.tsx
 npm test GamePage.test.tsx
 # Note: ProfileScreen.test.tsx not yet created
 ```
@@ -991,27 +977,23 @@ The following features have been recently added and require test coverage:
 **New Test Files Created:**
 
 1. **ProfileScreen.test.tsx** - 15 tests ✅
-
    - UI rendering, navigation, user data loading
    - Error handling for AsyncStorage and Firestore
    - Modal integration tests
 
 2. **ProfileSelection.test.tsx** - 17 tests ✅
-
    - Profile switching and PIN verification
    - Parent/child profile selection
    - Authentication redirect test (unskipped and fixed)
    - Error handling tests
 
 3. **CreateChildAccount.test.tsx** - 23 tests ✅
-
    - Child account creation workflow
    - Username validation and availability checks
    - PIN creation and validation
    - Firestore integration tests
 
 4. **SignUpLanguage.test.tsx** - 21 tests ✅
-
    - Language selection UI and functionality
    - Navigation between language options
    - i18next integration tests
@@ -1025,19 +1007,16 @@ The following features have been recently added and require test coverage:
 **Key Technical Fixes Applied:**
 
 1. **Async Alert Timing Issues:**
-
    - Added proper Alert spy setup with `jest.spyOn(Alert, 'alert')`
    - Changed from `mockAlert.getLastAlert()` to direct `Alert.alert.toHaveBeenCalledWith()` checks
    - Used `mockRejectedValue` instead of `mockRejectedValueOnce` for components with useEffect
 
 2. **Mock Strategy Improvements:**
-
    - Used `new Error()` objects instead of plain objects for AsyncStorage/Firestore rejections
    - Added console.error mocking with proper cleanup
    - Fixed mock consumption issues in components with lifecycle hooks
 
 3. **Syntax and Structure:**
-
    - Removed duplicate closing braces causing parse errors
    - Fixed test structure and async handling
    - Removed unnecessary `act()` wrappers around synchronous `fireEvent` calls

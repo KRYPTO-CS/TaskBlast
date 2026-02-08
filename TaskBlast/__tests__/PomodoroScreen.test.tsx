@@ -114,7 +114,7 @@ describe("Pomodoro Screen", () => {
         const minutes = Math.floor(i / 60);
         const seconds = i % 60;
         const timeString = `${String(minutes).padStart(2, "0")}:${String(
-          seconds
+          seconds,
         ).padStart(2, "0")}`;
 
         await waitFor(() => {
@@ -440,6 +440,68 @@ describe("Pomodoro Screen", () => {
     });
   });
 
+  describe("Notification Integration", () => {
+    // Mock the notification context
+    const mockNotifyTimerComplete = jest.fn();
+
+    beforeEach(() => {
+      mockNotifyTimerComplete.mockClear();
+      // Mock the useNotifications hook
+      jest
+        .spyOn(
+          require("../app/context/NotificationContext"),
+          "useNotifications",
+        )
+        .mockReturnValue({
+          notifyTimerComplete: mockNotifyTimerComplete,
+          scheduleTaskReminder: jest.fn(),
+          scheduleDailyDigest: jest.fn(),
+        });
+    });
+
+    it("should call notification when work session completes", async () => {
+      render(<PomodoroScreen />);
+
+      act(() => {
+        jest.advanceTimersByTime(60000); // Complete 1 minute timer
+      });
+
+      await waitFor(() => {
+        expect(mockNotifyTimerComplete).toHaveBeenCalledWith(
+          expect.any(String), // task name
+          false, // isBreakTime = false (work session complete)
+        );
+      });
+    });
+
+    it("should NOT call notification during pause", async () => {
+      const { getByText } = render(<PomodoroScreen />);
+
+      const pauseButton = getByText("Pause");
+      fireEvent.press(pauseButton);
+
+      act(() => {
+        jest.advanceTimersByTime(60000);
+      });
+
+      // Should not be called because timer is paused
+      expect(mockNotifyTimerComplete).not.toHaveBeenCalled();
+    });
+
+    it("should pass correct task name to notification", async () => {
+      const taskName = "Study Math";
+      render(<PomodoroScreen taskName={taskName} />);
+
+      act(() => {
+        jest.advanceTimersByTime(60000);
+      });
+
+      await waitFor(() => {
+        expect(mockNotifyTimerComplete).toHaveBeenCalledWith(taskName, false);
+      });
+    });
+  });
+
   describe("Task Parameters", () => {
     it("should display task name when provided", () => {
       const { getByText } = render(<PomodoroScreen />);
@@ -523,7 +585,7 @@ describe("Pomodoro Screen", () => {
           expect(router.push).toHaveBeenCalledWith(
             expect.objectContaining({
               pathname: "/pages/GamePage",
-            })
+            }),
           );
         }
       });

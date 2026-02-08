@@ -8,8 +8,17 @@
     "scheme": "taskblast",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "notification": {
+      "icon": "./assets/images/notification-icon.png",
+      "color": "#7c3aed",
+      "androidMode": "default",
+      "androidCollapsedTitle": "TaskBlast"
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": ["remote-notification"]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -18,6 +27,12 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
+      "permissions": [
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE",
+        "POST_NOTIFICATIONS",
+        "SCHEDULE_EXACT_ALARM"
+      ],
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.anonymous.TaskBlast"
@@ -28,6 +43,15 @@
     },
     "plugins": [
       "expo-router",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/notification-icon.png",
+          "color": "#7c3aed",
+          "sounds": [],
+          "mode": "production"
+        }
+      ],
       [
         "expo-splash-screen",
         {
