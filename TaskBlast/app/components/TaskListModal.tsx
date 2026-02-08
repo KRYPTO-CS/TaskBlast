@@ -458,13 +458,6 @@ export default function TaskListModal({
     if (!auth.currentUser) return;
     if (editingTaskId && newTaskName.trim() && newTaskReward.trim()) {
       try {
-        const taskRef = doc(
-          db,
-          "users",
-          auth.currentUser.uid,
-          "tasks",
-          editingTaskId,
-        );
         const taskRef = getTaskDocRef(editingTaskId);
         await updateDoc(taskRef, {
           name: newTaskName,
