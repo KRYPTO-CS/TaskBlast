@@ -439,4 +439,64 @@ describe("Pomodoro Screen", () => {
       expect(timerDisplay).toBeTruthy();
     });
   });
+
+  describe("Notification Integration", () => {
+    // Mock the notification context
+    const mockNotifyTimerComplete = jest.fn();
+    
+    beforeEach(() => {
+      mockNotifyTimerComplete.mockClear();
+      // Mock the useNotifications hook
+      jest.spyOn(require('../app/context/NotificationContext'), 'useNotifications').mockReturnValue({
+        notifyTimerComplete: mockNotifyTimerComplete,
+        scheduleTaskReminder: jest.fn(),
+        scheduleDailyDigest: jest.fn(),
+      });
+    });
+
+    it("should call notification when work session completes", async () => {
+      render(<PomodoroScreen />);
+
+      act(() => {
+        jest.advanceTimersByTime(60000); // Complete 1 minute timer
+      });
+
+      await waitFor(() => {
+        expect(mockNotifyTimerComplete).toHaveBeenCalledWith(
+          expect.any(String), // task name
+          false // isBreakTime = false (work session complete)
+        );
+      });
+    });
+
+    it("should NOT call notification during pause", async () => {
+      const { getByText } = render(<PomodoroScreen />);
+
+      const pauseButton = getByText("Pause");
+      fireEvent.press(pauseButton);
+
+      act(() => {
+        jest.advanceTimersByTime(60000);
+      });
+
+      // Should not be called because timer is paused
+      expect(mockNotifyTimerComplete).not.toHaveBeenCalled();
+    });
+
+    it("should pass correct task name to notification", async () => {
+      const taskName = "Study Math";
+      render(<PomodoroScreen taskName={taskName} />);
+
+      act(() => {
+        jest.advanceTimersByTime(60000);
+      });
+
+      await waitFor(() => {
+        expect(mockNotifyTimerComplete).toHaveBeenCalledWith(
+          taskName,
+          false
+        );
+      });
+    });
+  });
 });

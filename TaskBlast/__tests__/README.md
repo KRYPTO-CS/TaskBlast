@@ -224,10 +224,79 @@ Tests for the Pomodoro timer screen.
 - ✓ Handle navigation errors gracefully
 - ✓ Format single digit seconds with leading zero
 - ✓ Format single digit minutes with leading zero
+- ✓ Call notification when work session completes
+- ✓ NOT call notification during pause
+- ✓ Pass correct task name to notification
 
 ---
 
-### 7. GamePage.test.tsx
+### 7. NotificationService.test.tsx
+
+Tests for the notification service with all recent updates including rate limiting disabled, no notifications during break time, and AppState checking.
+
+**Test Categories:**
+
+- **Configuration**: Tests notification handler and permission requests
+- **Notification Preferences**: Tests default and custom preferences
+- **Rate Limiting**: Verifies rate limiting is disabled (9999)
+- **Task Reminder Notifications**: Tests scheduling task reminders
+- **Timer Complete Notifications**: Tests completion notifications with AppState
+- **Daily Digest Notifications**: Tests daily reminder scheduling
+- **Canceling Notifications**: Tests various cancellation methods
+- **Error Handling**: Tests error scenarios and graceful degradation
+- **AppState Integration**: Tests background/foreground behavior
+- **Notification Messages**: Tests message content and formatting
+
+**Critical Test Cases:**
+
+- ✓ Configure notification handler on app startup
+- ✓ Request and check notification permissions
+- ✓ Rate limiting disabled by default (maxNotificationsPerHour = 9999)
+- ✓ Return default preferences with rate limiting at 9999
+- ✓ Save and retrieve custom notification preferences
+- ✓ Merge saved preferences with defaults
+- ✓ Schedule task reminder for future times
+- ✓ NOT schedule reminder for past times
+- ✓ NOT schedule when notifications disabled
+- ✓ Use custom reminder timing (5, 10, 15, 30 minutes)
+- ✓ Show timer complete notification when app is ACTIVE
+- ✓ NO notification during break time (isBreakTime = true)
+- ✓ NO notification when app is in BACKGROUND
+- ✓ NO notification when app is INACTIVE
+- ✓ Trigger haptic feedback when vibration enabled
+- ✓ NOT trigger haptic when vibration disabled
+- ✓ Include positive reinforcement messages
+- ✓ Schedule daily digest at custom time (default 3 PM)
+- ✓ Show different message when no tasks
+- ✓ Use singular/plural correctly for task counts
+- ✓ Cancel existing daily digest before scheduling new one
+- ✓ Cancel specific notification by ID
+- ✓ Cancel all notifications for a specific task
+- ✓ Cancel all scheduled notifications
+- ✓ Cancel only daily digest notifications
+- ✓ Retrieve all scheduled notifications
+- ✓ Return empty array on error
+- ✓ Handle AsyncStorage errors gracefully
+- ✓ Handle notification scheduling errors gracefully
+- ✓ Handle haptic feedback errors gracefully
+- ✓ Check AppState for active/background/inactive states
+- ✓ Include task name in notification body
+- ✓ Use positive, encouraging language
+
+**Key Features Tested:**
+
+- **Rate Limiting Disabled**: maxNotificationsPerHour = 9999 (no limits)
+- **Neurodivergent-Friendly Defaults**: Sound off, vibration on, visual notifications
+- **AppState Checking**: Only show immediate notifications when app is active
+- **Break Time Detection**: Skip notifications when "Play Game" is clicked
+- **Positive Messaging**: Encouraging, supportive notification text
+- **Proper Scheduling**: Date-based and daily recurring notifications
+- **Error Resilience**: Graceful handling of storage, permission, and scheduling errors
+- **Haptic Feedback**: Configurable vibration patterns
+
+---
+
+### 8. GamePage.test.tsx
 
 Tests for the embedded game screen.
 
@@ -292,6 +361,7 @@ npm test ForgotPassword.test.tsx
 npm test SignUp.test.tsx
 npm test HomeScreen.test.tsx
 npm test PomodoroScreen.test.tsx
+npm test NotificationService.test.tsx
 npm test GamePage.test.tsx
 ```
 
