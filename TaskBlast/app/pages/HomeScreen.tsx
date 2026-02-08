@@ -24,6 +24,7 @@ import {
 } from "firebase/firestore";
 import { useAudioPlayer } from "expo-audio";
 import MainButton from "../components/MainButton";
+import PlanetScrollList from "../components/PlanetScrollList";  
 import TaskListModal from "../components/TaskListModal";
 import SettingsModal from "../components/SettingsModal";
 import { useRouter } from "expo-router";
@@ -195,7 +196,7 @@ export default function HomeScreen() {
         resizeMode="cover"
       />
       {/* All UI elements above the background */}
-      <View className="flex-1 p-5">
+      <View className="flex-1">
         {/* Top Left Section - Profile & Settings */}
         <View className="absolute top-20 left-5 z-10">
           <TouchableOpacity
@@ -260,14 +261,9 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Center - Planet Image */}
-        <View className="flex-1 items-center justify-center">
-          <Image
-            testID="planet-image"
-            source={require("../../assets/images/sprites/planet.png")}
-            style={{ width: 128, height: 128 }}
-          />
-        </View>
+        {/* Center - Planet Scroll List Component*/}
+        
+        <PlanetScrollList />
 
         {/* Take Off Button - Bottom Center */}
         <View className="items-center mb-24">
