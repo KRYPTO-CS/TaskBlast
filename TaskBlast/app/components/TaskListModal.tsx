@@ -269,22 +269,22 @@ export default function TaskListModal({
       updatedAt: serverTimestamp(),
     });
 
-    // Add rocks to the appropriate account
+    // Add crystals to the appropriate account
     if (childDocId) {
-      // Child is active - add rocks to child's document
+      // Child is active - add crystals to child's document
       const childRef = doc(db, "users", auth.currentUser.uid, "children", childDocId);
       await setDoc(childRef, {
-        rocks: increment(task.reward),
+        crystals: increment(task.reward),
       }, { merge: true });  // ← CHANGED: setDoc with merge
     } else {
-      // Parent is active - add rocks to parent's document
+      // Parent is active - add crystals to parent's document
       const userRef = doc(db, "users", auth.currentUser.uid);
       await setDoc(userRef, {
-        rocks: increment(task.reward),
+        crystals: increment(task.reward),
       }, { merge: true });  // ← CHANGED: setDoc with merge
     }
 
-    // Notify parent component to update rocks display
+    // Notify parent component to update crystals display
     if (onRocksChange) {
       onRocksChange();
     }
@@ -724,7 +724,7 @@ export default function TaskListModal({
                       </Text>
                       <View className="flex-row items-center mt-1">
                         <Image
-                          source={require("../../assets/images/sprites/rocks.png")}
+                          source={require("../../assets/images/sprites/crystal.png")}
                           className="w-7 h-7 mr-1"
                           resizeMode="contain"
                           style={{ transform: [{ scale: 1 }] }}
@@ -909,7 +909,7 @@ export default function TaskListModal({
               />
               <TextInput
                 className="font-madimi w-full h-12 bg-white/10 border border-yellow-400/30 rounded-lg px-4 mb-3 text-base text-white"
-                placeholder="Reward (rocks)"
+                placeholder="Reward (Crystals)"
                 placeholderTextColor="#999"
                 value={newTaskReward}
                 onChangeText={setNewTaskReward}
@@ -1253,7 +1253,7 @@ export default function TaskListModal({
                   </Text>
                   <View className="flex-row items-center mb-4">
                     <Image
-                      source={require("../../assets/images/sprites/rocks.png")}
+                      source={require("../../assets/images/sprites/crystal.png")}
                       className="w-8 h-8 mr-2"
                       resizeMode="contain"
                       style={{ transform: [{ scale: 1 }] }}
