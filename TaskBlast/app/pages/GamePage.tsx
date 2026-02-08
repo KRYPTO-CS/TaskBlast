@@ -32,6 +32,7 @@ export default function GamePage() {
   const taskId = params.taskId as string;
   
   const [timeLeft, setTimeLeft] = useState(playTime * 60); // Convert minutes to seconds
+  const [equipped, setEquipped] = useState<number[]>([0, 1]);
   const tapCount = useRef(0);
   const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -80,6 +81,34 @@ export default function GamePage() {
       console.warn("Failed to save rocks to database", err);
     }
   };
+
+  // Load equipped items from Firebase
+  useEffect(() => {
+    const loadEquippedItems = async () => {
+      try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const db = getFirestore();
+        const userRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userRef);
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          if (userData.equipped && Array.isArray(userData.equipped)) {
+            setEquipped(userData.equipped);
+            console.log("Equipped body ID:", String(userData.equipped[0]));
+            console.log("Equipped wings ID:", String(userData.equipped[1]));
+          }
+        }
+      } catch (err) {
+        console.warn("Failed to load equipped items", err);
+      }
+    };
+
+    loadEquippedItems();
+  }, []);
 
   const handleBackPress = async () => {
     // Save score before going back
@@ -177,22 +206,29 @@ export default function GamePage() {
             console.warn("Failed to persist game score", err);
           }
         })();
-      } else if (payload.type === "pingResponse") {
-        console.log("Pong received from Godot:", payload);
+      } else if (payload.type === "testMessage") {
+        console.log("Godot Initialized");
+        sendMessageToGodot();
       } else {
         console.log("Other message:", payload);
       }
     } catch (err) {
       console.warn("Invalid message from WebView:", event.nativeEvent.data);
     }
-  }, []);
+  }, [equipped]);
 
-  const sendMessageToGodot = () => {
-  console.log("Sending a ping to Godot.");
-  webviewRef.current?.postMessage(
-    JSON.stringify({ type: "incrementComm" })
-  );
-};
+  const sendMessageToGodot = useCallback(() => {
+    console.log("Sending skins message to Godot.");
+    console.log("Current equipped values:", equipped);
+
+    webviewRef.current?.postMessage(
+      JSON.stringify({
+        type: "skins",
+        data1: String(equipped[0]).trim(),
+        data2: String(equipped[1]).trim(),
+      })
+    );
+  }, [equipped]);
 
   if (!WebView) {
     return (
@@ -223,9 +259,7 @@ export default function GamePage() {
         <TouchableOpacity onPress={handleTimerTap} activeOpacity={1} style={styles.timerContainer}>
           <Text style={styles.timerText}>{formatTime(timeLeft)}</Text>
         </TouchableOpacity>
-        <Pressable onPress={sendMessageToGodot} style={styles.rightButton}>
-          <Text style={styles.rightText}>Send</Text>
-        </Pressable>
+        <View style={styles.rightButton} />
       </View>
       <View style={styles.container}>
         {loading && (
@@ -303,7 +337,8 @@ const styles = StyleSheet.create({
   },
   backText: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 20,
+    fontWeight: "bold",
   },
   rightButton: {
     width: 80,

@@ -15,15 +15,40 @@ import MainButton from "../components/MainButton";
 import { useAudioPlayer } from "expo-audio";
 // Audio context provider is set at app level; useAudio hook here
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, updateDoc, increment, getDoc, arrayUnion, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  updateDoc,
+  increment,
+  getDoc,
+  arrayUnion,
+  setDoc,
+} from "firebase/firestore";
 import { useAudio } from "../context/AudioContext";
+import { useNotifications } from "../context/NotificationContext";
+
+// Ship component image mappings
+const BODY_IMAGES: { [key: number]: any } = {
+  0: require("../../assets/images/ship_components/body/0.png"),
+  1: require("../../assets/images/ship_components/body/1.png"),
+  2: require("../../assets/images/ship_components/body/2.png"),
+  3: require("../../assets/images/ship_components/body/3.png"),
+};
+
+const WING_IMAGES: { [key: number]: any } = {
+  0: require("../../assets/images/ship_components/wing/0.png"),
+  1: require("../../assets/images/ship_components/wing/1.png"),
+  2: require("../../assets/images/ship_components/wing/2.png"),
+  3: require("../../assets/images/ship_components/wing/3.png"),
+};
 
 export default function PomodoroScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
+  const { notifyTimerComplete } = useNotifications();
 
   // Extract task parameters from route params
-  const taskName = params.taskName as string || "Work Session";
+  const taskName = (params.taskName as string) || "Work Session";
   const workTime = params.workTime ? parseInt(params.workTime as string) : 25;
   const playTime = params.playTime ? parseInt(params.playTime as string) : 5;
   const cycles = params.cycles ? parseInt(params.cycles as string) : 1;
@@ -38,6 +63,7 @@ export default function PomodoroScreen() {
   const [hasPlayedGame, setHasPlayedGame] = useState(false);
   const [isTaskCompleted, setIsTaskCompleted] = useState(false);
   const [currentCompletedCycles, setCurrentCompletedCycles] = useState(0);
+  const [equipped, setEquipped] = useState<number[]>([0, 1]);
   const totalTime = workTime * 60; // Total duration in seconds
   const backgroundTime = useRef<number | null>(null);
   const tapCount = useRef(0);
@@ -59,7 +85,7 @@ export default function PomodoroScreen() {
         duration,
         easing: Easing.linear,
         useNativeDriver: true,
-      })
+      }),
     );
     loop.start();
     return () => loop.stop();
@@ -69,7 +95,7 @@ export default function PomodoroScreen() {
   useEffect(() => {
     const checkTaskCompletion = async () => {
       if (!taskId) return;
-      
+
       try {
         const auth = getAuth();
         const user = auth.currentUser;
@@ -78,7 +104,7 @@ export default function PomodoroScreen() {
         const db = getFirestore();
         const taskRef = doc(db, "users", user.uid, "tasks", taskId);
         const taskDoc = await getDoc(taskRef);
-        
+
         if (taskDoc.exists()) {
           const taskData = taskDoc.data();
           setIsTaskCompleted(taskData.completed || false);
@@ -91,6 +117,32 @@ export default function PomodoroScreen() {
 
     checkTaskCompletion();
   }, [taskId]);
+
+  // Load equipped items from Firebase
+  useEffect(() => {
+    const loadEquippedItems = async () => {
+      try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const db = getFirestore();
+        const userRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userRef);
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          if (userData.equipped && Array.isArray(userData.equipped)) {
+            setEquipped(userData.equipped);
+          }
+        }
+      } catch (err) {
+        console.warn("Failed to load equipped items:", err);
+      }
+    };
+
+    loadEquippedItems();
+  }, []);
 
   // Interpolate translateY from 0 -> windowHeight
   const translateY = scrollAnim.interpolate({
@@ -128,7 +180,7 @@ export default function PomodoroScreen() {
           easing: Easing.inOut(Easing.sin),
           useNativeDriver: true,
         }),
-      ])
+      ]),
     );
     floatLoop.start();
     return () => floatLoop.stop();
@@ -151,7 +203,7 @@ export default function PomodoroScreen() {
   // Function to increment completedCycles in database
   const incrementCompletedCycles = async () => {
     if (!taskId) return;
-    
+
     try {
       const auth = getAuth();
       const user = auth.currentUser;
@@ -159,27 +211,27 @@ export default function PomodoroScreen() {
 
       const db = getFirestore();
       const taskRef = doc(db, "users", user.uid, "tasks", taskId);
-      
+
       await updateDoc(taskRef, {
-        completedCycles: increment(1)
+        completedCycles: increment(1),
       });
-      
+
       console.log("Incremented completed cycles for task");
-      
+
       // Check if all cycles are now completed (but not for infinite cycles)
       const taskDoc = await getDoc(taskRef);
       if (taskDoc.exists()) {
         const taskData = taskDoc.data();
         const completedCycles = taskData.completedCycles || 0;
         const totalCycles = taskData.cycles || 1;
-        
+
         setCurrentCompletedCycles(completedCycles);
-        
+
         // Only auto-complete if cycles is not infinite (-1) and cycles are met
         if (totalCycles !== -1 && completedCycles >= totalCycles) {
           // Mark task as completed
           await updateDoc(taskRef, {
-            completed: true
+            completed: true,
           });
           setIsTaskCompleted(true);
           console.log("Task marked as completed!");
@@ -203,9 +255,10 @@ export default function PomodoroScreen() {
 
       // arrayUnion de-duplicates identical primitives; to allow repeated values, manually append
       const snap = await getDoc(userRef);
-      const current = snap.exists() && Array.isArray(snap.data().workTimeMinutesArr)
-        ? [...snap.data().workTimeMinutesArr]
-        : [];
+      const current =
+        snap.exists() && Array.isArray(snap.data().workTimeMinutesArr)
+          ? [...snap.data().workTimeMinutesArr]
+          : [];
       current.push(value);
       await setDoc(userRef, { workTimeMinutesArr: current }, { merge: true });
       console.log(`Recorded work session: ${minutes} minutes`);
@@ -230,14 +283,12 @@ export default function PomodoroScreen() {
               console.warn("Audio player error on timer finish:", e);
             }
             setFinished(true);
-            // Guard: only record once per finished cycle
-            if (!hasRecordedRef.current) {
-              hasRecordedRef.current = true;
-              // Increment completed cycles
-              incrementCompletedCycles();
-              // Record this work session (in minutes)
-              recordWorkSession(workTime);
-            }
+            // Show completion notification
+            notifyTimerComplete(taskName, false).catch((err) =>
+              console.warn("Notification error:", err),
+            );
+            // Increment completed cycles
+            incrementCompletedCycles();
             return 0;
           }
           return prev - 1;
@@ -270,7 +321,9 @@ export default function PomodoroScreen() {
       } else if (nextState === "active") {
         // Calculate elapsed time if timer was running in background
         if (allowMinimization && backgroundTime.current !== null && !isPaused) {
-          const elapsed = Math.floor((Date.now() - backgroundTime.current) / 1000);
+          const elapsed = Math.floor(
+            (Date.now() - backgroundTime.current) / 1000,
+          );
           setTimeLeft((prev) => {
             const newTime = prev - elapsed;
             if (newTime <= 0) {
@@ -477,10 +530,18 @@ export default function PomodoroScreen() {
           )}
           {taskId && (
             <View className="bg-purple-500/20 border-2 border-purple-400/30 px-4 py-2 rounded-xl mt-2">
-              <Text className={`font-orbitron-bold text-base ${
-                cycles === -1 ? "text-blue-400" : currentCompletedCycles >= cycles ? "text-green-400" : "text-yellow-400"
-              }`}>
-                {cycles === -1 ? `${currentCompletedCycles}/∞` : `${currentCompletedCycles}/${cycles}`}
+              <Text
+                className={`font-orbitron-bold text-base ${
+                  cycles === -1
+                    ? "text-blue-400"
+                    : currentCompletedCycles >= cycles
+                      ? "text-green-400"
+                      : "text-yellow-400"
+                }`}
+              >
+                {cycles === -1
+                  ? `${currentCompletedCycles}/∞`
+                  : `${currentCompletedCycles}/${cycles}`}
               </Text>
             </View>
           )}
@@ -489,15 +550,29 @@ export default function PomodoroScreen() {
         {/* Player Image - Centered */}
         <View className="flex-1 items-center justify-center">
           <TouchableOpacity onPress={handleRocketTap} activeOpacity={1}>
-            <Animated.Image
+            <Animated.View
               testID="spaceship-image"
-              source={require("../../assets/images/sprites/shipAnimated.gif")}
               className="w-72 h-72"
-              resizeMode="contain"
               style={{
                 transform: [{ scale: 0.5 }, { translateY: translateFloat }],
               }}
-            />
+            >
+              <Image
+                source={WING_IMAGES[equipped[1]] || WING_IMAGES[0]}
+                className="w-72 h-72 absolute"
+                resizeMode="contain"
+              />
+              <Image
+                source={BODY_IMAGES[equipped[0]] || BODY_IMAGES[0]}
+                className="w-72 h-72 absolute"
+                resizeMode="contain"
+              />
+              <Image
+                source={require("../../assets/images/ship_components/shipDetails.gif")}
+                className="w-72 h-72 absolute"
+                resizeMode="contain"
+              />
+            </Animated.View>
           </TouchableOpacity>
         </View>
 

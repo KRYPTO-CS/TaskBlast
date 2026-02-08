@@ -13,6 +13,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "../global.css";
 import { AudioProvider } from "./context/AudioContext";
+import { NotificationProvider } from "./context/NotificationContext";
 
 // Prevent the splash screen from auto-hiding before fonts are loaded
 SplashScreen.preventAutoHideAsync();
@@ -40,11 +41,13 @@ export default function RootLayout() {
 
   return (
     <AudioProvider>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      />
+      <NotificationProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        />
+      </NotificationProvider>
     </AudioProvider>
   );
 }
