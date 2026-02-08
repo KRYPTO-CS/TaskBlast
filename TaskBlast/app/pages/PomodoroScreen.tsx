@@ -23,12 +23,14 @@ const BODY_IMAGES: { [key: number]: any } = {
   0: require("../../assets/images/ship_components/body/0.png"),
   1: require("../../assets/images/ship_components/body/1.png"),
   2: require("../../assets/images/ship_components/body/2.png"),
+  3: require("../../assets/images/ship_components/body/3.png"),
 };
 
 const WING_IMAGES: { [key: number]: any } = {
   0: require("../../assets/images/ship_components/wing/0.png"),
   1: require("../../assets/images/ship_components/wing/1.png"),
   2: require("../../assets/images/ship_components/wing/2.png"),
+  3: require("../../assets/images/ship_components/wing/3.png"),
 };
 
 export default function PomodoroScreen() {

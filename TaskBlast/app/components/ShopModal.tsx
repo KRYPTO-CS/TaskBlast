@@ -40,10 +40,12 @@ const shopPages: ShopPage[] = [
 const shopItems: ShopItem[] = [
   { id: "body-0", name: "Blue Body", iconPath: require("../../assets/images/shop_icons/ShipBodyIconBlue.png"), price: 0, category: "Body" },
   { id: "body-1", name: "Red Body", iconPath: require("../../assets/images/shop_icons/ShipBodyIconRed.png"), price: 500, category: "Body" },
-  { id: "body-2", name: "Green Body", iconPath: require("../../assets/images/shop_icons/ShipBodyIconGreen.png"), price: 500, category: "Body" },
+  { id: "body-2", name: "Green Body", iconPath: require("../../assets/images/shop_icons/ShipBodyIconGreen.png"), price: 750, category: "Body" },
+  { id: "body-3", name: "Yellow Body", iconPath: require("../../assets/images/shop_icons/ShipBodyIconYellow.png"), price: 750, category: "Body" },
   { id: "wing-0", name: "Blue Wings", iconPath: require("../../assets/images/shop_icons/ShipWingIconBlue.png"), price: 500, category: "Wings" },
   { id: "wing-1", name: "Red Wings", iconPath: require("../../assets/images/shop_icons/ShipWingIconRed.png"), price: 0, category: "Wings" },
-  { id: "wing-2", name: "Green Wings", iconPath: require("../../assets/images/shop_icons/ShipWingIconGreen.png"), price: 500, category: "Wings" },
+  { id: "wing-2", name: "Green Wings", iconPath: require("../../assets/images/shop_icons/ShipWingIconGreen.png"), price: 750, category: "Wings" },
+  { id: "wing-3", name: "Yellow Wings", iconPath: require("../../assets/images/shop_icons/ShipWingIconYellow.png"), price: 750, category: "Wings" },
 ];
 
 export default function ShopModal({ visible, onClose, onRocksChange }: ShopModalProps) {
