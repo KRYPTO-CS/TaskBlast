@@ -35,16 +35,18 @@ export default function HomeScreen() {
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
   const [rocks, setRocks] = useState<number>(0);
-  
+
   // Child profile state
-  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(null);
+  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
+    null,
+  );
   const [childDocId, setChildDocId] = useState<string | null>(null);
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
   // Background music player
   const musicPlayer = useAudioPlayer(
-    require("../../assets/music/homeScreenMusic.mp3")
+    require("../../assets/music/homeScreenMusic.mp3"),
   );
 
   const loadScore = useCallback(async () => {
@@ -57,19 +59,22 @@ export default function HomeScreen() {
       }
 
       const db = getFirestore();
-      
+
       // Check if a child profile is active
       const activeChild = await AsyncStorage.getItem("activeChildProfile");
       setActiveChildProfile(activeChild);
-      
+
       let userDoc;
-      
+
       if (activeChild) {
         // Child is active - find child's document
         const childrenRef = collection(db, "users", user.uid, "children");
-        const childQuery = query(childrenRef, where("username", "==", activeChild));
+        const childQuery = query(
+          childrenRef,
+          where("username", "==", activeChild),
+        );
         const childSnapshot = await getDocs(childQuery);
-        
+
         if (!childSnapshot.empty) {
           const childDocData = childSnapshot.docs[0];
           setChildDocId(childDocData.id);
@@ -183,7 +188,7 @@ export default function HomeScreen() {
           }
         }
       };
-    }, [loadScore, musicPlayer, musicEnabled])
+    }, [loadScore, musicPlayer, musicEnabled]),
   );
 
   return (
