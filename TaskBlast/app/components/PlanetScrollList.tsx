@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Modal,
   SafeAreaViewBase,
+  Dimensions,
   ScrollView,
   Image,
   ActivityIndicator,
@@ -28,6 +29,17 @@ import {
 import { auth } from "../../server/firebase";
 import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
 
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
+
+const IMG_SIDE = 200;
+
+const ITEM_WIDTH = IMG_SIDE;
+const ITEM_MARGIN = 128;
+const SNAP_INTERVAL = ITEM_WIDTH + (ITEM_MARGIN);
+
+const SCREEN_OFFSET = (SCREEN_WIDTH - ITEM_WIDTH) / 2;
+
+
 // Define the props for the PlanetScrollList component
 /*
     planetID: number - The unique identifier for each planet (e.g., 1 for Mercury, 2 for Venus, etc.)
@@ -45,11 +57,13 @@ const Planet = ({planetID, islocked, onPress}: PlanetScrollListProps) => {
 
         <TouchableOpacity
             onPress={() => onPress(planetID)}
+            activeOpacity={0.7}
+            style={{    paddingRight: ITEM_MARGIN}}
         >
             <Image
                 testID={`planet-${planetID}-image`}
                 source={require("../../assets/images/sprites/planet.png")}
-                style={{ width: 128, height: 128, ...(islocked && { tintColor: 'black' }) }}
+                style={{ width: IMG_SIDE, height: IMG_SIDE, ...(islocked && { tintColor: 'black' }) }}
             />
         </TouchableOpacity>
     );
@@ -69,8 +83,13 @@ export default function PlanetScrollList() {
 
     return(
         <SafeAreaView className="flex-1">
-            <ScrollView className="flex-1 space-x-20" horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{ alignItems: 'center', paddingHorizontal: 0 }}>
-            <View style={{ width: 64 }} /> {/* Spacer at the start */}
+            <ScrollView 
+            className="flex-1 space-x-20" 
+            horizontal={true} 
+            showsHorizontalScrollIndicator={false} 
+            contentContainerStyle={{ alignItems: 'center', paddingHorizontal: SCREEN_OFFSET }}
+            snapToInterval={SNAP_INTERVAL}
+            decelerationRate="fast">
                 {planets.map((id) => (
                         <Planet 
                         key={id} 
