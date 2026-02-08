@@ -799,7 +799,7 @@ export default function TaskListModal({
                       </Text>
                       <View className="flex-row items-center mt-1">
                         <Image
-                          source={require("../../assets/images/sprites/rocks.png")}
+                          source={require("../../assets/images/sprites/crystal.png")}
                           className="w-7 h-7 mr-1"
                           resizeMode="contain"
                           style={{ transform: [{ scale: 1 }] }}
@@ -1009,7 +1009,7 @@ export default function TaskListModal({
               />
               <TextInput
                 className="font-madimi w-full h-12 bg-white/10 border border-yellow-400/30 rounded-lg px-4 mb-3 text-base text-white"
-                placeholder="Reward (rocks)"
+                placeholder="Reward (Crystals)"
                 placeholderTextColor="#999"
                 value={newTaskReward}
                 onChangeText={setNewTaskReward}
@@ -1375,7 +1375,7 @@ export default function TaskListModal({
                   </Text>
                   <View className="flex-row items-center mb-4">
                     <Image
-                      source={require("../../assets/images/sprites/rocks.png")}
+                      source={require("../../assets/images/sprites/crystal.png")}
                       className="w-8 h-8 mr-2"
                       resizeMode="contain"
                       style={{ transform: [{ scale: 1 }] }}

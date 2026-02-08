@@ -27,6 +27,21 @@ import {
 import { useAudio } from "../context/AudioContext";
 import { useNotifications } from "../context/NotificationContext";
 
+// Ship component image mappings
+const BODY_IMAGES: { [key: number]: any } = {
+  0: require("../../assets/images/ship_components/body/0.png"),
+  1: require("../../assets/images/ship_components/body/1.png"),
+  2: require("../../assets/images/ship_components/body/2.png"),
+  3: require("../../assets/images/ship_components/body/3.png"),
+};
+
+const WING_IMAGES: { [key: number]: any } = {
+  0: require("../../assets/images/ship_components/wing/0.png"),
+  1: require("../../assets/images/ship_components/wing/1.png"),
+  2: require("../../assets/images/ship_components/wing/2.png"),
+  3: require("../../assets/images/ship_components/wing/3.png"),
+};
+
 export default function PomodoroScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
@@ -48,6 +63,7 @@ export default function PomodoroScreen() {
   const [hasPlayedGame, setHasPlayedGame] = useState(false);
   const [isTaskCompleted, setIsTaskCompleted] = useState(false);
   const [currentCompletedCycles, setCurrentCompletedCycles] = useState(0);
+  const [equipped, setEquipped] = useState<number[]>([0, 1]);
   const totalTime = workTime * 60; // Total duration in seconds
   const backgroundTime = useRef<number | null>(null);
   const tapCount = useRef(0);
@@ -101,6 +117,32 @@ export default function PomodoroScreen() {
 
     checkTaskCompletion();
   }, [taskId]);
+
+  // Load equipped items from Firebase
+  useEffect(() => {
+    const loadEquippedItems = async () => {
+      try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const db = getFirestore();
+        const userRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userRef);
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          if (userData.equipped && Array.isArray(userData.equipped)) {
+            setEquipped(userData.equipped);
+          }
+        }
+      } catch (err) {
+        console.warn("Failed to load equipped items:", err);
+      }
+    };
+
+    loadEquippedItems();
+  }, []);
 
   // Interpolate translateY from 0 -> windowHeight
   const translateY = scrollAnim.interpolate({
@@ -508,15 +550,29 @@ export default function PomodoroScreen() {
         {/* Player Image - Centered */}
         <View className="flex-1 items-center justify-center">
           <TouchableOpacity onPress={handleRocketTap} activeOpacity={1}>
-            <Animated.Image
+            <Animated.View
               testID="spaceship-image"
-              source={require("../../assets/images/sprites/shipAnimated.gif")}
               className="w-72 h-72"
-              resizeMode="contain"
               style={{
                 transform: [{ scale: 0.5 }, { translateY: translateFloat }],
               }}
-            />
+            >
+              <Image
+                source={WING_IMAGES[equipped[1]] || WING_IMAGES[0]}
+                className="w-72 h-72 absolute"
+                resizeMode="contain"
+              />
+              <Image
+                source={BODY_IMAGES[equipped[0]] || BODY_IMAGES[0]}
+                className="w-72 h-72 absolute"
+                resizeMode="contain"
+              />
+              <Image
+                source={require("../../assets/images/ship_components/shipDetails.gif")}
+                className="w-72 h-72 absolute"
+                resizeMode="contain"
+              />
+            </Animated.View>
           </TouchableOpacity>
         </View>
 
