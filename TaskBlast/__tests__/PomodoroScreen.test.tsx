@@ -114,7 +114,7 @@ describe("Pomodoro Screen", () => {
         const minutes = Math.floor(i / 60);
         const seconds = i % 60;
         const timeString = `${String(minutes).padStart(2, "0")}:${String(
-          seconds
+          seconds,
         ).padStart(2, "0")}`;
 
         await waitFor(() => {
@@ -443,15 +443,20 @@ describe("Pomodoro Screen", () => {
   describe("Notification Integration", () => {
     // Mock the notification context
     const mockNotifyTimerComplete = jest.fn();
-    
+
     beforeEach(() => {
       mockNotifyTimerComplete.mockClear();
       // Mock the useNotifications hook
-      jest.spyOn(require('../app/context/NotificationContext'), 'useNotifications').mockReturnValue({
-        notifyTimerComplete: mockNotifyTimerComplete,
-        scheduleTaskReminder: jest.fn(),
-        scheduleDailyDigest: jest.fn(),
-      });
+      jest
+        .spyOn(
+          require("../app/context/NotificationContext"),
+          "useNotifications",
+        )
+        .mockReturnValue({
+          notifyTimerComplete: mockNotifyTimerComplete,
+          scheduleTaskReminder: jest.fn(),
+          scheduleDailyDigest: jest.fn(),
+        });
     });
 
     it("should call notification when work session completes", async () => {
@@ -464,7 +469,7 @@ describe("Pomodoro Screen", () => {
       await waitFor(() => {
         expect(mockNotifyTimerComplete).toHaveBeenCalledWith(
           expect.any(String), // task name
-          false // isBreakTime = false (work session complete)
+          false, // isBreakTime = false (work session complete)
         );
       });
     });
@@ -492,10 +497,7 @@ describe("Pomodoro Screen", () => {
       });
 
       await waitFor(() => {
-        expect(mockNotifyTimerComplete).toHaveBeenCalledWith(
-          taskName,
-          false
-        );
+        expect(mockNotifyTimerComplete).toHaveBeenCalledWith(taskName, false);
       });
     });
   });

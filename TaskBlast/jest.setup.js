@@ -51,7 +51,7 @@ global.mockAudioPlayer = {
 };
 
 // Mock AudioContext
-jest.mock('./app/context/AudioContext', () => ({
+jest.mock("./app/context/AudioContext", () => ({
   AudioProvider: ({ children }) => children,
   useAudio: jest.fn(() => ({
     soundEnabled: true,
@@ -63,7 +63,7 @@ jest.mock('./app/context/AudioContext', () => ({
 }));
 
 // Mock NotificationContext
-jest.mock('./app/context/NotificationContext', () => ({
+jest.mock("./app/context/NotificationContext", () => ({
   NotificationProvider: ({ children }) => children,
   useNotifications: jest.fn(() => ({
     notifyTimerComplete: jest.fn(),
@@ -73,24 +73,24 @@ jest.mock('./app/context/NotificationContext', () => ({
 }));
 
 // Mock react-i18next
-jest.mock('react-i18next', () => {
+jest.mock("react-i18next", () => {
   const tFunc = (key) => key;
   const i18nObj = {
     changeLanguage: jest.fn(),
-    language: 'en',
+    language: "en",
   };
-  
+
   // Create an array-like object that also has named properties
   // to support both [t, i18n] and {t, i18n} destructuring
   const mockReturn = Object.assign([tFunc, i18nObj], {
     t: tFunc,
     i18n: i18nObj,
   });
-  
+
   return {
     useTranslation: () => mockReturn,
     initReactI18next: {
-      type: '3rdParty',
+      type: "3rdParty",
       init: jest.fn(),
     },
   };
@@ -98,35 +98,49 @@ jest.mock('react-i18next', () => {
 
 // Mock AsyncStorage
 jest.mock("@react-native-async-storage/async-storage", () =>
-  require("@react-native-async-storage/async-storage/jest/async-storage-mock")
+  require("@react-native-async-storage/async-storage/jest/async-storage-mock"),
 );
 
 // Mock expo-notifications
-const mockScheduleNotificationAsync = jest.fn(() => Promise.resolve('notification-id-123'));
+const mockScheduleNotificationAsync = jest.fn(() =>
+  Promise.resolve("notification-id-123"),
+);
 const mockCancelScheduledNotificationAsync = jest.fn(() => Promise.resolve());
-const mockCancelAllScheduledNotificationsAsync = jest.fn(() => Promise.resolve());
-const mockGetAllScheduledNotificationsAsync = jest.fn(() => Promise.resolve([]));
-const mockGetPermissionsAsync = jest.fn(() => Promise.resolve({ status: 'granted' }));
-const mockRequestPermissionsAsync = jest.fn(() => Promise.resolve({ status: 'granted' }));
+const mockCancelAllScheduledNotificationsAsync = jest.fn(() =>
+  Promise.resolve(),
+);
+const mockGetAllScheduledNotificationsAsync = jest.fn(() =>
+  Promise.resolve([]),
+);
+const mockGetPermissionsAsync = jest.fn(() =>
+  Promise.resolve({ status: "granted" }),
+);
+const mockRequestPermissionsAsync = jest.fn(() =>
+  Promise.resolve({ status: "granted" }),
+);
 const mockSetNotificationHandler = jest.fn();
-const mockAddNotificationResponseReceivedListener = jest.fn(() => ({ remove: jest.fn() }));
+const mockAddNotificationResponseReceivedListener = jest.fn(() => ({
+  remove: jest.fn(),
+}));
 
-jest.mock('expo-notifications', () => ({
+jest.mock("expo-notifications", () => ({
   scheduleNotificationAsync: mockScheduleNotificationAsync,
   cancelScheduledNotificationAsync: mockCancelScheduledNotificationAsync,
-  cancelAllScheduledNotificationsAsync: mockCancelAllScheduledNotificationsAsync,
+  cancelAllScheduledNotificationsAsync:
+    mockCancelAllScheduledNotificationsAsync,
   getAllScheduledNotificationsAsync: mockGetAllScheduledNotificationsAsync,
   getPermissionsAsync: mockGetPermissionsAsync,
   requestPermissionsAsync: mockRequestPermissionsAsync,
   setNotificationHandler: mockSetNotificationHandler,
-  addNotificationResponseReceivedListener: mockAddNotificationResponseReceivedListener,
+  addNotificationResponseReceivedListener:
+    mockAddNotificationResponseReceivedListener,
   AndroidNotificationPriority: {
-    HIGH: 'high',
-    DEFAULT: 'default',
+    HIGH: "high",
+    DEFAULT: "default",
   },
   SchedulableTriggerInputTypes: {
-    DATE: 'date',
-    DAILY: 'daily',
+    DATE: "date",
+    DAILY: "daily",
   },
 }));
 
@@ -134,21 +148,23 @@ jest.mock('expo-notifications', () => ({
 global.mockNotifications = {
   scheduleNotificationAsync: mockScheduleNotificationAsync,
   cancelScheduledNotificationAsync: mockCancelScheduledNotificationAsync,
-  cancelAllScheduledNotificationsAsync: mockCancelAllScheduledNotificationsAsync,
+  cancelAllScheduledNotificationsAsync:
+    mockCancelAllScheduledNotificationsAsync,
   getAllScheduledNotificationsAsync: mockGetAllScheduledNotificationsAsync,
   getPermissionsAsync: mockGetPermissionsAsync,
   requestPermissionsAsync: mockRequestPermissionsAsync,
   setNotificationHandler: mockSetNotificationHandler,
-  addNotificationResponseReceivedListener: mockAddNotificationResponseReceivedListener,
+  addNotificationResponseReceivedListener:
+    mockAddNotificationResponseReceivedListener,
 };
 
 // Mock expo-haptics
 const mockNotificationAsync = jest.fn(() => Promise.resolve());
 
-jest.mock('expo-haptics', () => ({
+jest.mock("expo-haptics", () => ({
   notificationAsync: mockNotificationAsync,
   NotificationFeedbackType: {
-    Success: 'success',
+    Success: "success",
   },
 }));
 
@@ -321,7 +337,7 @@ global.mockAlert = {
   pressButtonByText: (buttonText) => {
     const button = lastAlertButtons.find(
       (btn) =>
-        btn.text && btn.text.toLowerCase().includes(buttonText.toLowerCase())
+        btn.text && btn.text.toLowerCase().includes(buttonText.toLowerCase()),
     );
     if (button && button.onPress) {
       button.onPress();
