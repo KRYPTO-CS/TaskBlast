@@ -13,13 +13,12 @@
 import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
-import { Platform } from 'react-native';
+import { Platform, AppState } from 'react-native';
 
 // Notification types
 export enum NotificationType {
   TASK_REMINDER = 'TASK_REMINDER',
   TIMER_COMPLETE = 'TIMER_COMPLETE',
-  BREAK_REMINDER = 'BREAK_REMINDER',
   SESSION_START = 'SESSION_START',
   DAILY_DIGEST = 'DAILY_DIGEST',
 }
@@ -54,7 +53,7 @@ const DEFAULT_PREFERENCES: NotificationPreferences = {
   visualOnly: false,
   reminderTiming: ReminderTiming.FIVE_MINUTES,
   repeatNotifications: false, // No repeats to avoid overwhelm
-  maxNotificationsPerHour: 4, // Limit notifications
+  maxNotificationsPerHour: 9999, // Rate limiting disabled
   dailyDigestEnabled: true,
   dailyDigestTime: '15:00', // 3 PM default
 };
@@ -77,12 +76,6 @@ const POSITIVE_MESSAGES = {
     "Great job! Time for your game break! 🎮",
     "You did it! {taskName} is complete! ⭐",
     "Awesome! You finished {taskName}! Time to play! 🌟",
-  ],
-  BREAK_REMINDER: [
-    "Break time! You've earned it! 🎮",
-    "Time to relax and recharge! 🌈",
-    "Great work! Enjoy your break! ✨",
-    "You've earned this break! Have fun! 🎉",
   ],
   SESSION_START: [
     "Starting your session! You've got this! 💪",
@@ -163,34 +156,6 @@ export async function saveNotificationPreferences(
 }
 
 /**
- * Check notification rate limiting (Optional)
- */
-async function checkRateLimit(preferences: NotificationPreferences): Promise<boolean> {
-  try {
-    const historyJson = await AsyncStorage.getItem(NOTIFICATION_HISTORY_KEY);
-    const history: number[] = historyJson ? JSON.parse(historyJson) : [];
-    
-    // Filter to only notifications in the last hour
-    const oneHourAgo = Date.now() - 60 * 60 * 1000;
-    const recentNotifications = history.filter(time => time > oneHourAgo);
-    
-    // Check if we've exceeded the limit
-    if (recentNotifications.length >= preferences.maxNotificationsPerHour) {
-      return false; // Rate limited
-    }
-    
-    // Add current notification to history
-    recentNotifications.push(Date.now());
-    await AsyncStorage.setItem(NOTIFICATION_HISTORY_KEY, JSON.stringify(recentNotifications));
-    
-    return true; // Not rate limited
-  } catch (error) {
-    console.error('Error checking rate limit:', error);
-    return true; // Allow on error
-  }
-}
-
-/**
  * Get a random positive message for a notification type
  */
 function getPositiveMessage(
@@ -235,12 +200,6 @@ export async function scheduleTaskReminder(
       return null;
     }
     
-    // Check rate limiting
-    const allowed = await checkRateLimit(preferences);
-    if (!allowed) {
-      console.log('Notification rate limited');
-      return null;
-    }
     
     // Calculate trigger time
     const reminderTime = reminderMinutes ?? preferences.reminderTiming;
@@ -285,12 +244,24 @@ export async function scheduleTaskReminder(
 
 /**
  * Show immediate timer completion notification
+ * Only shows when app is in foreground
  */
 export async function showTimerCompleteNotification(
   taskName: string,
   isBreakTime: boolean = false
 ): Promise<void> {
   try {
+    // Don't show notifications during break time (Play Game)
+    if (isBreakTime) {
+      return;
+    }
+    
+    // Don't show notifications when app is closed/in background
+    const currentState = AppState.currentState;
+    if (currentState !== 'active') {
+      return;
+    }
+    
     const preferences = await getNotificationPreferences();
     
     if (!preferences.enabled) {
@@ -299,22 +270,14 @@ export async function showTimerCompleteNotification(
     
     // Trigger haptic feedback
     await triggerHaptics(preferences);
-    
-    // Check rate limiting
-    const allowed = await checkRateLimit(preferences);
-    if (!allowed) {
-      console.log('Notification rate limited');
-      return;
-    }
-    
     // Get positive message
-    const type = isBreakTime ? NotificationType.BREAK_REMINDER : NotificationType.TIMER_COMPLETE;
+    const type = NotificationType.TIMER_COMPLETE;
     const message = getPositiveMessage(type, taskName);
     
     // Show notification immediately
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: isBreakTime ? '🎮 Break Time!' : '✅ Session Complete!',
+        title: '✅ Session Complete!',
         body: message,
         sound: preferences.soundEnabled ? 'default' : undefined,
         data: {
