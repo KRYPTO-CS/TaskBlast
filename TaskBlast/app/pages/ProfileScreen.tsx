@@ -20,6 +20,7 @@ import { getFirestore, doc, getDoc, collection, query, where, getDocs  } from "f
 import EditProfileModal from "../components/EditProfileModal";
 import TraitsModal from "../components/TraitsModal";
 import { updateProfilePicture } from "../../server/storageUtils";
+import { useTranslation } from "react-i18next";
 import {
   getUserProfile,
   updateUserProfilePicture,
@@ -49,6 +50,8 @@ export default function ProfileScreen() {
   const [playLabels, setPlayLabels] = useState<string[]>([]);
   const [totalRocksAllTime, setTotalRocksAllTime] = useState<number>(0);
   const [currentRocks, setCurrentRocks] = useState<number>(0);
+  const {t ,i18n} = useTranslation();
+  
 
   // Load user profile on component mount
  useEffect(() => {
@@ -492,7 +495,7 @@ export default function ProfileScreen() {
                 style={{ marginRight: 8 }}
               />
               <Text className="font-orbitron-semibold text-xl text-white text-base">
-                Edit Profile
+                {t("Profile.editP")}
               </Text>
             </TouchableOpacity>
           </View>
@@ -508,7 +511,7 @@ export default function ProfileScreen() {
                   textShadowRadius: 10,
                 }}
               >
-                Traits
+                {t("Profile.traits")}
               </Text>
               <TouchableOpacity
                 onPress={() => setIsTraitsModalVisible(true)}
@@ -572,7 +575,7 @@ export default function ProfileScreen() {
                 textShadowRadius: 10,
               }}
             >
-              Awards
+              {t("Profile.awards")}
             </Text>
             <View
               className="p-4 rounded-2xl"
@@ -608,15 +611,15 @@ export default function ProfileScreen() {
 
           {/* Analytics Container */}
           <View className="mb-8">
-            <Text className="font-orbitron-semibold text-xl text-white mb-4" style={{ textShadowColor: "rgba(59,246,112,0.6)", textShadowOffset:{width:0,height:0}, textShadowRadius:10 }}>Your Stats</Text>
+            <Text className="font-orbitron-semibold text-xl text-white mb-4" style={{ textShadowColor: "rgba(59,246,112,0.6)", textShadowOffset:{width:0,height:0}, textShadowRadius:10 }}>{t("Profile.YourStats")}</Text>
             <View className="p-4 rounded-2xl" style={{ backgroundColor:"rgba(30,138,43,0.30)", borderWidth:2, borderColor:"rgba(59,246,112,0.35)", shadowColor:"#3bf670", shadowOffset:{width:0,height:6}, shadowOpacity:0.35, shadowRadius:12 }}>
               {/* Total Rocks */}
               <View className="px-4 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                <Text className="font-orbitron-semibold text-white">Total Rocks Earned: {totalRocksAllTime}</Text>
+                <Text className="font-orbitron-semibold text-white">{t("Profile.rocksEarned")}{totalRocksAllTime}</Text>
               </View>
               {/* Rocks Spent */}
               <View className="px-4 py-2 rounded-full mt-2" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                <Text className="font-orbitron-semibold text-white">Total Rocks Spent: {Math.max(0, totalRocksAllTime - currentRocks)}</Text>
+                <Text className="font-orbitron-semibold text-white">{t("Profile.rocksSpent")}{Math.max(0, totalRocksAllTime - currentRocks)}</Text>
               </View>
               {/* Rocks Chart */}
               <View style={{ height:200, borderRadius:16, overflow:"hidden", marginTop:16, marginBottom:16 }}>
@@ -639,16 +642,16 @@ export default function ProfileScreen() {
               {/* Averages */}
               <View className="flex-row flex-wrap gap-2 mt-2">
                 <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                  <Text className="font-orbitron-semibold text-white text-xs">Avg Work Cycle Length: {workTimes.length ? Math.round(workTimes.reduce((a,b)=>a+b,0)/workTimes.length) : 0}m</Text>
+                  <Text className="font-orbitron-semibold text-white text-xs"> {t("Profile.AvgWorkCycle")}{workTimes.length ? Math.round(workTimes.reduce((a,b)=>a+b,0)/workTimes.length) : 0}m</Text>
                 </View>
                 <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                  <Text className="font-orbitron-semibold text-white text-xs">Avg Play Cycle Length: {playTimes.length ? Math.round(playTimes.reduce((a,b)=>a+b,0)/playTimes.length) : 0}m</Text>
+                  <Text className="font-orbitron-semibold text-white text-xs">{t("Profile.AvgPlayCycle")}{playTimes.length ? Math.round(playTimes.reduce((a,b)=>a+b,0)/playTimes.length) : 0}m</Text>
                 </View>
                 <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                  <Text className="font-orbitron-semibold text-white text-xs">Work/Play Ratio: {playTimes.length && workTimes.length ? ((workTimes.reduce((a,b)=>a+b,0)/workTimes.length)/(playTimes.reduce((a,b)=>a+b,0)/playTimes.length)).toFixed(2) : 0}</Text>
+                  <Text className="font-orbitron-semibold text-white text-xs">{t("Profile.work")}{playTimes.length && workTimes.length ? ((workTimes.reduce((a,b)=>a+b,0)/workTimes.length)/(playTimes.reduce((a,b)=>a+b,0)/playTimes.length)).toFixed(2) : 0}</Text>
                 </View>
                 <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                  <Text className="font-orbitron-semibold text-white text-xs">Total Time Spent on Tasks: {(() => { const t = workTimes.reduce((a,b)=>a+b,0)+playTimes.reduce((a,b)=>a+b,0); return `${(t/60).toFixed(1)}h`; })()}</Text>
+                  <Text className="font-orbitron-semibold text-white text-xs">{t("Profile.total")}{(() => { const t = workTimes.reduce((a,b)=>a+b,0)+playTimes.reduce((a,b)=>a+b,0); return `${(t/60).toFixed(1)}h`; })()}</Text>
                 </View>
               </View>
             </View>
@@ -657,7 +660,7 @@ export default function ProfileScreen() {
           {/* Add Child Button - NEW */}
           <View className="items-center mb-4">
             <MainButton
-            title="Add Child Account"
+            title={t("Profile.AddChildAccount")}
             variant="primary"
             onPress={() => router.push("/pages/CreateChildAccount")}
             customStyle={{ width: "80%" }}
@@ -667,7 +670,7 @@ export default function ProfileScreen() {
           {/* Switch Profile Button */}
           <View className="items-center mb-4">
             <MainButton
-              title="Switch Profile"
+              title={t("Profile.SwitchProfile")}
               variant="secondary"
               onPress={handleSwitchProfile}
               customStyle={{ width: "80%" }}
@@ -677,7 +680,7 @@ export default function ProfileScreen() {
           {/* Logout Button */}
           <View className="items-center mb-8">
             <MainButton
-              title="Logout"
+              title={t("Profile.Logout")}
               variant="error"
               onPress={handleLogout}
               customStyle={{ width: "80%" }}

@@ -5,13 +5,30 @@ import {
   TouchableOpacity,
   ImageBackground,
   Image,
+  ScrollView
 } from "react-native";
 import MainButton from "../components/MainButton";
 import { useTranslation } from "react-i18next";
 
 
+
+const Lang_Map = {
+    English: "en",
+    Spanish: "es",
+    Portuguese: "pt",
+    French: "fr",
+    German: "de",
+    Russian: "ru",
+    Arabic: "ar",
+    Bengali: "bn",
+    Chinese: "zh",
+    Hindi: "hi",
+  } as const;
+
+type language = keyof typeof Lang_Map;
+
 interface SignUpAccountTypeProps {
-  onSubmit: (accountType: "English" | "Spanish") => void;
+  onSubmit: (accountType: language) => void;
   onBack: () => void;
 }
 
@@ -19,7 +36,7 @@ export default function SignUpAccountType({
   onSubmit,
   onBack,
 }: SignUpAccountTypeProps) {
-  const [selected, setSelected] = useState<"English" | "Spanish" | null>(
+  const [selected, setSelected] = useState<language | null>(
     null
   );
   const [error, setError] = useState("");
@@ -27,18 +44,26 @@ export default function SignUpAccountType({
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
   const USA = require("../../assets/images/united-states.png");
   const Mexico = require("../../assets/images/mexico.png");
-  
+  const Brazil = require("../../assets/images/brazil-flag.png");
+  const France = require("../../assets/images/france.png");
+  const Germany = require("../../assets/images/germany.png");
+  const Russia = require("../../assets/images/russia.png");
+  const Arabic = require("../../assets/images/saudi-arabia.png");
+  const Bengali = require("../../assets/images/bangladesh.png");
+  const China = require("../../assets/images/china.png");
+  const India = require("../../assets/images/india.png");
   const {t ,i18n} = useTranslation();
+  
 
   const handleContinue = () => {
     setError("");
     if (!selected) {
-      setError(t("selectLanguage"));
+      setError(t("language.selectLanguage"));
       return;
     }
 
 
-    i18n.changeLanguage(selected === "English" ? "en" : "es");
+    i18n.changeLanguage(Lang_Map[selected]);
     onSubmit(selected);
   };
 
@@ -47,7 +72,7 @@ export default function SignUpAccountType({
     image,
     title,
   }: {
-    value: "English" | "Spanish";
+    value: "English" | "Spanish" | "Portuguese" | "French" | "German" | "Russian" | "Arabic" | "Bengali" | "Chinese" | "Hindi";
     image?: any;
     title: string;
   }) => {
@@ -57,7 +82,6 @@ export default function SignUpAccountType({
   activeOpacity={0.8}
   onPress={() => {
     setSelected(value);
-    i18n.changeLanguage(value === "English" ? "en" : "es");
   }}
   className={`w-full p-4 rounded-2xl border-2 flex-row items-center ${
     active
@@ -85,7 +109,7 @@ export default function SignUpAccountType({
 
       {/* Content overlay */}
       <View className="flex-1 items-center justify-center p-5">
-        <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
+        <ScrollView className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
           <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
            {t("language.selectLanguage")}
           </Text>
@@ -100,6 +124,54 @@ export default function SignUpAccountType({
             value="Spanish"
             image={Mexico}
             title="Español"
+          />
+
+          <Option
+            value="Portuguese"
+            image={Brazil}
+            title="Português"
+          />
+
+          <Option
+            value="French"
+            image={France}
+            title="Français"
+          />
+
+          <Option
+            value="German"
+            image={Germany}
+            title="Deutsch"
+          />
+
+          <Option
+            value="Russian"
+            image={Russia}
+            title="Русский"
+          />
+
+          <Option
+            value="Arabic"
+            image={Arabic}
+            title="العربية"
+          />
+
+          <Option
+            value="Bengali"
+            image={Bengali}
+            title="বাংলা"
+          />
+
+          <Option
+            value="Chinese"
+            image={China}
+            title="中文"
+          />
+
+          <Option
+            value="Hindi"
+            image={India}
+            title="हिन्दी"
           />
 
           {error ? (
@@ -131,7 +203,7 @@ export default function SignUpAccountType({
               </Text>
             </Text>
           </View>
-        </View>
+        </ScrollView>
       </View>
     </View>
   );

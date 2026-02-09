@@ -84,6 +84,64 @@
     "pin": "Ingrese PIN de 4 dígitos",
     "confirmPinPlaceholder": "Confirma el PIN",
     "continue": "Continuar"
+  },
+  "Home": {
+    "takeoff": "Despegue"
+  },
+  "Settings": {
+    "title": "Configuración",
+    "sound": "Efectos de sonido",
+    "music": "Música",
+    "notifications": "Notificaciones",
+    "privacy": "Privacidad",
+    "Help": "Ayuda y soporte",
+    "About": "Acerca de",
+    "Logout": "Cerrar sesión"
+  },
+  "Tasks": {
+    "title": "Tareas",
+    "normal": "Normal",
+    "edit": "Editar",
+    "archive": "Archivo",
+    "empty": "No hay tareas. Agrega tu primera tarea!",
+    "button": "Agrega tarea nueva",
+    "archivedempty": "No hay tareas archivadas.",
+    "new": "Nueva Tarea",
+    "desc": "Descripción (opcional, máximo 200 caracteres)",
+    "reward": "Recompensa (rocas)",
+    "min": "Permitir Minimización",
+    "settings": "Configuración de Pomodoro",
+    "worktime": "Tiempo de Trabajo (minutos)",
+    "playtime": "Tiempo de Descanso (minutos)",
+    "cycles": "Número de Ciclos",
+    "cancel": "Cancelar",
+    "add": "Agregar Tarea",
+    "editTask": "Editar Tarea",
+    "save": "Guardar"
+  },
+  "Profile": {
+    "traits": "Rasgos",
+    "editP": "Editar Perfil",
+    "awards": "Recompensas",
+    "YourStats": "Tus Estadísticas",
+    "rocksEarned": "Total de Rocas Ganadas: ",
+    "rocksSpent": "Total de Rocas Gastadas: ",
+    "AvgWorkCycle": "Duración Promedio del Ciclo de Trabajo: ",
+    "AvgPlayCycle": "Duración Promedio del Ciclo de Descanso: ",
+    "work": "Proporción de Trabajo/Descanso: ",
+    "total": "Tiempo Total Invertido en Tareas: ",
+    "AddChildAccount": "Agregar Cuenta de Niño",
+    "SwitchProfile": "Cambiar Perfil",
+    "Logout": "Cerrar Sesión"
+
+  },
+  "Pomodoro": {
+    "time": "Tiempo Restante",
+    "work": "Sesión de Trabajo",
+    "Resume": "Reanudar",
+    "Pause": "Pausar",
+    "Land": "Aterrizar",
+    "Play": "Jugar Juego"
   }
 
 }

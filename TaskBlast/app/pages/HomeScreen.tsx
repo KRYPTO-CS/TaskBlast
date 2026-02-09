@@ -30,6 +30,7 @@ import SettingsModal from "../components/SettingsModal";
 import ShopModal from "../components/ShopModal";
 import { useRouter } from "expo-router";
 import { useAudio } from "../context/AudioContext";
+import { useTranslation } from "react-i18next";
 import PlanetModal from "../components/PlanetModal";
 
 export default function HomeScreen() {
@@ -40,7 +41,8 @@ export default function HomeScreen() {
   const [isPlanetModalVisible, setIsPlanetModalVisible] = useState(false);
   const [isShopModalVisible, setIsShopModalVisible] = useState(false);
   const [rocks, setRocks] = useState<number>(0);
-
+  const {t ,i18n} = useTranslation();
+  
   // Child profile state
   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
     null,
@@ -299,7 +301,7 @@ export default function HomeScreen() {
         {/* Take Off Button - Bottom Center */}
         <View className="items-center mb-24">
           <MainButton
-            title="Take Off"
+            title={t("Home.takeoff")}
             onPress={() => router.push("/pages/PomodoroScreen")}
           />
         </View>

@@ -84,6 +84,64 @@
     "pin": "PIN (4 digits)",
     "confirmPinPlaceholder": "Confirm PIN",
     "continue": "Continue"
+  },
+  "Home": {
+    "takeoff": "Take Off"
+  },
+  "Settings": {
+    "title": "Settings",
+    "sound": "Sound Effects",
+    "music": "Music",
+    "notifications": "Notifications",
+    "privacy": "Privacy",
+    "Help": "Help & Support",
+    "About": "About",
+    "Logout": "Logout"
+  },
+  "Tasks": {
+    "title": "Task List",
+    "normal": "Normal",
+    "edit" : "Edit",
+    "archive": "Archive",
+    "empty": "No tasks yet. Add your first task!",
+    "button": "Add New Task",
+    "archivedempty": "No archived tasks.",
+    "new": "New Task",
+    "desc": "Description (optional, max 200 characters)",
+    "reward": "Reward (rocks)",
+    "min": "Allow Minimization",
+    "settings": "Pomodoro Settings",
+    "worktime": "Work Time (minutes)",
+    "playtime": "Play Time (minutes)",
+    "cycles": "Number of Cycles",
+    "cancel": "Cancel",
+    "add": "Add Task",
+    "editTask": "Edit Task",
+    "save": "Save"
+
+  },
+  "Profile": {
+    "traits": "Traits",
+    "editP": "Edit Profile",
+    "awards": "Awards",
+    "YourStats": "Your Stats",
+    "rocksEarned": "Total Rocks Earned: ",
+    "rocksSpent": "Total Rocks Spent: ",
+    "AvgWorkCycle": "Average Work Cycle Length: ",
+    "AvgPlayCycle": "Average Play Cycle Length: ",
+    "work": "Work/Play Ratio: ",
+    "total": "Total Time Spent on Tasks: ",
+    "AddChildAccount": "Add Child Account",
+    "SwitchProfile": "Switch Profile",
+    "Logout": "Logout"
+  },
+  "Pomodoro": {
+    "time": "Time Remaining",
+    "work": "Work Session",
+    "Resume": "Resume",
+    "Pause": "Pause",
+    "Land": "Land",
+    "Play": "Play Game"
   }
 
 }

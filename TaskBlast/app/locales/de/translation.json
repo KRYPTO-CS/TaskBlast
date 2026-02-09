@@ -1,0 +1,145 @@
+{
+  "language": {
+    "selectLanguage": "Bitte wählen Sie Ihre Sprache",
+    "continue": "Weiter",
+    "backTo": "Zurück zu",
+    "Login": "Anmelden"
+  },
+  "birthdate": {
+    "title": "Wie lautet Ihr Geburtsdatum?",
+    "notice": "Sie müssen mindestens 13 Jahre alt sein, um sich zu registrieren",
+    "month": "Monat",
+    "day": "Tag",
+    "year": "Jahr",
+    "continue": "Weiter",
+    "previousStep": "Vorheriger Schritt",
+    "error": "Bitte geben Sie ein gültiges Datum ein",
+    "age": "Bitte geben Sie das Gerät an einen Elternteil oder Erziehungsberechtigten weiter",
+    "empty": "Bitte füllen Sie alle Felder aus"
+  },
+  "AccountType": {
+    "title": "Wer wird TaskBlast nutzen?",
+    "type": "Wählen Sie den Kontotyp, der den Hauptnutzer von TaskBlast am besten beschreibt.",
+    "managetitle": "Verwaltetes Konto",
+    "managedesc": "Für Abhängige. Einige Funktionen sind eingeschränkt und werden durch eine Eltern-/Betreuer-PIN kontrolliert.",
+    "indetitle": "Unabhängiges Konto",
+    "indedesc": "Für individuelle Lernende. Voller Zugriff ohne Einschränkungen.",
+    "continue": "Weiter",
+    "error": "Bitte wählen Sie einen Kontotyp aus, um fortzufahren"
+  },
+  "Name": {
+    "title": "Wie lautet Ihr Name?",
+    "desc": "Teilen Sie uns mit, wie wir Sie bei der Nutzung von TaskBlast nennen sollen",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "continue": "Weiter"
+  },
+  "Email": {
+    "title": "Wie lautet Ihre E-Mail-Adresse?",
+    "desc": "Wir senden Ihnen einen Bestätigungscode, um Ihre E-Mail-Adresse zu verifizieren",
+    "emailPlaceholder": "E-Mail-Adresse",
+    "send": "Link senden"
+  },
+  "Password": {
+    "title": "Passwort erstellen",
+    "desc": "Wählen Sie ein sicheres Passwort zum Schutz Ihres Kontos",
+    "passwordPlaceholder": "Passwort",
+    "ConfirmPasswordPlaceholder": "Passwort bestätigen",
+    "submit": "Konto erstellen",
+    "match": "Die Passwörter stimmen nicht überein",
+    "length": "Das Passwort muss mindestens 8 Zeichen lang sein"
+  },
+  "Login": {
+    "title": "Anmelden",
+    "emailPlaceholder": "E-Mail oder Benutzername",
+    "passwordPlaceholder": "Passwort",
+    "forgotPassword": "Passwort vergessen?",
+    "loginButton": "Absenden",
+    "noAccount": "Noch kein Konto?",
+    "signUp": "Registrieren"
+  },
+  "ForgotPassword": {
+    "title": "Passwort vergessen?",
+    "desc": "Geben Sie Ihre E-Mail-Adresse ein, und wir senden Ihnen einen Code zum Zurücksetzen Ihres Passworts",
+    "emailPlaceholder": "E-Mail-Adresse",
+    "submit": "Absenden"
+  },
+  "VerifyCode": {
+    "title": "Code bestätigen",
+    "desc": "Geben Sie den 5-stelligen Code ein, der gesendet wurde an",
+    "notreceived": "Code nicht erhalten?",
+    "resend": "Erneut senden",
+    "submit": "Bestätigen"
+  },
+  "ResetPassword": {
+    "title": "Neues Passwort erstellen",
+    "desc": "Geben Sie unten Ihr neues Passwort ein",
+    "newPasswordPlaceholder": "Neues Passwort",
+    "confirmPasswordPlaceholder": "Passwort bestätigen",
+    "submit": "Passwort zurücksetzen"
+  },
+  "ManagerPin": {
+    "title": "Manager-PIN erstellen",
+    "desc": "Diese 4-stellige PIN ermöglicht es einem Elternteil oder Erziehungsberechtigten, das Konto zu verwalten und Aufgaben für den Lernenden zu erstellen. Halten Sie sie geheim.",
+    "pin": "PIN (4 Stellen)",
+    "confirmPinPlaceholder": "PIN bestätigen",
+    "continue": "Weiter"
+  },
+  "Home": {
+    "takeoff": "Abheben"
+  },
+  "Settings": {
+    "title": "Einstellungen",
+    "sound": "Soundeffekte",
+    "music": "Musik",
+    "notifications": "Benachrichtigungen",
+    "privacy": "Datenschutz",
+    "Help": "Hilfe & Support",
+    "About": "Über uns",
+    "Logout": "Abmelden"
+  },
+  "Tasks": {
+    "title": "Aufgabenliste",
+    "normal": "Normal",
+    "edit" : "Bearbeiten",
+    "archive": "Archivieren",
+    "empty": "Noch keine Aufgaben. Fügen Sie Ihre erste Aufgabe hinzu!",
+    "button": "Neue Aufgabe hinzufügen",
+    "archivedempty": "Keine archivierten Aufgaben.",
+    "new": "Neue Aufgabe",
+    "desc": "Beschreibung (optional, max. 200 Zeichen)",
+    "reward": "Belohnung (Steine)",
+    "min": "Minimierung erlauben",
+    "settings": "Pomodoro-Einstellungen",
+    "worktime": "Arbeitszeit (Minuten)",
+    "playtime": "Pause (Minuten)",
+    "cycles": "Anzahl der Zyklen",
+    "cancel": "Abbrechen",
+    "add": "Aufgabe hinzufügen",
+    "editTask": "Aufgabe bearbeiten",
+    "save": "Speichern"
+  },
+  "Profile": {
+    "traits": "Eigenschaften",
+    "editP": "Profil bearbeiten",
+    "awards": "Auszeichnungen",
+    "YourStats": "Ihre Statistiken",
+    "rocksEarned": "Gesamte verdiente Steine: ",
+    "rocksSpent": "Gesamte ausgeben Steine: ",
+    "AvgWorkCycle": "Durchschnittliche Arbeitszykluslänge: ",
+    "AvgPlayCycle": "Durchschnittliche Pausezykluslänge: ",
+    "work": "Arbeits-/Pausenverhältnis: ",
+    "total": "Gesamte Zeit aufgabenbezogen verbracht: ",
+    "AddChildAccount": "Kind-Konto hinzufügen",
+    "SwitchProfile": "Profil wechseln",
+    "Logout": "Abmelden"
+  },
+  "Pomodoro": {
+    "time": "Verbleibende Zeit",
+    "work": "Arbeitszeit",
+    "Resume": "Fortsetzen",
+    "Pause": "Pause",
+    "Land": "Land",
+    "Play": "Spiel starten"
+  }
+}

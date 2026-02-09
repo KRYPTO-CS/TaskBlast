@@ -25,6 +25,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { useAudio } from "../context/AudioContext";
+import { useTranslation } from "react-i18next";
 import { useNotifications } from "../context/NotificationContext";
 
 // Ship component image mappings
@@ -69,6 +70,8 @@ export default function PomodoroScreen() {
   const tapCount = useRef(0);
   const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasRecordedRef = useRef(false);
+  const {t ,i18n} = useTranslation();
+  
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -519,7 +522,7 @@ export default function PomodoroScreen() {
             </Text>
           </View>
           <Text className="font-orbitron text-white/80 text-lg mt-2">
-            Time Remaining
+            {t("Pomodoro.time")}
           </Text>
           {taskName && (
             <View className="bg-purple-500/20 border-2 border-purple-400/30 px-4 py-2 rounded-xl mt-3">
@@ -581,7 +584,7 @@ export default function PomodoroScreen() {
           <View className="flex-col gap-4 w-48">
             {hasPlayedGame ? (
               <MainButton
-                title="Resume Task"
+                title={t("Pomodoro.Resume")}
                 onPress={handleResumeTask}
                 variant="info"
                 testID="resume-task-button"
@@ -589,7 +592,7 @@ export default function PomodoroScreen() {
               />
             ) : timeLeft === 0 ? (
               <MainButton
-                title="Play Game"
+                title={t("Pomodoro.Play")}
                 onPress={handlePlayGame}
                 variant="info"
                 testID="play-game-button"
@@ -597,7 +600,7 @@ export default function PomodoroScreen() {
               />
             ) : (
               <MainButton
-                title={isPaused ? "Resume" : "Pause"}
+                title={isPaused ? t("Pomodoro.Resume") : t("Pomodoro.Pause")}
                 onPress={handlePause}
                 variant={isPaused ? "info" : "warning"}
                 testID="pause-button"
@@ -605,7 +608,7 @@ export default function PomodoroScreen() {
               />
             )}
             <MainButton
-              title="Land"
+              title={t("Pomodoro.Land")}
               onPress={handleLand}
               variant={isTaskCompleted ? "success" : "error"}
               testID="land-button"
