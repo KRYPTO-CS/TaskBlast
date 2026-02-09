@@ -143,7 +143,7 @@ describe("Game Screen", () => {
         await waitFor(() => {
           expect(AsyncStorage.setItem).toHaveBeenCalledWith(
             "game_score",
-            "100"
+            "100",
           );
         });
 
@@ -157,7 +157,7 @@ describe("Game Screen", () => {
         await waitFor(() => {
           expect(AsyncStorage.setItem).toHaveBeenCalledWith(
             "game_score",
-            "500"
+            "500",
           );
         });
       }

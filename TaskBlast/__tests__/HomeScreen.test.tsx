@@ -258,14 +258,14 @@ describe("HomeScreen", () => {
 
       // Simulate focus effect
       const useFocusEffect = jest.requireMock(
-        "@react-navigation/native"
+        "@react-navigation/native",
       ).useFocusEffect;
       const focusCallback = useFocusEffect.mock.calls[0][0];
       focusCallback();
 
       await waitFor(() => {
         expect((getDoc as jest.Mock).mock.calls.length).toBeGreaterThan(
-          initialCallCount
+          initialCallCount,
         );
       });
     });

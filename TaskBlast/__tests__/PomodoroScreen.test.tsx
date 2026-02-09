@@ -503,7 +503,8 @@ describe("Pomodoro Screen", () => {
     it("should pass correct task name to notification", async () => {
       const taskName = "Study Math";
       // Mock useLocalSearchParams to return custom taskName
-      const mockUseLocalSearchParams = require("expo-router").useLocalSearchParams;
+      const mockUseLocalSearchParams =
+        require("expo-router").useLocalSearchParams;
       mockUseLocalSearchParams.mockReturnValue({
         taskName: taskName,
         workTime: "1",
