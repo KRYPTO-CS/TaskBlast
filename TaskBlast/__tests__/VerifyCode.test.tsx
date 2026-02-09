@@ -1,3 +1,13 @@
+/**
+ * Test Suite: Verify Code
+ *
+ * This test suite covers verification code entry and related flows:
+ * - UI rendering of code input fields
+ * - Code validation and submission
+ * - Resend code behavior and rate limits
+ * - Navigation after successful verification
+ */
+
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react-native";
 import VerifyCode from "../app/pages/VerifyCode";

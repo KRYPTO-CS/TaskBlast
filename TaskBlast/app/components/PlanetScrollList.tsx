@@ -172,7 +172,7 @@ export default function PlanetScrollList({ onRocksChange }: { onRocksChange?: ()
                             onPress={handlePlanetPress} />
                         ))}
             </ScrollView>
-            <PlanetModal visible={modalVisible} onClose={() => setModalVisible(false)} planetId={selectedPlanet ?? undefined} isLocked={selectedPlanet != null && selectedPlanet > currentProgress} selectedPlanet={selectedPlanet} onRocksChange={onRocksChange ?? (() => {})} />
+            <PlanetModal visible={modalVisible} onClose={() => setModalVisible(false)} planetId={selectedPlanet ?? undefined} isLocked={selectedPlanet != null && selectedPlanet > currentProgress} selectedPlanet={selectedPlanet} onRocksChange={onRocksChange ?? (() => {})} currentProgress={currentProgress} />
         </SafeAreaView>
     );
 }
