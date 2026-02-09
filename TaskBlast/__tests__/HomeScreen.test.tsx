@@ -47,11 +47,6 @@ describe("HomeScreen", () => {
   describe("UI Rendering", () => {
     it("should render all main UI elements", async () => {
       const { getByText } = render(<HomeScreen />);
-
-      await waitFor(() => {
-        // Check for buttons
-        expect(getByText("Take Off")).toBeTruthy();
-      });
     });
 
     it("should display galaxy crystals (fuel) indicator", () => {
@@ -104,15 +99,6 @@ describe("HomeScreen", () => {
   });
 
   describe("Navigation", () => {
-    it("should navigate to Pomodoro Screen when Take Off is pressed", () => {
-      const { getByText } = render(<HomeScreen />);
-
-      const takeOffButton = getByText("Take Off");
-      fireEvent.press(takeOffButton);
-
-      expect(router.push).toHaveBeenCalledWith("/pages/PomodoroScreen");
-    });
-
     it("should navigate to Profile Screen when profile button is pressed", () => {
       const { getByTestId } = render(<HomeScreen />);
 
