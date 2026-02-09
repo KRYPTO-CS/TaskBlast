@@ -24,29 +24,36 @@ import {
 } from "firebase/firestore";
 import { useAudioPlayer } from "expo-audio";
 import MainButton from "../components/MainButton";
+import PlanetScrollList from "../components/PlanetScrollList";  
 import TaskListModal from "../components/TaskListModal";
 import SettingsModal from "../components/SettingsModal";
+import ShopModal from "../components/ShopModal";
 import { useRouter } from "expo-router";
 import { useAudio } from "../context/AudioContext";
 import { useTranslation } from "react-i18next";
+import PlanetModal from "../components/PlanetModal";
 
 export default function HomeScreen() {
   const router = useRouter();
   const { musicEnabled } = useAudio();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
+  const [isPlanetModalVisible, setIsPlanetModalVisible] = useState(false);
+  const [isShopModalVisible, setIsShopModalVisible] = useState(false);
   const [rocks, setRocks] = useState<number>(0);
   const {t ,i18n} = useTranslation();
   
   // Child profile state
-  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(null);
+  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
+    null,
+  );
   const [childDocId, setChildDocId] = useState<string | null>(null);
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
   // Background music player
   const musicPlayer = useAudioPlayer(
-    require("../../assets/music/homeScreenMusic.mp3")
+    require("../../assets/music/homeScreenMusic.mp3"),
   );
 
   const loadScore = useCallback(async () => {
@@ -59,19 +66,22 @@ export default function HomeScreen() {
       }
 
       const db = getFirestore();
-      
+
       // Check if a child profile is active
       const activeChild = await AsyncStorage.getItem("activeChildProfile");
       setActiveChildProfile(activeChild);
-      
+
       let userDoc;
-      
+
       if (activeChild) {
         // Child is active - find child's document
         const childrenRef = collection(db, "users", user.uid, "children");
-        const childQuery = query(childrenRef, where("username", "==", activeChild));
+        const childQuery = query(
+          childrenRef,
+          where("username", "==", activeChild),
+        );
         const childSnapshot = await getDocs(childQuery);
-        
+
         if (!childSnapshot.empty) {
           const childDocData = childSnapshot.docs[0];
           setChildDocId(childDocData.id);
@@ -185,7 +195,7 @@ export default function HomeScreen() {
           }
         }
       };
-    }, [loadScore, musicPlayer, musicEnabled])
+    }, [loadScore, musicPlayer, musicEnabled]),
   );
 
   return (
@@ -197,79 +207,96 @@ export default function HomeScreen() {
         resizeMode="cover"
       />
       {/* All UI elements above the background */}
-      <View className="flex-1 p-5">
-        {/* Top Left Section - Profile & Settings */}
-        <View className="absolute top-20 left-5 z-10">
+      <View className="flex-1">
+        {/* Top Right Section - Profile & Settings above Task Button */}
+        <View className="absolute top-14 right-5 z-10 items-center">
+          {/* Profile & Settings - Horizontal */}
+          <View className="flex-row gap-1">
+            <TouchableOpacity
+              testID="profile-button"
+              className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full items-center justify-center shadow-lg shadow-white/40"
+              style={{ shadowOffset: { width: 0, height: 0 } }}
+              onPress={() => router.push("/pages/ProfileScreen")}
+            >
+              <Image
+                source={require("../../assets/images/sprites/profile.png")}
+                className="w-7 h-7"
+                resizeMode="contain"
+                style={{ transform: [{ scale: 1.5 }] }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              testID="settings-button"
+              className="w-14 h-14 bg-gradient-to-br from-indigo-600 to-blue-500 rounded-full items-center justify-center shadow-lg shadow-white/40"
+              style={{ shadowOffset: { width: 0, height: 0 } }}
+              onPress={() => setIsSettingsModalVisible(true)}
+            >
+              <Image
+                source={require("../../assets/images/sprites/gear.png")}
+                className="w-7 h-7"
+                resizeMode="contain"
+                style={{ transform: [{ scale: 1.5 }] }}
+              />
+            </TouchableOpacity>
+          </View>
+          
+          {/* Task List Button */}
           <TouchableOpacity
-            testID="profile-button"
-            className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full items-center justify-center mb-3 shadow-lg shadow-purple-500/50"
-            onPress={() => router.push("/pages/ProfileScreen")}
+            testID="task-button"
+            onPress={() => setIsTaskModalVisible(true)}
+            className="-mt-4"
           >
-            <Ionicons name="person" size={26} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            testID="settings-button"
-            className="w-14 h-14 bg-gradient-to-br from-indigo-600 to-blue-500 rounded-full items-center justify-center shadow-lg shadow-blue-500/50"
-            onPress={() => setIsSettingsModalVisible(true)}
-          >
-            <Ionicons name="settings" size={26} color="white" />
+            <Image
+              source={require("../../assets/images/sprites/task.png")}
+              resizeMode="contain"
+              style={{ transform: [{ scale: 0.75 }] }}
+            />
           </TouchableOpacity>
         </View>
 
-        {/* Top Row - Fuel Badge & Rocks */}
-        <View className="flex-row justify-end items-center gap-4 mt-11">
-          {/* Fuel Badge */}
-          <View className="flex-row items-center bg-gradient-to-r from-orange-500 to-yellow-400 px-5 py-2.5 rounded-full shadow-lg shadow-orange-400/40 border-2 border-yellow-300/30">
+        {/* Top Left - Crystals & Galaxy Crystals */}
+        <View className="justify-start items-start gap-3 mt-11 ml-0">
+          {/* Crystals */}
+          <TouchableOpacity
+            className="flex-row items-center bg-gradient-to-r from-pink-600 to-pink-400 px-5 py-2.5 rounded-full shadow-lg shadow-pink-500/70 border-2 border-pink-300/30"
+            style={{ shadowOffset: { width: 0, height: 0 }, width: 140 }}
+            onPress={() => setIsShopModalVisible(true)}
+          >
             <Image
-              testID="fuel-icon"
-              source={require("../../assets/images/sprites/fuel.png")}
+              source={require("../../assets/images/sprites/crystal.png")}
               className="w-7 h-7 mr-1"
               resizeMode="contain"
-              style={{ transform: [{ scale: 1.4 }], marginBottom: 2 }}
-            />
-            <Text className="font-orbitron-bold text-white text-md ml-2">
-              20/20
-            </Text>
-          </View>
-
-          {/* Rocks */}
-          <View className="flex-row items-center bg-gradient-to-r from-purple-600 to-pink-500 px-5 py-2.5 rounded-full shadow-lg shadow-purple-500/40 border-2 border-pink-300/30">
-            <Image
-              source={require("../../assets/images/sprites/rocks.png")}
-              className="w-7 h-7 mr-1"
-              resizeMode="contain"
-              style={{ transform: [{ scale: 1.4 }] }}
+              style={{ transform: [{ scale: 1.5 }] }}
             />
             <Text className="font-orbitron-bold text-white text-md ml-2">
               {String(rocks).padStart(4, "0")}
             </Text>
-          </View>
-        </View>
+          </TouchableOpacity>
 
-        {/* Task List Button - Aligned Right */}
-        <View className="items-end mt-4 pr-0">
+          {/* Galaxy Crystals */}
           <TouchableOpacity
-            testID="task-button"
-            className="flex-row  items-center px-6 py-3.5 rounded-2xl shadow-lg"
-            onPress={() => setIsTaskModalVisible(true)}
+            className="flex-row items-center bg-gradient-to-r from-indigo-900 to-indigo-700 px-5 py-2.5 rounded-full shadow-lg shadow-indigo-400/70 border-2 border-indigo-600/30"
+            style={{ shadowOffset: { width: 0, height: 0 }, width: 140 }}
+            onPress={() => setIsShopModalVisible(true)}
           >
             <Image
-              source={require("../../assets/images/sprites/task.png")}
-              className="w-7 h-7 mt-2"
+              testID="fuel-icon"
+              source={require("../../assets/images/sprites/galaxyCrystal.png")}
+              className="w-7 h-7 mr-1"
               resizeMode="contain"
-              style={{ transform: [{ scale: 3.8 }] }}
+              style={{ transform: [{ scale: 1.5 }], marginBottom: 2 }}
             />
+            <Text className="font-orbitron-bold text-white text-md ml-2">
+              0000
+            </Text>
           </TouchableOpacity>
         </View>
 
-        {/* Center - Planet Image */}
-        <View className="flex-1 items-center justify-center">
-          <Image
-            testID="planet-image"
-            source={require("../../assets/images/sprites/planet.png")}
-            style={{ width: 128, height: 128 }}
-          />
-        </View>
+
+
+        {/* Center - Planet Scroll List Component*/}
+        
+        <PlanetScrollList onRocksChange={loadScore} />
 
         {/* Take Off Button - Bottom Center */}
         <View className="items-center mb-24">
@@ -286,10 +313,24 @@ export default function HomeScreen() {
           onRocksChange={loadScore}
         />
 
+        {/* Planet Modal */}
+        <PlanetModal
+          visible={isPlanetModalVisible}
+          onClose={() => setIsPlanetModalVisible(false)}
+          onRocksChange={loadScore}
+        />
+
         {/* Settings Modal */}
         <SettingsModal
           visible={isSettingsModalVisible}
           onClose={() => setIsSettingsModalVisible(false)}
+        />
+
+        {/* Shop Modal */}
+        <ShopModal
+          visible={isShopModalVisible}
+          onClose={() => setIsShopModalVisible(false)}
+          onRocksChange={loadScore}
         />
       </View>
     </View>

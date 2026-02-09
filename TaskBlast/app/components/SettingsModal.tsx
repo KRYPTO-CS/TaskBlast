@@ -13,6 +13,8 @@ import { auth } from "../../server/firebase";
 import { signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAudio } from "../context/AudioContext";
+import { useNotifications } from "../context/NotificationContext";
+import NotificationPreferencesModal from "./NotificationPreferencesModal";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 
@@ -34,13 +36,22 @@ export default function SettingsModal({
   const { soundEnabled, musicEnabled, setSoundEnabled, setMusicEnabled } =
     useAudio();
 
+  // Get notification context
+  const { preferences, updatePreferences } = useNotifications();
+
+  // Modal state
+  const [showNotificationPrefs, setShowNotificationPrefs] = useState(false);
+
   // Other settings state
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [darkModeEnabled, setDarkModeEnabled] = useState(false);
-  
+
   // Child profile state
-  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(null);
-  const [currentProfileType, setCurrentProfileType] = useState<"parent" | "child">("parent");
+  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
+    null,
+  );
+  const [currentProfileType, setCurrentProfileType] = useState<
+    "parent" | "child"
+  >("parent");
 
   // Check for active child profile when modal opens
   useEffect(() => {
@@ -51,12 +62,16 @@ export default function SettingsModal({
         setCurrentProfileType(activeChild ? "child" : "parent");
       }
     };
-    
+
     checkActiveProfile();
   }, [visible]);
 
   const handleSoundToggle = async (value: boolean) => {
     await setSoundEnabled(value);
+  };
+
+  const handleNotificationToggle = async (value: boolean) => {
+    await updatePreferences({ enabled: value });
   };
 
   const handleMusicToggle = async (value: boolean) => {
@@ -65,12 +80,12 @@ export default function SettingsModal({
 
   const handleLogout = () => {
     const isChild = currentProfileType === "child";
-    
+
     Alert.alert(
-      isChild ? "Switch Profile" : "Logout", 
-      isChild 
-        ? "Return to profile selection?" 
-        : "Are you sure you want to logout?", 
+      isChild ? "Switch Profile" : "Logout",
+      isChild
+        ? "Return to profile selection?"
+        : "Are you sure you want to logout?",
       [
         {
           text: "Cancel",
@@ -101,7 +116,7 @@ export default function SettingsModal({
             }
           },
         },
-      ]
+      ],
     );
   };
 
@@ -234,7 +249,8 @@ export default function SettingsModal({
             </View>
 
             {/* Notifications */}
-            <View
+            <TouchableOpacity
+              onPress={() => setShowNotificationPrefs(true)}
               className="flex-row justify-between items-center p-4 rounded-xl mb-3"
               style={{
                 backgroundColor: "rgba(59, 130, 246, 0.2)",
@@ -249,24 +265,37 @@ export default function SettingsModal({
                   color="#60a5fa"
                   style={{ marginRight: 12 }}
                 />
-                <Text className="font-orbitron-medium text-white text-base">
-                  {t("Settings.notifications")}
-                </Text>
+                <View className="flex-1">
+                  <Text className="font-orbitron-medium text-white text-base">
+                    {t("Settings.notifications")}
+                  </Text>
+                  <Text className="font-orbitron text-gray-400 text-xs mt-1">
+                    Tap to customize
+                  </Text>
+                </View>
               </View>
-              <Switch
-                value={notificationsEnabled}
-                onValueChange={setNotificationsEnabled}
-                trackColor={{ false: "#334155", true: "#8b5cf6" }}
-                thumbColor={notificationsEnabled ? "#a855f7" : "#64748b"}
-              />
-            </View>
+              <View className="flex-row items-center">
+                <Switch
+                  value={preferences.enabled}
+                  onValueChange={handleNotificationToggle}
+                  trackColor={{ false: "#334155", true: "#8b5cf6" }}
+                  thumbColor={preferences.enabled ? "#a855f7" : "#64748b"}
+                />
+                <Ionicons
+                  name="chevron-forward"
+                  size={20}
+                  color="#60a5fa"
+                  style={{ marginLeft: 8 }}
+                />
+              </View>
+            </TouchableOpacity>
 
             {/* Divider */}
             <View
               className="h-px my-4"
               style={{ backgroundColor: "rgba(139, 92, 246, 0.3)" }}
             />
-            
+
             {/* Privacy - Only show for parent */}
             {currentProfileType === "parent" && (
               <TouchableOpacity
@@ -354,7 +383,11 @@ export default function SettingsModal({
               onPress={handleLogout}
             >
               <Ionicons
-                name={currentProfileType === "child" ? "swap-horizontal" : "log-out-outline"}
+                name={
+                  currentProfileType === "child"
+                    ? "swap-horizontal"
+                    : "log-out-outline"
+                }
                 size={24}
                 color="#ef4444"
                 style={{ marginRight: 12 }}
@@ -373,6 +406,12 @@ export default function SettingsModal({
           </View>
         </View>
       </View>
+
+      {/* Notification Preferences Modal */}
+      <NotificationPreferencesModal
+        visible={showNotificationPrefs}
+        onClose={() => setShowNotificationPrefs(false)}
+      />
     </Modal>
   );
 }

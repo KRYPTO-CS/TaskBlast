@@ -58,10 +58,145 @@ global.mockAudioPlayer = {
   stop: mockStop,
 };
 
+// Mock AudioContext
+jest.mock("./app/context/AudioContext", () => ({
+  AudioProvider: ({ children }) => children,
+  useAudio: jest.fn(() => ({
+    soundEnabled: true,
+    musicEnabled: true,
+    setSoundEnabled: jest.fn(),
+    setMusicEnabled: jest.fn(),
+    isLoading: false,
+  })),
+}));
+
+// Mock NotificationContext
+jest.mock("./app/context/NotificationContext", () => ({
+  NotificationProvider: ({ children }) => children,
+  useNotifications: jest.fn(() => ({
+    notifyTimerComplete: jest.fn().mockResolvedValue(undefined),
+    scheduleTaskReminder: jest.fn().mockResolvedValue("notification-id"),
+    scheduleDailyDigest: jest.fn().mockResolvedValue("digest-id"),
+    preferences: {
+      enabled: true,
+      soundEnabled: false,
+      vibrationEnabled: true,
+      visualOnly: false,
+      reminderTiming: 5,
+      repeatNotifications: false,
+      maxNotificationsPerHour: 4,
+      dailyDigestEnabled: true,
+      dailyDigestTime: "15:00",
+    },
+    permissionGranted: true,
+    updatePreferences: jest.fn().mockResolvedValue(undefined),
+    requestPermissions: jest.fn().mockResolvedValue(true),
+    cancelTaskNotifications: jest.fn().mockResolvedValue(undefined),
+    cancelAllNotifications: jest.fn().mockResolvedValue(undefined),
+    cancelDailyDigest: jest.fn(),
+  })),
+}));
+
+// Mock react-i18next
+jest.mock("react-i18next", () => {
+  const tFunc = (key) => key;
+  const i18nObj = {
+    changeLanguage: jest.fn(),
+    language: "en",
+  };
+
+  // Create an array-like object that also has named properties
+  // to support both [t, i18n] and {t, i18n} destructuring
+  const mockReturn = Object.assign([tFunc, i18nObj], {
+    t: tFunc,
+    i18n: i18nObj,
+  });
+
+  return {
+    useTranslation: () => mockReturn,
+    initReactI18next: {
+      type: "3rdParty",
+      init: jest.fn(),
+    },
+  };
+});
+
 // Mock AsyncStorage
 jest.mock("@react-native-async-storage/async-storage", () =>
-  require("@react-native-async-storage/async-storage/jest/async-storage-mock")
+  require("@react-native-async-storage/async-storage/jest/async-storage-mock"),
 );
+
+// Mock expo-notifications
+const mockScheduleNotificationAsync = jest.fn(() =>
+  Promise.resolve("notification-id-123"),
+);
+const mockCancelScheduledNotificationAsync = jest.fn(() => Promise.resolve());
+const mockCancelAllScheduledNotificationsAsync = jest.fn(() =>
+  Promise.resolve(),
+);
+const mockGetAllScheduledNotificationsAsync = jest.fn(() =>
+  Promise.resolve([]),
+);
+const mockGetPermissionsAsync = jest.fn(() =>
+  Promise.resolve({ status: "granted" }),
+);
+const mockRequestPermissionsAsync = jest.fn(() =>
+  Promise.resolve({ status: "granted" }),
+);
+const mockSetNotificationHandler = jest.fn();
+const mockAddNotificationResponseReceivedListener = jest.fn(() => ({
+  remove: jest.fn(),
+}));
+
+jest.mock("expo-notifications", () => ({
+  scheduleNotificationAsync: mockScheduleNotificationAsync,
+  cancelScheduledNotificationAsync: mockCancelScheduledNotificationAsync,
+  cancelAllScheduledNotificationsAsync:
+    mockCancelAllScheduledNotificationsAsync,
+  getAllScheduledNotificationsAsync: mockGetAllScheduledNotificationsAsync,
+  getPermissionsAsync: mockGetPermissionsAsync,
+  requestPermissionsAsync: mockRequestPermissionsAsync,
+  setNotificationHandler: mockSetNotificationHandler,
+  addNotificationResponseReceivedListener:
+    mockAddNotificationResponseReceivedListener,
+  AndroidNotificationPriority: {
+    HIGH: "high",
+    DEFAULT: "default",
+  },
+  SchedulableTriggerInputTypes: {
+    DATE: "date",
+    DAILY: "daily",
+  },
+}));
+
+// Export notification mocks for tests
+global.mockNotifications = {
+  scheduleNotificationAsync: mockScheduleNotificationAsync,
+  cancelScheduledNotificationAsync: mockCancelScheduledNotificationAsync,
+  cancelAllScheduledNotificationsAsync:
+    mockCancelAllScheduledNotificationsAsync,
+  getAllScheduledNotificationsAsync: mockGetAllScheduledNotificationsAsync,
+  getPermissionsAsync: mockGetPermissionsAsync,
+  requestPermissionsAsync: mockRequestPermissionsAsync,
+  setNotificationHandler: mockSetNotificationHandler,
+  addNotificationResponseReceivedListener:
+    mockAddNotificationResponseReceivedListener,
+};
+
+// Mock expo-haptics
+const mockNotificationAsync = jest.fn(() => Promise.resolve());
+
+jest.mock("expo-haptics", () => ({
+  notificationAsync: mockNotificationAsync,
+  NotificationFeedbackType: {
+    Success: "success",
+  },
+}));
+
+// Export haptics mocks for tests
+global.mockHaptics = {
+  notificationAsync: mockNotificationAsync,
+};
 
 // Mock Firebase
 jest.mock("firebase/auth", () => ({
@@ -289,16 +424,24 @@ const mockAppStateAddEventListener = jest.fn((event, handler) => {
   return { remove: jest.fn() };
 });
 
-jest.mock("react-native/Libraries/AppState/AppState", () => ({
+// Create a mutable currentState that can be changed in tests
+const mockAppState = {
   addEventListener: mockAppStateAddEventListener,
   removeEventListener: jest.fn(),
   currentState: "active",
-}));
+};
+
+jest.mock("react-native/Libraries/AppState/AppState", () => mockAppState);
 
 // Export AppState helpers for tests
 global.mockAppState = {
   listeners: mockAppStateListeners,
+  currentState: mockAppState,
+  setCurrentState: (newState) => {
+    mockAppState.currentState = newState;
+  },
   triggerAppStateChange: (newState) => {
+    mockAppState.currentState = newState;
     mockAppStateListeners.forEach(({ event, handler }) => {
       if (event === "change") {
         handler(newState);
@@ -307,6 +450,7 @@ global.mockAppState = {
   },
   clear: () => {
     mockAppStateListeners.length = 0;
+    mockAppState.currentState = "active";
   },
 };
 
@@ -345,7 +489,7 @@ global.mockAlert = {
   pressButtonByText: (buttonText) => {
     const button = lastAlertButtons.find(
       (btn) =>
-        btn.text && btn.text.toLowerCase().includes(buttonText.toLowerCase())
+        btn.text && btn.text.toLowerCase().includes(buttonText.toLowerCase()),
     );
     if (button && button.onPress) {
       button.onPress();
