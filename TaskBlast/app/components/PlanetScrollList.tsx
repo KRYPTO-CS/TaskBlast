@@ -28,7 +28,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const IMG_SIDE = 200;
 
 const ITEM_WIDTH = IMG_SIDE;
-const ITEM_MARGIN = 128;
+const ITEM_MARGIN = 300;
 const SNAP_INTERVAL = ITEM_WIDTH + (ITEM_MARGIN);
 
 const SCREEN_OFFSET = (SCREEN_WIDTH - ITEM_WIDTH) / 2;
@@ -52,11 +52,11 @@ const PLANET_DARK_IMAGES: { [key: number]: any } = {
     2: require("../../assets/images/sprites/planets/dark/2&3.png"),
     3: require("../../assets/images/sprites/planets/dark/2&3.png"),
     4: require("../../assets/images/sprites/planets/dark/4.png"),
-    5: require("../../assets/images/sprites/planets/dark/2&3.png"),
-    6: require("../../assets/images/sprites/planets/dark/2&3.png"),
-    7: require("../../assets/images/sprites/planets/dark/2&3.png"),
-    8: require("../../assets/images/sprites/planets/dark/2&3.png"),
-    9: require("../../assets/images/sprites/planets/dark/1.png"),
+    5: require("../../assets/images/sprites/planets/dark/5.png"),
+    6: require("../../assets/images/sprites/planets/dark/6.png"),
+    7: require("../../assets/images/sprites/planets/dark/7.png"),
+    8: require("../../assets/images/sprites/planets/dark/8.png"),
+    9: require("../../assets/images/sprites/planets/dark/9.png"),
 };
 
 // Define the props for the PlanetScrollList component
