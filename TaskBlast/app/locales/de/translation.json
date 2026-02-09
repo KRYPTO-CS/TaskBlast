@@ -84,5 +84,62 @@
     "pin": "PIN (4 Stellen)",
     "confirmPinPlaceholder": "PIN bestätigen",
     "continue": "Weiter"
+  },
+  "Home": {
+    "takeoff": "Abheben"
+  },
+  "Settings": {
+    "title": "Einstellungen",
+    "sound": "Soundeffekte",
+    "music": "Musik",
+    "notifications": "Benachrichtigungen",
+    "privacy": "Datenschutz",
+    "Help": "Hilfe & Support",
+    "About": "Über uns",
+    "Logout": "Abmelden"
+  },
+  "Tasks": {
+    "title": "Aufgabenliste",
+    "normal": "Normal",
+    "edit" : "Bearbeiten",
+    "archive": "Archivieren",
+    "empty": "Noch keine Aufgaben. Fügen Sie Ihre erste Aufgabe hinzu!",
+    "button": "Neue Aufgabe hinzufügen",
+    "archivedempty": "Keine archivierten Aufgaben.",
+    "new": "Neue Aufgabe",
+    "desc": "Beschreibung (optional, max. 200 Zeichen)",
+    "reward": "Belohnung (Steine)",
+    "min": "Minimierung erlauben",
+    "settings": "Pomodoro-Einstellungen",
+    "worktime": "Arbeitszeit (Minuten)",
+    "playtime": "Pause (Minuten)",
+    "cycles": "Anzahl der Zyklen",
+    "cancel": "Abbrechen",
+    "add": "Aufgabe hinzufügen",
+    "editTask": "Aufgabe bearbeiten",
+    "save": "Speichern"
+  },
+  "Profile": {
+    "traits": "Eigenschaften",
+    "editP": "Profil bearbeiten",
+    "awards": "Auszeichnungen",
+    "YourStats": "Ihre Statistiken",
+    "rocksEarned": "Gesamte verdiente Steine: ",
+    "rocksSpent": "Gesamte ausgeben Steine: ",
+    "AvgWorkCycle": "Durchschnittliche Arbeitszykluslänge: ",
+    "AvgPlayCycle": "Durchschnittliche Pausezykluslänge: ",
+    "work": "Arbeits-/Pausenverhältnis: ",
+    "total": "Gesamte Zeit aufgabenbezogen verbracht: ",
+    "AddChildAccount": "Kind-Konto hinzufügen",
+    "SwitchProfile": "Profil wechseln",
+    "Logout": "Abmelden"
+  },
+  "Pomodoro": {
+    "time": "Verbleibende Zeit",
+    "work": "Arbeitszeit",
+    "Resume": "Fortsetzen",
+    "Pause": "Pause",
+    "Land": "Land",
+    "Play": "Spiel starten"
   }
 }

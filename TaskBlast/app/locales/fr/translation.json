@@ -84,5 +84,54 @@
     "pin": "PIN (4 chiffres)",
     "confirmPinPlaceholder": "Confirmer le PIN",
     "continue": "Continuer"
+  },
+  "Home": {
+    "takeoff": "Décollage"
+  },
+  "Settings": {
+    "title": "Paramètres",
+    "sound": "Effets sonores",
+    "music": "Musique",
+    "notifications": "Notifications",
+    "privacy": "Confidentialité",
+    "Help": "Aide et support",
+    "About": "À propos de nous",
+    "Logout": "Se déconnecter"
+  },
+  "Tasks": {
+    "title": "Mes tâches",
+    "normal": "Normal",
+    "edit" : "Modifier",
+    "archive": "Archiver",
+    "empty": "Aucune tâche pour le moment. Ajoutez votre première tâche !",
+    "button": "Ajouter une nouvelle tâche",
+    "archivedempty": "Aucune tâche archivée.",
+    "new": "Nouvelle Tâche",
+    "desc": "Description (optionnelle, max 200 caractères)",
+    "reward": "Récompense (roches)",
+    "min": "Autoriser la minimisation",
+    "settings": "Paramètres Pomodoro",
+    "worktime": "Temps de travail (minutes)",
+    "playtime": "Temps de pause (minutes)",
+    "cycles": "Nombre de cycles",
+    "cancel": "Annuler",
+    "add": "Ajouter une tâche",
+    "editTask": "Modifier la tâche",
+    "save": "Sauvegarder"
+  },
+"Profile": {
+    "traits": "Traits",
+    "editP": "Editer Profil",
+    "awards": "Récompenses",
+    "YourStats": "Vos statistiques",
+    "rocksEarned": "Total de roches gagnées : ",
+    "rocksSpent": "Total de roches dépensées : ",
+    "AvgWorkCycle": "Durée moyenne du cycle de travail : ",
+    "AvgPlayCycle": "Durée moyenne du cycle de pause : ",
+    "work": "Ratio travail/temps de pause : ",
+    "total": "Temps total passé sur les tâches : ",
+    "AddChildAccount": "Ajouter un compte enfant",
+    "SwitchProfile": "Changer de profil",
+    "Logout": "Déconnexion"
   }
 }

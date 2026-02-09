@@ -28,6 +28,7 @@ import TaskListModal from "../components/TaskListModal";
 import SettingsModal from "../components/SettingsModal";
 import { useRouter } from "expo-router";
 import { useAudio } from "../context/AudioContext";
+import { useTranslation } from "react-i18next";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -35,6 +36,7 @@ export default function HomeScreen() {
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
   const [rocks, setRocks] = useState<number>(0);
+  const {t ,i18n} = useTranslation();
   
   // Child profile state
   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(null);
@@ -272,7 +274,7 @@ export default function HomeScreen() {
         {/* Take Off Button - Bottom Center */}
         <View className="items-center mb-24">
           <MainButton
-            title="Take Off"
+            title={t("Home.takeoff")}
             onPress={() => router.push("/pages/PomodoroScreen")}
           />
         </View>

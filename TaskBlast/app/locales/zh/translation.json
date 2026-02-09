@@ -84,5 +84,62 @@
     "pin": "PIN（4 位数字）",
     "confirmPinPlaceholder": "确认 PIN",
     "continue": "继续"
+  },
+  "Home": {
+    "takeoff": "起飞"
+  },
+  "Settings": {
+    "title": "设置",
+    "sound": "音效",
+    "music": "音乐",
+    "notifications": "通知",
+    "privacy": "隐私",
+    "Help": "帮助与支持",
+    "About": "关于我们",
+    "Logout": "退出登录"
+   },
+   "Tasks": {
+    "title": "任务列表",
+    "normal": "普通",
+    "edit" : "编辑",
+    "archive": "归档",
+    "empty": "暂无任务。添加您的第一个任务！",
+    "button": "添加新任务",
+    "archivedempty": "暂无已归档任务。",
+    "new": "新任务",
+    "desc": "描述（可选，最多 200 个字符）",
+    "reward": "奖励（石头）",
+    "min": "允许最小化",
+    "settings": "Pomodoro 设置",
+    "worktime": "工作时间（分钟）",
+    "playtime": "休息时间（分钟）",
+    "cycles": "循环次数",
+    "cancel": "取消",
+    "add": "添加任务",
+    "editTask": "编辑任务",
+    "save": "保存"
+  },
+  "Profile": {
+    "traits": "特征",
+    "editP": "编辑个人资料",
+    "awards": "奖项",
+    "YourStats": "您的统计数据",
+    "rocksEarned": "总共获得的石头数: ",
+    "rocksSpent": "总共花费的石头数: ",
+    "AvgWorkCycle": "平均工作周期长度: ",
+    "AvgPlayCycle": "平均休息周期长度: ",
+    "work": "工作/休息比例: ",
+    "total": "任务总耗时: ",
+    "AddChildAccount": "添加子账户",
+    "SwitchProfile": "切换账户",
+    "Logout": "退出登录"
+  },
+  "Pomodoro": {
+    "time": "剩余时间",
+    "work": "工作时段",
+    "Resume": "继续",
+    "Pause": "暂停",
+    "Land": "着陆",
+    "Play": "开始游戏"
   }
 }
