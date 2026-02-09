@@ -251,7 +251,7 @@ export default function HomeScreen() {
         </View>
 
         {/* Top Left - Crystals & Galaxy Crystals */}
-        <View className="justify-start items-start gap-3 mt-11">
+        <View className="justify-start items-start gap-3 mt-11 ml-0">
           {/* Crystals */}
           <TouchableOpacity
             className="flex-row items-center bg-gradient-to-r from-pink-600 to-pink-400 px-5 py-2.5 rounded-full shadow-lg shadow-pink-500/70 border-2 border-pink-300/30"

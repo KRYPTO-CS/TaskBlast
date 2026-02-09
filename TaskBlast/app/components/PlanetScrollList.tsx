@@ -36,14 +36,27 @@ const SCREEN_OFFSET = (SCREEN_WIDTH - ITEM_WIDTH) / 2;
 // TODO: move this to the DB eventually
 const PLANET_IMAGES: { [key: number]: any } = {
     1: require("../../assets/images/sprites/planets/1.gif"),
-    2: require("../../assets/images/sprites/planets/2.png"),
-    3: require("../../assets/images/sprites/planets/3.png"),
-    4: require("../../assets/images/sprites/planets/4.png"),
-    5: require("../../assets/images/sprites/planets/5.png"),
-    6: require("../../assets/images/sprites/planets/6.png"),
-    7: require("../../assets/images/sprites/planets/7.png"),
-    8: require("../../assets/images/sprites/planets/8.png"),
-    9: require("../../assets/images/sprites/planets/9.png"),
+    2: require("../../assets/images/sprites/planets/2.gif"),
+    3: require("../../assets/images/sprites/planets/3.gif"),
+    4: require("../../assets/images/sprites/planets/4.gif"),
+    5: require("../../assets/images/sprites/planets/5.gif"),
+    6: require("../../assets/images/sprites/planets/6.gif"),
+    7: require("../../assets/images/sprites/planets/7.gif"),
+    8: require("../../assets/images/sprites/planets/8.gif"),
+    9: require("../../assets/images/sprites/planets/9.gif"),
+};
+
+// Dark versions for locked planets
+const PLANET_DARK_IMAGES: { [key: number]: any } = {
+    1: require("../../assets/images/sprites/planets/dark/1.png"),
+    2: require("../../assets/images/sprites/planets/dark/2&3.png"),
+    3: require("../../assets/images/sprites/planets/dark/2&3.png"),
+    4: require("../../assets/images/sprites/planets/dark/4.png"),
+    5: require("../../assets/images/sprites/planets/dark/2&3.png"),
+    6: require("../../assets/images/sprites/planets/dark/2&3.png"),
+    7: require("../../assets/images/sprites/planets/dark/2&3.png"),
+    8: require("../../assets/images/sprites/planets/dark/2&3.png"),
+    9: require("../../assets/images/sprites/planets/dark/1.png"),
 };
 
 // Define the props for the PlanetScrollList component
@@ -60,25 +73,21 @@ interface PlanetScrollListProps {
 }
 
 // actual planet component that will be rendered in the scroll list
-const Planet = ({planetID, islocked, onPress}: PlanetScrollListProps) => {
+const Planet = ({planetID, islocked, onPress, isLast}: PlanetScrollListProps & { isLast?: boolean }) => {
     return (
         <TouchableOpacity
             onPress={() => onPress(planetID)}
             activeOpacity={0.7}
-            style={{ paddingRight: ITEM_MARGIN }}
+            style={{ paddingRight: isLast ? 0 : ITEM_MARGIN }}
         >
-            <Image
-                // include islocked in the key so the Image is recreated when lock state changes
-                key={`planet-${planetID}-${islocked}`}
-                testID={`planet-${planetID}-image`}
-                source={PLANET_IMAGES[planetID]}
-                style={{
-                    width: IMG_SIDE,
-                    height: IMG_SIDE,
-                    // no tint if unlocked
-                    tintColor: islocked ? 'black' : undefined,
-                }}
-            />
+            <View style={{ width: IMG_SIDE, height: IMG_SIDE, justifyContent: 'center', alignItems: 'center' }}>
+                <Image
+                    // include islocked in the key so the Image is recreated when lock state changes
+                    key={`planet-${planetID}-${islocked}`}
+                    testID={`planet-${planetID}-image`}
+                    source={islocked ? PLANET_DARK_IMAGES[planetID] : PLANET_IMAGES[planetID]}
+                />
+            </View>
         </TouchableOpacity>
     );
 };
@@ -137,6 +146,9 @@ export default function PlanetScrollList() {
         }
     };
 
+    // Calculate snap offsets for each planet to prevent over-scrolling
+    const snapOffsets = planets.map((_, index) => index * SNAP_INTERVAL);
+
     return(
         <SafeAreaView className="flex-1">
             <ScrollView 
@@ -144,17 +156,20 @@ export default function PlanetScrollList() {
             horizontal={true} 
             showsHorizontalScrollIndicator={false} 
             contentContainerStyle={{ alignItems: 'center', paddingHorizontal: SCREEN_OFFSET }}
-            snapToInterval={SNAP_INTERVAL}
+            snapToOffsets={snapOffsets}
+            snapToAlignment="start"
             decelerationRate="fast"
+            bounces={false}
             onMomentumScrollEnd={handleScrollEnd}
             onScrollEndDrag={handleScrollEnd}
             >
-                {planets.map((id) => (
+                {planets.map((id, index) => (
                         <Planet 
                             key={id} 
                             planetID={id} 
                             islocked={id > currentProgress} 
                             isSelected={id === activePlanet}
+                            isLast={index === planets.length - 1}
                             onPress={handlePlanetPress} />
                         ))}
             </ScrollView>

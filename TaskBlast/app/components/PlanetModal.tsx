@@ -23,14 +23,27 @@ import {
 // TODO: move this to the DB eventually
 const PLANET_IMAGES: { [key: number]: any } = {
     1: require("../../assets/images/sprites/planets/1.gif"),
-    2: require("../../assets/images/sprites/planets/2.png"),
-    3: require("../../assets/images/sprites/planets/3.png"),
-    4: require("../../assets/images/sprites/planets/4.png"),
-    5: require("../../assets/images/sprites/planets/5.png"),
-    6: require("../../assets/images/sprites/planets/6.png"),
-    7: require("../../assets/images/sprites/planets/7.png"),
-    8: require("../../assets/images/sprites/planets/8.png"),
-    9: require("../../assets/images/sprites/planets/9.png"),
+    2: require("../../assets/images/sprites/planets/2.gif"),
+    3: require("../../assets/images/sprites/planets/3.gif"),
+    4: require("../../assets/images/sprites/planets/4.gif"),
+    5: require("../../assets/images/sprites/planets/5.gif"),
+    6: require("../../assets/images/sprites/planets/6.gif"),
+    7: require("../../assets/images/sprites/planets/7.gif"),
+    8: require("../../assets/images/sprites/planets/8.gif"),
+    9: require("../../assets/images/sprites/planets/9.gif"),
+};
+
+// Dark versions for locked planets
+const PLANET_DARK_IMAGES: { [key: number]: any } = {
+    1: require("../../assets/images/sprites/planets/dark/1.png"),
+    2: require("../../assets/images/sprites/planets/dark/2&3.png"),
+    3: require("../../assets/images/sprites/planets/dark/2&3.png"),
+    4: require("../../assets/images/sprites/planets/dark/4.png"),
+    5: require("../../assets/images/sprites/planets/dark/2&3.png"),
+    6: require("../../assets/images/sprites/planets/dark/2&3.png"),
+    7: require("../../assets/images/sprites/planets/dark/2&3.png"),
+    8: require("../../assets/images/sprites/planets/dark/2&3.png"),
+    9: require("../../assets/images/sprites/planets/dark/1.png"),
 };
 
 interface PlanetModalProps {
@@ -150,7 +163,7 @@ export default function PlanetModal({ visible, onClose, planetId, isLocked, sele
 						)}
 						{isLocked && planet ? (
 							<View className="items-center justify-center">
-								<Image source={getPlanetImage(planetId ?? 1)} style={{ width: 160, height: 160, tintColor: 'black' }} resizeMode="contain" />
+								<Image source={PLANET_DARK_IMAGES[planetId ?? 1]} />
 								<Text className="text-white text-base mt-2 font-orbitron-semibold">
 									{planet.description}
 								</Text>
@@ -158,9 +171,7 @@ export default function PlanetModal({ visible, onClose, planetId, isLocked, sele
 						) : (
 							!loading && !error && planet &&  (
 								<View className="items-center justify-center" style={{ gap: 15 }}>
-									<Image source={getPlanetImage(planetId ?? 1)} 
-									style={{ width: 160, height: 160 }}
-									resizeMode="contain" />
+									<Image source={getPlanetImage(planetId ?? 1)} />
                                     <Text className="text-white text-base mt-2 font-orbitron-semibold">
 									{planet.description}
 								    </Text>
