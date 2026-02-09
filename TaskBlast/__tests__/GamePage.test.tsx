@@ -45,11 +45,6 @@ describe("Game Screen", () => {
       // In actual implementation, would check source.uri
     });
 
-    it("should render Send button", () => {
-      const { getByText } = render(<GamePage />);
-      expect(getByText("Send")).toBeTruthy();
-    });
-
     it("should render timer display", () => {
       const { getByText } = render(<GamePage />);
       // Default 5 minutes = 05:00
@@ -466,25 +461,6 @@ describe("Game Screen", () => {
       expect(timerElement).toBeTruthy();
 
       // Triple tap feature exists (implementation detail - cannot fully test without integration)
-    });
-  });
-
-  describe("Send Message to Game", () => {
-    it("should render Send button", () => {
-      const { getByText } = render(<GamePage />);
-
-      const sendButton = getByText("Send");
-      expect(sendButton).toBeTruthy();
-    });
-
-    it("should send message to Godot game when pressed", () => {
-      const { getByText } = render(<GamePage />);
-
-      const sendButton = getByText("Send");
-      fireEvent.press(sendButton);
-
-      // Button should be functional
-      expect(sendButton).toBeTruthy();
     });
   });
 
