@@ -82,7 +82,7 @@ const Planet = ({planetID, islocked, onPress, isLast}: PlanetScrollListProps & {
         >
             <View style={{ width: IMG_SIDE, height: IMG_SIDE, justifyContent: 'center', alignItems: 'center' }}>
                 <Image
-                    // include islocked in the key so the Image is recreated when lock state changes
+                    // include islocked in the key so the image is recreated when lock state changes
                     key={`planet-${planetID}-${islocked}`}
                     testID={`planet-${planetID}-image`}
                     source={islocked ? PLANET_DARK_IMAGES[planetID] : PLANET_IMAGES[planetID]}
@@ -93,7 +93,7 @@ const Planet = ({planetID, islocked, onPress, isLast}: PlanetScrollListProps & {
 };
 
 // Main component that renders the horizontal scroll list of planets
-export default function PlanetScrollList() {
+export default function PlanetScrollList({ onRocksChange }: { onRocksChange?: () => void }) {
     const [planets] = useState<number[]>([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
     const auth = getAuth();
@@ -159,7 +159,6 @@ export default function PlanetScrollList() {
             snapToOffsets={snapOffsets}
             snapToAlignment="start"
             decelerationRate="fast"
-            bounces={false}
             onMomentumScrollEnd={handleScrollEnd}
             onScrollEndDrag={handleScrollEnd}
             >
@@ -173,7 +172,7 @@ export default function PlanetScrollList() {
                             onPress={handlePlanetPress} />
                         ))}
             </ScrollView>
-            <PlanetModal visible={modalVisible} onClose={() => setModalVisible(false)} planetId={selectedPlanet ?? undefined} isLocked={selectedPlanet != null && selectedPlanet > currentProgress} />
+            <PlanetModal visible={modalVisible} onClose={() => setModalVisible(false)} planetId={selectedPlanet ?? undefined} isLocked={selectedPlanet != null && selectedPlanet > currentProgress} selectedPlanet={selectedPlanet} onRocksChange={onRocksChange ?? (() => {})} />
         </SafeAreaView>
     );
 }

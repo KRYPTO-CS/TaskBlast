@@ -30,12 +30,14 @@ import SettingsModal from "../components/SettingsModal";
 import ShopModal from "../components/ShopModal";
 import { useRouter } from "expo-router";
 import { useAudio } from "../context/AudioContext";
+import PlanetModal from "../components/PlanetModal";
 
 export default function HomeScreen() {
   const router = useRouter();
   const { musicEnabled } = useAudio();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
+  const [isPlanetModalVisible, setIsPlanetModalVisible] = useState(false);
   const [isShopModalVisible, setIsShopModalVisible] = useState(false);
   const [rocks, setRocks] = useState<number>(0);
 
@@ -292,7 +294,7 @@ export default function HomeScreen() {
 
         {/* Center - Planet Scroll List Component*/}
         
-        <PlanetScrollList />
+        <PlanetScrollList onRocksChange={loadScore} />
 
         {/* Take Off Button - Bottom Center */}
         <View className="items-center mb-24">
@@ -306,6 +308,13 @@ export default function HomeScreen() {
         <TaskListModal
           visible={isTaskModalVisible}
           onClose={() => setIsTaskModalVisible(false)}
+          onRocksChange={loadScore}
+        />
+
+        {/* Planet Modal */}
+        <PlanetModal
+          visible={isPlanetModalVisible}
+          onClose={() => setIsPlanetModalVisible(false)}
           onRocksChange={loadScore}
         />
 

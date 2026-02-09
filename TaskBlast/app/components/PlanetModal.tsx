@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Modal, TouchableOpacity, ActivityIndicator, Image } from "react-native";
+import { View, Text, Modal, TouchableOpacity, ActivityIndicator, Image, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
 import {
@@ -19,6 +19,9 @@ import {
   where,
   query,
 } from "firebase/firestore";
+import MainButton from "./MainButton";
+import { CurrentRenderContext } from "@react-navigation/native";
+import { set } from "firebase/database";
 
 // TODO: move this to the DB eventually
 const PLANET_IMAGES: { [key: number]: any } = {
@@ -33,7 +36,7 @@ const PLANET_IMAGES: { [key: number]: any } = {
     9: require("../../assets/images/sprites/planets/9.gif"),
 };
 
-// Dark versions for locked planets
+// Dark versions for locked planets; gotcha
 const PLANET_DARK_IMAGES: { [key: number]: any } = {
     1: require("../../assets/images/sprites/planets/dark/1.png"),
     2: require("../../assets/images/sprites/planets/dark/2&3.png"),
@@ -53,30 +56,90 @@ interface PlanetModalProps {
 	isLocked?: boolean;
     selectedPlanet?: number | null;
     currentProgress?: number;
+	onRocksChange: () => void;
 }
 
 interface PlanetData {
 	name?: string;
 	description?: string;
 	[key: string]: any;
+	cost?: number;
 }
 
-export default function PlanetModal({ visible, onClose, planetId, isLocked, selectedPlanet }: PlanetModalProps) {
+export default function PlanetModal({ visible, onClose, planetId, isLocked, selectedPlanet, currentProgress, onRocksChange }: PlanetModalProps) {
 	const auth = getAuth();
 	const db = getFirestore();
 
 	const [planet, setPlanet] = useState<PlanetData | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const [rocks, setRocks] = useState<number>(0);
+	const [confirmUnlock, setConfirmUnlock] = useState(false);
 
 	const getPlanetDocRef = (id: number) => {
 		// Planets are stored as top-level documents under `planets/{id}`
 		return doc(db, "planets", id.toString());
 	};
 
+	// Check if the user has enough rocks and unlock the planet if so
+	const handlePlanetUnlock = async () => {
+		const user = auth.currentUser;
+		if (!user) {
+			console.log("No such user");
+			return;
+		}
+
+		const userDocRef = doc(db, "users", user.uid);
+		const userSnap = await getDoc(userDocRef);
+
+		// compute fresh rocks value synchronously for checks
+		const rocksValue = userSnap.exists() ? userSnap.data()?.rocks || 0 : 0;
+		const currentRocks = isNaN(rocksValue) ? 0 : Math.max(0, Math.floor(rocksValue));
+
+		// Prepare update payload
+		const userData = {
+			currPlanet: selectedPlanet ?? currentProgress ?? 1,
+			rocks: increment(-(planet?.cost ?? 0)),
+		};
+
+		try {
+			if (planet?.cost && currentRocks < planet.cost) {
+				Alert.alert("Not Enough Crystals", `You need ${planet.cost} crystals but only have ${currentRocks}.`);
+				setConfirmUnlock(false);
+				return;
+			}
+
+			await setDoc(userDocRef, userData, { merge: true });
+
+			// update local rocks immediately so UI reflects change
+			setRocks(currentRocks - (planet?.cost ?? 0));
+
+			// update main page rocks/gems
+			if (onRocksChange) {
+				onRocksChange();
+			}
+			console.log("Planet ", selectedPlanet ?? currentProgress ?? 1, "unlocked for user", user.uid);
+		} catch (err) {
+			console.error("Error unlocking planet:", err);
+			Alert.alert("Error", "Failed to unlock planet");
+		} finally {
+			setConfirmUnlock(false);
+		}
+	};
+
+	const handleClose = () => {
+		setConfirmUnlock(false);
+		onClose();
+	};
+
 	const getPlanetImage = (id?: number) => {
 		return PLANET_IMAGES[id ?? 1];
 	};
+
+	const handleConfirmUnlock = () => {
+		setConfirmUnlock(true);
+	};
+
 
 	useEffect(() => {
 		let mounted = true;
@@ -110,11 +173,11 @@ export default function PlanetModal({ visible, onClose, planetId, isLocked, sele
 	}, [visible, planetId, isLocked, selectedPlanet]);
 
 	return (
-		<Modal
+        <Modal
 			animationType="fade"
 			transparent={true}
 			visible={visible}
-			onRequestClose={onClose}
+			onRequestClose={handleClose}
 			testID="planet-modal"
 		>
 			<View className="flex-1 justify-center items-center bg-black/70">
@@ -139,7 +202,7 @@ export default function PlanetModal({ visible, onClose, planetId, isLocked, sele
 
 						<TouchableOpacity
 							testID="close-planet-modal"
-							onPress={onClose}
+							onPress={handleClose}
 							className="w-10 h-10 rounded-full items-center justify-center"
 							style={{
 								backgroundColor: "rgba(139, 92, 246, 0.3)",
@@ -167,6 +230,20 @@ export default function PlanetModal({ visible, onClose, planetId, isLocked, sele
 								<Text className="text-white text-base mt-2 font-orbitron-semibold">
 									{planet.description}
 								</Text>
+								<View className=" flex-row space-x-4 items-center" >
+									<View className="flex-row items-center bg-purple-600/50 px-4 py-2 rounded-full max-h-10">
+										<Image
+										source={require("../../assets/images/sprites/crystal.png")}
+										style={{ width: 20, height: 20 }}
+										resizeMode="contain"
+										/>
+										<Text className="font-orbitron-bold text-white text-base ml-2">
+											{planet.cost ?? ""}
+										</Text>
+									</View>
+									{confirmUnlock ? <MainButton title="Confirm Unlock" className="py-5" customStyle={{ backgroundColor: "#FBBF24"}} onPress={() => handlePlanetUnlock()} /> : <MainButton title="Unlock Planet" className="py-5" onPress={() => handleConfirmUnlock()} />}
+								
+								</View>
                             </View>
 						) : (
 							!loading && !error && planet &&  (
