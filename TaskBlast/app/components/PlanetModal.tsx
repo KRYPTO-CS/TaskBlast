@@ -109,6 +109,12 @@ export default function PlanetModal({ visible, onClose, planetId, isLocked, sele
 				return;
 			}
 
+			if ((selectedPlanet ?? 1) > (currentProgress ?? 0) + 1) {
+				Alert.alert("Unlock Previous Planet First", `You need to unlock planet ${currentProgress} first.`);
+				setConfirmUnlock(false);
+				return;
+			}
+
 			await setDoc(userDocRef, userData, { merge: true });
 
 			// update local rocks immediately so UI reflects change
@@ -241,7 +247,7 @@ export default function PlanetModal({ visible, onClose, planetId, isLocked, sele
 											{planet.cost ?? ""}
 										</Text>
 									</View>
-									{confirmUnlock ? <MainButton title="Confirm Unlock" className="py-5" customStyle={{ backgroundColor: "#FBBF24"}} onPress={() => handlePlanetUnlock()} /> : <MainButton title="Unlock Planet" className="py-5" onPress={() => handleConfirmUnlock()} />}
+									{confirmUnlock ? <MainButton title="Confirm Unlock" className="py-5" customStyle={{ backgroundColor: "#ffee00"}} onPress={() => handlePlanetUnlock()} /> : <MainButton title="Unlock Planet" className="py-5" onPress={() => handleConfirmUnlock()} />}
 								
 								</View>
                             </View>
