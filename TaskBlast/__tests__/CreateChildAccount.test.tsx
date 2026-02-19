@@ -1,3 +1,14 @@
+/**
+ * Test Suite: Create Child Account
+ *
+ * This test suite covers creating a managed child account including:
+ * - Form field rendering and input constraints
+ * - PIN validation and confirmation
+ * - Username validation and availability checks via Firestore
+ * - Firestore writes for new child records
+ * - Authentication and error handling
+ */
+
 import React from "react";
 import {
   render,
