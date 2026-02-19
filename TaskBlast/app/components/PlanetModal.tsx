@@ -42,11 +42,11 @@ const PLANET_DARK_IMAGES: { [key: number]: any } = {
     2: require("../../assets/images/sprites/planets/dark/2&3.png"),
     3: require("../../assets/images/sprites/planets/dark/2&3.png"),
     4: require("../../assets/images/sprites/planets/dark/4.png"),
-    5: require("../../assets/images/sprites/planets/dark/2&3.png"),
-    6: require("../../assets/images/sprites/planets/dark/2&3.png"),
-    7: require("../../assets/images/sprites/planets/dark/2&3.png"),
-    8: require("../../assets/images/sprites/planets/dark/2&3.png"),
-    9: require("../../assets/images/sprites/planets/dark/1.png"),
+    5: require("../../assets/images/sprites/planets/dark/5.png"),
+    6: require("../../assets/images/sprites/planets/dark/6.png"),
+    7: require("../../assets/images/sprites/planets/dark/7.png"),
+    8: require("../../assets/images/sprites/planets/dark/8.png"),
+    9: require("../../assets/images/sprites/planets/dark/9.png"),
 };
 
 interface PlanetModalProps {
@@ -105,6 +105,12 @@ export default function PlanetModal({ visible, onClose, planetId, isLocked, sele
 		try {
 			if (planet?.cost && currentRocks < planet.cost) {
 				Alert.alert("Not Enough Crystals", `You need ${planet.cost} crystals but only have ${currentRocks}.`);
+				setConfirmUnlock(false);
+				return;
+			}
+
+			if ((selectedPlanet ?? 1) > (currentProgress ?? 0) + 1) {
+				Alert.alert("Unlock Previous Planet First", `You need to unlock planet ${currentProgress} first.`);
 				setConfirmUnlock(false);
 				return;
 			}
@@ -241,7 +247,7 @@ export default function PlanetModal({ visible, onClose, planetId, isLocked, sele
 											{planet.cost ?? ""}
 										</Text>
 									</View>
-									{confirmUnlock ? <MainButton title="Confirm Unlock" className="py-5" customStyle={{ backgroundColor: "#FBBF24"}} onPress={() => handlePlanetUnlock()} /> : <MainButton title="Unlock Planet" className="py-5" onPress={() => handleConfirmUnlock()} />}
+									{confirmUnlock ? <MainButton title="Confirm Unlock" className="py-5" customStyle={{ backgroundColor: "#ffee00"}} onPress={() => handlePlanetUnlock()} /> : <MainButton title="Unlock Planet" className="py-5" onPress={() => handleConfirmUnlock()} />}
 								
 								</View>
                             </View>
