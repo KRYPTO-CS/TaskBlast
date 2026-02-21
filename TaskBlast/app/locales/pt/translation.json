@@ -1,0 +1,145 @@
+{
+  "language": {
+    "selectLanguage": "Por favor, selecione seu idioma",
+    "continue": "Continuar",
+    "backTo": "Voltar para",
+    "Login": "Entrar"
+  },
+  "birthdate": {
+    "title": "Qual é a sua data de nascimento?",
+    "notice": "Você deve ter pelo menos 13 anos para se registrar",
+    "month": "Mês",
+    "day": "Dia",
+    "year": "Ano",
+    "continue": "Continuar",
+    "previousStep": "Etapa anterior",
+    "error": "Por favor, insira uma data válida",
+    "age": "Por favor, entregue o dispositivo a um pai ou responsável",
+    "empty": "Por favor, preencha todos os campos"
+  },
+  "AccountType": {
+    "title": "Quem usará o TaskBlast?",
+    "type": "Escolha o tipo de conta que melhor descreve o usuário principal do TaskBlast.",
+    "managetitle": "Conta Gerenciada",
+    "managedesc": "Para dependentes. Alguns recursos são restritos e controlados por um PIN do responsável.",
+    "indetitle": "Conta Independente",
+    "indedesc": "Para aprendizes individuais. Acesso completo sem restrições.",
+    "continue": "Continuar",
+    "error": "Por favor, escolha um tipo de conta para continuar"
+  },
+  "Name": {
+    "title": "Qual é o seu nome?",
+    "desc": "Diga-nos como devemos chamá-lo ao usar o TaskBlast",
+    "firstName": "Nome",
+    "lastName": "Sobrenome",
+    "continue": "Continuar"
+  },
+  "Email": {
+    "title": "Qual é o seu e-mail?",
+    "desc": "Enviaremos um código de verificação para confirmar seu endereço de e-mail",
+    "emailPlaceholder": "Endereço de e-mail",
+    "send": "Enviar link"
+  },
+  "Password": {
+    "title": "Crie uma senha",
+    "desc": "Escolha uma senha forte para proteger sua conta",
+    "passwordPlaceholder": "Senha",
+    "ConfirmPasswordPlaceholder": "Confirmar senha",
+    "submit": "Criar conta",
+    "match": "As senhas não coincidem",
+    "length": "A senha deve ter pelo menos 8 caracteres"
+  },
+  "Login": {
+    "title": "Entrar",
+    "emailPlaceholder": "E-mail ou nome de usuário",
+    "passwordPlaceholder": "Senha",
+    "forgotPassword": "Esqueceu sua senha?",
+    "loginButton": "Enviar",
+    "noAccount": "Não tem uma conta?",
+    "signUp": "Cadastrar-se"
+  },
+  "ForgotPassword": {
+    "title": "Esqueceu sua senha?",
+    "desc": "Digite seu e-mail e enviaremos um código para redefinir sua senha",
+    "emailPlaceholder": "Endereço de e-mail",
+    "submit": "Enviar"
+  },
+  "VerifyCode": {
+    "title": "Verificar código",
+    "desc": "Digite o código de 5 dígitos enviado para",
+    "notreceived": "Não recebeu o código?",
+    "resend": "Reenviar",
+    "submit": "Enviar"
+  },
+  "ResetPassword": {
+    "title": "Criar nova senha",
+    "desc": "Digite sua nova senha abaixo",
+    "newPasswordPlaceholder": "Nova senha",
+    "confirmPasswordPlaceholder": "Confirmar senha",
+    "submit": "Redefinir senha"
+  },
+  "ManagerPin": {
+    "title": "Criar um PIN do responsável",
+    "desc": "Este PIN de 4 dígitos permite que um pai ou responsável gerencie a conta e crie tarefas para o aprendiz. Mantenha-o em segredo.",
+    "pin": "PIN (4 dígitos)",
+    "confirmPinPlaceholder": "Confirmar PIN",
+    "continue": "Continuar"
+  },
+  "Home": {
+    "takeoff": "Decolar"
+  },
+  "Settings": {
+    "title": "Configurações",
+    "sound": "Efeitos sonoros",
+    "music": "Música",
+    "notifications": "Notificações",
+    "privacy": "Privacidade",
+    "Help": "Ajuda e suporte",
+    "About": "Sobre nós",
+    "Logout": "Sair"
+  },
+  "Tasks": {
+    "title": "Tarefas",
+    "normal": "Normal",
+    "edit" : "Editar",
+    "archive": "Arquivar",
+    "empty": "Nenhuma tarefa ainda. Adicione sua primeira tarefa!",
+    "button": "Adicionar Nova Tarefa",
+    "archivedempty": "Nenhuma tarefa arquivada.",
+    "new": "Nova Tarefa",
+    "desc": "Descrição (opcional, máximo 200 caracteres)",
+    "reward": "Recompensa (rochas)",
+    "min": "Permitir Minimização",
+    "settings": "Configurações Pomodoro",
+    "worktime": "Tempo de Trabalho (minutos)",
+    "playtime": "Tempo de Pausa (minutos)",
+    "cycles": "Número de Ciclos",
+    "cancel": "Cancelar",
+    "add": "Adicionar Tarefa",
+    "editTask": "Editar Tarefa",
+    "save": "Salvar"
+  },
+  "Profile": {
+    "traits": "Traits",
+    "editP": "Editar Perfil",
+    "awards": "Prêmios",
+    "YourStats": "Suas Estatísticas",
+    "rocksEarned": "Total de Rochas Ganhas: ",
+    "rocksSpent": "Total de Rochas Gastos: ",
+    "AvgWorkCycle": "Comprimento Médio do Ciclo de Trabalho: ",
+    "AvgPlayCycle": "Comprimento Médio do Ciclo de Pausa: ",
+    "work": "Proporção Trabalho/Pausa: ",
+    "total": "Tempo Total Gasto em Tarefas: ",
+    "AddChildAccount": "Adicionar Conta de Criança",
+    "SwitchProfile": "Trocar Perfil",
+    "Logout": "Sair"
+  },
+  "Pomodoro": {
+    "time": "Tempo Restante",
+    "work": "Sessão de Trabalho",
+    "Resume": "Retomar",
+    "Pause": "Pausar",
+    "Land": "Aterrizar",
+    "Play": "Jogar Jogo"
+  }
+}

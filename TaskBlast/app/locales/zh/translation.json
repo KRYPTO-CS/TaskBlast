@@ -1,0 +1,145 @@
+{
+  "language": {
+    "selectLanguage": "请选择您的语言",
+    "continue": "继续",
+    "backTo": "返回到",
+    "Login": "登录"
+  },
+  "birthdate": {
+    "title": "您的出生日期是？",
+    "notice": "您必须年满 13 岁才能注册",
+    "month": "月",
+    "day": "日",
+    "year": "年",
+    "continue": "继续",
+    "previousStep": "上一步",
+    "error": "请输入有效的日期",
+    "age": "请将设备交给父母或监护人",
+    "empty": "请填写所有字段"
+  },
+  "AccountType": {
+    "title": "谁将使用 TaskBlast？",
+    "type": "请选择最能描述 TaskBlast 主要用户的账户类型。",
+    "managetitle": "受管理账户",
+    "managedesc": "适用于受监护用户。部分功能受限，并由家长/监护人 PIN 控制。",
+    "indetitle": "独立账户",
+    "indedesc": "适用于个人学习者。无任何限制，完全访问。",
+    "continue": "继续",
+    "error": "请选择一个账户类型以继续"
+  },
+  "Name": {
+    "title": "您的姓名是？",
+    "desc": "告诉我们在使用 TaskBlast 时如何称呼您",
+    "firstName": "名",
+    "lastName": "姓",
+    "continue": "继续"
+  },
+  "Email": {
+    "title": "您的电子邮箱是什么？",
+    "desc": "我们将向您发送验证码以确认您的电子邮箱地址",
+    "emailPlaceholder": "电子邮箱地址",
+    "send": "发送链接"
+  },
+  "Password": {
+    "title": "创建密码",
+    "desc": "请选择一个强密码来保护您的账户",
+    "passwordPlaceholder": "密码",
+    "ConfirmPasswordPlaceholder": "确认密码",
+    "submit": "创建账户",
+    "match": "两次输入的密码不一致",
+    "length": "密码长度必须至少为 8 个字符"
+  },
+  "Login": {
+    "title": "登录",
+    "emailPlaceholder": "电子邮箱或用户名",
+    "passwordPlaceholder": "密码",
+    "forgotPassword": "忘记密码？",
+    "loginButton": "提交",
+    "noAccount": "还没有账户？",
+    "signUp": "注册"
+  },
+  "ForgotPassword": {
+    "title": "忘记密码？",
+    "desc": "请输入您的电子邮箱，我们将发送验证码以重置您的密码",
+    "emailPlaceholder": "电子邮箱地址",
+    "submit": "提交"
+  },
+  "VerifyCode": {
+    "title": "验证代码",
+    "desc": "请输入发送至以下地址的 5 位验证码",
+    "notreceived": "没有收到验证码？",
+    "resend": "重新发送",
+    "submit": "提交"
+  },
+  "ResetPassword": {
+    "title": "创建新密码",
+    "desc": "请在下方输入您的新密码",
+    "newPasswordPlaceholder": "新密码",
+    "confirmPasswordPlaceholder": "确认密码",
+    "submit": "重置密码"
+  },
+  "ManagerPin": {
+    "title": "创建管理 PIN",
+    "desc": "此 4 位 PIN 码允许父母或监护人管理账户并为学习者创建任务。请妥善保管。",
+    "pin": "PIN（4 位数字）",
+    "confirmPinPlaceholder": "确认 PIN",
+    "continue": "继续"
+  },
+  "Home": {
+    "takeoff": "起飞"
+  },
+  "Settings": {
+    "title": "设置",
+    "sound": "音效",
+    "music": "音乐",
+    "notifications": "通知",
+    "privacy": "隐私",
+    "Help": "帮助与支持",
+    "About": "关于我们",
+    "Logout": "退出登录"
+   },
+   "Tasks": {
+    "title": "任务列表",
+    "normal": "普通",
+    "edit" : "编辑",
+    "archive": "归档",
+    "empty": "暂无任务。添加您的第一个任务！",
+    "button": "添加新任务",
+    "archivedempty": "暂无已归档任务。",
+    "new": "新任务",
+    "desc": "描述（可选，最多 200 个字符）",
+    "reward": "奖励（石头）",
+    "min": "允许最小化",
+    "settings": "Pomodoro 设置",
+    "worktime": "工作时间（分钟）",
+    "playtime": "休息时间（分钟）",
+    "cycles": "循环次数",
+    "cancel": "取消",
+    "add": "添加任务",
+    "editTask": "编辑任务",
+    "save": "保存"
+  },
+  "Profile": {
+    "traits": "特征",
+    "editP": "编辑个人资料",
+    "awards": "奖项",
+    "YourStats": "您的统计数据",
+    "rocksEarned": "总共获得的石头数: ",
+    "rocksSpent": "总共花费的石头数: ",
+    "AvgWorkCycle": "平均工作周期长度: ",
+    "AvgPlayCycle": "平均休息周期长度: ",
+    "work": "工作/休息比例: ",
+    "total": "任务总耗时: ",
+    "AddChildAccount": "添加子账户",
+    "SwitchProfile": "切换账户",
+    "Logout": "退出登录"
+  },
+  "Pomodoro": {
+    "time": "剩余时间",
+    "work": "工作时段",
+    "Resume": "继续",
+    "Pause": "暂停",
+    "Land": "着陆",
+    "Play": "开始游戏"
+  }
+}

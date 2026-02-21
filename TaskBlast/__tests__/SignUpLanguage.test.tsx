@@ -1,3 +1,12 @@
+/**
+ * Test Suite: Sign Up Language
+ *
+ * This test suite verifies language selection during sign up including:
+ * - Rendering available language options
+ * - Applying selected language via `i18next`
+ * - Proper callbacks for submit/back actions
+ */
+
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react-native";
 import SignUpLanguage from "../app/pages/SignUpLanguage";

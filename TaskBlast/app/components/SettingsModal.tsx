@@ -16,6 +16,7 @@ import { useAudio } from "../context/AudioContext";
 import { useNotifications } from "../context/NotificationContext";
 import NotificationPreferencesModal from "./NotificationPreferencesModal";
 import { useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 interface SettingsModalProps {
   visible: boolean;
@@ -29,7 +30,8 @@ export default function SettingsModal({
   onLogout,
 }: SettingsModalProps) {
   const router = useRouter();
-
+  const {t ,i18n} = useTranslation();
+  
   // Get audio context for global audio control
   const { soundEnabled, musicEnabled, setSoundEnabled, setMusicEnabled } =
     useAudio();
@@ -149,7 +151,7 @@ export default function SettingsModal({
                 textShadowRadius: 15,
               }}
             >
-              Settings
+              {t("Settings.title")}
             </Text>
             <TouchableOpacity
               testID="close-settings-modal"
@@ -207,7 +209,7 @@ export default function SettingsModal({
                   style={{ marginRight: 12 }}
                 />
                 <Text className="font-orbitron-semibold text-white text-base">
-                  Sound Effects
+                  {t("Settings.sound")}
                 </Text>
               </View>
               <Switch
@@ -235,7 +237,7 @@ export default function SettingsModal({
                   style={{ marginRight: 12 }}
                 />
                 <Text className="font-orbitron-medium text-white text-base">
-                  Music
+                  {t("Settings.music")}
                 </Text>
               </View>
               <Switch
@@ -265,7 +267,7 @@ export default function SettingsModal({
                 />
                 <View className="flex-1">
                   <Text className="font-orbitron-medium text-white text-base">
-                    Notifications
+                    {t("Settings.notifications")}
                   </Text>
                   <Text className="font-orbitron text-gray-400 text-xs mt-1">
                     Tap to customize
@@ -315,7 +317,7 @@ export default function SettingsModal({
                   style={{ marginRight: 12 }}
                 />
                 <Text className="font-orbitron-semibold text-white text-base flex-1">
-                  Privacy
+                  {t("Settings.privacy")}
                 </Text>
                 <Ionicons name="chevron-forward" size={20} color="#ec4899" />
               </TouchableOpacity>
@@ -340,7 +342,7 @@ export default function SettingsModal({
                 style={{ marginRight: 12 }}
               />
               <Text className="font-orbitron-medium text-white text-base flex-1">
-                Help & Support
+                {t("Settings.Help")}
               </Text>
               <Ionicons name="chevron-forward" size={20} color="#ec4899" />
             </TouchableOpacity>
@@ -364,7 +366,7 @@ export default function SettingsModal({
                 style={{ marginRight: 12 }}
               />
               <Text className="font-orbitron-semibold text-white text-base flex-1">
-                About
+                {t("Settings.About")}
               </Text>
               <Ionicons name="chevron-forward" size={20} color="#ec4899" />
             </TouchableOpacity>

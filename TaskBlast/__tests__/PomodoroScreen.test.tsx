@@ -354,7 +354,8 @@ describe("Pomodoro Screen", () => {
       const spaceship = getByTestId("spaceship-image");
 
       expect(spaceship).toBeTruthy();
-      expect(spaceship.props.source).toBeTruthy();
+      // Spaceship is an Animated.View with style transform
+      expect(spaceship.props.style).toBeDefined();
     });
 
     it("should apply floating animation to spaceship", () => {
@@ -442,10 +443,10 @@ describe("Pomodoro Screen", () => {
 
   describe("Notification Integration", () => {
     // Mock the notification context
-    const mockNotifyTimerComplete = jest.fn();
+    const mockNotifyTimerComplete = jest.fn().mockResolvedValue(undefined);
 
     beforeEach(() => {
-      mockNotifyTimerComplete.mockClear();
+      mockNotifyTimerComplete.mockClear().mockResolvedValue(undefined);
       // Mock the useNotifications hook
       jest
         .spyOn(
@@ -454,8 +455,19 @@ describe("Pomodoro Screen", () => {
         )
         .mockReturnValue({
           notifyTimerComplete: mockNotifyTimerComplete,
-          scheduleTaskReminder: jest.fn(),
-          scheduleDailyDigest: jest.fn(),
+          scheduleTaskReminder: jest.fn().mockResolvedValue("notification-id"),
+          scheduleDailyDigest: jest.fn().mockResolvedValue("digest-id"),
+          preferences: {
+            enabled: true,
+            soundEnabled: false,
+            vibrationEnabled: true,
+            visualOnly: false,
+            reminderTiming: 5,
+            repeatNotifications: false,
+            maxNotificationsPerHour: 4,
+            dailyDigestEnabled: true,
+            dailyDigestTime: "15:00",
+          },
         });
     });
 
@@ -490,7 +502,17 @@ describe("Pomodoro Screen", () => {
 
     it("should pass correct task name to notification", async () => {
       const taskName = "Study Math";
-      render(<PomodoroScreen taskName={taskName} />);
+      // Mock useLocalSearchParams to return custom taskName
+      const mockUseLocalSearchParams =
+        require("expo-router").useLocalSearchParams;
+      mockUseLocalSearchParams.mockReturnValue({
+        taskName: taskName,
+        workTime: "1",
+        playTime: "5",
+        cycles: "1",
+      });
+
+      render(<PomodoroScreen />);
 
       act(() => {
         jest.advanceTimersByTime(60000);
@@ -498,6 +520,13 @@ describe("Pomodoro Screen", () => {
 
       await waitFor(() => {
         expect(mockNotifyTimerComplete).toHaveBeenCalledWith(taskName, false);
+      });
+
+      // Reset mock
+      mockUseLocalSearchParams.mockReturnValue({
+        workTime: "1",
+        playTime: "5",
+        cycles: "1",
       });
     });
   });

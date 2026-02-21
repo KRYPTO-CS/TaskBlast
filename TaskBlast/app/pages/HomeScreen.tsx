@@ -24,20 +24,25 @@ import {
 } from "firebase/firestore";
 import { useAudioPlayer } from "expo-audio";
 import MainButton from "../components/MainButton";
+import PlanetScrollList from "../components/PlanetScrollList";  
 import TaskListModal from "../components/TaskListModal";
 import SettingsModal from "../components/SettingsModal";
 import ShopModal from "../components/ShopModal";
 import { useRouter } from "expo-router";
 import { useAudio } from "../context/AudioContext";
+import { useTranslation } from "react-i18next";
+import PlanetModal from "../components/PlanetModal";
 
 export default function HomeScreen() {
   const router = useRouter();
   const { musicEnabled } = useAudio();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
+  const [isPlanetModalVisible, setIsPlanetModalVisible] = useState(false);
   const [isShopModalVisible, setIsShopModalVisible] = useState(false);
   const [rocks, setRocks] = useState<number>(0);
-
+  const {t ,i18n} = useTranslation();
+  
   // Child profile state
   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
     null,
@@ -202,7 +207,7 @@ export default function HomeScreen() {
         resizeMode="cover"
       />
       {/* All UI elements above the background */}
-      <View className="flex-1 p-5">
+      <View className="flex-1">
         {/* Top Right Section - Profile & Settings above Task Button */}
         <View className="absolute top-14 right-5 z-10 items-center">
           {/* Profile & Settings - Horizontal */}
@@ -250,7 +255,7 @@ export default function HomeScreen() {
         </View>
 
         {/* Top Left - Crystals & Galaxy Crystals */}
-        <View className="justify-start items-start gap-3 mt-11">
+        <View className="justify-start items-start gap-3 mt-11 ml-0">
           {/* Crystals */}
           <TouchableOpacity
             className="flex-row items-center bg-gradient-to-r from-pink-600 to-pink-400 px-5 py-2.5 rounded-full shadow-lg shadow-pink-500/70 border-2 border-pink-300/30"
@@ -289,19 +294,14 @@ export default function HomeScreen() {
 
 
 
-        {/* Center - Planet Image */}
-        <View className="flex-1 items-center justify-center">
-          <Image
-            testID="planet-image"
-            source={require("../../assets/images/sprites/earthspin.gif")}
-            style={{ width: 132, height: 132 }}
-          />
-        </View>
+        {/* Center - Planet Scroll List Component*/}
+        
+        <PlanetScrollList onRocksChange={loadScore} />
 
         {/* Take Off Button - Bottom Center */}
         <View className="items-center mb-24">
           <MainButton
-            title="Take Off"
+            title={t("Home.takeoff")}
             onPress={() => router.push("/pages/PomodoroScreen")}
           />
         </View>
@@ -310,6 +310,13 @@ export default function HomeScreen() {
         <TaskListModal
           visible={isTaskModalVisible}
           onClose={() => setIsTaskModalVisible(false)}
+          onRocksChange={loadScore}
+        />
+
+        {/* Planet Modal */}
+        <PlanetModal
+          visible={isPlanetModalVisible}
+          onClose={() => setIsPlanetModalVisible(false)}
           onRocksChange={loadScore}
         />
 

@@ -74,9 +74,26 @@ jest.mock("./app/context/AudioContext", () => ({
 jest.mock("./app/context/NotificationContext", () => ({
   NotificationProvider: ({ children }) => children,
   useNotifications: jest.fn(() => ({
-    notifyTimerComplete: jest.fn(),
-    scheduleTaskReminder: jest.fn(),
-    scheduleDailyDigest: jest.fn(),
+    notifyTimerComplete: jest.fn().mockResolvedValue(undefined),
+    scheduleTaskReminder: jest.fn().mockResolvedValue("notification-id"),
+    scheduleDailyDigest: jest.fn().mockResolvedValue("digest-id"),
+    preferences: {
+      enabled: true,
+      soundEnabled: false,
+      vibrationEnabled: true,
+      visualOnly: false,
+      reminderTiming: 5,
+      repeatNotifications: false,
+      maxNotificationsPerHour: 4,
+      dailyDigestEnabled: true,
+      dailyDigestTime: "15:00",
+    },
+    permissionGranted: true,
+    updatePreferences: jest.fn().mockResolvedValue(undefined),
+    requestPermissions: jest.fn().mockResolvedValue(true),
+    cancelTaskNotifications: jest.fn().mockResolvedValue(undefined),
+    cancelAllNotifications: jest.fn().mockResolvedValue(undefined),
+    cancelDailyDigest: jest.fn(),
   })),
 }));
 

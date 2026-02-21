@@ -31,6 +31,7 @@ import {
 } from "firebase/firestore";
 import { useNotifications } from "../context/NotificationContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useTranslation } from "react-i18next";
 
 interface Task {
   id: string;
@@ -76,6 +77,7 @@ export default function TaskListModal({
   const pinRefs = useRef<Array<TextInput | null>>([null, null, null, null]);
   const auth = getAuth();
   const db = getFirestore();
+  const {t ,i18n} = useTranslation();
 
   // Child profile state
   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
@@ -681,7 +683,7 @@ export default function TaskListModal({
           {/* Header */}
           <View className="flex-row justify-between items-center mb-4">
             <Text className="font-orbitron-bold text-white text-2xl">
-              Task List
+              {t("Tasks.title")}
             </Text>
             <TouchableOpacity
               testID="close-task-modal"
@@ -716,7 +718,7 @@ export default function TaskListModal({
               }`}
             >
               <Text className="font-orbitron-bold text-white text-sm">
-                Normal
+                {t("Tasks.normal")}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -726,7 +728,7 @@ export default function TaskListModal({
               }`}
             >
               <Text className="font-orbitron-bold text-white text-sm">
-                Edit
+                {t("Tasks.edit")}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -741,7 +743,7 @@ export default function TaskListModal({
               }`}
             >
               <Text className="font-orbitron-bold text-white text-sm">
-                Archive
+                {t("Tasks.archive")}
               </Text>
             </TouchableOpacity>
           </View>
@@ -766,9 +768,7 @@ export default function TaskListModal({
               {displayedTasks.length === 0 ? (
                 <View className="items-center justify-center p-4">
                   <Text className="font-madimi text-white text-base">
-                    {isArchiveMode
-                      ? "No archived tasks."
-                      : "No tasks yet. Add your first task!"}
+                    {isArchiveMode ? t("Tasks.archivedempty") : t("Tasks.empty")}
                   </Text>
                 </View>
               ) : (
@@ -957,7 +957,7 @@ export default function TaskListModal({
               <View className="flex-row items-center">
                 <Ionicons name="add-circle" size={24} color="white" />
                 <Text className="font-orbitron-bold text-white text-lg ml-2">
-                  Add New Task
+                  {t("Tasks.button")}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -976,7 +976,7 @@ export default function TaskListModal({
           <View className="bg-[#2a2416] w-full max-w-md rounded-3xl p-6 border-2 border-yellow-500/50 shadow-2xl">
             <View className="flex-row justify-between items-center mb-4">
               <Text className="font-orbitron-bold text-yellow-300 text-2xl">
-                {editingTaskId ? "Edit Task" : "New Task"}
+                {editingTaskId ? t("Tasks.editTask") : t("Tasks.new")}
               </Text>
               <TouchableOpacity
                 onPress={handleCancelAdd}
@@ -989,14 +989,14 @@ export default function TaskListModal({
             <ScrollView className="max-h-96">
               <TextInput
                 className="font-madimi w-full h-12 bg-white/10 border border-yellow-400/30 rounded-lg px-4 mb-3 text-base text-white"
-                placeholder="Task name"
+                placeholder={t("Tasks.new")}
                 placeholderTextColor="#999"
                 value={newTaskName}
                 onChangeText={setNewTaskName}
               />
               <TextInput
                 className="font-madimi w-full bg-white/10 border border-yellow-400/30 rounded-lg px-4 py-3 mb-3 text-base text-white"
-                placeholder="Description (optional, max 200 characters)"
+                placeholder={t("Tasks.desc")}
                 placeholderTextColor="#999"
                 value={newTaskDescription}
                 onChangeText={(text) =>
@@ -1009,7 +1009,7 @@ export default function TaskListModal({
               />
               <TextInput
                 className="font-madimi w-full h-12 bg-white/10 border border-yellow-400/30 rounded-lg px-4 mb-3 text-base text-white"
-                placeholder="Reward (Crystals)"
+                placeholder={t("Tasks.reward")}
                 placeholderTextColor="#999"
                 value={newTaskReward}
                 onChangeText={setNewTaskReward}
@@ -1022,7 +1022,7 @@ export default function TaskListModal({
                 className="flex-row items-center justify-between bg-white/10 border border-yellow-400/30 rounded-lg px-4 py-3 mb-3"
               >
                 <Text className="font-madimi text-white text-base">
-                  Allow Minimization
+                  {t("Tasks.min")}
                 </Text>
                 <View
                   className={`w-12 h-6 rounded-full flex-row items-center px-1 ${
@@ -1039,13 +1039,13 @@ export default function TaskListModal({
 
               {/* Pomodoro Settings */}
               <Text className="font-madimi text-yellow-200 text-sm mb-2">
-                Pomodoro Settings
+                {t("Tasks.settings")}
               </Text>
 
               {/* Work Time */}
               <View className="bg-white/10 border border-yellow-400/30 rounded-lg px-4 py-3 mb-3">
                 <Text className="font-madimi text-white text-sm mb-2">
-                  Work Time (minutes)
+                  {t("Tasks.worktime")}
                 </Text>
                 <View className="flex-row items-center justify-between">
                   <TouchableOpacity
@@ -1071,7 +1071,7 @@ export default function TaskListModal({
               {/* Play Time */}
               <View className="bg-white/10 border border-yellow-400/30 rounded-lg px-4 py-3 mb-3">
                 <Text className="font-madimi text-white text-sm mb-2">
-                  Play Time (minutes)
+                  {t("Tasks.playtime")}
                 </Text>
                 <View className="flex-row items-center justify-between">
                   <TouchableOpacity
@@ -1097,7 +1097,7 @@ export default function TaskListModal({
               {/* Cycles */}
               <View className="bg-white/10 border border-yellow-400/30 rounded-lg px-4 py-3 mb-3">
                 <Text className="font-madimi text-white text-sm mb-2">
-                  Number of Cycles
+                  {t("Tasks.cycles")}
                 </Text>
                 <View className="flex-row items-center justify-between">
                   <TouchableOpacity
@@ -1133,7 +1133,7 @@ export default function TaskListModal({
                 className="flex-1 bg-gray-500/30 py-3 rounded-xl items-center border-2 border-gray-400/30"
               >
                 <Text className="font-orbitron-bold text-white text-base">
-                  Cancel
+                  {t("Tasks.cancel")}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -1141,7 +1141,7 @@ export default function TaskListModal({
                 className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 py-3 rounded-xl items-center border-2 border-green-300/30"
               >
                 <Text className="font-orbitron-bold text-white text-base">
-                  {editingTaskId ? "Save" : "Add"}
+                  {editingTaskId ? t("Tasks.save") : t("Tasks.add")}
                 </Text>
               </TouchableOpacity>
             </View>
