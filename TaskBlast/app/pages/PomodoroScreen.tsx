@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import MainButton from "../components/MainButton";
+import GameSelectionModal from "../components/GameSelectionModal";
 import { useAudioPlayer } from "expo-audio";
 // Audio context provider is set at app level; useAudio hook here
 import { getAuth } from "firebase/auth";
@@ -65,6 +66,7 @@ export default function PomodoroScreen() {
   const [isTaskCompleted, setIsTaskCompleted] = useState(false);
   const [currentCompletedCycles, setCurrentCompletedCycles] = useState(0);
   const [equipped, setEquipped] = useState<number[]>([0, 1]);
+  const [showGameSelection, setShowGameSelection] = useState(false);
   const totalTime = workTime * 60; // Total duration in seconds
   const backgroundTime = useRef<number | null>(null);
   const tapCount = useRef(0);
@@ -385,7 +387,7 @@ export default function PomodoroScreen() {
     router.back();
   };
 
-  const handlePlayGame = () => {
+  const handlePlayGame = (gameUrl: string) => {
     try {
       player.pause();
     } catch (e) {
@@ -398,6 +400,7 @@ export default function PomodoroScreen() {
       params: {
         playTime: playTime.toString(),
         taskId: taskId || "",
+        gameUrl: gameUrl,
       },
     });
   };
@@ -593,7 +596,7 @@ export default function PomodoroScreen() {
             ) : timeLeft === 0 ? (
               <MainButton
                 title={t("Pomodoro.Play")}
-                onPress={handlePlayGame}
+                onPress={() => setShowGameSelection(true)}
                 variant="info"
                 testID="play-game-button"
                 customStyle={{ width: 192 }}
@@ -617,6 +620,13 @@ export default function PomodoroScreen() {
           </View>
         </View>
       </View>
+
+      {/* Game Selection Modal */}
+      <GameSelectionModal
+        visible={showGameSelection}
+        onClose={() => setShowGameSelection(false)}
+        onSelectGame={handlePlayGame}
+      />
     </View>
   );
 }

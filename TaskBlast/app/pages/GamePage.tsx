@@ -20,8 +20,6 @@ try {
   WebView = null;
 }
 
-const GAME_URL = "https://krypto-cs.github.io/SpaceShooter/";
-
 export default function GamePage() {
   const [loading, setLoading] = useState(true);
   const webviewRef = useRef<any>(null);
@@ -30,6 +28,7 @@ export default function GamePage() {
   
   const playTime = params.playTime ? parseInt(params.playTime as string) : 5;
   const taskId = params.taskId as string;
+  const gameUrl = (params.gameUrl as string) || "https://krypto-cs.github.io/SpaceShooter/";
   
   const [timeLeft, setTimeLeft] = useState(playTime * 60); // Convert minutes to seconds
   const [equipped, setEquipped] = useState<number[]>([0, 1]);
@@ -273,7 +272,7 @@ export default function GamePage() {
         )}
         <WebView
           ref={webviewRef}
-          source={{ uri: GAME_URL }}
+          source={{ uri: gameUrl }}
           testID="webview"
           style={styles.webview}
           onLoadEnd={() => setLoading(false)}
