@@ -387,7 +387,7 @@ export default function PomodoroScreen() {
     router.back();
   };
 
-  const handlePlayGame = (gameUrl: string) => {
+  const handlePlayGame = (gameId: number) => {
     try {
       player.pause();
     } catch (e) {
@@ -400,7 +400,7 @@ export default function PomodoroScreen() {
       params: {
         playTime: playTime.toString(),
         taskId: taskId || "",
-        gameUrl: gameUrl,
+        gameId: gameId.toString(),
       },
     });
   };
