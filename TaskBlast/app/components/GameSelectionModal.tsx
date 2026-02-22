@@ -12,28 +12,25 @@ import { Ionicons } from "@expo/vector-icons";
 interface GameSelectionModalProps {
   visible: boolean;
   onClose: () => void;
-  onSelectGame: (gameUrl: string) => void;
+  onSelectGame: (gameId: number) => void;
 }
 
 type GameOption = {
-  id: string;
+  id: number;
   name: string;
-  url: string;
   iconPath?: any;
   description?: string;
 };
 
 const GAME_OPTIONS: GameOption[] = [
   {
-    id: "space-shooter",
+    id: 0,
     name: "Space Shooter",
-    url: "https://krypto-cs.github.io/SpaceShooter/",
     description: "Blast the asteroids!",
   },
   {
-    id: "space-bird",
+    id: 1,
     name: "Space Bird",
-    url: "https://krypto-cs.github.io/SpaceBird/",
     description: "Dodge the asteroids!",
   },
   // Add more games here in the future
@@ -44,8 +41,8 @@ export default function GameSelectionModal({
   onClose,
   onSelectGame,
 }: GameSelectionModalProps) {
-  const handleGameSelect = (gameUrl: string) => {
-    onSelectGame(gameUrl);
+  const handleGameSelect = (gameId: number) => {
+    onSelectGame(gameId);
     onClose();
   };
 
@@ -88,7 +85,7 @@ export default function GameSelectionModal({
               {GAME_OPTIONS.map((game) => (
                 <TouchableOpacity
                   key={game.id}
-                  onPress={() => handleGameSelect(game.url)}
+                  onPress={() => handleGameSelect(game.id)}
                   className="rounded-2xl p-4 border-2"
                   style={{
                     backgroundColor: "rgba(88, 28, 135, 0.3)",

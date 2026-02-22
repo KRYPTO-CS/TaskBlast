@@ -28,7 +28,8 @@ export default function GamePage() {
   
   const playTime = params.playTime ? parseInt(params.playTime as string) : 5;
   const taskId = params.taskId as string;
-  const gameUrl = (params.gameUrl as string) || "https://krypto-cs.github.io/SpaceShooter/";
+  const gameId = params.gameId ? parseInt(params.gameId as string) : 0;
+  const gameUrl = "https://krypto-cs.github.io/SpaceShooter/";
   
   const [timeLeft, setTimeLeft] = useState(playTime * 60); // Convert minutes to seconds
   const [equipped, setEquipped] = useState<number[]>([0, 1]);
@@ -219,15 +220,17 @@ export default function GamePage() {
   const sendMessageToGodot = useCallback(() => {
     console.log("Sending skins message to Godot.");
     console.log("Current equipped values:", equipped);
+    console.log("Game ID:", gameId);
 
     webviewRef.current?.postMessage(
       JSON.stringify({
         type: "skins",
         data1: String(equipped[0]).trim(),
         data2: String(equipped[1]).trim(),
+        data3: String(gameId).trim(),
       })
     );
-  }, [equipped]);
+  }, [equipped, gameId]);
 
   if (!WebView) {
     return (
