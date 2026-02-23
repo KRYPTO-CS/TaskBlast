@@ -14,6 +14,7 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
+    "@edwardloopez/react-native-coachmark": "^0.5.2",
     "@expo-google-fonts/madimi-one": "^0.4.0",
     "@expo-google-fonts/orbitron": "^0.4.2",
     "@expo/metro-runtime": "~6.1.2",

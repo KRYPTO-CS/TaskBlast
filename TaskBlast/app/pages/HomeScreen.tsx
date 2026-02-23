@@ -32,6 +32,7 @@ import { useRouter } from "expo-router";
 import { useAudio } from "../context/AudioContext";
 import { useTranslation } from "react-i18next";
 import PlanetModal from "../components/PlanetModal";
+import { CoachmarkAnchor, useCoachmark, createTour } from '@edwardloopez/react-native-coachmark';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -42,6 +43,7 @@ export default function HomeScreen() {
   const [isShopModalVisible, setIsShopModalVisible] = useState(false);
   const [rocks, setRocks] = useState<number>(0);
   const {t ,i18n} = useTranslation();
+  const {start} = useCoachmark();
   
   // Child profile state
   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
@@ -56,6 +58,32 @@ export default function HomeScreen() {
     require("../../assets/music/homeScreenMusic.mp3"),
   );
 
+  const startTour = () => {
+    start(
+      createTour('onboarding', [
+        {
+          id: 'task-button',
+          title: "Add new Tasks",
+          description: "Tap here to add new tasks and start earning rewards!",
+        },
+        {
+          id: 'profile-button',
+          title: "View Profile",
+          description: "Tap here to view your profile, track your progress, and customize your avatar!",
+        },
+        {
+          id: 'settings-button',
+          title: "Settings",
+          description: "Tap here to adjust your preferences, manage notifications, and more!",
+        },
+        {
+          id: 'takeoff-button',
+          title: "Take Off!",
+          description: "Tap here to start a focus session and blast off towards your goals!",
+        }
+      ])
+    )
+  }
   const loadScore = useCallback(async () => {
     try {
       const auth = getAuth();
@@ -212,46 +240,55 @@ export default function HomeScreen() {
         <View className="absolute top-14 right-5 z-10 items-center">
           {/* Profile & Settings - Horizontal */}
           <View className="flex-row gap-1">
+            <CoachmarkAnchor id="profile-button" shape="circle">
+
             <TouchableOpacity
               testID="profile-button"
               className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full items-center justify-center shadow-lg shadow-white/40"
               style={{ shadowOffset: { width: 0, height: 0 } }}
               onPress={() => router.push("/pages/ProfileScreen")}
-            >
+              >
               <Image
                 source={require("../../assets/images/sprites/profile.png")}
                 className="w-7 h-7"
                 resizeMode="contain"
                 style={{ transform: [{ scale: 1.5 }] }}
-              />
+                />
             </TouchableOpacity>
+                </CoachmarkAnchor>
+                <CoachmarkAnchor id="settings-button" shape="circle">
+
             <TouchableOpacity
               testID="settings-button"
               className="w-14 h-14 bg-gradient-to-br from-indigo-600 to-blue-500 rounded-full items-center justify-center shadow-lg shadow-white/40"
               style={{ shadowOffset: { width: 0, height: 0 } }}
               onPress={() => setIsSettingsModalVisible(true)}
-            >
+              >
               <Image
                 source={require("../../assets/images/sprites/gear.png")}
                 className="w-7 h-7"
                 resizeMode="contain"
                 style={{ transform: [{ scale: 1.5 }] }}
-              />
+                />
             </TouchableOpacity>
+                </CoachmarkAnchor>
           </View>
           
           {/* Task List Button */}
+          <CoachmarkAnchor id="task-button" shape="circle">
+
           <TouchableOpacity
             testID="task-button"
-            onPress={() => setIsTaskModalVisible(true)}
+            onPress={() => startTour()}
             className="-mt-4"
-          >
+            >
             <Image
               source={require("../../assets/images/sprites/task.png")}
               resizeMode="contain"
               style={{ transform: [{ scale: 0.75 }] }}
-            />
+              />
           </TouchableOpacity>
+              </CoachmarkAnchor>
         </View>
 
         {/* Top Left - Crystals & Galaxy Crystals */}
@@ -299,12 +336,15 @@ export default function HomeScreen() {
         <PlanetScrollList onRocksChange={loadScore} />
 
         {/* Take Off Button - Bottom Center */}
+        <CoachmarkAnchor id="takeoff-button" shape="circle">
+
         <View className="items-center mb-24">
           <MainButton
             title={t("Home.takeoff")}
             onPress={() => router.push("/pages/PomodoroScreen")}
-          />
+            />
         </View>
+            </CoachmarkAnchor>
 
         {/* Task List Modal */}
         <TaskListModal
