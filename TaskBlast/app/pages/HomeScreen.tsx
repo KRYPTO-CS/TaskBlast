@@ -34,6 +34,9 @@ import { useTranslation } from "react-i18next";
 import PlanetModal from "../components/PlanetModal";
 import { CoachmarkAnchor, useCoachmark, createTour } from '@edwardloopez/react-native-coachmark';
 
+
+
+
 export default function HomeScreen() {
   const router = useRouter();
   const { musicEnabled } = useAudio();
@@ -44,7 +47,32 @@ export default function HomeScreen() {
   const [rocks, setRocks] = useState<number>(0);
   const {t ,i18n} = useTranslation();
   const {start} = useCoachmark();
-  
+ const onboardingTour = createTour("onboarding", [
+  {
+    id: "task-button",
+    title: "Add new Tasks",
+    description: "Tap here to add new tasks and start earning rewards!",
+  },
+  {
+    id: "profile-button",
+    title: "View Profile",
+    description:
+      "Tap here to view your profile, track your progress, and customize your avatar!",
+  },
+  {
+    id: "settings-button",
+    title: "Settings",
+    description:
+      "Tap here to adjust your preferences, manage notifications, and more!",
+  },
+  {
+    id: "takeoff-button",
+    title: "Take Off!",
+    description:
+      "Tap here to start a focus session and blast off towards your goals!",
+  },
+]);
+
   // Child profile state
   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
     null,
@@ -58,32 +86,6 @@ export default function HomeScreen() {
     require("../../assets/music/homeScreenMusic.mp3"),
   );
 
-  const startTour = () => {
-    start(
-      createTour('onboarding', [
-        {
-          id: 'task-button',
-          title: "Add new Tasks",
-          description: "Tap here to add new tasks and start earning rewards!",
-        },
-        {
-          id: 'profile-button',
-          title: "View Profile",
-          description: "Tap here to view your profile, track your progress, and customize your avatar!",
-        },
-        {
-          id: 'settings-button',
-          title: "Settings",
-          description: "Tap here to adjust your preferences, manage notifications, and more!",
-        },
-        {
-          id: 'takeoff-button',
-          title: "Take Off!",
-          description: "Tap here to start a focus session and blast off towards your goals!",
-        }
-      ])
-    )
-  }
   const loadScore = useCallback(async () => {
     try {
       const auth = getAuth();
@@ -226,6 +228,17 @@ export default function HomeScreen() {
     }, [loadScore, musicPlayer, musicEnabled]),
   );
 
+  useFocusEffect(
+  useCallback(() => {
+    // Small delay ensures all CoachmarkAnchors are mounted
+    const timeout = setTimeout(() => {
+      start(onboardingTour);
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [])
+);
+
   return (
     <View className="flex-1">
       {/* Animated stars background */}
@@ -279,7 +292,7 @@ export default function HomeScreen() {
 
           <TouchableOpacity
             testID="task-button"
-            onPress={() => startTour()}
+            onPress={() => setIsTaskModalVisible(true)}
             className="-mt-4"
             >
             <Image

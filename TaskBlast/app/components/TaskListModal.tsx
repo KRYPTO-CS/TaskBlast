@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   View,
   Text,
@@ -32,6 +32,7 @@ import {
 import { useNotifications } from "../context/NotificationContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
+import { CoachmarkAnchor, useCoachmark, createTour } from '@edwardloopez/react-native-coachmark';
 
 interface Task {
   id: string;
@@ -78,6 +79,15 @@ export default function TaskListModal({
   const auth = getAuth();
   const db = getFirestore();
   const {t ,i18n} = useTranslation();
+  const {start} = useCoachmark();
+  
+  const onboardingTour = createTour("onboarding",[
+    {
+      id: 'task-button',
+      title: t("Task List"),
+      description: t("This is where you can manage your tasks. Tap on a task to view details, start a focus session, or edit it. Use the tabs to switch between active and archived tasks."),
+    }
+  ])
 
   // Child profile state
   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
@@ -662,6 +672,15 @@ export default function TaskListModal({
     }
   };
 
+ useEffect(() => {
+  if (!visible) return;
+
+  const timeout = setTimeout(() => {
+    start(onboardingTour);
+  }, 500); 
+
+  return () => clearTimeout(timeout);
+}, [visible]);
   return (
     <Modal
       visible={visible}
@@ -682,9 +701,12 @@ export default function TaskListModal({
         >
           {/* Header */}
           <View className="flex-row justify-between items-center mb-4">
+            <CoachmarkAnchor id="task-button" shape="circle">
+
             <Text className="font-orbitron-bold text-white text-2xl">
               {t("Tasks.title")}
             </Text>
+            </CoachmarkAnchor>
             <TouchableOpacity
               testID="close-task-modal"
               onPress={onClose}
