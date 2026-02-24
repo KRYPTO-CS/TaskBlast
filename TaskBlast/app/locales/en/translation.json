@@ -1,9 +1,9 @@
 {
   "language": {
-  "selectLanguage": "Please select your language",
-  "continue": "Continue",
-  "backTo": "Back to",
-  "Login": "Login"
+    "selectLanguage": "Please select your language",
+    "continue": "Continue",
+    "backTo": "Back to",
+    "Login": "Login"
   },
   "birthdate": {
     "title": "What's Your Birthdate",
@@ -96,12 +96,20 @@
     "privacy": "Privacy",
     "Help": "Help & Support",
     "About": "About",
-    "Logout": "Logout"
+    "Logout": "Logout",
+    "accessibility": "Accessibility",
+    "language": "Language",
+    "colorBlind": "Color Blind Mode",
+    "textSize": "Text Size",
+    "highContrast": "High Contrast",
+    "reduceMotion": "Reduce Motion",
+    "tts": "Text to Speech",
+    "done": "Done"
   },
   "Tasks": {
     "title": "Task List",
     "normal": "Normal",
-    "edit" : "Edit",
+    "edit": "Edit",
     "archive": "Archive",
     "empty": "No tasks yet. Add your first task!",
     "button": "Add New Task",
@@ -118,7 +126,6 @@
     "add": "Add Task",
     "editTask": "Edit Task",
     "save": "Save"
-
   },
   "Profile": {
     "traits": "Traits",
@@ -143,5 +150,4 @@
     "Land": "Land",
     "Play": "Play Game"
   }
-
 }

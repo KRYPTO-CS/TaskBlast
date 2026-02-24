@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import "../global.css";
 import { AudioProvider } from "./context/AudioContext";
 import { NotificationProvider } from "./context/NotificationContext";
+import { AccessibilityProvider } from "./context/AccessibilityContext";
 
 // Prevent the splash screen from auto-hiding before fonts are loaded
 SplashScreen.preventAutoHideAsync();
@@ -40,14 +41,16 @@ export default function RootLayout() {
   }
 
   return (
-    <AudioProvider>
-      <NotificationProvider>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-          }}
-        />
-      </NotificationProvider>
-    </AudioProvider>
+    <AccessibilityProvider>
+      <AudioProvider>
+        <NotificationProvider>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+            }}
+          />
+        </NotificationProvider>
+      </AudioProvider>
+    </AccessibilityProvider>
   );
 }

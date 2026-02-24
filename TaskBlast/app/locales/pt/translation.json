@@ -96,12 +96,20 @@
     "privacy": "Privacidade",
     "Help": "Ajuda e suporte",
     "About": "Sobre nós",
-    "Logout": "Sair"
+    "Logout": "Sair",
+    "accessibility": "Acessibilidade",
+    "language": "Idioma",
+    "colorBlind": "Modo Daltônico",
+    "textSize": "Tamanho do texto",
+    "highContrast": "Alto contraste",
+    "reduceMotion": "Reduzir animação",
+    "tts": "Texto para fala",
+    "done": "Concluído"
   },
   "Tasks": {
     "title": "Tarefas",
     "normal": "Normal",
-    "edit" : "Editar",
+    "edit": "Editar",
     "archive": "Arquivar",
     "empty": "Nenhuma tarefa ainda. Adicione sua primeira tarefa!",
     "button": "Adicionar Nova Tarefa",

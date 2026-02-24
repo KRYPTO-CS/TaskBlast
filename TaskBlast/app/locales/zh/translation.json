@@ -96,12 +96,20 @@
     "privacy": "隐私",
     "Help": "帮助与支持",
     "About": "关于我们",
-    "Logout": "退出登录"
-   },
-   "Tasks": {
+    "Logout": "退出登录",
+    "accessibility": "无障碍",
+    "language": "语言",
+    "colorBlind": "色盲模式",
+    "textSize": "字体大小",
+    "highContrast": "高对比度",
+    "reduceMotion": "减少动画",
+    "tts": "文字转语音",
+    "done": "完成"
+  },
+  "Tasks": {
     "title": "任务列表",
     "normal": "普通",
-    "edit" : "编辑",
+    "edit": "编辑",
     "archive": "归档",
     "empty": "暂无任务。添加您的第一个任务！",
     "button": "添加新任务",

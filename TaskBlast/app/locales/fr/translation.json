@@ -96,12 +96,20 @@
     "privacy": "Confidentialité",
     "Help": "Aide et support",
     "About": "À propos de nous",
-    "Logout": "Se déconnecter"
+    "Logout": "Se déconnecter",
+    "accessibility": "Accessibilité",
+    "language": "Langue",
+    "colorBlind": "Mode daltonien",
+    "textSize": "Taille du texte",
+    "highContrast": "Contraste élevé",
+    "reduceMotion": "Réduire l'animation",
+    "tts": "Synthèse vocale",
+    "done": "Terminé"
   },
   "Tasks": {
     "title": "Mes tâches",
     "normal": "Normal",
-    "edit" : "Modifier",
+    "edit": "Modifier",
     "archive": "Archiver",
     "empty": "Aucune tâche pour le moment. Ajoutez votre première tâche !",
     "button": "Ajouter une nouvelle tâche",
@@ -119,7 +127,7 @@
     "editTask": "Modifier la tâche",
     "save": "Sauvegarder"
   },
-"Profile": {
+  "Profile": {
     "traits": "Traits",
     "editP": "Editer Profil",
     "awards": "Récompenses",

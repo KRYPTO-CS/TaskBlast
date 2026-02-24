@@ -15,6 +15,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAudio } from "../context/AudioContext";
 import { useNotifications } from "../context/NotificationContext";
 import NotificationPreferencesModal from "./NotificationPreferencesModal";
+import AccessibilityModal from "./AccessibilityModal";
+import { useAccessibility } from "../context/AccessibilityContext";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 
@@ -30,8 +32,8 @@ export default function SettingsModal({
   onLogout,
 }: SettingsModalProps) {
   const router = useRouter();
-  const {t ,i18n} = useTranslation();
-  
+  const { t, i18n } = useTranslation();
+
   // Get audio context for global audio control
   const { soundEnabled, musicEnabled, setSoundEnabled, setMusicEnabled } =
     useAudio();
@@ -39,11 +41,12 @@ export default function SettingsModal({
   // Get notification context
   const { preferences, updatePreferences } = useNotifications();
 
+  // Get accessibility context
+  const { language, colorBlindMode, reduceMotion } = useAccessibility();
+
   // Modal state
   const [showNotificationPrefs, setShowNotificationPrefs] = useState(false);
-
-  // Other settings state
-  const [darkModeEnabled, setDarkModeEnabled] = useState(false);
+  const [showAccessibilityPrefs, setShowAccessibilityPrefs] = useState(false);
 
   // Child profile state
   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
@@ -122,7 +125,7 @@ export default function SettingsModal({
 
   return (
     <Modal
-      animationType="fade"
+      animationType={reduceMotion ? "fade" : "slide"}
       transparent={true}
       visible={visible}
       onRequestClose={onClose}
@@ -290,6 +293,40 @@ export default function SettingsModal({
               </View>
             </TouchableOpacity>
 
+            {/* Accessibility */}
+            <TouchableOpacity
+              testID="accessibility-button"
+              onPress={() => setShowAccessibilityPrefs(true)}
+              className="flex-row justify-between items-center p-4 rounded-xl mb-3"
+              style={{
+                backgroundColor: "rgba(59, 130, 246, 0.2)",
+                borderWidth: 1,
+                borderColor: "rgba(59, 130, 246, 0.3)",
+              }}
+            >
+              <View className="flex-row items-center flex-1">
+                <Ionicons
+                  name="accessibility"
+                  size={24}
+                  color="#60a5fa"
+                  style={{ marginRight: 12 }}
+                />
+                <View className="flex-1">
+                  <Text className="font-orbitron-medium text-white text-base">
+                    {t("Settings.accessibility")}
+                  </Text>
+                  <Text
+                    className="font-orbitron text-gray-400 text-xs mt-1"
+                    numberOfLines={1}
+                  >
+                    {language.toUpperCase()} ·{" "}
+                    {colorBlindMode === "none" ? "No filter" : colorBlindMode}
+                  </Text>
+                </View>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color="#60a5fa" />
+            </TouchableOpacity>
+
             {/* Divider */}
             <View
               className="h-px my-4"
@@ -411,6 +448,12 @@ export default function SettingsModal({
       <NotificationPreferencesModal
         visible={showNotificationPrefs}
         onClose={() => setShowNotificationPrefs(false)}
+      />
+
+      {/* Accessibility Modal */}
+      <AccessibilityModal
+        visible={showAccessibilityPrefs}
+        onClose={() => setShowAccessibilityPrefs(false)}
       />
     </Modal>
   );
