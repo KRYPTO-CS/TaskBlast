@@ -15,6 +15,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../server/firebase";
 import MainButton from "../components/MainButton";
 import { WebView } from "react-native-webview";
+import { useFocusEffect } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
 import { getFirestore, doc, getDoc, collection, query, where, getDocs  } from "firebase/firestore";
 import EditProfileModal from "../components/EditProfileModal";
@@ -26,6 +27,9 @@ import {
   updateUserProfilePicture,
   type UserProfile,
 } from "../../server/userProfileUtils";
+import { CoachmarkAnchor, useCoachmark, createTour } from '@edwardloopez/react-native-coachmark';
+
+
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -51,6 +55,29 @@ export default function ProfileScreen() {
   const [totalRocksAllTime, setTotalRocksAllTime] = useState<number>(0);
   const [currentRocks, setCurrentRocks] = useState<number>(0);
   const {t ,i18n} = useTranslation();
+  const {start} = useCoachmark();
+  const onboardingTour = createTour("onboarding", [
+    {
+      id: "edit-profile-button",
+      title: "Edit Profile",
+      description: "Tap here to update your profile information!",
+    },
+    {
+      id: "traits-section",
+      title: "View Traits",
+      description: "Here you can see your traits and add new ones!",
+    },
+    {
+      id: "awards-section",
+      title: "View Awards",
+      description: "Here you can see your awards and accomplishments!",
+    },
+    {
+      id: "stats-section",
+      title: "View Stats",
+      description: "Here you can see your activity and progress!",
+    }
+  ]);
   
 
   // Load user profile on component mount
@@ -379,6 +406,15 @@ export default function ProfileScreen() {
   const handleProfileUpdate = (updatedProfile: UserProfile) => {
     setUserProfile(updatedProfile);
   };
+   useFocusEffect(
+    useCallback(() => {
+      const timeout = setTimeout(() => {
+        start(onboardingTour);
+      }, 300);
+  
+      return () => clearTimeout(timeout);
+    }, [])
+  );
 
   return (
     <View className="flex-1">
@@ -473,6 +509,7 @@ export default function ProfileScreen() {
 
           {/* Edit Profile Button */}
           <View className="items-center mb-8">
+            <CoachmarkAnchor id="edit-profile-button" shape="circle">
             <TouchableOpacity
               className="flex-row items-center px-6 py-3 rounded-full"
               style={{
@@ -498,11 +535,13 @@ export default function ProfileScreen() {
                 {t("Profile.editP")}
               </Text>
             </TouchableOpacity>
+            </CoachmarkAnchor>
           </View>
 
           {/* Traits Container */}
           <View className="mb-6">
             <View className="flex-row justify-between items-center mb-4">
+            <CoachmarkAnchor id="traits-section" shape="circle">
               <Text
                 className="font-orbitron-semibold text-xl text-white"
                 style={{
@@ -513,6 +552,7 @@ export default function ProfileScreen() {
               >
                 {t("Profile.traits")}
               </Text>
+              </CoachmarkAnchor>
               <TouchableOpacity
                 onPress={() => setIsTraitsModalVisible(true)}
                 className="flex-row items-center px-3 py-2 rounded-full"
@@ -567,6 +607,7 @@ export default function ProfileScreen() {
 
           {/* Awards Container */}
           <View className="mb-8">
+              <CoachmarkAnchor id="awards-section" shape="circle">
             <Text
               className="font-orbitron-semibold text-xl text-white text-xl mb-4"
               style={{
@@ -577,6 +618,7 @@ export default function ProfileScreen() {
             >
               {t("Profile.awards")}
             </Text>
+            </CoachmarkAnchor>
             <View
               className="p-4 rounded-2xl"
               style={{
@@ -611,7 +653,9 @@ export default function ProfileScreen() {
 
           {/* Analytics Container */}
           <View className="mb-8">
+              <CoachmarkAnchor id="stats-section" shape="circle">
             <Text className="font-orbitron-semibold text-xl text-white mb-4" style={{ textShadowColor: "rgba(59,246,112,0.6)", textShadowOffset:{width:0,height:0}, textShadowRadius:10 }}>{t("Profile.YourStats")}</Text>
+            </CoachmarkAnchor>  
             <View className="p-4 rounded-2xl" style={{ backgroundColor:"rgba(30,138,43,0.30)", borderWidth:2, borderColor:"rgba(59,246,112,0.35)", shadowColor:"#3bf670", shadowOffset:{width:0,height:6}, shadowOpacity:0.35, shadowRadius:12 }}>
               {/* Total Rocks */}
               <View className="px-4 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>

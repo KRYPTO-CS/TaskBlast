@@ -230,7 +230,6 @@ export default function HomeScreen() {
 
   useFocusEffect(
   useCallback(() => {
-    // Small delay ensures all CoachmarkAnchors are mounted
     const timeout = setTimeout(() => {
       start(onboardingTour);
     }, 300);

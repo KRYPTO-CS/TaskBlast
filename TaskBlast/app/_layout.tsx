@@ -14,7 +14,10 @@ import { useEffect } from "react";
 import "../global.css";
 import { AudioProvider } from "./context/AudioContext";
 import { NotificationProvider } from "./context/NotificationContext";
-
+import {
+  CoachmarkProvider,
+  CoachmarkOverlay,
+} from "@edwardloopez/react-native-coachmark";
 // Prevent the splash screen from auto-hiding before fonts are loaded
 SplashScreen.preventAutoHideAsync();
 
@@ -42,11 +45,14 @@ export default function RootLayout() {
   return (
     <AudioProvider>
       <NotificationProvider>
+      <CoachmarkProvider>
         <Stack
           screenOptions={{
             headerShown: false,
           }}
         />
+        <CoachmarkOverlay />
+      </CoachmarkProvider>
       </NotificationProvider>
     </AudioProvider>
   );
