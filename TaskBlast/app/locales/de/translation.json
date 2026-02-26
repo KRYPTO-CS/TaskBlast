@@ -117,7 +117,9 @@
     "cancel": "Abbrechen",
     "add": "Aufgabe hinzufügen",
     "editTask": "Aufgabe bearbeiten",
-    "save": "Speichern"
+    "save": "Speichern",
+    "coachMarkdesc": "Hier können Sie Ihre Aufgaben verwalten. Tippen Sie auf eine Aufgabe, um Details anzuzeigen, eine Fokus-Sitzung zu starten oder sie zu bearbeiten. Verwenden Sie die Registerkarten, um zwischen aktiven und archivierten Aufgaben zu wechseln.",
+    "Done": "Erledigt"
   },
   "Profile": {
     "traits": "Eigenschaften",

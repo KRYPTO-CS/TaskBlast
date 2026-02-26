@@ -84,8 +84,8 @@ export default function TaskListModal({
   const onboardingTour = createTour("onboarding",[
     {
       id: 'task-button',
-      title: t("Task List"),
-      description: t("This is where you can manage your tasks. Tap on a task to view details, start a focus session, or edit it. Use the tabs to switch between active and archived tasks."),
+      title: t("Tasks.title"),
+      description: t("Tasks.coachMarkdesc"),
     }
   ])
 

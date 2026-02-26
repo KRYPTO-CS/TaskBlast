@@ -117,8 +117,9 @@
     "cancel": "Cancel",
     "add": "Add Task",
     "editTask": "Edit Task",
-    "save": "Save"
-
+    "save": "Save",
+    "coachMarkdesc": "This is where you can manage your tasks. Tap on a task to view details, start a focus session, or edit it. Use the tabs to switch between active and archived tasks.", 
+    "Done": "Done"
   },
   "Profile": {
     "traits": "Traits",

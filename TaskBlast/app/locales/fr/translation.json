@@ -117,7 +117,9 @@
     "cancel": "Annuler",
     "add": "Ajouter une tâche",
     "editTask": "Modifier la tâche",
-    "save": "Sauvegarder"
+    "save": "Sauvegarder",
+    "coachMarkdesc": "C’est ici que vous pouvez gérer vos tâches. Appuyez sur une tâche pour voir les détails, démarrer une session de concentration ou la modifier. Utilisez les onglets pour basculer entre les tâches actives et archivées.",
+    "Done": "Terminé"
   },
 "Profile": {
     "traits": "Traits",

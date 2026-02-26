@@ -117,7 +117,8 @@
     "cancel": "Cancelar",
     "add": "Adicionar Tarefa",
     "editTask": "Editar Tarefa",
-    "save": "Salvar"
+    "save": "Salvar",
+    "coachMarkdesc": "Aqui você pode gerenciar suas tarefas. Toque em uma tarefa para ver detalhes, iniciar uma sessão de foco ou editá-la. Use as guias para alternar entre tarefas ativas e arquivadas."
   },
   "Profile": {
     "traits": "Traits",
