@@ -28,6 +28,7 @@ import {
 import { useAudio } from "../context/AudioContext";
 import { useTranslation } from "react-i18next";
 import { useNotifications } from "../context/NotificationContext";
+import { useColorPalette } from "../styles/colorBlindThemes";
 
 // Ship component image mappings
 const BODY_IMAGES: { [key: number]: any } = {
@@ -48,6 +49,7 @@ export default function PomodoroScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const { notifyTimerComplete } = useNotifications();
+  const palette = useColorPalette();
 
   // Extract task parameters from route params
   const taskName = (params.taskName as string) || "Work Session";
@@ -72,8 +74,7 @@ export default function PomodoroScreen() {
   const tapCount = useRef(0);
   const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasRecordedRef = useRef(false);
-  const {t ,i18n} = useTranslation();
-  
+  const { t, i18n } = useTranslation();
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -500,7 +501,7 @@ export default function PomodoroScreen() {
             className="w-11/12 h-8 rounded-full border-2 overflow-hidden"
             style={{
               backgroundColor: "rgba(31, 41, 55, 0.7)",
-              borderColor: "rgba(192, 132, 252, 0.5)",
+              borderColor: palette.accentSoftBorder,
             }}
           >
             <View
@@ -508,7 +509,7 @@ export default function PomodoroScreen() {
               className="h-full rounded-full"
               style={{
                 width: `${progressPercentage}%`,
-                backgroundColor: "#a855f7", // purple-500
+                backgroundColor: palette.accent,
               }}
             />
           </View>
@@ -528,14 +529,28 @@ export default function PomodoroScreen() {
             {t("Pomodoro.time")}
           </Text>
           {taskName && (
-            <View className="bg-purple-500/20 border-2 border-purple-400/30 px-4 py-2 rounded-xl mt-3">
+            <View
+              className="px-4 py-2 rounded-xl mt-3"
+              style={{
+                backgroundColor: palette.accentSoft,
+                borderWidth: 2,
+                borderColor: palette.accentSoftBorder,
+              }}
+            >
               <Text className="font-madimi text-white text-base">
                 {taskName}
               </Text>
             </View>
           )}
           {taskId && (
-            <View className="bg-purple-500/20 border-2 border-purple-400/30 px-4 py-2 rounded-xl mt-2">
+            <View
+              className="px-4 py-2 rounded-xl mt-2"
+              style={{
+                backgroundColor: palette.accentSoft,
+                borderWidth: 2,
+                borderColor: palette.accentSoftBorder,
+              }}
+            >
               <Text
                 className={`font-orbitron-bold text-base ${
                   cycles === -1

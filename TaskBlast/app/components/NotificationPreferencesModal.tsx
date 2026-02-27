@@ -17,6 +17,7 @@ import {
 } from "react-native";
 import * as Notifications from "expo-notifications";
 import { useNotifications } from "../context/NotificationContext";
+import { useColorPalette } from "../styles/colorBlindThemes";
 
 interface NotificationPreferencesModalProps {
   visible: boolean;
@@ -35,6 +36,7 @@ export default function NotificationPreferencesModal({
   } = useNotifications();
 
   const [localPrefs, setLocalPrefs] = useState(preferences);
+  const palette = useColorPalette();
 
   useEffect(() => {
     setLocalPrefs(preferences);
@@ -142,8 +144,8 @@ export default function NotificationPreferencesModal({
           style={{
             backgroundColor: "rgba(15, 23, 42, 0.95)",
             borderWidth: 2,
-            borderColor: "rgba(139, 92, 246, 0.5)",
-            shadowColor: "#a855f7",
+            borderColor: palette.modalBorder,
+            shadowColor: palette.modalShadow,
             shadowOffset: { width: 0, height: 8 },
             shadowOpacity: 0.6,
             shadowRadius: 20,
@@ -154,7 +156,7 @@ export default function NotificationPreferencesModal({
             <Text
               className="font-orbitron-semibold text-white text-2xl"
               style={{
-                textShadowColor: "rgba(139, 92, 246, 0.8)",
+                textShadowColor: palette.accentGlow,
                 textShadowOffset: { width: 0, height: 0 },
                 textShadowRadius: 15,
               }}
@@ -165,9 +167,9 @@ export default function NotificationPreferencesModal({
               onPress={onClose}
               className="w-10 h-10 rounded-full items-center justify-center"
               style={{
-                backgroundColor: "rgba(139, 92, 246, 0.3)",
+                backgroundColor: palette.accentSoft,
                 borderWidth: 1,
-                borderColor: "rgba(167, 139, 250, 0.5)",
+                borderColor: palette.accentSoftBorder,
               }}
             >
               <Text className="text-white text-xl">✕</Text>
@@ -280,13 +282,13 @@ export default function NotificationPreferencesModal({
                         style={{
                           backgroundColor:
                             localPrefs.dailyDigestTime === time.value
-                              ? "rgba(139, 92, 246, 0.9)"
-                              : "rgba(59, 130, 246, 0.2)",
+                              ? palette.accent
+                              : palette.secondaryMed,
                           borderWidth: 1,
                           borderColor:
                             localPrefs.dailyDigestTime === time.value
-                              ? "rgba(167, 139, 250, 0.8)"
-                              : "rgba(59, 130, 246, 0.3)",
+                              ? palette.accentActiveBorder
+                              : palette.rowBorderPrimary,
                         }}
                       >
                         <Text
@@ -339,9 +341,9 @@ export default function NotificationPreferencesModal({
               onPress={handleSave}
               className="flex-[2] p-4 rounded-xl items-center"
               style={{
-                backgroundColor: "rgba(139, 92, 246, 0.9)",
+                backgroundColor: palette.accent,
                 borderWidth: 1,
-                borderColor: "rgba(167, 139, 250, 0.8)",
+                borderColor: palette.accentActiveBorder,
               }}
             >
               <Text className="font-orbitron-bold text-white text-base">
@@ -364,13 +366,14 @@ interface SettingRowProps {
 }
 
 function SettingRow({ label, description, value, onToggle }: SettingRowProps) {
+  const palette = useColorPalette();
   return (
     <View
       className="flex-row justify-between items-center p-4 rounded-xl mb-3"
       style={{
-        backgroundColor: "rgba(59, 130, 246, 0.2)",
+        backgroundColor: palette.secondaryMed,
         borderWidth: 1,
-        borderColor: "rgba(59, 130, 246, 0.3)",
+        borderColor: palette.rowBorderPrimary,
       }}
     >
       <View className="flex-1 mr-4">
@@ -384,8 +387,11 @@ function SettingRow({ label, description, value, onToggle }: SettingRowProps) {
       <Switch
         value={value}
         onValueChange={onToggle}
-        trackColor={{ false: "#334155", true: "#8b5cf6" }}
-        thumbColor={value ? "#a855f7" : "#64748b"}
+        trackColor={{
+          false: palette.switchTrackOff,
+          true: palette.switchTrackOn,
+        }}
+        thumbColor={value ? palette.switchThumbOn : palette.switchThumbOff}
       />
     </View>
   );

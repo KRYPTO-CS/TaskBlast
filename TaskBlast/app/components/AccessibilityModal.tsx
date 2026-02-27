@@ -14,6 +14,7 @@ import {
   type ColorBlindMode,
   type TextSize,
 } from "../context/AccessibilityContext";
+import { useColorPalette, palettes } from "../styles/colorBlindThemes";
 
 interface AccessibilityModalProps {
   visible: boolean;
@@ -67,6 +68,7 @@ export default function AccessibilityModal({
   onClose,
 }: AccessibilityModalProps) {
   const { t } = useTranslation();
+  const palette = useColorPalette();
 
   const {
     language,
@@ -97,8 +99,8 @@ export default function AccessibilityModal({
           style={{
             backgroundColor: "rgba(15, 23, 42, 0.95)",
             borderWidth: 2,
-            borderColor: "rgba(139, 92, 246, 0.5)",
-            shadowColor: "#a855f7",
+            borderColor: palette.modalBorder,
+            shadowColor: palette.modalShadow,
             shadowOffset: { width: 0, height: 8 },
             shadowOpacity: 0.6,
             shadowRadius: 20,
@@ -109,7 +111,7 @@ export default function AccessibilityModal({
             <Text
               className="font-orbitron-semibold text-white text-2xl"
               style={{
-                textShadowColor: "rgba(139, 92, 246, 0.8)",
+                textShadowColor: palette.accentGlow,
                 textShadowOffset: { width: 0, height: 0 },
                 textShadowRadius: 15,
               }}
@@ -121,9 +123,9 @@ export default function AccessibilityModal({
               onPress={onClose}
               className="w-10 h-10 rounded-full items-center justify-center"
               style={{
-                backgroundColor: "rgba(139, 92, 246, 0.3)",
+                backgroundColor: palette.accentSoft,
                 borderWidth: 1,
-                borderColor: "rgba(167, 139, 250, 0.5)",
+                borderColor: palette.accentSoftBorder,
               }}
             >
               <Ionicons name="close" size={24} color="white" />
@@ -147,12 +149,12 @@ export default function AccessibilityModal({
                     className="flex-row items-center px-3 py-2 rounded-xl"
                     style={{
                       backgroundColor: active
-                        ? "rgba(139, 92, 246, 0.4)"
-                        : "rgba(59, 130, 246, 0.15)",
+                        ? palette.accentActive
+                        : palette.secondarySoft,
                       borderWidth: 1,
                       borderColor: active
-                        ? "rgba(167, 139, 250, 0.8)"
-                        : "rgba(59, 130, 246, 0.3)",
+                        ? palette.accentActiveBorder
+                        : palette.secondarySoftBorder,
                     }}
                   >
                     <Text style={{ fontSize: 18, marginRight: 6 }}>
@@ -191,15 +193,15 @@ export default function AccessibilityModal({
                     className="flex-row items-center justify-between p-3 rounded-xl"
                     style={{
                       backgroundColor: active
-                        ? "rgba(139, 92, 246, 0.4)"
-                        : "rgba(59, 130, 246, 0.15)",
+                        ? palette.accentActive
+                        : palette.secondarySoft,
                       borderWidth: 1,
                       borderColor: active
-                        ? "rgba(167, 139, 250, 0.8)"
-                        : "rgba(59, 130, 246, 0.3)",
+                        ? palette.accentActiveBorder
+                        : palette.secondarySoftBorder,
                     }}
                   >
-                    <View>
+                    <View className="flex-1">
                       <Text
                         className="text-white text-sm"
                         style={{
@@ -213,12 +215,34 @@ export default function AccessibilityModal({
                       <Text className="font-orbitron text-gray-400 text-xs mt-0.5">
                         {mode.desc}
                       </Text>
+                      {/* Color swatch preview */}
+                      <View
+                        style={{ flexDirection: "row", gap: 5, marginTop: 6 }}
+                      >
+                        {[
+                          palettes[mode.value].accent,
+                          palettes[mode.value].secondary,
+                          palettes[mode.value].tertiary,
+                        ].map((swatchColor, i) => (
+                          <View
+                            key={i}
+                            style={{
+                              width: 14,
+                              height: 14,
+                              borderRadius: 7,
+                              backgroundColor: swatchColor,
+                              borderWidth: 1,
+                              borderColor: "rgba(255,255,255,0.3)",
+                            }}
+                          />
+                        ))}
+                      </View>
                     </View>
                     {active && (
                       <Ionicons
                         name="checkmark-circle"
                         size={22}
-                        color="#a855f7"
+                        color={palette.modalShadow}
                       />
                     )}
                   </TouchableOpacity>
@@ -241,12 +265,12 @@ export default function AccessibilityModal({
                     className="flex-1 items-center py-3 rounded-xl"
                     style={{
                       backgroundColor: active
-                        ? "rgba(139, 92, 246, 0.4)"
-                        : "rgba(59, 130, 246, 0.15)",
+                        ? palette.accentActive
+                        : palette.secondarySoft,
                       borderWidth: 1,
                       borderColor: active
-                        ? "rgba(167, 139, 250, 0.8)"
-                        : "rgba(59, 130, 246, 0.3)",
+                        ? palette.accentActiveBorder
+                        : palette.secondarySoftBorder,
                     }}
                   >
                     <Text
@@ -293,7 +317,7 @@ export default function AccessibilityModal({
 
             <ToggleRow
               icon="volume-medium"
-              iconColor="#60a5fa"
+              iconColor={palette.secondary}
               label={t("Settings.tts")}
               description="Read screen content aloud (coming soon)"
               value={ttsEnabled}
@@ -306,9 +330,9 @@ export default function AccessibilityModal({
             onPress={onClose}
             className="mt-6 p-4 rounded-xl items-center"
             style={{
-              backgroundColor: "rgba(139, 92, 246, 0.9)",
+              backgroundColor: palette.accent,
               borderWidth: 1,
-              borderColor: "rgba(167, 139, 250, 0.8)",
+              borderColor: palette.accentActiveBorder,
             }}
           >
             <Text className="font-orbitron-bold text-white text-base">
@@ -330,15 +354,19 @@ function SectionHeader({
   icon: React.ComponentProps<typeof Ionicons>["name"];
   label: string;
 }) {
+  const palette = useColorPalette();
   return (
     <View className="flex-row items-center mb-3">
       <Ionicons
         name={icon}
         size={18}
-        color="#a78bfa"
+        color={palette.sectionIcon}
         style={{ marginRight: 8 }}
       />
-      <Text className="font-orbitron-semibold text-purple-300 text-sm">
+      <Text
+        className="font-orbitron-semibold text-sm"
+        style={{ color: palette.sectionTextColor }}
+      >
         {label}
       </Text>
     </View>
@@ -346,11 +374,9 @@ function SectionHeader({
 }
 
 function Divider() {
+  const palette = useColorPalette();
   return (
-    <View
-      className="h-px my-4"
-      style={{ backgroundColor: "rgba(139, 92, 246, 0.3)" }}
-    />
+    <View className="h-px my-4" style={{ backgroundColor: palette.divider }} />
   );
 }
 
@@ -371,13 +397,14 @@ function ToggleRow({
   value,
   onToggle,
 }: ToggleRowProps) {
+  const palette = useColorPalette();
   return (
     <View
       className="flex-row justify-between items-center p-4 rounded-xl mb-3"
       style={{
-        backgroundColor: "rgba(59, 130, 246, 0.15)",
+        backgroundColor: palette.secondarySoft,
         borderWidth: 1,
-        borderColor: "rgba(59, 130, 246, 0.3)",
+        borderColor: palette.secondarySoftBorder,
       }}
     >
       <View className="flex-row items-center flex-1 mr-3">
@@ -399,8 +426,11 @@ function ToggleRow({
       <Switch
         value={value}
         onValueChange={onToggle}
-        trackColor={{ false: "#334155", true: "#8b5cf6" }}
-        thumbColor={value ? "#a855f7" : "#64748b"}
+        trackColor={{
+          false: palette.switchTrackOff,
+          true: palette.switchTrackOn,
+        }}
+        thumbColor={value ? palette.switchThumbOn : palette.switchThumbOff}
       />
     </View>
   );
