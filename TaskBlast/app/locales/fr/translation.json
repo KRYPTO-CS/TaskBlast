@@ -86,7 +86,13 @@
     "continue": "Continuer"
   },
   "Home": {
-    "takeoff": "Décollage"
+    "takeoff": "Décollage",
+    "coachMarktaskstitle": "Ajouter de nouvelles tâches",
+    "coachMarktasks": "Appuyez ici pour ajouter de nouvelles tâches, définir des récompenses et personnaliser vos sessions de concentration !",
+    "coachMarkProfiletitle": "Voir votre profil",
+    "coachMarkProfile": "Appuyez ici pour voir votre profil, suivre vos progrès et personnaliser votre avatar !",
+    "coachMarksettings": "Appuyez ici pour ajuster vos préférences, gérer les notifications et plus encore !",
+    "coachMarktakeoff": "Appuyez ici pour démarrer une session de concentration et décoller vers vos objectifs !"
   },
   "Settings": {
     "title": "Paramètres",
@@ -134,6 +140,14 @@
     "total": "Temps total passé sur les tâches : ",
     "AddChildAccount": "Ajouter un compte enfant",
     "SwitchProfile": "Changer de profil",
-    "Logout": "Déconnexion"
+    "Logout": "Déconnexion",
+    "coachMarkeditP": "Appuyez ici pour mettre à jour les informations de votre profil !",
+    "coachMarkTraitsTitle": "Voir les traits",
+    "coachMarkTraits": "Ici, vous pouvez voir vos traits et en ajouter de nouveaux !",
+    "coachMarkAwardsTitle": "Voir les récompenses",
+    "coachMarkAwards": "Ici, vous pouvez voir vos récompenses et réalisations !",
+    "coachMarkStatsTitle": "Voir les statistiques",
+    "coachMarkStats": "Ici, vous pouvez voir vos statistiques et suivre votre progression au fil du temps !"
+
   }
 }

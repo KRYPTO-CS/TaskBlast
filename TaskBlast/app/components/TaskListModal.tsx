@@ -672,15 +672,15 @@ export default function TaskListModal({
     }
   };
 
- useEffect(() => {
-  if (!visible) return;
+//  useEffect(() => {
+//   if (!visible) return;
 
-  const timeout = setTimeout(() => {
-    start(onboardingTour);
-  }, 500); 
+//   const timeout = setTimeout(() => {
+//     start(onboardingTour);
+//   }, 500); 
 
-  return () => clearTimeout(timeout);
-}, [visible]);
+//   return () => clearTimeout(timeout);
+// }, [visible]);
   return (
     <Modal
       visible={visible}
@@ -701,12 +701,12 @@ export default function TaskListModal({
         >
           {/* Header */}
           <View className="flex-row justify-between items-center mb-4">
-            <CoachmarkAnchor id="task-button" shape="circle">
+           
 
             <Text className="font-orbitron-bold text-white text-2xl">
               {t("Tasks.title")}
             </Text>
-            </CoachmarkAnchor>
+          
             <TouchableOpacity
               testID="close-task-modal"
               onPress={onClose}

@@ -86,7 +86,13 @@
     "continue": "继续"
   },
   "Home": {
-    "takeoff": "起飞"
+    "takeoff": "起飞",
+    "coachMarktaskstitle": "添加新任务",
+    "coachMarktasks": "点击这里添加新任务，设置奖励并个性化您的专注会话！",
+    "coachMarkProfiletitle": "查看您的个人资料",
+    "coachMarkProfile": "点击这里查看您的个人资料，跟踪您的进度并个性化您的头像！",
+    "coachMarksettings": "点击这里调整您的偏好设置，管理通知等！",
+    "coachMarktakeoff": "点击这里开始专注会话，朝着您的目标起飞！"
   },
   "Settings": {
     "title": "设置",
@@ -134,7 +140,14 @@
     "total": "任务总耗时: ",
     "AddChildAccount": "添加子账户",
     "SwitchProfile": "切换账户",
-    "Logout": "退出登录"
+    "Logout": "退出登录",
+    "coachMarkeditP": "点击这里更新您的个人资料信息！",
+    "coachMarkTraitsTitle": "查看特征",
+    "coachMarkTraits": "这里您可以查看您的特征并添加新的特征！",
+    "coachMarkAwardsTitle": "查看奖项",
+    "coachMarkAwards": "这里您可以查看您的奖项和成就！",
+    "coachMarkStatsTitle": "查看统计数据",
+    "coachMarkStats": "这里您可以查看您的统计数据并跟踪您的进度！"
   },
   "Pomodoro": {
     "time": "剩余时间",

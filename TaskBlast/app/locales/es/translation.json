@@ -86,7 +86,13 @@
     "continue": "Continuar"
   },
   "Home": {
-    "takeoff": "Despegue"
+    "takeoff": "Despegue",
+    "coachMarktaskstitle": "Agrega nuevas tareas",
+    "coachMarktasks": "Toca aquí para agregar nuevas tareas, establecer recompensas y personalizar tus sesiones de enfoque!",
+    "coachMarkProfiletitle": "Ver tu perfil",
+    "coachMarkProfile": "Toca aquí para ver tu perfil, seguir tu progreso y personalizar tu avatar!",
+    "coachMarksettings": "Toca aquí para ajustar tus preferencias, gestionar notificaciones y más!",
+    "coachMarktakeoff": "Toca aquí para iniciar una sesión de enfoque y despegar hacia tus metas!"
   },
   "Settings": {
     "title": "Configuración",
@@ -134,7 +140,14 @@
     "total": "Tiempo Total Invertido en Tareas: ",
     "AddChildAccount": "Agregar Cuenta de Niño",
     "SwitchProfile": "Cambiar Perfil",
-    "Logout": "Cerrar Sesión"
+    "Logout": "Cerrar Sesión",
+    "coachMarkeditP": "¡Toca aquí para actualizar la información de tu perfil!",
+    "coachMarkTraitsTitle": "Ver Rasgos",
+    "coachMarkTraits": "¡Aquí puedes ver tus rasgos y agregar nuevos!",
+    "coachMarkAwardsTitle": "Ver Recompensas",
+    "coachMarkAwards": "¡Aquí puedes ver tus recompensas y logros!",
+    "coachMarkStatsTitle": "Ver Estadísticas",
+    "coachMarkStats": "¡Aquí puedes ver tus estadísticas y seguir tu progreso a lo largo del tiempo!"
 
   },
   "Pomodoro": {
@@ -144,6 +157,21 @@
     "Pause": "Pausar",
     "Land": "Aterrizar",
     "Play": "Jugar Juego"
+  },
+  "Shop": {
+    "title": "Tienda",
+    "body": "Cuerpo",
+    "wings": "Alas",
+    "bBody": "Cuerpo Azul",
+    "rBody": "Cuerpo Rojo",
+    "gBody": "Cuerpo Verde",
+    "yBody": "Cuerpo Amarillo",
+    "bWings": "Alas Azules",
+    "rWings": "Alas Rojas",
+    "gWings": "Alas Verdes",
+    "yWings": "Alas Amarillas",
+    "equipped": "Equipado",
+    "owned" : "Poseído"
   }
 
 }

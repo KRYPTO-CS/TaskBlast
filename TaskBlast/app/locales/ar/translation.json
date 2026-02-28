@@ -86,7 +86,13 @@
     "continue": "متابعة"
   },
   "Home": {
-    "takeoff": "الإقلاع"
+    "takeoff": "الإقلاع",
+    "coachMarktaskstitle": "أضف مهام جديدة",
+    "coachMarktasks": "اضغط هنا لإضافة مهام جديدة، تعيين المكافآت وتخصيص جلسات التركيز الخاصة بك!",
+    "coachMarkProfiletitle": "عرض ملفك الشخصي",
+    "coachMarkProfile": "اضغط هنا لعرض ملفك الشخصي، تتبع تقدمك وتخصيص صورتك الرمزية!",
+    "coachMarksettings": "اضغط هنا لضبط تفضيلاتك، إدارة الإشعارات والمزيد!",
+    "coachMarktakeoff": "اضغط هنا لبدء جلسة تركيز والإقلاع نحو أهدافك!"
   },
   "Settings": {
     "title": "الإعدادات",
@@ -134,7 +140,14 @@
     "total": "إجمالي الوقت المستغرق في المهام: ",
     "AddChildAccount": "إضافة حساب طفل",
     "SwitchProfile": "تبديل الملف الشخصي",
-    "Logout": "تسجيل الخروج"
+    "Logout": "تسجيل الخروج",
+    "coachMarkeditP": "اضغط هنا لتحديث معلومات ملفك الشخصي!",
+    "coachMarkTraitsTitle": "عرض الخصائص",
+    "coachMarkTraits": "هنا يمكنك رؤية خصائصك وإضافة خصائص جديدة!",
+    "coachMarkAwardsTitle": "عرض الجوائز",
+    "coachMarkAwards": "هنا يمكنك رؤية جوائزك وإنجازاتك!",
+    "coachMarkStatsTitle": "عرض الإحصائيات",
+    "coachMarkStats": "هنا يمكنك رؤية إحصائياتك وتتبع تقدمك مع مرور الوقت!"
   },
   "Pomodoro": {
     "time": "الوقت المتبقي",

@@ -59,23 +59,24 @@ export default function ProfileScreen() {
   const onboardingTour = createTour("onboarding", [
     {
       id: "edit-profile-button",
-      title: "Edit Profile",
-      description: "Tap here to update your profile information!",
+      title: t("Profile.editP"),
+      description: t("Profile.coachMarkeditP"),
     },
     {
       id: "traits-section",
-      title: "View Traits",
-      description: "Here you can see your traits and add new ones!",
+      title: t("Profile.coachMarkTraitsTitle"),
+      description: t("Profile.coachMarkTraits"),
+
     },
     {
       id: "awards-section",
-      title: "View Awards",
-      description: "Here you can see your awards and accomplishments!",
+      title: t("Profile.coachMarkAwardsTitle"),
+      description: t("Profile.coachMarkAwards"),
     },
     {
       id: "stats-section",
-      title: "View Stats",
-      description: "Here you can see your activity and progress!",
+      title: t("Profile.coachMarkStatsTitle"),
+      description: t("Profile.coachMarkStats"),
     }
   ]);
   

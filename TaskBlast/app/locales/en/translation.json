@@ -85,8 +85,16 @@
     "confirmPinPlaceholder": "Confirm PIN",
     "continue": "Continue"
   },
+
+  
   "Home": {
-    "takeoff": "Take Off"
+    "takeoff": "Take Off",
+    "coachMarktaskstitle": "Add new Tasks",
+    "coachMarktasks": "Tap here to add new tasks, set rewards, and customize your focus sessions!",
+    "coachMarkProfiletitle": "View Your Profile",
+    "coachMarkProfile": "Tap here to view your profile, track your progress, and customize your avatar!",
+    "coachMarksettings": "Tap here to adjust your preferences, manage notifications, and more!",
+    "coachMarktakeoff": "Tap here to start a focus session and blast off towards your goals!"
   },
   "Settings": {
     "title": "Settings",
@@ -134,7 +142,15 @@
     "total": "Total Time Spent on Tasks: ",
     "AddChildAccount": "Add Child Account",
     "SwitchProfile": "Switch Profile",
-    "Logout": "Logout"
+    "Logout": "Logout",
+    "coachMarkeditP": "Tap here to update your profile information!",
+    "coachMarkTraitsTitle": "View Traits",
+    "coachMarkTraits": "Here you can see your traits and add new ones!",
+    "coachMarkAwardsTitle": "View Awards",
+    "coachMarkAwards": "Here you can see your awards and accomplishments!",
+    "coachMarkStatsTitle": "View Stats",
+    "coachMarkStats": "Here you can see your stats and track your progress over time!"
+
   },
   "Pomodoro": {
     "time": "Time Remaining",
@@ -143,6 +159,21 @@
     "Pause": "Pause",
     "Land": "Land",
     "Play": "Play Game"
+  },
+  "Shop": {
+    "title": "Shop",
+    "body": "Body",
+    "wings": "Wings",
+    "bBody": "Blue Body",
+    "rBody": "Red Body",
+    "yBody": "Yellow Body",
+    "gBody": "Green Body",
+    "bWings": "Blue Wings",
+    "rWings": "Red Wings",
+    "yWings": "Yellow Wings",
+    "gWings": "Green Wings",
+    "equipped": "Equipped",
+    "owned": "Owned"
   }
 
 }

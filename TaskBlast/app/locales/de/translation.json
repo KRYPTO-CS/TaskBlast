@@ -86,7 +86,13 @@
     "continue": "Weiter"
   },
   "Home": {
-    "takeoff": "Abheben"
+    "takeoff": "Abheben",
+    "coachMarktaskstitle": "Neue Aufgaben hinzufügen",
+    "coachMarktasks": "Tippen Sie hier, um neue Aufgaben hinzuzufügen, Belohnungen festzulegen und Ihre Fokus-Sitzungen anzupassen!",
+    "coachMarkProfiletitle": "Ihr Profil ansehen",
+    "coachMarkProfile": "Tippen Sie hier, um Ihr Profil anzusehen, Ihren Fortschritt zu verfolgen und Ihren Avatar anzupassen!",
+    "coachMarksettings": "Tippen Sie hier, um Ihre Einstellungen anzupassen, Benachrichtigungen zu verwalten und mehr!",
+    "coachMarktakeoff": "Tippen Sie hier, um eine Fokus-Sitzung zu starten und in Richtung Ihrer Ziele abzuheben!"
   },
   "Settings": {
     "title": "Einstellungen",
@@ -134,7 +140,14 @@
     "total": "Gesamte Zeit aufgabenbezogen verbracht: ",
     "AddChildAccount": "Kind-Konto hinzufügen",
     "SwitchProfile": "Profil wechseln",
-    "Logout": "Abmelden"
+    "Logout": "Abmelden",
+    "coachMarkeditP": "Tippen Sie hier, um Ihre Profilinformationen zu aktualisieren!",
+    "coachMarkTraitsTitle": "Eigenschaften anzeigen",
+    "coachMarkTraits": "Hier können Sie Ihre Eigenschaften anzeigen und neue hinzufügen!",
+    "coachMarkAwardsTitle": "Auszeichnungen anzeigen",
+    "coachMarkAwards": "Hier können Sie Ihre Auszeichnungen und Erfolge anzeigen!",
+    "coachMarkStatsTitle": "Statistiken anzeigen",
+    "coachMarkStats": "Hier können Sie Ihre Statistiken anzeigen und Ihren Fortschritt im Laufe der Zeit verfolgen!"
   },
   "Pomodoro": {
     "time": "Verbleibende Zeit",

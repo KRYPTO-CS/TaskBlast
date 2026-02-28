@@ -86,7 +86,13 @@
     "continue": "Continuar"
   },
   "Home": {
-    "takeoff": "Decolar"
+    "takeoff": "Decolar",
+    "coachMarktaskstitle": "Adicionar novas tarefas",
+    "coachMarktasks": "Toque aqui para adicionar novas tarefas, definir recompensas e personalizar suas sessões de foco!",
+    "coachMarkProfiletitle": "Veja seu perfil",
+    "coachMarkProfile": "Toque aqui para ver seu perfil, acompanhar seu progresso e personalizar seu avatar!",
+    "coachMarksettings": "Toque aqui para ajustar suas preferências, gerenciar notificações e mais!",
+    "coachMarktakeoff": "Toque aqui para iniciar uma sessão de foco e decolar em direção aos seus objetivos!"
   },
   "Settings": {
     "title": "Configurações",
@@ -133,7 +139,14 @@
     "total": "Tempo Total Gasto em Tarefas: ",
     "AddChildAccount": "Adicionar Conta de Criança",
     "SwitchProfile": "Trocar Perfil",
-    "Logout": "Sair"
+    "Logout": "Sair",
+    "coachMarkeditP": "Toque aqui para atualizar as informações do seu perfil!",
+    "coachMarkTraitsTitle": "Ver Traits",
+    "coachMarkTraits": "Aqui você pode ver seus traits e adicionar novos!",
+    "coachMarkAwardsTitle": "Ver Prêmios",
+    "coachMarkAwards": "Aqui você pode ver seus prêmios e conquistas!",
+    "coachMarkStatsTitle": "Ver Estatísticas",
+    "coachMarkStats": "Aqui você pode ver suas estatísticas e acompanhar seu progresso ao longo do tempo!"
   },
   "Pomodoro": {
     "time": "Tempo Restante",

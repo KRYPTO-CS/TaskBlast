@@ -11,6 +11,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
 import { getFirestore, doc, getDoc, updateDoc, increment } from "firebase/firestore";
+import { useTranslation } from "react-i18next";
 
 interface ShopModalProps {
   visible: boolean;
@@ -66,6 +67,7 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
 
   const currentCategory = shopPages[selectedPage].name as "Body" | "Wings";
   const filteredItems = shopItems.filter(item => item.category === currentCategory);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const checkAndCreateShopItems = async () => {
@@ -226,7 +228,7 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
           <View className="p-5 border-b-2 border-purple-500/30">
             <View className="flex-row justify-between items-center mb-4">
               <Text className="text-white font-orbitron-bold text-2xl">
-                Shop
+                {t("Shop.title")}
               </Text>
               <TouchableOpacity
                 onPress={onClose}
@@ -310,13 +312,13 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
                     {isEquipped ? (
                       <View className="bg-yellow-600/50 px-3 py-1.5 rounded-full">
                         <Text className="font-orbitron-bold text-white text-sm">
-                          Equipped
+                          {t("Shop.equipped")}
                         </Text>
                       </View>
                     ) : isUnlocked ? (
                       <View className="bg-green-600/50 px-3 py-1.5 rounded-full">
                         <Text className="font-orbitron-bold text-white text-sm">
-                          Owned
+                          {t("Shop.owned")}
                         </Text>
                       </View>
                     ) : (

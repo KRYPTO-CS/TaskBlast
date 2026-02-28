@@ -6,6 +6,7 @@ import {
   Image,
   ImageBackground,
   AppState,
+  InteractionManager
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -47,31 +48,31 @@ export default function HomeScreen() {
   const [rocks, setRocks] = useState<number>(0);
   const {t ,i18n} = useTranslation();
   const {start} = useCoachmark();
- const onboardingTour = createTour("onboarding", [
+  const hasStartedTour = useRef(false);
+ const onboardingTour = React.useMemo(() => createTour("onboarding", [
   {
     id: "task-button",
-    title: "Add new Tasks",
-    description: "Tap here to add new tasks and start earning rewards!",
+    title: t("Home.coachMarktaskstitle"),
+    description: t("Home.coachMarktasks"),
   },
   {
     id: "profile-button",
-    title: "View Profile",
-    description:
-      "Tap here to view your profile, track your progress, and customize your avatar!",
+    title: t("Home.coachMarkProfiletitle"),
+    description: t("Home.coachMarkProfile"),
   },
   {
     id: "settings-button",
-    title: "Settings",
-    description:
-      "Tap here to adjust your preferences, manage notifications, and more!",
+    title: t("Settings.title"),
+    description: t("Home.coachMarksettings"),
   },
   {
     id: "takeoff-button",
-    title: "Take Off!",
-    description:
-      "Tap here to start a focus session and blast off towards your goals!",
+    title: t("Home.takeoff"),
+    description: t("Home.coachMarktakeoff"),
   },
-]);
+]),
+  [t]
+ );
 
   // Child profile state
   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
@@ -228,14 +229,36 @@ export default function HomeScreen() {
     }, [loadScore, musicPlayer, musicEnabled]),
   );
 
-  useFocusEffect(
+useFocusEffect(
   useCallback(() => {
-    const timeout = setTimeout(() => {
-      start(onboardingTour);
-    }, 300);
+    if (
+      hasStartedTour.current ||
+      isTaskModalVisible ||
+      isSettingsModalVisible ||
+      isShopModalVisible ||
+      isPlanetModalVisible
+    ) {
+      return;
+    }
+
+    const timeout = setTimeout(async () => {
+      const alreadySeen = await AsyncStorage.getItem("onboardingSeen");
+
+      if (!alreadySeen) {
+        await AsyncStorage.setItem("onboardingSeen", "true");
+        hasStartedTour.current = true;
+        start(onboardingTour);
+      }
+    }, 700); // give layout time
 
     return () => clearTimeout(timeout);
-  }, [])
+  }, [
+    isTaskModalVisible,
+    isSettingsModalVisible,
+    isShopModalVisible,
+    isPlanetModalVisible,
+    onboardingTour
+  ])
 );
 
   return (
