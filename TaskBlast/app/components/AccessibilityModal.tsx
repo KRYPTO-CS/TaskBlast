@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -12,7 +12,6 @@ import { useTranslation } from "react-i18next";
 import {
   useAccessibility,
   type ColorBlindMode,
-  type TextSize,
 } from "../context/AccessibilityContext";
 import { useColorPalette, palettes } from "../styles/colorBlindThemes";
 
@@ -53,14 +52,6 @@ const COLOR_BLIND_MODES: {
   { value: "tritanopia", label: "Tritanopia", desc: "Blue/yellow deficiency" },
 ];
 
-// ─── Text size data ────────────────────────────────────────────────────────────
-
-const TEXT_SIZES: { value: TextSize; label: string; fontSize: number }[] = [
-  { value: "small", label: "A", fontSize: 13 },
-  { value: "medium", label: "A", fontSize: 17 },
-  { value: "large", label: "A", fontSize: 22 },
-];
-
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function AccessibilityModal({
@@ -73,15 +64,9 @@ export default function AccessibilityModal({
   const {
     language,
     colorBlindMode,
-    textSize,
-    highContrast,
-    reduceMotion,
     ttsEnabled,
     setLanguage,
     setColorBlindMode,
-    setTextSize,
-    setHighContrast,
-    setReduceMotion,
     setTtsEnabled,
   } = useAccessibility();
 
@@ -139,41 +124,7 @@ export default function AccessibilityModal({
             {/* ── Language ────────────────────────────────────────────────── */}
             <SectionHeader icon="language" label={t("Settings.language")} />
 
-            <View className="flex-row flex-wrap mb-4" style={{ gap: 8 }}>
-              {LANGUAGES.map((lang) => {
-                const active = language === lang.code;
-                return (
-                  <TouchableOpacity
-                    key={lang.code}
-                    onPress={() => setLanguage(lang.code)}
-                    className="flex-row items-center px-3 py-2 rounded-xl"
-                    style={{
-                      backgroundColor: active
-                        ? palette.accentActive
-                        : palette.secondarySoft,
-                      borderWidth: 1,
-                      borderColor: active
-                        ? palette.accentActiveBorder
-                        : palette.secondarySoftBorder,
-                    }}
-                  >
-                    <Text style={{ fontSize: 18, marginRight: 6 }}>
-                      {lang.flag}
-                    </Text>
-                    <Text
-                      className="text-white text-xs"
-                      style={{
-                        fontFamily: active
-                          ? "Orbitron_600SemiBold"
-                          : "Orbitron_400Regular",
-                      }}
-                    >
-                      {lang.name}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
+            <LanguageDropdown language={language} onSelect={setLanguage} />
 
             <Divider />
 
@@ -252,68 +203,8 @@ export default function AccessibilityModal({
 
             <Divider />
 
-            {/* ── Text Size ───────────────────────────────────────────────── */}
-            <SectionHeader icon="text" label={t("Settings.textSize")} />
-
-            <View className="flex-row mb-4" style={{ gap: 8 }}>
-              {TEXT_SIZES.map((size) => {
-                const active = textSize === size.value;
-                return (
-                  <TouchableOpacity
-                    key={size.value}
-                    onPress={() => setTextSize(size.value)}
-                    className="flex-1 items-center py-3 rounded-xl"
-                    style={{
-                      backgroundColor: active
-                        ? palette.accentActive
-                        : palette.secondarySoft,
-                      borderWidth: 1,
-                      borderColor: active
-                        ? palette.accentActiveBorder
-                        : palette.secondarySoftBorder,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: size.fontSize,
-                        color: active ? "#fff" : "#94a3b8",
-                        fontFamily: active
-                          ? "Orbitron_700Bold"
-                          : "Orbitron_400Regular",
-                      }}
-                    >
-                      {size.label}
-                    </Text>
-                    <Text className="font-orbitron text-gray-400 text-xs mt-1 capitalize">
-                      {size.value}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-
-            <Divider />
-
             {/* ── Toggle Settings ─────────────────────────────────────────── */}
-            <SectionHeader icon="options" label="Display & Motion" />
-
-            <ToggleRow
-              icon="contrast"
-              iconColor="#f59e0b"
-              label={t("Settings.highContrast")}
-              description="Increase border and background intensity"
-              value={highContrast}
-              onToggle={setHighContrast}
-            />
-
-            <ToggleRow
-              icon="stopwatch"
-              iconColor="#34d399"
-              label={t("Settings.reduceMotion")}
-              description="Disable slide animations in modals"
-              value={reduceMotion}
-              onToggle={setReduceMotion}
-            />
+            <SectionHeader icon="volume-medium" label="Voice" />
 
             <ToggleRow
               icon="volume-medium"
@@ -377,6 +268,105 @@ function Divider() {
   const palette = useColorPalette();
   return (
     <View className="h-px my-4" style={{ backgroundColor: palette.divider }} />
+  );
+}
+
+function LanguageDropdown({
+  language,
+  onSelect,
+}: {
+  language: string;
+  onSelect: (code: string) => Promise<void>;
+}) {
+  const palette = useColorPalette();
+  const [open, setOpen] = useState(false);
+
+  const current = LANGUAGES.find((l) => l.code === language) ?? LANGUAGES[0];
+
+  return (
+    <View className="mb-4">
+      {/* Trigger button */}
+      <TouchableOpacity
+        onPress={() => setOpen((v) => !v)}
+        className="flex-row items-center justify-between px-4 py-3 rounded-xl"
+        style={{
+          backgroundColor: palette.accentActive,
+          borderWidth: 1,
+          borderColor: palette.accentActiveBorder,
+        }}
+      >
+        <View className="flex-row items-center">
+          <Text style={{ fontSize: 20, marginRight: 10 }}>{current.flag}</Text>
+          <Text
+            className="text-white text-sm"
+            style={{ fontFamily: "Orbitron_600SemiBold" }}
+          >
+            {current.name}
+          </Text>
+        </View>
+        <Ionicons
+          name={open ? "chevron-up" : "chevron-down"}
+          size={18}
+          color="white"
+        />
+      </TouchableOpacity>
+
+      {/* Options list */}
+      {open && (
+        <View
+          className="mt-1 rounded-xl overflow-hidden"
+          style={{
+            borderWidth: 1,
+            borderColor: palette.secondarySoftBorder,
+            backgroundColor: "rgba(15, 23, 42, 0.98)",
+          }}
+        >
+          {LANGUAGES.map((lang, index) => {
+            const active = language === lang.code;
+            return (
+              <TouchableOpacity
+                key={lang.code}
+                onPress={() => {
+                  onSelect(lang.code);
+                  setOpen(false);
+                }}
+                className="flex-row items-center justify-between px-4 py-3"
+                style={{
+                  backgroundColor: active
+                    ? palette.accentActive
+                    : "transparent",
+                  borderTopWidth: index === 0 ? 0 : 1,
+                  borderTopColor: palette.divider,
+                }}
+              >
+                <View className="flex-row items-center">
+                  <Text style={{ fontSize: 18, marginRight: 10 }}>
+                    {lang.flag}
+                  </Text>
+                  <Text
+                    className="text-white text-xs"
+                    style={{
+                      fontFamily: active
+                        ? "Orbitron_600SemiBold"
+                        : "Orbitron_400Regular",
+                    }}
+                  >
+                    {lang.name}
+                  </Text>
+                </View>
+                {active && (
+                  <Ionicons
+                    name="checkmark"
+                    size={16}
+                    color={palette.modalShadow}
+                  />
+                )}
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      )}
+    </View>
   );
 }
 
