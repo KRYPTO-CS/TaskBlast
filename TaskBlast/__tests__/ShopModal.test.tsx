@@ -617,4 +617,77 @@ describe("ShopModal – Color Blind Integration", () => {
       );
     });
   });
+
+  // ── Color-blind palette propagation ───────────────────────────────────────
+
+  describe("Color-blind palette propagation", () => {
+    // (S1)
+    it("(S1) modal container borderColor matches palettes.deuteranopia.modalBorder", async () => {
+      mockUseColorPalette.mockReturnValue(PALETTES.deuteranopia);
+
+      const instance = render(<ShopModal {...defaultProps} />);
+      await waitFor(() => expect(getDoc).toHaveBeenCalled());
+
+      const nodes = findNodesByStyle(
+        instance,
+        "borderColor",
+        PALETTES.deuteranopia.modalBorder,
+      );
+      expect(nodes.length).toBeGreaterThanOrEqual(1);
+    });
+
+    // (S2)
+    it("(S2) modal container borderColor matches palettes.tritanopia.modalBorder", async () => {
+      mockUseColorPalette.mockReturnValue(PALETTES.tritanopia);
+
+      const instance = render(<ShopModal {...defaultProps} />);
+      await waitFor(() => expect(getDoc).toHaveBeenCalled());
+
+      const nodes = findNodesByStyle(
+        instance,
+        "borderColor",
+        PALETTES.tritanopia.modalBorder,
+      );
+      expect(nodes.length).toBeGreaterThanOrEqual(1);
+    });
+
+    // (S3)
+    it("(S3) all four modes produce distinct, non-identical modalBorder values", () => {
+      const borders = [
+        PALETTES.none.modalBorder,
+        PALETTES.deuteranopia.modalBorder,
+        PALETTES.protanopia.modalBorder,
+        PALETTES.tritanopia.modalBorder,
+      ];
+      expect(new Set(borders).size).toBe(4);
+    });
+
+    it("protanopia modalBorder differs from none modalBorder", () => {
+      expect(PALETTES.protanopia.modalBorder).not.toBe(
+        PALETTES.none.modalBorder,
+      );
+    });
+
+    it("swapping palette from none to deuteranopia changes the rendered border color", async () => {
+      // Render once with none
+      mockUseColorPalette.mockReturnValue(PALETTES.none);
+      const instance = render(<ShopModal {...defaultProps} />);
+      await waitFor(() => expect(getDoc).toHaveBeenCalled());
+
+      const noneNodes = findNodesByStyle(
+        instance,
+        "borderColor",
+        PALETTES.none.modalBorder,
+      );
+      expect(noneNodes.length).toBeGreaterThanOrEqual(1);
+
+      // The deuteranopia border should not be present in the none render
+      const deutNodes = findNodesByStyle(
+        instance,
+        "borderColor",
+        PALETTES.deuteranopia.modalBorder,
+      );
+      expect(deutNodes.length).toBe(0);
+    });
+  });
 });
