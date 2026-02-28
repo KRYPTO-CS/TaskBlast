@@ -82,6 +82,32 @@ export interface ColorPalette {
   /** Text color used for section header labels */
   sectionTextColor: string;
 
+  // ── Secondary blue variants (traits section) ─────────────────────────────────
+  /** Secondary at 0.4 opacity — trait pill background */
+  secondaryMedBold: string;
+  /** Light secondary border at 0.5 opacity — trait pills, edit btn border */
+  secondaryLightBorder: string;
+  /** Deep dark secondary bg — traits card background */
+  secondaryDeepBg: string;
+
+  // ── Stats / analytics accent ─────────────────────────────────────────────────
+  /** Main stats accent color (hex) — chart line, shadow, glow */
+  statsAccent: string;
+  /** Stats accent at 0.25 opacity — stat pill backgrounds */
+  statsAccentSoft: string;
+  /** Stats accent at 0.45 opacity — stat pill borders */
+  statsAccentBorder: string;
+  /** Stats card at 0.30 opacity — analytics card background */
+  statsBg: string;
+  /** Stats card border at 0.35 opacity — analytics card border */
+  statsBgBorder: string;
+  /** Stats accent at 0.6 opacity — section heading glow */
+  statsAccentGlow: string;
+  /** Chart line/gradient fill color string (rgba, 0.35) */
+  statsChartFill: string;
+  /** Chart border color string (rgba, 0.5) */
+  statsChartBorder: string;
+
   // ── Error / danger (semantic — kept constant across modes) ───────────────────
   /** Danger action background (rgba red at 0.2) */
   errorSoft: string;
@@ -130,6 +156,19 @@ const palettes: Record<ColorBlindMode, ColorPalette> = {
     // Section headers
     sectionIcon: "#a78bfa",
     sectionTextColor: "#c4b5fd",
+    // Secondary blue variants
+    secondaryMedBold: "rgba(59, 130, 246, 0.4)",
+    secondaryLightBorder: "rgba(96, 165, 250, 0.5)",
+    secondaryDeepBg: "rgba(30, 58, 138, 0.3)",
+    // Stats / analytics accent (green)
+    statsAccent: "#3bf670",
+    statsAccentSoft: "rgba(59, 246, 112, 0.25)",
+    statsAccentBorder: "rgba(59, 246, 112, 0.45)",
+    statsBg: "rgba(30, 138, 43, 0.30)",
+    statsBgBorder: "rgba(59, 246, 112, 0.35)",
+    statsAccentGlow: "rgba(59, 246, 112, 0.6)",
+    statsChartFill: "rgba(59, 246, 112, 0.35)",
+    statsChartBorder: "rgba(85, 247, 104, 0.5)",
     // Error / danger
     errorSoft: "rgba(239, 68, 68, 0.2)",
     errorSoftBorder: "rgba(239, 68, 68, 0.3)",
@@ -173,6 +212,19 @@ const palettes: Record<ColorBlindMode, ColorPalette> = {
     // Section headers
     sectionIcon: "#93c5fd",
     sectionTextColor: "#bfdbfe",
+    // Secondary blue variants
+    secondaryMedBold: "rgba(37, 99, 235, 0.4)",
+    secondaryLightBorder: "rgba(59, 130, 246, 0.5)",
+    secondaryDeepBg: "rgba(10, 30, 80, 0.3)",
+    // Stats / analytics accent (amber — avoids green for red/green deficiency)
+    statsAccent: "#d97706",
+    statsAccentSoft: "rgba(217, 119, 6, 0.25)",
+    statsAccentBorder: "rgba(217, 119, 6, 0.45)",
+    statsBg: "rgba(120, 60, 0, 0.30)",
+    statsBgBorder: "rgba(217, 119, 6, 0.35)",
+    statsAccentGlow: "rgba(217, 119, 6, 0.6)",
+    statsChartFill: "rgba(217, 119, 6, 0.35)",
+    statsChartBorder: "rgba(251, 191, 36, 0.5)",
     // Error / danger
     errorSoft: "rgba(239, 68, 68, 0.2)",
     errorSoftBorder: "rgba(239, 68, 68, 0.3)",
@@ -216,6 +268,19 @@ const palettes: Record<ColorBlindMode, ColorPalette> = {
     // Section headers
     sectionIcon: "#93c5fd",
     sectionTextColor: "#bfdbfe",
+    // Secondary blue variants
+    secondaryMedBold: "rgba(29, 78, 216, 0.4)",
+    secondaryLightBorder: "rgba(59, 130, 246, 0.5)",
+    secondaryDeepBg: "rgba(8, 25, 70, 0.3)",
+    // Stats / analytics accent (amber — avoids green for red/green deficiency)
+    statsAccent: "#f59e0b",
+    statsAccentSoft: "rgba(245, 158, 11, 0.25)",
+    statsAccentBorder: "rgba(245, 158, 11, 0.45)",
+    statsBg: "rgba(120, 70, 0, 0.30)",
+    statsBgBorder: "rgba(245, 158, 11, 0.35)",
+    statsAccentGlow: "rgba(245, 158, 11, 0.6)",
+    statsChartFill: "rgba(245, 158, 11, 0.35)",
+    statsChartBorder: "rgba(252, 211, 77, 0.5)",
     // Error / danger
     errorSoft: "rgba(239, 68, 68, 0.2)",
     errorSoftBorder: "rgba(239, 68, 68, 0.3)",
@@ -259,6 +324,19 @@ const palettes: Record<ColorBlindMode, ColorPalette> = {
     // Section headers
     sectionIcon: "#f87171",
     sectionTextColor: "#fca5a5",
+    // Secondary blue variants (red replaces blue for tritanopia)
+    secondaryMedBold: "rgba(220, 38, 38, 0.4)",
+    secondaryLightBorder: "rgba(248, 113, 113, 0.5)",
+    secondaryDeepBg: "rgba(80, 10, 10, 0.3)",
+    // Stats / analytics accent (darker green — safe for tritanopia)
+    statsAccent: "#16a34a",
+    statsAccentSoft: "rgba(22, 163, 74, 0.25)",
+    statsAccentBorder: "rgba(22, 163, 74, 0.45)",
+    statsBg: "rgba(5, 60, 20, 0.30)",
+    statsBgBorder: "rgba(22, 163, 74, 0.35)",
+    statsAccentGlow: "rgba(22, 163, 74, 0.6)",
+    statsChartFill: "rgba(22, 163, 74, 0.35)",
+    statsChartBorder: "rgba(74, 222, 128, 0.5)",
     // Error / danger (use orange-amber to distinguish from accent red)
     errorSoft: "rgba(180, 83, 9, 0.2)",
     errorSoftBorder: "rgba(180, 83, 9, 0.3)",
@@ -301,6 +379,18 @@ function applyHighContrast(base: ColorPalette): ColorPalette {
     // Section text/icons → highest contrast white tones
     sectionIcon: "#ffffff",
     sectionTextColor: "#f1f5f9",
+    // Secondary blue variant borders → near-solid
+    secondaryMedBold: b(base.secondaryMedBold, "0.6"),
+    secondaryLightBorder: b(base.secondaryLightBorder, "0.85"),
+    secondaryDeepBg: b(base.secondaryDeepBg, "0.5"),
+    // Stats accent → boosted opacity
+    statsAccentSoft: b(base.statsAccentSoft, "0.45"),
+    statsAccentBorder: b(base.statsAccentBorder, "0.85"),
+    statsBg: b(base.statsBg, "0.5"),
+    statsBgBorder: b(base.statsBgBorder, "0.7"),
+    statsAccentGlow: b(base.statsAccentGlow, "1.0"),
+    statsChartFill: b(base.statsChartFill, "0.55"),
+    statsChartBorder: b(base.statsChartBorder, "0.85"),
   };
 }
 

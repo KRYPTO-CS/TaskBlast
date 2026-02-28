@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   Image,
 } from "react-native";
-import { Text } from '../../TTS';
+import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -206,7 +206,13 @@ export default function ProfileScreen() {
   }, []);
 
   // Chart template helpers
-  const totalRocksChart = (labels: string[], values: number[]) =>
+  const totalRocksChart = (
+    labels: string[],
+    values: number[],
+    chartColor: string,
+    chartBorder: string,
+    chartFill: string,
+  ) =>
     `
 <!DOCTYPE html>
 <html>
@@ -216,7 +222,7 @@ export default function ProfileScreen() {
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body { margin:0; padding:0; background:transparent; font-family:'Orbitron',sans-serif; color:#fff; }
-    .wrap { padding:2%; border:4px solid rgba(85,247,104,0.5); border-radius:40px; height:100%; box-sizing:border-box; }
+    .wrap { padding:2%; border:4px solid ${chartBorder}; border-radius:40px; height:100%; box-sizing:border-box; }
     canvas { width:100%!important; height:100%!important; }
   </style>
  </head>
@@ -229,8 +235,8 @@ export default function ProfileScreen() {
     const values = ${JSON.stringify(values)};
     const ctx = document.getElementById('c').getContext('2d');
     const gradient = ctx.createLinearGradient(0,0,0,300);
-    gradient.addColorStop(0,'rgba(59,246,112,0.35)');
-    gradient.addColorStop(1,'rgba(59,246,112,0.05)');
+    gradient.addColorStop(0,'${chartFill}');
+    gradient.addColorStop(1,'rgba(0,0,0,0.0)');
     // Global font defaults (restore original appearance)
     Chart.defaults.font.family = 'Orbitron';
     Chart.defaults.font.size = 12;
@@ -242,7 +248,7 @@ export default function ProfileScreen() {
         datasets: [
           {
             data: values,
-            borderColor: 'rgba(59,246,112,1)',
+            borderColor: '${chartColor}',
             backgroundColor: gradient,
             borderWidth: 4,
             tension: 0.35,
@@ -275,6 +281,9 @@ export default function ProfileScreen() {
     yLabel: string,
     labels: string[],
     values: number[],
+    chartColor: string,
+    chartBorder: string,
+    chartFill: string,
   ) => {
     const cumulative = values.map((v, i) =>
       values.slice(0, i + 1).reduce((a, b) => a + b, 0),
@@ -288,7 +297,7 @@ export default function ProfileScreen() {
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body { margin:0; padding:0; background:transparent; font-family:'Orbitron',sans-serif; color:#fff; }
-    .wrap { padding:2%; border:4px solid rgba(85,247,104,0.5); border-radius:40px; height:100%; box-sizing:border-box; }
+    .wrap { padding:2%; border:4px solid ${chartBorder}; border-radius:40px; height:100%; box-sizing:border-box; }
     canvas { width:100%!important; height:100%!important; }
   </style>
 </head>
@@ -301,8 +310,8 @@ export default function ProfileScreen() {
     const cumulative = ${JSON.stringify(cumulative)};
     const ctx = document.getElementById('c').getContext('2d');
     const gradient = ctx.createLinearGradient(0,0,0,300);
-    gradient.addColorStop(0,'rgba(59,246,112,0.35)');
-    gradient.addColorStop(1,'rgba(59,246,112,0.05)');
+    gradient.addColorStop(0,'${chartFill}');
+    gradient.addColorStop(1,'rgba(0,0,0,0.0)');
     // Global font defaults (restore original appearance)
     Chart.defaults.font.family = 'Orbitron';
     Chart.defaults.font.size = 12;
@@ -314,7 +323,7 @@ export default function ProfileScreen() {
         datasets: [
           {
             data: cumulative,
-            borderColor: 'rgba(59,246,112,1)',
+            borderColor: '${chartColor}',
             backgroundColor: gradient,
             borderWidth: 4,
             tension: 0.35,
@@ -447,13 +456,13 @@ export default function ProfileScreen() {
               style={{
                 backgroundColor:
                   currentProfileType === "parent"
-                    ? "rgba(59, 130, 246, 0.4)"
-                    : "rgba(168, 85, 247, 0.4)",
+                    ? palette.rowBgPrimary
+                    : palette.accentActive,
                 borderWidth: 1,
                 borderColor:
                   currentProfileType === "parent"
-                    ? "rgba(96, 165, 250, 0.6)"
-                    : "rgba(192, 132, 252, 0.6)",
+                    ? palette.secondaryLightBorder
+                    : palette.accentActiveBorder,
               }}
             >
               <Text className="font-orbitron-semibold text-white text-xs">
@@ -468,7 +477,7 @@ export default function ProfileScreen() {
           <Text
             className="font-orbitron-semibold text-xl text-white text-center text-3xl mt-4 mb-8"
             style={{
-              textShadowColor: "rgba(147, 51, 234, 0.8)",
+              textShadowColor: palette.accentGlow,
               textShadowOffset: { width: 0, height: 0 },
               textShadowRadius: 20,
             }}
@@ -483,8 +492,8 @@ export default function ProfileScreen() {
             <TouchableOpacity
               className="w-32 h-32 rounded-full items-center justify-center overflow-hidden"
               style={{
-                backgroundColor: "#7c3aed",
-                shadowColor: "#a855f7",
+                backgroundColor: palette.accent,
+                shadowColor: palette.modalShadow,
                 shadowOffset: { width: 0, height: 8 },
                 shadowOpacity: 0.6,
                 shadowRadius: 16,
@@ -511,10 +520,10 @@ export default function ProfileScreen() {
             <TouchableOpacity
               className="flex-row items-center px-6 py-3 rounded-full"
               style={{
-                backgroundColor: "rgba(139, 92, 246, 0.3)",
+                backgroundColor: palette.accentSoft,
                 borderWidth: 2,
-                borderColor: "rgba(167, 139, 250, 0.5)",
-                shadowColor: "#a855f7",
+                borderColor: palette.accentSoftBorder,
+                shadowColor: palette.modalShadow,
                 shadowOffset: { width: 0, height: 4 },
                 shadowOpacity: 0.4,
                 shadowRadius: 8,
@@ -541,7 +550,7 @@ export default function ProfileScreen() {
               <Text
                 className="font-orbitron-semibold text-xl text-white"
                 style={{
-                  textShadowColor: "rgba(59, 130, 246, 0.6)",
+                  textShadowColor: palette.statsAccentGlow,
                   textShadowOffset: { width: 0, height: 0 },
                   textShadowRadius: 10,
                 }}
@@ -552,9 +561,9 @@ export default function ProfileScreen() {
                 onPress={() => setIsTraitsModalVisible(true)}
                 className="flex-row items-center px-3 py-2 rounded-full"
                 style={{
-                  backgroundColor: "rgba(59, 130, 246, 0.3)",
+                  backgroundColor: palette.rowBgPrimary,
                   borderWidth: 1,
-                  borderColor: "rgba(96, 165, 250, 0.5)",
+                  borderColor: palette.secondaryLightBorder,
                 }}
               >
                 <Ionicons
@@ -571,10 +580,10 @@ export default function ProfileScreen() {
             <View
               className="p-4 rounded-2xl"
               style={{
-                backgroundColor: "rgba(30, 58, 138, 0.3)",
+                backgroundColor: palette.secondaryDeepBg,
                 borderWidth: 2,
-                borderColor: "rgba(59, 130, 246, 0.3)",
-                shadowColor: "#3b82f6",
+                borderColor: palette.rowBorderPrimary,
+                shadowColor: palette.secondary,
                 shadowOffset: { width: 0, height: 4 },
                 shadowOpacity: 0.3,
                 shadowRadius: 8,
@@ -586,9 +595,9 @@ export default function ProfileScreen() {
                     key={index}
                     className="px-4 py-2 rounded-full"
                     style={{
-                      backgroundColor: "rgba(59, 130, 246, 0.4)",
+                      backgroundColor: palette.secondaryMedBold,
                       borderWidth: 1,
-                      borderColor: "rgba(96, 165, 250, 0.6)",
+                      borderColor: palette.secondaryLightBorder,
                     }}
                   >
                     <Text className="font-orbitron-semibold text-xl text-white text-sm">
@@ -649,7 +658,7 @@ export default function ProfileScreen() {
             <Text
               className="font-orbitron-semibold text-xl text-white mb-4"
               style={{
-                textShadowColor: "rgba(59,246,112,0.6)",
+                textShadowColor: palette.statsAccentGlow,
                 textShadowOffset: { width: 0, height: 0 },
                 textShadowRadius: 10,
               }}
@@ -659,10 +668,10 @@ export default function ProfileScreen() {
             <View
               className="p-4 rounded-2xl"
               style={{
-                backgroundColor: "rgba(30,138,43,0.30)",
+                backgroundColor: palette.statsBg,
                 borderWidth: 2,
-                borderColor: "rgba(59,246,112,0.35)",
-                shadowColor: "#3bf670",
+                borderColor: palette.statsBgBorder,
+                shadowColor: palette.statsAccent,
                 shadowOffset: { width: 0, height: 6 },
                 shadowOpacity: 0.35,
                 shadowRadius: 12,
@@ -672,9 +681,9 @@ export default function ProfileScreen() {
               <View
                 className="px-4 py-2 rounded-full"
                 style={{
-                  backgroundColor: "rgba(59,246,112,0.25)",
+                  backgroundColor: palette.statsAccentSoft,
                   borderWidth: 1,
-                  borderColor: "rgba(59,246,112,0.45)",
+                  borderColor: palette.statsAccentBorder,
                 }}
               >
                 <Text className="font-orbitron-semibold text-white">
@@ -686,9 +695,9 @@ export default function ProfileScreen() {
               <View
                 className="px-4 py-2 rounded-full mt-2"
                 style={{
-                  backgroundColor: "rgba(59,246,112,0.25)",
+                  backgroundColor: palette.statsAccentSoft,
                   borderWidth: 1,
-                  borderColor: "rgba(59,246,112,0.45)",
+                  borderColor: palette.statsAccentBorder,
                 }}
               >
                 <Text className="font-orbitron-semibold text-white">
@@ -709,12 +718,22 @@ export default function ProfileScreen() {
                 {statsValues.length ? (
                   <WebView
                     originWhitelist={["*"]}
-                    source={{ html: totalRocksChart(statsLabels, statsValues) }}
+                    source={{
+                      html: totalRocksChart(
+                        statsLabels,
+                        statsValues,
+                        palette.statsAccent,
+                        palette.statsChartBorder,
+                        palette.statsChartFill,
+                      ),
+                    }}
                     scrollEnabled={false}
                     style={{ backgroundColor: "transparent" }}
                   />
                 ) : (
-                  <Text className="text-white">No rock stats yet.</Text>
+                  <Text className="font-orbitron-semibold text-white px-2">
+                    No rock stats yet.
+                  </Text>
                 )}
               </View>
               {/* Work Time Chart */}
@@ -736,13 +755,18 @@ export default function ProfileScreen() {
                         "Minutes",
                         workLabels,
                         workTimes,
+                        palette.statsAccent,
+                        palette.statsChartBorder,
+                        palette.statsChartFill,
                       ),
                     }}
                     scrollEnabled={false}
                     style={{ backgroundColor: "transparent" }}
                   />
                 ) : (
-                  <Text className="text-white">No work sessions yet.</Text>
+                  <Text className="font-orbitron-semibold text-white px-2">
+                    No work sessions yet.
+                  </Text>
                 )}
               </View>
               {/* Play Time Chart */}
@@ -764,13 +788,18 @@ export default function ProfileScreen() {
                         "Minutes",
                         playLabels,
                         playTimes,
+                        palette.statsAccent,
+                        palette.statsChartBorder,
+                        palette.statsChartFill,
                       ),
                     }}
                     scrollEnabled={false}
                     style={{ backgroundColor: "transparent" }}
                   />
                 ) : (
-                  <Text className="text-white">No play sessions yet.</Text>
+                  <Text className="font-orbitron-semibold text-white px-2">
+                    No play sessions yet.
+                  </Text>
                 )}
               </View>
               {/* Averages */}
@@ -778,9 +807,9 @@ export default function ProfileScreen() {
                 <View
                   className="px-3 py-2 rounded-full"
                   style={{
-                    backgroundColor: "rgba(59,246,112,0.25)",
+                    backgroundColor: palette.statsAccentSoft,
                     borderWidth: 1,
-                    borderColor: "rgba(59,246,112,0.45)",
+                    borderColor: palette.statsAccentBorder,
                   }}
                 >
                   <Text className="font-orbitron-semibold text-white text-xs">
@@ -798,9 +827,9 @@ export default function ProfileScreen() {
                 <View
                   className="px-3 py-2 rounded-full"
                   style={{
-                    backgroundColor: "rgba(59,246,112,0.25)",
+                    backgroundColor: palette.statsAccentSoft,
                     borderWidth: 1,
-                    borderColor: "rgba(59,246,112,0.45)",
+                    borderColor: palette.statsAccentBorder,
                   }}
                 >
                   <Text className="font-orbitron-semibold text-white text-xs">
@@ -817,9 +846,9 @@ export default function ProfileScreen() {
                 <View
                   className="px-3 py-2 rounded-full"
                   style={{
-                    backgroundColor: "rgba(59,246,112,0.25)",
+                    backgroundColor: palette.statsAccentSoft,
                     borderWidth: 1,
-                    borderColor: "rgba(59,246,112,0.45)",
+                    borderColor: palette.statsAccentBorder,
                   }}
                 >
                   <Text className="font-orbitron-semibold text-white text-xs">
@@ -837,9 +866,9 @@ export default function ProfileScreen() {
                 <View
                   className="px-3 py-2 rounded-full"
                   style={{
-                    backgroundColor: "rgba(59,246,112,0.25)",
+                    backgroundColor: palette.statsAccentSoft,
                     borderWidth: 1,
-                    borderColor: "rgba(59,246,112,0.45)",
+                    borderColor: palette.statsAccentBorder,
                   }}
                 >
                   <Text className="font-orbitron-semibold text-white text-xs">
