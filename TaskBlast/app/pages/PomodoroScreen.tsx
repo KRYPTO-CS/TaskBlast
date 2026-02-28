@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   View,
-  Text,
   ImageBackground,
   Animated,
   Image,
@@ -10,6 +9,7 @@ import {
   Easing,
   TouchableOpacity,
 } from "react-native";
+import { Text } from '../../TTS';
 import { useRouter, useLocalSearchParams } from "expo-router";
 import MainButton from "../components/MainButton";
 import GameSelectionModal from "../components/GameSelectionModal";
