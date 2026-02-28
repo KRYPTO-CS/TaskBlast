@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   View,
-  Text,
   TextInput,
   ImageBackground,
   TouchableWithoutFeedback,
@@ -9,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
+import { Text } from '../../TTS';
 import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../components/MainButton";
 import { auth } from "../../server/firebase";

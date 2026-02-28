@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import {
   TouchableOpacity,
-  Text,
   StyleSheet,
   TouchableOpacityProps,
   ViewStyle,
@@ -9,6 +8,7 @@ import {
   Animated,
   Pressable,
 } from "react-native";
+import { Text } from '../../TTS';
 import { useAudioPlayer } from "expo-audio";
 import { buttons, buttonText } from "../styles/global";
 import { useSound } from "../hooks/useSound";

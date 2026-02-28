@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Modal, TouchableOpacity, ActivityIndicator, Image, Alert } from "react-native";
+import { View, Modal, TouchableOpacity, ActivityIndicator, Image, Alert } from "react-native";
+import { Text } from '../../TTS';
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
 import {

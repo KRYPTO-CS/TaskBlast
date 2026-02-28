@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   View,
-  Text,
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
   ImageBackground,
   Animated,
 } from "react-native";
+import { Text } from '../../TTS';
 import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../components/MainButton";
 import { useTranslation } from "react-i18next";
