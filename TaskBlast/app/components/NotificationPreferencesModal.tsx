@@ -8,13 +8,13 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
-  Text,
   Modal,
   TouchableOpacity,
   ScrollView,
   Switch,
   Alert,
 } from "react-native";
+import { Text } from '../../TTS';
 import * as Notifications from "expo-notifications";
 import { useNotifications } from "../context/NotificationContext";
 import { useColorPalette } from "../styles/colorBlindThemes";

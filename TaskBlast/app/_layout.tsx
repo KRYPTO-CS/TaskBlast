@@ -1,5 +1,7 @@
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
+import { TTSProvider } from "./context/TTSContext";
+
 import { MadimiOne_400Regular } from "@expo-google-fonts/madimi-one";
 import {
   Orbitron_400Regular,
@@ -43,13 +45,15 @@ export default function RootLayout() {
   return (
     <AccessibilityProvider>
       <AudioProvider>
-        <NotificationProvider>
-          <Stack
-            screenOptions={{
-              headerShown: false,
-            }}
-          />
-        </NotificationProvider>
+        <TTSProvider>
+          <NotificationProvider>
+            <Stack
+              screenOptions={{
+                headerShown: false,
+              }}
+            />
+          </NotificationProvider>
+        </TTSProvider>
       </AudioProvider>
     </AccessibilityProvider>
   );

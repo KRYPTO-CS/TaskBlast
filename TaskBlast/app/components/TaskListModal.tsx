@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   View,
-  Text,
   Modal,
   TouchableOpacity,
   ScrollView,
@@ -9,6 +8,7 @@ import {
   Image,
   Alert,
 } from "react-native";
+import { Text } from '../../TTS';
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { getAuth } from "firebase/auth";

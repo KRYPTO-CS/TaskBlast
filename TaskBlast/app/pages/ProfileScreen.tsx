@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
-  Text,
   TouchableOpacity,
   ImageBackground,
   ScrollView,
   ActivityIndicator,
   Image,
 } from "react-native";
+import { Text } from '../../TTS';
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
