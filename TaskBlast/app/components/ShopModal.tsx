@@ -7,10 +7,16 @@ import {
   Image,
   Alert,
 } from "react-native";
-import { Text } from '../../TTS';
+import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, getDoc, updateDoc, increment } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  updateDoc,
+  increment,
+} from "firebase/firestore";
 import { useColorPalette } from "../styles/colorBlindThemes";
 
 interface ShopModalProps {
@@ -34,22 +40,82 @@ type ShopItem = {
 };
 
 const shopPages: ShopPage[] = [
-  { id: 0, name: "Body", iconPath: require("../../assets/images/shop_icons/ShipBodyIconBlue.png") },
-  { id: 1, name: "Wings", iconPath: require("../../assets/images/shop_icons/ShipWingIconRed.png") },
+  {
+    id: 0,
+    name: "Body",
+    iconPath: require("../../assets/images/shop_icons/ShipBodyIconBlue.png"),
+  },
+  {
+    id: 1,
+    name: "Wings",
+    iconPath: require("../../assets/images/shop_icons/ShipWingIconRed.png"),
+  },
 ];
 
 const shopItems: ShopItem[] = [
-  { id: "body-0", name: "Blue Body", iconPath: require("../../assets/images/shop_icons/ShipBodyIconBlue.png"), price: 0, category: "Body" },
-  { id: "body-1", name: "Red Body", iconPath: require("../../assets/images/shop_icons/ShipBodyIconRed.png"), price: 500, category: "Body" },
-  { id: "body-2", name: "Green Body", iconPath: require("../../assets/images/shop_icons/ShipBodyIconGreen.png"), price: 750, category: "Body" },
-  { id: "body-3", name: "Yellow Body", iconPath: require("../../assets/images/shop_icons/ShipBodyIconYellow.png"), price: 750, category: "Body" },
-  { id: "wing-0", name: "Blue Wings", iconPath: require("../../assets/images/shop_icons/ShipWingIconBlue.png"), price: 500, category: "Wings" },
-  { id: "wing-1", name: "Red Wings", iconPath: require("../../assets/images/shop_icons/ShipWingIconRed.png"), price: 0, category: "Wings" },
-  { id: "wing-2", name: "Green Wings", iconPath: require("../../assets/images/shop_icons/ShipWingIconGreen.png"), price: 750, category: "Wings" },
-  { id: "wing-3", name: "Yellow Wings", iconPath: require("../../assets/images/shop_icons/ShipWingIconYellow.png"), price: 750, category: "Wings" },
+  {
+    id: "body-0",
+    name: "Blue Body",
+    iconPath: require("../../assets/images/shop_icons/ShipBodyIconBlue.png"),
+    price: 0,
+    category: "Body",
+  },
+  {
+    id: "body-1",
+    name: "Red Body",
+    iconPath: require("../../assets/images/shop_icons/ShipBodyIconRed.png"),
+    price: 500,
+    category: "Body",
+  },
+  {
+    id: "body-2",
+    name: "Green Body",
+    iconPath: require("../../assets/images/shop_icons/ShipBodyIconGreen.png"),
+    price: 750,
+    category: "Body",
+  },
+  {
+    id: "body-3",
+    name: "Yellow Body",
+    iconPath: require("../../assets/images/shop_icons/ShipBodyIconYellow.png"),
+    price: 750,
+    category: "Body",
+  },
+  {
+    id: "wing-0",
+    name: "Blue Wings",
+    iconPath: require("../../assets/images/shop_icons/ShipWingIconBlue.png"),
+    price: 500,
+    category: "Wings",
+  },
+  {
+    id: "wing-1",
+    name: "Red Wings",
+    iconPath: require("../../assets/images/shop_icons/ShipWingIconRed.png"),
+    price: 0,
+    category: "Wings",
+  },
+  {
+    id: "wing-2",
+    name: "Green Wings",
+    iconPath: require("../../assets/images/shop_icons/ShipWingIconGreen.png"),
+    price: 750,
+    category: "Wings",
+  },
+  {
+    id: "wing-3",
+    name: "Yellow Wings",
+    iconPath: require("../../assets/images/shop_icons/ShipWingIconYellow.png"),
+    price: 750,
+    category: "Wings",
+  },
 ];
 
-export default function ShopModal({ visible, onClose, onRocksChange }: ShopModalProps) {
+export default function ShopModal({
+  visible,
+  onClose,
+  onRocksChange,
+}: ShopModalProps) {
   const palette = useColorPalette();
   const [selectedPage, setSelectedPage] = useState(0);
   const [rocks, setRocks] = useState<number>(0);
@@ -67,7 +133,9 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
   }>({ item: null, index: -1 });
 
   const currentCategory = shopPages[selectedPage].name as "Body" | "Wings";
-  const filteredItems = shopItems.filter(item => item.category === currentCategory);
+  const filteredItems = shopItems.filter(
+    (item) => item.category === currentCategory,
+  );
 
   useEffect(() => {
     const checkAndCreateShopItems = async () => {
@@ -84,14 +152,14 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
 
         if (userDoc.exists()) {
           const userData = userDoc.data();
-          
+
           // Load rocks balance
           const rocksValue = userData.rocks || 0;
           setRocks(isNaN(rocksValue) ? 0 : Math.max(0, Math.floor(rocksValue)));
-          
+
           let needsUpdate = false;
           const updates: any = {};
-          
+
           // Check if shopItems exist, if not create them
           if (!userData.shopItems) {
             updates.shopItems = {
@@ -104,7 +172,7 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
           } else {
             setUnlockedItems(userData.shopItems);
           }
-          
+
           // Check if equipped array exists, if not create it
           if (!userData.equipped) {
             updates.equipped = [0, 1];
@@ -114,7 +182,7 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
           } else {
             setEquipped(userData.equipped);
           }
-          
+
           // Update Firebase if needed
           if (needsUpdate) {
             await updateDoc(userDocRef, updates);
@@ -164,7 +232,10 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
     }
 
     if (rocks < item.price) {
-      Alert.alert("Not Enough Crystals", `You need ${item.price} crystals but only have ${rocks}.`);
+      Alert.alert(
+        "Not Enough Crystals",
+        `You need ${item.price} crystals but only have ${rocks}.`,
+      );
       return;
     }
 
@@ -210,7 +281,10 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
       setConfirmPurchase({ item: null, index: -1 });
     } catch (error) {
       console.error("Error purchasing item:", error);
-      Alert.alert("Purchase Failed", "There was an error processing your purchase.");
+      Alert.alert(
+        "Purchase Failed",
+        "There was an error processing your purchase.",
+      );
       setConfirmPurchase({ item: null, index: -1 });
     }
   };
@@ -223,9 +297,15 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
       onRequestClose={onClose}
     >
       <View className="flex-1 justify-center items-center bg-black/50">
-        <View className="bg-[#1a1f3a] w-11/12 h-4/5 rounded-3xl shadow-2xl" style={{ borderWidth: 2, borderColor: palette.modalBorder }}>
+        <View
+          className="bg-[#1a1f3a] w-11/12 h-4/5 rounded-3xl shadow-2xl"
+          style={{ borderWidth: 2, borderColor: palette.modalBorder }}
+        >
           {/* Header */}
-          <View className="p-5 border-b-2" style={{ borderColor: palette.divider }}>
+          <View
+            className="p-5 border-b-2"
+            style={{ borderColor: palette.divider }}
+          >
             <View className="flex-row justify-between items-center mb-4">
               <Text className="text-white font-orbitron-bold text-2xl">
                 Shop
@@ -252,13 +332,15 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
                   onPress={() => setSelectedPage(page.id)}
                   className="px-4 py-3 rounded-xl flex-row items-center gap-2"
                   style={{
-                    backgroundColor: selectedPage === page.id
-                      ? palette.accent
-                      : palette.secondarySoft,
+                    backgroundColor:
+                      selectedPage === page.id
+                        ? palette.accent
+                        : palette.secondarySoft,
                     borderWidth: 1,
-                    borderColor: selectedPage === page.id
-                      ? palette.accentActiveBorder
-                      : palette.secondarySoftBorder,
+                    borderColor:
+                      selectedPage === page.id
+                        ? palette.accentActiveBorder
+                        : palette.secondarySoftBorder,
                   }}
                 >
                   <Image
@@ -268,7 +350,12 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
                   />
                   <Text
                     className="font-orbitron"
-                    style={{ color: selectedPage === page.id ? "white" : palette.sectionTextColor }}
+                    style={{
+                      color:
+                        selectedPage === page.id
+                          ? "white"
+                          : palette.sectionTextColor,
+                    }}
                   >
                     {page.name}
                   </Text>
@@ -281,11 +368,13 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
           <ScrollView className="flex-1 p-5">
             <View className="flex-row flex-wrap justify-between">
               {filteredItems.map((item, index) => {
-                const categoryKey = currentCategory.toLowerCase() as "body" | "wings";
+                const categoryKey = currentCategory.toLowerCase() as
+                  | "body"
+                  | "wings";
                 const isUnlocked = unlockedItems[categoryKey][index];
                 const categoryIndex = item.category === "Body" ? 0 : 1;
                 const isEquipped = equipped[categoryIndex] === index;
-                
+
                 return (
                   <TouchableOpacity
                     key={item.id}
@@ -296,20 +385,20 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
                       backgroundColor: isEquipped
                         ? palette.tertiarySoft
                         : isUnlocked
-                        ? palette.rowBgPrimary
-                        : palette.secondarySoft,
+                          ? palette.rowBgPrimary
+                          : palette.secondarySoft,
                       borderColor: isEquipped
                         ? palette.tertiarySoftBorder
                         : isUnlocked
-                        ? palette.rowBorderPrimary
-                        : palette.secondarySoftBorder,
+                          ? palette.rowBorderPrimary
+                          : palette.secondarySoftBorder,
                     }}
                   >
                     {/* Name */}
                     <Text className="font-orbitron text-white text-sm mb-3 text-center">
                       {item.name}
                     </Text>
-                    
+
                     {/* Icon */}
                     <Image
                       source={item.iconPath}
@@ -317,22 +406,35 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
                       resizeMode="contain"
                       className="mb-3"
                     />
-                    
+
                     {/* Price or Owned/Equipped */}
                     {isEquipped ? (
-                      <View className="px-3 py-1.5 rounded-full" style={{ backgroundColor: palette.tertiary + '80' }}>
+                      <View
+                        className="px-3 py-1.5 rounded-full"
+                        style={{ backgroundColor: palette.tertiary + "80" }}
+                      >
                         <Text className="font-orbitron-bold text-white text-sm">
                           Equipped
                         </Text>
                       </View>
                     ) : isUnlocked ? (
-                      <View className="px-3 py-1.5 rounded-full" style={{ backgroundColor: palette.secondary + '80' }}>
+                      <View
+                        className="px-3 py-1.5 rounded-full"
+                        style={{ backgroundColor: palette.secondary + "80" }}
+                      >
                         <Text className="font-orbitron-bold text-white text-sm">
                           Owned
                         </Text>
                       </View>
                     ) : (
-                      <View className="flex-row items-center px-3 py-1.5 rounded-full" style={{ backgroundColor: palette.accentSoft, borderWidth: 1, borderColor: palette.accentSoftBorder }}>
+                      <View
+                        className="flex-row items-center px-3 py-1.5 rounded-full"
+                        style={{
+                          backgroundColor: palette.accentSoft,
+                          borderWidth: 1,
+                          borderColor: palette.accentSoftBorder,
+                        }}
+                      >
                         <Image
                           source={require("../../assets/images/sprites/crystal.png")}
                           style={{ width: 16, height: 16 }}
@@ -353,23 +455,26 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
 
       {/* Confirmation Modal */}
       {confirmPurchase.item && (
-        <View 
+        <View
           style={{
-            position: 'absolute',
+            position: "absolute",
             top: 0,
             left: 0,
             right: 0,
             bottom: 0,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
           }}
         >
-          <View className="bg-[#1a1f3a] w-4/5 rounded-3xl p-6" style={{ borderWidth: 2, borderColor: palette.modalBorder }}>
+          <View
+            className="bg-[#1a1f3a] w-4/5 rounded-3xl p-6"
+            style={{ borderWidth: 2, borderColor: palette.modalBorder }}
+          >
             <Text className="font-orbitron-bold text-white text-xl mb-4 text-center">
               Confirm Purchase
             </Text>
-            
+
             <View className="items-center mb-4">
               <Image
                 source={confirmPurchase.item.iconPath}
@@ -380,8 +485,15 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
               <Text className="font-orbitron text-white text-lg mb-2">
                 {confirmPurchase.item.name}
               </Text>
-              
-              <View className="flex-row items-center px-4 py-2 rounded-full" style={{ backgroundColor: palette.accentSoft, borderWidth: 1, borderColor: palette.accentSoftBorder }}>
+
+              <View
+                className="flex-row items-center px-4 py-2 rounded-full"
+                style={{
+                  backgroundColor: palette.accentSoft,
+                  borderWidth: 1,
+                  borderColor: palette.accentSoftBorder,
+                }}
+              >
                 <Image
                   source={require("../../assets/images/sprites/crystal.png")}
                   style={{ width: 20, height: 20 }}
@@ -406,7 +518,7 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
                   Cancel
                 </Text>
               </TouchableOpacity>
-              
+
               <TouchableOpacity
                 onPress={confirmPurchaseItem}
                 className="flex-1 py-3 rounded-xl"
