@@ -11,6 +11,7 @@ import { Text } from '../../TTS';
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
 import { getFirestore, doc, getDoc, updateDoc, increment } from "firebase/firestore";
+import { useColorPalette } from "../styles/colorBlindThemes";
 
 interface ShopModalProps {
   visible: boolean;
@@ -49,6 +50,7 @@ const shopItems: ShopItem[] = [
 ];
 
 export default function ShopModal({ visible, onClose, onRocksChange }: ShopModalProps) {
+  const palette = useColorPalette();
   const [selectedPage, setSelectedPage] = useState(0);
   const [rocks, setRocks] = useState<number>(0);
   const [unlockedItems, setUnlockedItems] = useState<{
@@ -221,16 +223,17 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
       onRequestClose={onClose}
     >
       <View className="flex-1 justify-center items-center bg-black/50">
-        <View className="bg-[#1a1f3a] w-11/12 h-4/5 rounded-3xl border-2 border-purple-500/30 shadow-2xl">
+        <View className="bg-[#1a1f3a] w-11/12 h-4/5 rounded-3xl shadow-2xl" style={{ borderWidth: 2, borderColor: palette.modalBorder }}>
           {/* Header */}
-          <View className="p-5 border-b-2 border-purple-500/30">
+          <View className="p-5 border-b-2" style={{ borderColor: palette.divider }}>
             <View className="flex-row justify-between items-center mb-4">
               <Text className="text-white font-orbitron-bold text-2xl">
                 Shop
               </Text>
               <TouchableOpacity
                 onPress={onClose}
-                className="bg-purple-600 rounded-full p-2"
+                className="rounded-full p-2"
+                style={{ backgroundColor: palette.accent }}
               >
                 <Ionicons name="close" size={24} color="white" />
               </TouchableOpacity>
@@ -247,11 +250,16 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
                 <TouchableOpacity
                   key={page.id}
                   onPress={() => setSelectedPage(page.id)}
-                  className={`px-4 py-3 rounded-xl flex-row items-center gap-2 ${
-                    selectedPage === page.id
-                      ? "bg-purple-600"
-                      : "bg-purple-900/50"
-                  }`}
+                  className="px-4 py-3 rounded-xl flex-row items-center gap-2"
+                  style={{
+                    backgroundColor: selectedPage === page.id
+                      ? palette.accent
+                      : palette.secondarySoft,
+                    borderWidth: 1,
+                    borderColor: selectedPage === page.id
+                      ? palette.accentActiveBorder
+                      : palette.secondarySoftBorder,
+                  }}
                 >
                   <Image
                     source={page.iconPath}
@@ -259,11 +267,8 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
                     resizeMode="contain"
                   />
                   <Text
-                    className={`font-orbitron ${
-                      selectedPage === page.id
-                        ? "text-white"
-                        : "text-purple-300"
-                    }`}
+                    className="font-orbitron"
+                    style={{ color: selectedPage === page.id ? "white" : palette.sectionTextColor }}
                   >
                     {page.name}
                   </Text>
@@ -285,13 +290,20 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
                   <TouchableOpacity
                     key={item.id}
                     onPress={() => handlePurchase(item, index)}
-                    className={`w-[48%] border-2 rounded-2xl p-4 mb-4 items-center ${
-                      isEquipped
-                        ? "bg-yellow-900/30 border-yellow-500/40"
+                    className="w-[48%] rounded-2xl p-4 mb-4 items-center"
+                    style={{
+                      borderWidth: 2,
+                      backgroundColor: isEquipped
+                        ? palette.tertiarySoft
                         : isUnlocked
-                        ? "bg-green-900/30 border-green-500/40"
-                        : "bg-purple-900/30 border-purple-500/40"
-                    }`}
+                        ? palette.rowBgPrimary
+                        : palette.secondarySoft,
+                      borderColor: isEquipped
+                        ? palette.tertiarySoftBorder
+                        : isUnlocked
+                        ? palette.rowBorderPrimary
+                        : palette.secondarySoftBorder,
+                    }}
                   >
                     {/* Name */}
                     <Text className="font-orbitron text-white text-sm mb-3 text-center">
@@ -308,19 +320,19 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
                     
                     {/* Price or Owned/Equipped */}
                     {isEquipped ? (
-                      <View className="bg-yellow-600/50 px-3 py-1.5 rounded-full">
+                      <View className="px-3 py-1.5 rounded-full" style={{ backgroundColor: palette.tertiary + '80' }}>
                         <Text className="font-orbitron-bold text-white text-sm">
                           Equipped
                         </Text>
                       </View>
                     ) : isUnlocked ? (
-                      <View className="bg-green-600/50 px-3 py-1.5 rounded-full">
+                      <View className="px-3 py-1.5 rounded-full" style={{ backgroundColor: palette.secondary + '80' }}>
                         <Text className="font-orbitron-bold text-white text-sm">
                           Owned
                         </Text>
                       </View>
                     ) : (
-                      <View className="flex-row items-center bg-purple-600/50 px-3 py-1.5 rounded-full">
+                      <View className="flex-row items-center px-3 py-1.5 rounded-full" style={{ backgroundColor: palette.accentSoft, borderWidth: 1, borderColor: palette.accentSoftBorder }}>
                         <Image
                           source={require("../../assets/images/sprites/crystal.png")}
                           style={{ width: 16, height: 16 }}
@@ -353,7 +365,7 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
             backgroundColor: 'rgba(0, 0, 0, 0.7)',
           }}
         >
-          <View className="bg-[#1a1f3a] w-4/5 rounded-3xl p-6 border-2 border-purple-500/40">
+          <View className="bg-[#1a1f3a] w-4/5 rounded-3xl p-6" style={{ borderWidth: 2, borderColor: palette.modalBorder }}>
             <Text className="font-orbitron-bold text-white text-xl mb-4 text-center">
               Confirm Purchase
             </Text>
@@ -369,7 +381,7 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
                 {confirmPurchase.item.name}
               </Text>
               
-              <View className="flex-row items-center bg-purple-600/50 px-4 py-2 rounded-full">
+              <View className="flex-row items-center px-4 py-2 rounded-full" style={{ backgroundColor: palette.accentSoft, borderWidth: 1, borderColor: palette.accentSoftBorder }}>
                 <Image
                   source={require("../../assets/images/sprites/crystal.png")}
                   style={{ width: 20, height: 20 }}
@@ -397,7 +409,8 @@ export default function ShopModal({ visible, onClose, onRocksChange }: ShopModal
               
               <TouchableOpacity
                 onPress={confirmPurchaseItem}
-                className="flex-1 bg-purple-600 py-3 rounded-xl"
+                className="flex-1 py-3 rounded-xl"
+                style={{ backgroundColor: palette.accent }}
               >
                 <Text className="font-orbitron-bold text-white text-center">
                   Purchase
