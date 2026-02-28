@@ -92,7 +92,8 @@
     "coachMarkProfiletitle": "查看您的个人资料",
     "coachMarkProfile": "点击这里查看您的个人资料，跟踪您的进度并个性化您的头像！",
     "coachMarksettings": "点击这里调整您的偏好设置，管理通知等！",
-    "coachMarktakeoff": "点击这里开始专注会话，朝着您的目标起飞！"
+    "coachMarktakeoff": "点击这里开始专注会话，朝着您的目标起飞！",
+    "coachMarkshop": "点击这里访问商店，并使用新的身体和翅膀自定义您的头像！"
   },
   "Settings": {
     "title": "设置",
@@ -155,6 +156,25 @@
     "Resume": "继续",
     "Pause": "暂停",
     "Land": "着陆",
-    "Play": "开始游戏"
+    "Play": "开始游戏",
+    "coachMarkTime": "这是您当前会话的剩余时间，结束时您将能够返回您的星球或玩游戏。专注并观看它倒计时！",
+    "coachMarkwork": "这表示您是在工作时段还是休息时段。工作时段保持专注，休息时放松！",
+    "coachMarkPause": "如果您需要进行非计划的休息，请点击这里暂停您的会话。",
+    "coachMarkLand": "点击这里结束您的会话并返回您的星球。在您的专注时间上做得很好！"
+  },
+    "Shop": {
+    "title": "商店",
+    "body": "身体",
+    "wings": "翅膀",
+    "bBody": "蓝色身体",
+    "rBody": "红色身体",
+    "yBody": "黄色身体",
+    "gBody": "绿色身体",
+    "bWings": "蓝色翅膀",
+    "rWings": "红色翅膀",
+    "yWings": "黄色翅膀",
+    "gWings": "绿色翅膀",
+    "equipped": "已装备",
+    "owned": "已拥有"
   }
 }

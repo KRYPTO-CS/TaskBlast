@@ -70,6 +70,12 @@ export default function HomeScreen() {
     title: t("Home.takeoff"),
     description: t("Home.coachMarktakeoff"),
   },
+  {
+    id: "shop-section",
+    title: t("Shop.title"),
+    description: t("Home.coachMarkshop"),
+  },
+
 ]),
   [t]
  );
@@ -229,38 +235,55 @@ export default function HomeScreen() {
     }, [loadScore, musicPlayer, musicEnabled]),
   );
 
-useFocusEffect(
-  useCallback(() => {
-    if (
-      hasStartedTour.current ||
-      isTaskModalVisible ||
-      isSettingsModalVisible ||
-      isShopModalVisible ||
-      isPlanetModalVisible
-    ) {
-      return;
-    }
+// useFocusEffect(
+//   useCallback(() => {
+//     if (
+//       hasStartedTour.current ||
+//       isTaskModalVisible ||
+//       isSettingsModalVisible ||
+//       isShopModalVisible ||
+//       isPlanetModalVisible
+//     ) {
+//       return;
+//     }
 
-    const timeout = setTimeout(async () => {
-      const alreadySeen = await AsyncStorage.getItem("onboardingSeen");
+//     const timeout = setTimeout(async () => {
+//       const alreadySeen = await AsyncStorage.getItem("onboardingSeen");
 
-      if (!alreadySeen) {
-        await AsyncStorage.setItem("onboardingSeen", "true");
-        hasStartedTour.current = true;
-        start(onboardingTour);
-      }
-    }, 700); // give layout time
+//       if (!alreadySeen) {
+//         await AsyncStorage.setItem("onboardingSeen", "true");
+//         hasStartedTour.current = true;
+//         start(onboardingTour);
+//       }
+//     }, 700); 
 
-    return () => clearTimeout(timeout);
-  }, [
-    isTaskModalVisible,
-    isSettingsModalVisible,
-    isShopModalVisible,
-    isPlanetModalVisible,
-    onboardingTour
-  ])
-);
+//     return () => clearTimeout(timeout);
+//   }, [
+//     isTaskModalVisible,
+//     isSettingsModalVisible,
+//     isShopModalVisible,
+//     isPlanetModalVisible,
+//     onboardingTour
+//   ])
+// );
 
+  useFocusEffect( 
+
+  useCallback(() => { 
+
+    const timeout = setTimeout(() => { 
+
+      start(onboardingTour); 
+
+    }, 300); 
+
+  
+
+    return () => clearTimeout(timeout); 
+
+  }, []) 
+
+); 
   return (
     <View className="flex-1">
       {/* Animated stars background */}
@@ -327,37 +350,42 @@ useFocusEffect(
         </View>
 
         {/* Top Left - Crystals & Galaxy Crystals */}
+        
         <View className="justify-start items-start gap-3 mt-11 ml-0">
+          <CoachmarkAnchor id="shop-section" shape="circle">
+          
           {/* Crystals */}
+
           <TouchableOpacity
             className="flex-row items-center bg-gradient-to-r from-pink-600 to-pink-400 px-5 py-2.5 rounded-full shadow-lg shadow-pink-500/70 border-2 border-pink-300/30"
             style={{ shadowOffset: { width: 0, height: 0 }, width: 140 }}
             onPress={() => setIsShopModalVisible(true)}
-          >
+            >
             <Image
               source={require("../../assets/images/sprites/crystal.png")}
               className="w-7 h-7 mr-1"
               resizeMode="contain"
               style={{ transform: [{ scale: 1.5 }] }}
-            />
+              />
             <Text className="font-orbitron-bold text-white text-md ml-2">
               {String(rocks).padStart(4, "0")}
             </Text>
           </TouchableOpacity>
 
+          </CoachmarkAnchor>
           {/* Galaxy Crystals */}
           <TouchableOpacity
             className="flex-row items-center bg-gradient-to-r from-indigo-900 to-indigo-700 px-5 py-2.5 rounded-full shadow-lg shadow-indigo-400/70 border-2 border-indigo-600/30"
             style={{ shadowOffset: { width: 0, height: 0 }, width: 140 }}
             onPress={() => setIsShopModalVisible(true)}
-          >
+            >
             <Image
               testID="fuel-icon"
               source={require("../../assets/images/sprites/galaxyCrystal.png")}
               className="w-7 h-7 mr-1"
               resizeMode="contain"
               style={{ transform: [{ scale: 1.5 }], marginBottom: 2 }}
-            />
+              />
             <Text className="font-orbitron-bold text-white text-md ml-2">
               0000
             </Text>
@@ -389,6 +417,7 @@ useFocusEffect(
         />
 
         {/* Planet Modal */}
+        
         <PlanetModal
           visible={isPlanetModalVisible}
           onClose={() => setIsPlanetModalVisible(false)}

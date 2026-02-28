@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   View,
   Text,
@@ -56,7 +56,9 @@ export default function ProfileScreen() {
   const [currentRocks, setCurrentRocks] = useState<number>(0);
   const {t ,i18n} = useTranslation();
   const {start} = useCoachmark();
-  const onboardingTour = createTour("onboarding", [
+  const hasStartedTour = useRef(false);
+ const onboardingTour = React.useMemo(() =>
+  createTour("profile-onboarding", [
     {
       id: "edit-profile-button",
       title: t("Profile.editP"),
@@ -66,7 +68,6 @@ export default function ProfileScreen() {
       id: "traits-section",
       title: t("Profile.coachMarkTraitsTitle"),
       description: t("Profile.coachMarkTraits"),
-
     },
     {
       id: "awards-section",
@@ -77,9 +78,10 @@ export default function ProfileScreen() {
       id: "stats-section",
       title: t("Profile.coachMarkStatsTitle"),
       description: t("Profile.coachMarkStats"),
-    }
-  ]);
-  
+    },
+  ]),
+[t]
+);
 
   // Load user profile on component mount
  useEffect(() => {
@@ -407,15 +409,41 @@ export default function ProfileScreen() {
   const handleProfileUpdate = (updatedProfile: UserProfile) => {
     setUserProfile(updatedProfile);
   };
-   useFocusEffect(
-    useCallback(() => {
-      const timeout = setTimeout(() => {
-        start(onboardingTour);
-      }, 300);
+// useFocusEffect(
+//   useCallback(() => {
+//     if (hasStartedTour.current) return;
+
+//     const timeout = setTimeout(async () => {
+//       const seen = await AsyncStorage.getItem("profileOnboardingSeen");
+
+//       if (!seen) {
+//         await AsyncStorage.setItem("profileOnboardingSeen", "true");
+//         hasStartedTour.current = true;
+//         start(onboardingTour);
+//       }
+//     }, 700); // give ScrollView + WebViews time to mount
+
+//     return () => clearTimeout(timeout);
+//   }, [onboardingTour])
+// );
+
+  useFocusEffect( 
+
+  useCallback(() => { 
+
+    const timeout = setTimeout(() => { 
+
+      start(onboardingTour); 
+
+    }, 300); 
+
   
-      return () => clearTimeout(timeout);
-    }, [])
-  );
+
+    return () => clearTimeout(timeout); 
+
+  }, []) 
+
+); 
 
   return (
     <View className="flex-1">

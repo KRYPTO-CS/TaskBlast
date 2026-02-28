@@ -92,7 +92,8 @@
     "coachMarkProfiletitle": "Ihr Profil ansehen",
     "coachMarkProfile": "Tippen Sie hier, um Ihr Profil anzusehen, Ihren Fortschritt zu verfolgen und Ihren Avatar anzupassen!",
     "coachMarksettings": "Tippen Sie hier, um Ihre Einstellungen anzupassen, Benachrichtigungen zu verwalten und mehr!",
-    "coachMarktakeoff": "Tippen Sie hier, um eine Fokus-Sitzung zu starten und in Richtung Ihrer Ziele abzuheben!"
+    "coachMarktakeoff": "Tippen Sie hier, um eine Fokus-Sitzung zu starten und in Richtung Ihrer Ziele abzuheben!",
+    "coachMarkshop": "Tippen Sie hier, um den Shop zu besuchen und Ihren Avatar mit neuen Körpern und Flügeln anzupassen!"
   },
   "Settings": {
     "title": "Einstellungen",
@@ -155,6 +156,25 @@
     "Resume": "Fortsetzen",
     "Pause": "Pause",
     "Land": "Land",
-    "Play": "Spiel starten"
+    "Play": "Spiel starten",
+    "coachMarkTime": "Dies ist die verbleibende Zeit in Ihrer aktuellen Sitzung, am Ende können Sie zurück auf Ihrem Planeten landen oder ein Spiel spielen. Konzentrieren Sie sich und beobachten Sie den Countdown!",
+    "coachMarkwork": "Dies zeigt an, ob Sie sich in einer Arbeitszeit oder in einer Pause befinden. Bleiben Sie während der Arbeitszeiten konzentriert und entspannen Sie sich während der Pausen!",
+    "coachMarkPause": "Tippen Sie hier, um Ihre Sitzung zu pausieren, wenn Sie eine ungeplante Pause einlegen müssen.",
+    "coachMarkLand": "Tippen Sie hier, um Ihre Sitzung zu beenden und zurück auf Ihrem Planeten zu landen. Großartige Arbeit bei Ihrer Fokuszeit!"
+  },
+    "Shop": {
+    "title": "Shop",
+    "body": "Körper",
+    "wings": "Flügel",
+    "bBody": "Blauer Körper",
+    "rBody": "Roter Körper",
+    "yBody": "Gelber Körper",
+    "gBody": "Grüner Körper",
+    "bWings": "Blaue Flügel",
+    "rWings": "Rote Flügel",
+    "yWings": "Gelbe Flügel",
+    "gWings": "Grüne Flügel",
+    "equipped": "Ausgerüstet",
+    "owned": "Besitzt"
   }
 }

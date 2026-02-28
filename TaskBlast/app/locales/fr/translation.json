@@ -92,7 +92,8 @@
     "coachMarkProfiletitle": "Voir votre profil",
     "coachMarkProfile": "Appuyez ici pour voir votre profil, suivre vos progrès et personnaliser votre avatar !",
     "coachMarksettings": "Appuyez ici pour ajuster vos préférences, gérer les notifications et plus encore !",
-    "coachMarktakeoff": "Appuyez ici pour démarrer une session de concentration et décoller vers vos objectifs !"
+    "coachMarktakeoff": "Appuyez ici pour démarrer une session de concentration et décoller vers vos objectifs !",
+    "coachMarkshop": "Appuyez ici pour visiter la boutique et personnaliser votre avatar avec de nouveaux corps et ailes !"
   },
   "Settings": {
     "title": "Paramètres",
@@ -149,5 +150,34 @@
     "coachMarkStatsTitle": "Voir les statistiques",
     "coachMarkStats": "Ici, vous pouvez voir vos statistiques et suivre votre progression au fil du temps !"
 
+  },
+  "Pomodoro": {
+    "time": "Temps restant",
+    "work": "Travail",
+    "play": "Pause",
+    "Resume": "Reprendre",
+    "Pause": "Pause",
+    "Land": "Atterrir",
+    "Play": "Jouer à un jeu",
+    "coachMarkTime": "Ceci est le temps restant dans votre session actuelle, à la fin vous pourrez atterrir de nouveau sur votre planète ou jouer à un jeu. Concentrez-vous et regardez-le compter à rebours !",
+    "coachMarkwork": "Cela indique si vous êtes dans une session de travail ou une pause. Restez concentré pendant les sessions de travail et détendez-vous pendant les pauses !",
+    "coachMarkPause": "Appuyez ici pour mettre votre session en pause si vous devez prendre une pause imprévue.",
+    "coachMarkLand": "Appuyez ici pour terminer votre session et atterrir de nouveau sur votre planète. Bon travail sur votre temps de concentration !"
+   },
+  "Shop": {
+    "title": "Boutique",
+    "body": "Corps",
+    "wings": "Ailes",
+    "bBody": "Corps Bleu",
+    "rBody": "Corps Rouge",
+    "yBody": "Corps Jaune",
+    "gBody": "Corps Vert",
+    "bWings": "Ailes Bleues",
+    "rWings": "Ailes Rouges",
+    "yWings": "Ailes Jaunes",
+    "gWings": "Ailes Vertes",
+    "equipped": "Équipé",
+    "owned": "Possédé"
   }
+
 }

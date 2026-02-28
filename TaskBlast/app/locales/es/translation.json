@@ -92,7 +92,8 @@
     "coachMarkProfiletitle": "Ver tu perfil",
     "coachMarkProfile": "Toca aquí para ver tu perfil, seguir tu progreso y personalizar tu avatar!",
     "coachMarksettings": "Toca aquí para ajustar tus preferencias, gestionar notificaciones y más!",
-    "coachMarktakeoff": "Toca aquí para iniciar una sesión de enfoque y despegar hacia tus metas!"
+    "coachMarktakeoff": "Toca aquí para iniciar una sesión de enfoque y despegar hacia tus metas!",
+    "coachMarkshop": "Toca aquí para visitar la tienda y personalizar tu avatar con nuevos cuerpos y alas!"
   },
   "Settings": {
     "title": "Configuración",
@@ -156,7 +157,11 @@
     "Resume": "Reanudar",
     "Pause": "Pausar",
     "Land": "Aterrizar",
-    "Play": "Jugar Juego"
+    "Play": "Jugar Juego",
+    "coachMarkTime": "Este es el tiempo restante en tu sesión actual al final podrás aterrizar de nuevo en tu planeta o jugar un juego. ¡Concéntrate y míralo contar regresivamente!",
+    "coachMarkwork": "Esto indica si estás en una sesión de trabajo o un descanso. ¡Mantente enfocado durante las sesiones de trabajo y relájate durante los descansos!",
+    "coachMarkPause": "Toca aquí para pausar tu sesión si necesitas tomar un descanso no programado.",
+    "coachMarkLand": "Toca aquí para finalizar tu sesión y aterrizar de nuevo en tu planeta. ¡Buen trabajo en tu tiempo de enfoque!"
   },
   "Shop": {
     "title": "Tienda",

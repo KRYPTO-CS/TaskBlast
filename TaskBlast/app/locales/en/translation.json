@@ -94,7 +94,8 @@
     "coachMarkProfiletitle": "View Your Profile",
     "coachMarkProfile": "Tap here to view your profile, track your progress, and customize your avatar!",
     "coachMarksettings": "Tap here to adjust your preferences, manage notifications, and more!",
-    "coachMarktakeoff": "Tap here to start a focus session and blast off towards your goals!"
+    "coachMarktakeoff": "Tap here to start a focus session and blast off towards your goals!",
+    "coachMarkshop": "Tap here to visit the shop and customize your avatar with new bodies and wings!"
   },
   "Settings": {
     "title": "Settings",
@@ -158,7 +159,11 @@
     "Resume": "Resume",
     "Pause": "Pause",
     "Land": "Land",
-    "Play": "Play Game"
+    "Play": "Play Game",
+    "coachMarkTime": "This is the time remaining in your current session at the end you will be able to land back on your planet or play a game. Focus and watch it count down!",
+    "coachMarkwork": "This indicates whether you're in a work session or a break. Stay focused during work sessions and relax during breaks!",
+    "coachMarkPause": "Tap here to pause your session if you need to take an unscheduled break.",
+    "coachMarkLand": "Tap here to end your session and land back on you planet. Great job on your focus time!"
   },
   "Shop": {
     "title": "Shop",
