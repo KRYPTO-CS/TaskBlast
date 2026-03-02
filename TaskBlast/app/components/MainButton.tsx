@@ -67,7 +67,12 @@ export default function MainButton({
     const sizeTextStyle = size !== "medium" ? buttonText[size] : {};
     const colorOverride =
       variant === "primary" ? { color: palette.buttonPrimaryText } : {};
-    return { ...baseTextStyle, ...sizeTextStyle, ...colorOverride, ...textStyle };
+    return {
+      ...baseTextStyle,
+      ...sizeTextStyle,
+      ...colorOverride,
+      ...textStyle,
+    };
   };
 
   const getBorderRadius = () => {
