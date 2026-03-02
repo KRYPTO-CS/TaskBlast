@@ -283,16 +283,15 @@ export default function PomodoroScreen() {
           if (prev <= 1) {
             // Timer finished
             setIsRunning(false);
+            console.log("Timer finished");
             try {
               player.pause();
             } catch (e) {
               console.warn("Audio player error on timer finish:", e);
             }
             setFinished(true);
-            // Show completion notification
-            notifyTimerComplete(taskName, false).catch((err) =>
-              console.warn("Notification error:", err),
-            );
+
+            // restore original flow
             if(!hasRecordedRef.current) {
               // Increment completed cycles
               incrementCompletedCycles();
@@ -301,6 +300,12 @@ export default function PomodoroScreen() {
               recordWorkSession(workTime);
               hasRecordedRef.current = true;
             }
+
+            // Show completion notification
+            notifyTimerComplete(taskName, false).catch((err) =>
+              console.warn("Notification error:", err),
+            );
+
             return 0;
           }
           return prev - 1;
