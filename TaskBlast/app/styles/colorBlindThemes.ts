@@ -115,6 +115,14 @@ export interface ColorPalette {
   errorSoftBorder: string;
   /** Danger icon / text color */
   errorIcon: string;
+
+  // ── Primary button colors ─────────────────────────────────────────────────────
+  /** Background color of the primary button face */
+  buttonPrimaryBg: string;
+  /** 3D dark shadow layer color of the primary button */
+  buttonPrimaryDark: string;
+  /** Text/label color on the primary button */
+  buttonPrimaryText: string;
 }
 
 // ─── Palette definitions ──────────────────────────────────────────────────────
@@ -173,6 +181,10 @@ const palettes: Record<ColorBlindMode, ColorPalette> = {
     errorSoft: "rgba(239, 68, 68, 0.2)",
     errorSoftBorder: "rgba(239, 68, 68, 0.3)",
     errorIcon: "#ef4444",
+    // Primary button
+    buttonPrimaryBg: "#9DE8B2",
+    buttonPrimaryDark: "#437B00",
+    buttonPrimaryText: "#1f1f1f",
   },
 
   /**
@@ -229,6 +241,10 @@ const palettes: Record<ColorBlindMode, ColorPalette> = {
     errorSoft: "rgba(239, 68, 68, 0.2)",
     errorSoftBorder: "rgba(239, 68, 68, 0.3)",
     errorIcon: "#ef4444",
+    // Primary button (blue/amber safe pair for red/green deficiency)
+    buttonPrimaryBg: "#93c5fd",
+    buttonPrimaryDark: "#1d4ed8",
+    buttonPrimaryText: "#1e3a5f",
   },
 
   /**
@@ -285,6 +301,10 @@ const palettes: Record<ColorBlindMode, ColorPalette> = {
     errorSoft: "rgba(239, 68, 68, 0.2)",
     errorSoftBorder: "rgba(239, 68, 68, 0.3)",
     errorIcon: "#ef4444",
+    // Primary button (deep blue pair for red deficiency)
+    buttonPrimaryBg: "#bfdbfe",
+    buttonPrimaryDark: "#1d3a8a",
+    buttonPrimaryText: "#1e293b",
   },
 
   /**
@@ -341,6 +361,10 @@ const palettes: Record<ColorBlindMode, ColorPalette> = {
     errorSoft: "rgba(180, 83, 9, 0.2)",
     errorSoftBorder: "rgba(180, 83, 9, 0.3)",
     errorIcon: "#b45309",
+    // Primary button (light red / dark red safe pair for blue/yellow deficiency)
+    buttonPrimaryBg: "#fca5a5",
+    buttonPrimaryDark: "#991b1b",
+    buttonPrimaryText: "#1f1f1f",
   },
 };
 
@@ -383,6 +407,10 @@ function applyHighContrast(base: ColorPalette): ColorPalette {
     secondaryMedBold: b(base.secondaryMedBold, "0.6"),
     secondaryLightBorder: b(base.secondaryLightBorder, "0.85"),
     secondaryDeepBg: b(base.secondaryDeepBg, "0.5"),
+    // Primary button colors — solid hex, pass through unchanged
+    buttonPrimaryBg: base.buttonPrimaryBg,
+    buttonPrimaryDark: base.buttonPrimaryDark,
+    buttonPrimaryText: base.buttonPrimaryText,
     // Stats accent → boosted opacity
     statsAccentSoft: b(base.statsAccentSoft, "0.45"),
     statsAccentBorder: b(base.statsAccentBorder, "0.85"),
