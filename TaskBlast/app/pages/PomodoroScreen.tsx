@@ -293,8 +293,14 @@ export default function PomodoroScreen() {
             notifyTimerComplete(taskName, false).catch((err) =>
               console.warn("Notification error:", err),
             );
-            // Increment completed cycles
-            incrementCompletedCycles();
+            if(!hasRecordedRef.current) {
+              // Increment completed cycles
+              incrementCompletedCycles();
+
+              // Record this work session (in minutes)
+              recordWorkSession(workTime);
+              hasRecordedRef.current = true;
+            }
             return 0;
           }
           return prev - 1;
