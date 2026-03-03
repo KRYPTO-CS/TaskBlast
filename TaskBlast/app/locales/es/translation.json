@@ -157,7 +157,6 @@
     "coachMarkAwards": "¡Aquí puedes ver tus recompensas y logros!",
     "coachMarkStatsTitle": "Ver Estadísticas",
     "coachMarkStats": "¡Aquí puedes ver tus estadísticas y seguir tu progreso a lo largo del tiempo!"
-
   },
   "Pomodoro": {
     "time": "Tiempo Restante",
@@ -184,6 +183,6 @@
     "gWings": "Alas Verdes",
     "yWings": "Alas Amarillas",
     "equipped": "Equipado",
-    "owned" : "Poseído"
+    "owned": "Poseído"
   }
 }

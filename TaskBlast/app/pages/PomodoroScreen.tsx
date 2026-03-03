@@ -9,7 +9,7 @@ import {
   Easing,
   TouchableOpacity,
 } from "react-native";
-import { Text } from '../../TTS';
+import { Text } from "../../TTS";
 import { useRouter, useLocalSearchParams, useFocusEffect } from "expo-router";
 import MainButton from "../components/MainButton";
 import GameSelectionModal from "../components/GameSelectionModal";
@@ -29,7 +29,11 @@ import { useAudio } from "../context/AudioContext";
 import { useTranslation } from "react-i18next";
 import { useNotifications } from "../context/NotificationContext";
 import { useColorPalette } from "../styles/colorBlindThemes";
-import { CoachmarkAnchor, useCoachmark, createTour } from '@edwardloopez/react-native-coachmark';
+import {
+  CoachmarkAnchor,
+  useCoachmark,
+  createTour,
+} from "@edwardloopez/react-native-coachmark";
 // Ship component image mappings
 const BODY_IMAGES: { [key: number]: any } = {
   0: require("../../assets/images/ship_components/body/0.png"),
@@ -58,29 +62,30 @@ export default function PomodoroScreen() {
   const cycles = params.cycles ? parseInt(params.cycles as string) : 1;
   const taskId = params.taskId as string;
   const allowMinimization = params.allowMinimization === "true" || false;
-    const {start} = useCoachmark();
-    const {t ,i18n} = useTranslation();
-    const hasStartedTour = useRef(false);
-   const onboardingTour = React.useMemo(() => createTour("onboarding", [
-    {
-      id: "time-section",
-      title: t("Pomodoro.time"),
-      description: t("Pomodoro.coachMarkTime"),
-    },
-    {
-      id: "pause-button",
-      title: t("Pomodoro.Pause"),
-      description: t("Pomodoro.coachMarkPause"),
-    },
-    {
-      id: "land-button",
-      title: t("Pomodoro.Land"),
-      description: t("Pomodoro.coachMarkLand"),
-    },
-  
-  ]),
-    [t]
-   );
+  const { start } = useCoachmark();
+  const { t, i18n } = useTranslation();
+  const hasStartedTour = useRef(false);
+  const onboardingTour = React.useMemo(
+    () =>
+      createTour("onboarding", [
+        {
+          id: "time-section",
+          title: t("Pomodoro.time"),
+          description: t("Pomodoro.coachMarkTime"),
+        },
+        {
+          id: "pause-button",
+          title: t("Pomodoro.Pause"),
+          description: t("Pomodoro.coachMarkPause"),
+        },
+        {
+          id: "land-button",
+          title: t("Pomodoro.Land"),
+          description: t("Pomodoro.coachMarkLand"),
+        },
+      ]),
+    [t],
+  );
 
   // Timer state
   const [timeLeft, setTimeLeft] = useState(workTime * 60); // Convert minutes to seconds
@@ -97,7 +102,6 @@ export default function PomodoroScreen() {
   const tapCount = useRef(0);
   const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasRecordedRef = useRef(false);
-  const { t, i18n } = useTranslation();
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -315,7 +319,7 @@ export default function PomodoroScreen() {
             setFinished(true);
 
             // restore original flow
-            if(!hasRecordedRef.current) {
+            if (!hasRecordedRef.current) {
               // Increment completed cycles
               incrementCompletedCycles();
 
@@ -486,23 +490,15 @@ export default function PomodoroScreen() {
     return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
   };
 
-    useFocusEffect( 
-  
-    useCallback(() => { 
-  
-      const timeout = setTimeout(() => { 
-  
-        start(onboardingTour); 
-  
-      }, 300); 
-  
-    
-  
-      return () => clearTimeout(timeout); 
-  
-    }, []) 
-  
-  ); 
+  useFocusEffect(
+    useCallback(() => {
+      const timeout = setTimeout(() => {
+        start(onboardingTour);
+      }, 300);
+
+      return () => clearTimeout(timeout);
+    }, []),
+  );
 
   return (
     <View className="flex-1" style={{ backgroundColor: "#0d1b2a" }}>
@@ -570,14 +566,14 @@ export default function PomodoroScreen() {
         {/* Time Left Display */}
         <View className="items-center mt-6">
           <View className="bg-gradient-to-br from-purple-600/80 to-pink-500/80 px-8 py-4 rounded-3xl shadow-lg shadow-purple-500/50 border-2 border-pink-300/30">
-            <CoachmarkAnchor id="time-section"  shape="circle">
-            <Text
-              testID="timer-display"
-              className="font-orbitron-bold text-white text-4xl"
-            >
-              {formatTime(timeLeft)}
-            </Text>
-              </CoachmarkAnchor>
+            <CoachmarkAnchor id="time-section" shape="circle">
+              <Text
+                testID="timer-display"
+                className="font-orbitron-bold text-white text-4xl"
+              >
+                {formatTime(timeLeft)}
+              </Text>
+            </CoachmarkAnchor>
           </View>
           <Text className="font-orbitron text-white/80 text-lg mt-2">
             {t("Pomodoro.time")}
@@ -654,42 +650,42 @@ export default function PomodoroScreen() {
         {/* Pause/Land Buttons */}
         <View className="items-center mb-24">
           <View className="flex-col gap-4 w-48">
-            <CoachmarkAnchor id="pause-button"  shape="circle">
-            {hasPlayedGame ? (
+            <CoachmarkAnchor id="pause-button" shape="circle">
+              {hasPlayedGame ? (
+                <MainButton
+                  title={t("Pomodoro.Resume")}
+                  onPress={handleResumeTask}
+                  variant="info"
+                  testID="resume-task-button"
+                  customStyle={{ width: 192 }}
+                />
+              ) : timeLeft === 0 ? (
+                <MainButton
+                  title={t("Pomodoro.Play")}
+                  onPress={() => setShowGameSelection(true)}
+                  variant="info"
+                  testID="play-game-button"
+                  customStyle={{ width: 192 }}
+                />
+              ) : (
+                <MainButton
+                  title={isPaused ? t("Pomodoro.Resume") : t("Pomodoro.Pause")}
+                  onPress={handlePause}
+                  variant={isPaused ? "info" : "warning"}
+                  testID="pause-button"
+                  customStyle={{ width: 192 }}
+                />
+              )}
+            </CoachmarkAnchor>
+            <CoachmarkAnchor id="land-button" shape="circle">
               <MainButton
-                title={t("Pomodoro.Resume")}
-                onPress={handleResumeTask}
-                variant="info"
-                testID="resume-task-button"
+                title={t("Pomodoro.Land")}
+                onPress={handleLand}
+                variant={isTaskCompleted ? "success" : "error"}
+                testID="land-button"
                 customStyle={{ width: 192 }}
               />
-            ) : timeLeft === 0 ? (
-              <MainButton
-                title={t("Pomodoro.Play")}
-                onPress={() => setShowGameSelection(true)}
-                variant="info"
-                testID="play-game-button"
-                customStyle={{ width: 192 }}
-              />
-            ) : (
-              <MainButton
-                title={isPaused ? t("Pomodoro.Resume") : t("Pomodoro.Pause")}
-                onPress={handlePause}
-                variant={isPaused ? "info" : "warning"}
-                testID="pause-button"
-                customStyle={{ width: 192 }}
-              />
-            )}
-              </CoachmarkAnchor>
-              <CoachmarkAnchor id="land-button"  shape="circle">
-            <MainButton
-              title={t("Pomodoro.Land")}
-              onPress={handleLand}
-              variant={isTaskCompleted ? "success" : "error"}
-              testID="land-button"
-              customStyle={{ width: 192 }}
-            />
-              </CoachmarkAnchor>
+            </CoachmarkAnchor>
           </View>
         </View>
       </View>

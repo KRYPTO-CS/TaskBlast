@@ -86,7 +86,6 @@
     "continue": "Continue"
   },
 
-  
   "Home": {
     "takeoff": "Take Off",
     "coachMarktaskstitle": "Add new Tasks",
@@ -135,7 +134,7 @@
     "add": "Add Task",
     "editTask": "Edit Task",
     "save": "Save",
-    "coachMarkdesc": "This is where you can manage your tasks. Tap on a task to view details, start a focus session, or edit it. Use the tabs to switch between active and archived tasks.", 
+    "coachMarkdesc": "This is where you can manage your tasks. Tap on a task to view details, start a focus session, or edit it. Use the tabs to switch between active and archived tasks.",
     "Done": "Done"
   },
   "Profile": {
@@ -159,7 +158,6 @@
     "coachMarkAwards": "Here you can see your awards and accomplishments!",
     "coachMarkStatsTitle": "View Stats",
     "coachMarkStats": "Here you can see your stats and track your progress over time!"
-
   },
   "Pomodoro": {
     "time": "Time Remaining",
