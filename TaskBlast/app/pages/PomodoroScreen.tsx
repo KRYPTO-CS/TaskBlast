@@ -49,6 +49,9 @@ const WING_IMAGES: { [key: number]: any } = {
   3: require("../../assets/images/ship_components/wing/3.png"),
 };
 
+// Module-level variable to track if tour has been shown this app session
+let pomodoroTourShown = false;
+
 export default function PomodoroScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
@@ -64,7 +67,6 @@ export default function PomodoroScreen() {
   const allowMinimization = params.allowMinimization === "true" || false;
   const { start } = useCoachmark();
   const { t, i18n } = useTranslation();
-  const hasStartedTour = useRef(false);
   const onboardingTour = React.useMemo(
     () =>
       createTour("onboarding", [
@@ -492,12 +494,18 @@ export default function PomodoroScreen() {
 
   useFocusEffect(
     useCallback(() => {
+      // Only start tour if it hasn't been shown this app session
+      if (pomodoroTourShown) {
+        return;
+      }
+
       const timeout = setTimeout(() => {
+        pomodoroTourShown = true;
         start(onboardingTour);
       }, 300);
 
       return () => clearTimeout(timeout);
-    }, []),
+    }, [onboardingTour]),
   );
 
   return (

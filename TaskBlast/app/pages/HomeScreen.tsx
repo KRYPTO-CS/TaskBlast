@@ -36,7 +36,8 @@ import PlanetModal from "../components/PlanetModal";
 import { CoachmarkAnchor, useCoachmark, createTour } from '@edwardloopez/react-native-coachmark';
 
 
-
+// Module-level variable to track if tour has been shown this app session
+let homeTourShown = false;
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -48,7 +49,6 @@ export default function HomeScreen() {
   const [rocks, setRocks] = useState<number>(0);
   const {t ,i18n} = useTranslation();
   const {start} = useCoachmark();
-  const hasStartedTour = useRef(false);
  const onboardingTour = React.useMemo(() => createTour("onboarding", [
   {
     id: "task-button",
@@ -235,54 +235,20 @@ export default function HomeScreen() {
     }, [loadScore, musicPlayer, musicEnabled]),
   );
 
-// useFocusEffect(
-//   useCallback(() => {
-//     if (
-//       hasStartedTour.current ||
-//       isTaskModalVisible ||
-//       isSettingsModalVisible ||
-//       isShopModalVisible ||
-//       isPlanetModalVisible
-//     ) {
-//       return;
-//     }
+useFocusEffect(
+  useCallback(() => {
+    // Only start tour if it hasn't been shown this app session
+    if (homeTourShown) {
+      return;
+    }
 
-//     const timeout = setTimeout(async () => {
-//       const alreadySeen = await AsyncStorage.getItem("onboardingSeen");
+    const timeout = setTimeout(() => {
+      homeTourShown = true;
+      start(onboardingTour);
+    }, 300);
 
-//       if (!alreadySeen) {
-//         await AsyncStorage.setItem("onboardingSeen", "true");
-//         hasStartedTour.current = true;
-//         start(onboardingTour);
-//       }
-//     }, 700); 
-
-//     return () => clearTimeout(timeout);
-//   }, [
-//     isTaskModalVisible,
-//     isSettingsModalVisible,
-//     isShopModalVisible,
-//     isPlanetModalVisible,
-//     onboardingTour
-//   ])
-// );
-
-  useFocusEffect( 
-
-  useCallback(() => { 
-
-    const timeout = setTimeout(() => { 
-
-      start(onboardingTour); 
-
-    }, 300); 
-
-  
-
-    return () => clearTimeout(timeout); 
-
-  }, []) 
-
+    return () => clearTimeout(timeout);
+  }, [onboardingTour])
 ); 
   return (
     <View className="flex-1">
