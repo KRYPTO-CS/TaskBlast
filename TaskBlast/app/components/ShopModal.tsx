@@ -33,12 +33,14 @@ interface ShopModalProps {
 type ShopPage = {
   id: number;
   name: string;
+  nameKey: string;
   iconPath: any;
 };
 
 type ShopItem = {
   id: string;
   name: string;
+  nameKey: string;
   iconPath: any;
   price: number;
   category: "Body" | "Wings";
@@ -48,11 +50,13 @@ const shopPages: ShopPage[] = [
   {
     id: 0,
     name: "Body",
+    nameKey: "Shop.body",
     iconPath: require("../../assets/images/shop_icons/ShipBodyIconBlue.png"),
   },
   {
     id: 1,
     name: "Wings",
+    nameKey: "Shop.wings",
     iconPath: require("../../assets/images/shop_icons/ShipWingIconRed.png"),
   },
 ];
@@ -61,6 +65,7 @@ const shopItems: ShopItem[] = [
   {
     id: "body-0",
     name: "Blue Body",
+    nameKey: "Shop.bBody",
     iconPath: require("../../assets/images/shop_icons/ShipBodyIconBlue.png"),
     price: 0,
     category: "Body",
@@ -68,6 +73,7 @@ const shopItems: ShopItem[] = [
   {
     id: "body-1",
     name: "Red Body",
+    nameKey: "Shop.rBody",
     iconPath: require("../../assets/images/shop_icons/ShipBodyIconRed.png"),
     price: 500,
     category: "Body",
@@ -75,6 +81,7 @@ const shopItems: ShopItem[] = [
   {
     id: "body-2",
     name: "Green Body",
+    nameKey: "Shop.gBody",
     iconPath: require("../../assets/images/shop_icons/ShipBodyIconGreen.png"),
     price: 750,
     category: "Body",
@@ -82,6 +89,7 @@ const shopItems: ShopItem[] = [
   {
     id: "body-3",
     name: "Yellow Body",
+    nameKey: "Shop.yBody",
     iconPath: require("../../assets/images/shop_icons/ShipBodyIconYellow.png"),
     price: 750,
     category: "Body",
@@ -89,6 +97,7 @@ const shopItems: ShopItem[] = [
   {
     id: "wing-0",
     name: "Blue Wings",
+    nameKey: "Shop.bWings",
     iconPath: require("../../assets/images/shop_icons/ShipWingIconBlue.png"),
     price: 500,
     category: "Wings",
@@ -96,6 +105,7 @@ const shopItems: ShopItem[] = [
   {
     id: "wing-1",
     name: "Red Wings",
+    nameKey: "Shop.rWings",
     iconPath: require("../../assets/images/shop_icons/ShipWingIconRed.png"),
     price: 0,
     category: "Wings",
@@ -103,6 +113,7 @@ const shopItems: ShopItem[] = [
   {
     id: "wing-2",
     name: "Green Wings",
+    nameKey: "Shop.gWings",
     iconPath: require("../../assets/images/shop_icons/ShipWingIconGreen.png"),
     price: 750,
     category: "Wings",
@@ -110,6 +121,7 @@ const shopItems: ShopItem[] = [
   {
     id: "wing-3",
     name: "Yellow Wings",
+    nameKey: "Shop.yWings",
     iconPath: require("../../assets/images/shop_icons/ShipWingIconYellow.png"),
     price: 750,
     category: "Wings",
@@ -389,7 +401,7 @@ export default function ShopModal({
                           : palette.sectionTextColor,
                     }}
                   >
-                    {page.name}
+                    {t(page.nameKey)}
                   </Text>
                 </TouchableOpacity>
               ))}
@@ -428,7 +440,7 @@ export default function ShopModal({
                   >
                     {/* Name */}
                     <Text className="font-orbitron text-white text-sm mb-3 text-center">
-                      {item.name}
+                      {t(item.nameKey)}
                     </Text>
 
                     {/* Icon */}
@@ -515,7 +527,7 @@ export default function ShopModal({
                 className="mb-3"
               />
               <Text className="font-orbitron text-white text-lg mb-2">
-                {confirmPurchase.item.name}
+                {t(confirmPurchase.item.nameKey)}
               </Text>
 
               <View
