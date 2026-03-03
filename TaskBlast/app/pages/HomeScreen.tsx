@@ -5,6 +5,7 @@ import {
   Image,
   ImageBackground,
   AppState,
+  InteractionManager
 } from "react-native";
 import { Text } from '../../TTS';
 import { useFocusEffect } from "@react-navigation/native";
@@ -32,6 +33,10 @@ import { useRouter } from "expo-router";
 import { useAudio } from "../context/AudioContext";
 import { useTranslation } from "react-i18next";
 import PlanetModal from "../components/PlanetModal";
+import { CoachmarkAnchor, useCoachmark, createTour } from '@edwardloopez/react-native-coachmark';
+
+
+
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -42,7 +47,39 @@ export default function HomeScreen() {
   const [isShopModalVisible, setIsShopModalVisible] = useState(false);
   const [rocks, setRocks] = useState<number>(0);
   const {t ,i18n} = useTranslation();
-  
+  const {start} = useCoachmark();
+  const hasStartedTour = useRef(false);
+ const onboardingTour = React.useMemo(() => createTour("onboarding", [
+  {
+    id: "task-button",
+    title: t("Home.coachMarktaskstitle"),
+    description: t("Home.coachMarktasks"),
+  },
+  {
+    id: "profile-button",
+    title: t("Home.coachMarkProfiletitle"),
+    description: t("Home.coachMarkProfile"),
+  },
+  {
+    id: "settings-button",
+    title: t("Settings.title"),
+    description: t("Home.coachMarksettings"),
+  },
+  {
+    id: "takeoff-button",
+    title: t("Home.takeoff"),
+    description: t("Home.coachMarktakeoff"),
+  },
+  {
+    id: "shop-section",
+    title: t("Shop.title"),
+    description: t("Home.coachMarkshop"),
+  },
+
+]),
+  [t]
+ );
+
   // Child profile state
   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
     null,
@@ -198,6 +235,55 @@ export default function HomeScreen() {
     }, [loadScore, musicPlayer, musicEnabled]),
   );
 
+// useFocusEffect(
+//   useCallback(() => {
+//     if (
+//       hasStartedTour.current ||
+//       isTaskModalVisible ||
+//       isSettingsModalVisible ||
+//       isShopModalVisible ||
+//       isPlanetModalVisible
+//     ) {
+//       return;
+//     }
+
+//     const timeout = setTimeout(async () => {
+//       const alreadySeen = await AsyncStorage.getItem("onboardingSeen");
+
+//       if (!alreadySeen) {
+//         await AsyncStorage.setItem("onboardingSeen", "true");
+//         hasStartedTour.current = true;
+//         start(onboardingTour);
+//       }
+//     }, 700); 
+
+//     return () => clearTimeout(timeout);
+//   }, [
+//     isTaskModalVisible,
+//     isSettingsModalVisible,
+//     isShopModalVisible,
+//     isPlanetModalVisible,
+//     onboardingTour
+//   ])
+// );
+
+  useFocusEffect( 
+
+  useCallback(() => { 
+
+    const timeout = setTimeout(() => { 
+
+      start(onboardingTour); 
+
+    }, 300); 
+
+  
+
+    return () => clearTimeout(timeout); 
+
+  }, []) 
+
+); 
   return (
     <View className="flex-1">
       {/* Animated stars background */}
@@ -212,80 +298,94 @@ export default function HomeScreen() {
         <View className="absolute top-14 right-5 z-10 items-center">
           {/* Profile & Settings - Horizontal */}
           <View className="flex-row gap-1">
+            <CoachmarkAnchor id="profile-button" shape="circle">
+
             <TouchableOpacity
               testID="profile-button"
               className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full items-center justify-center shadow-lg shadow-white/40"
               style={{ shadowOffset: { width: 0, height: 0 } }}
               onPress={() => router.push("/pages/ProfileScreen")}
-            >
+              >
               <Image
                 source={require("../../assets/images/sprites/profile.png")}
                 className="w-7 h-7"
                 resizeMode="contain"
                 style={{ transform: [{ scale: 1.5 }] }}
-              />
+                />
             </TouchableOpacity>
+                </CoachmarkAnchor>
+                <CoachmarkAnchor id="settings-button" shape="circle">
+
             <TouchableOpacity
               testID="settings-button"
               className="w-14 h-14 bg-gradient-to-br from-indigo-600 to-blue-500 rounded-full items-center justify-center shadow-lg shadow-white/40"
               style={{ shadowOffset: { width: 0, height: 0 } }}
               onPress={() => setIsSettingsModalVisible(true)}
-            >
+              >
               <Image
                 source={require("../../assets/images/sprites/gear.png")}
                 className="w-7 h-7"
                 resizeMode="contain"
                 style={{ transform: [{ scale: 1.5 }] }}
-              />
+                />
             </TouchableOpacity>
+                </CoachmarkAnchor>
           </View>
           
           {/* Task List Button */}
+          <CoachmarkAnchor id="task-button" shape="circle">
+
           <TouchableOpacity
             testID="task-button"
             onPress={() => setIsTaskModalVisible(true)}
             className="-mt-4"
-          >
+            >
             <Image
               source={require("../../assets/images/sprites/task.png")}
               resizeMode="contain"
               style={{ transform: [{ scale: 0.75 }] }}
-            />
+              />
           </TouchableOpacity>
+              </CoachmarkAnchor>
         </View>
 
         {/* Top Left - Crystals & Galaxy Crystals */}
+        
         <View className="justify-start items-start gap-3 mt-11 ml-0">
+          <CoachmarkAnchor id="shop-section" shape="circle">
+          
           {/* Crystals */}
+
           <TouchableOpacity
             className="flex-row items-center bg-gradient-to-r from-pink-600 to-pink-400 px-5 py-2.5 rounded-full shadow-lg shadow-pink-500/70 border-2 border-pink-300/30"
             style={{ shadowOffset: { width: 0, height: 0 }, width: 140 }}
             onPress={() => setIsShopModalVisible(true)}
-          >
+            >
             <Image
               source={require("../../assets/images/sprites/crystal.png")}
               className="w-7 h-7 mr-1"
               resizeMode="contain"
               style={{ transform: [{ scale: 1.5 }] }}
-            />
+              />
             <Text className="font-orbitron-bold text-white text-md ml-2">
               {String(rocks).padStart(4, "0")}
             </Text>
           </TouchableOpacity>
 
+          </CoachmarkAnchor>
           {/* Galaxy Crystals */}
           <TouchableOpacity
             className="flex-row items-center bg-gradient-to-r from-indigo-900 to-indigo-700 px-5 py-2.5 rounded-full shadow-lg shadow-indigo-400/70 border-2 border-indigo-600/30"
             style={{ shadowOffset: { width: 0, height: 0 }, width: 140 }}
             onPress={() => setIsShopModalVisible(true)}
-          >
+            >
             <Image
               testID="fuel-icon"
               source={require("../../assets/images/sprites/galaxyCrystal.png")}
               className="w-7 h-7 mr-1"
               resizeMode="contain"
               style={{ transform: [{ scale: 1.5 }], marginBottom: 2 }}
-            />
+              />
             <Text className="font-orbitron-bold text-white text-md ml-2">
               0000
             </Text>
@@ -299,12 +399,15 @@ export default function HomeScreen() {
         <PlanetScrollList onRocksChange={loadScore} />
 
         {/* Take Off Button - Bottom Center */}
+        <CoachmarkAnchor id="takeoff-button" shape="circle">
+
         <View className="items-center mb-24">
           <MainButton
             title={t("Home.takeoff")}
             onPress={() => router.push("/pages/PomodoroScreen")}
-          />
+            />
         </View>
+            </CoachmarkAnchor>
 
         {/* Task List Modal */}
         <TaskListModal
@@ -314,6 +417,7 @@ export default function HomeScreen() {
         />
 
         {/* Planet Modal */}
+        
         <PlanetModal
           visible={isPlanetModalVisible}
           onClose={() => setIsPlanetModalVisible(false)}

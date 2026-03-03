@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   View,
   Modal,
@@ -33,6 +33,7 @@ import { useNotifications } from "../context/NotificationContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
 import { useColorPalette } from "../styles/colorBlindThemes";
+import { CoachmarkAnchor, useCoachmark, createTour } from '@edwardloopez/react-native-coachmark';
 
 interface Task {
   id: string;
@@ -80,6 +81,15 @@ export default function TaskListModal({
   const auth = getAuth();
   const db = getFirestore();
   const { t, i18n } = useTranslation();
+  const {start} = useCoachmark();
+  
+  const onboardingTour = createTour("onboarding",[
+    {
+      id: 'task-button',
+      title: t("Tasks.title"),
+      description: t("Tasks.coachMarkdesc"),
+    }
+  ])
 
   // Child profile state
   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
@@ -664,6 +674,15 @@ export default function TaskListModal({
     }
   };
 
+//  useEffect(() => {
+//   if (!visible) return;
+
+//   const timeout = setTimeout(() => {
+//     start(onboardingTour);
+//   }, 500); 
+
+//   return () => clearTimeout(timeout);
+// }, [visible]);
   return (
     <Modal
       visible={visible}
@@ -691,9 +710,12 @@ export default function TaskListModal({
         >
           {/* Header */}
           <View className="flex-row justify-between items-center mb-4">
+           
+
             <Text className="font-orbitron-bold text-white text-2xl">
               {t("Tasks.title")}
             </Text>
+          
             <TouchableOpacity
               testID="close-task-modal"
               onPress={onClose}

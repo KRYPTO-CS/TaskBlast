@@ -18,6 +18,7 @@ import {
   increment,
 } from "firebase/firestore";
 import { useColorPalette } from "../styles/colorBlindThemes";
+import { useTranslation } from "react-i18next";
 
 interface ShopModalProps {
   visible: boolean;
@@ -136,6 +137,7 @@ export default function ShopModal({
   const filteredItems = shopItems.filter(
     (item) => item.category === currentCategory,
   );
+  const { t } = useTranslation();
 
   useEffect(() => {
     const checkAndCreateShopItems = async () => {
@@ -308,7 +310,7 @@ export default function ShopModal({
           >
             <View className="flex-row justify-between items-center mb-4">
               <Text className="text-white font-orbitron-bold text-2xl">
-                Shop
+                {t("Shop.title")}
               </Text>
               <TouchableOpacity
                 onPress={onClose}
@@ -414,7 +416,7 @@ export default function ShopModal({
                         style={{ backgroundColor: palette.tertiary + "80" }}
                       >
                         <Text className="font-orbitron-bold text-white text-sm">
-                          Equipped
+                          {t("Shop.equipped")}
                         </Text>
                       </View>
                     ) : isUnlocked ? (
@@ -423,7 +425,7 @@ export default function ShopModal({
                         style={{ backgroundColor: palette.secondary + "80" }}
                       >
                         <Text className="font-orbitron-bold text-white text-sm">
-                          Owned
+                          {t("Shop.owned")}
                         </Text>
                       </View>
                     ) : (
