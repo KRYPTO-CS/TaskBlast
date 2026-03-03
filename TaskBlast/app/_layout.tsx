@@ -17,7 +17,10 @@ import "../global.css";
 import { AudioProvider } from "./context/AudioContext";
 import { NotificationProvider } from "./context/NotificationContext";
 import { AccessibilityProvider } from "./context/AccessibilityContext";
-
+import {
+  CoachmarkProvider,
+  CoachmarkOverlay,
+} from "@edwardloopez/react-native-coachmark";
 // Prevent the splash screen from auto-hiding before fonts are loaded
 SplashScreen.preventAutoHideAsync();
 
@@ -47,11 +50,27 @@ export default function RootLayout() {
       <AudioProvider>
         <TTSProvider>
           <NotificationProvider>
-            <Stack
-              screenOptions={{
-                headerShown: false,
+            <CoachmarkProvider
+              theme={{
+                tooltip: {
+                  maxWidth: 300,
+                  radius: 15,
+                  bg: "#rgba(15, 23, 42, 0.95)",
+                  fg: "#eeee",
+                  arrowSize: 10,
+                  padding: 16,
+                  buttonPrimaryBg: "#rgba(139, 92, 246, 0.5)",
+                  buttonSecondaryBg: "#8E8E93",
+                },
               }}
-            />
+            >
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                }}
+              />
+              <CoachmarkOverlay />
+            </CoachmarkProvider>
           </NotificationProvider>
         </TTSProvider>
       </AudioProvider>

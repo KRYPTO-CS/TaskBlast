@@ -86,7 +86,14 @@
     "continue": "Continuar"
   },
   "Home": {
-    "takeoff": "Decolar"
+    "takeoff": "Decolar",
+    "coachMarktaskstitle": "Adicionar novas tarefas",
+    "coachMarktasks": "Toque aqui para adicionar novas tarefas, definir recompensas e personalizar suas sessões de foco!",
+    "coachMarkProfiletitle": "Veja seu perfil",
+    "coachMarkProfile": "Toque aqui para ver seu perfil, acompanhar seu progresso e personalizar seu avatar!",
+    "coachMarksettings": "Toque aqui para ajustar suas preferências, gerenciar notificações e mais!",
+    "coachMarktakeoff": "Toque aqui para iniciar uma sessão de foco e decolar em direção aos seus objetivos!",
+    "coachMarkshop": "Toque aqui para visitar a loja e personalizar seu avatar com novos corpos e asas!"
   },
   "Settings": {
     "title": "Configurações",
@@ -125,7 +132,8 @@
     "cancel": "Cancelar",
     "add": "Adicionar Tarefa",
     "editTask": "Editar Tarefa",
-    "save": "Salvar"
+    "save": "Salvar",
+    "coachMarkdesc": "Aqui você pode gerenciar suas tarefas. Toque em uma tarefa para ver detalhes, iniciar uma sessão de foco ou editá-la. Use as guias para alternar entre tarefas ativas e arquivadas."
   },
   "Profile": {
     "traits": "Traits",
@@ -140,7 +148,14 @@
     "total": "Tempo Total Gasto em Tarefas: ",
     "AddChildAccount": "Adicionar Conta de Criança",
     "SwitchProfile": "Trocar Perfil",
-    "Logout": "Sair"
+    "Logout": "Sair",
+    "coachMarkeditP": "Toque aqui para atualizar as informações do seu perfil!",
+    "coachMarkTraitsTitle": "Ver Traits",
+    "coachMarkTraits": "Aqui você pode ver seus traits e adicionar novos!",
+    "coachMarkAwardsTitle": "Ver Prêmios",
+    "coachMarkAwards": "Aqui você pode ver seus prêmios e conquistas!",
+    "coachMarkStatsTitle": "Ver Estatísticas",
+    "coachMarkStats": "Aqui você pode ver suas estatísticas e acompanhar seu progresso ao longo do tempo!"
   },
   "Pomodoro": {
     "time": "Tempo Restante",
@@ -148,6 +163,25 @@
     "Resume": "Retomar",
     "Pause": "Pausar",
     "Land": "Aterrizar",
-    "Play": "Jogar Jogo"
+    "Play": "Jogar Jogo",
+    "coachMarkTime": "Este é o tempo restante em sua sessão atual, ao final você poderá aterrissar de volta em seu planeta ou jogar um jogo. Concentre-se e assista a contagem regressiva!",
+    "coachMarkwork": "Isso indica se você está em uma sessão de trabalho ou em um intervalo. Mantenha o foco durante as sessões de trabalho e relaxe durante os intervalos!",
+    "coachMarkPause": "Toque aqui para pausar sua sessão se precisar fazer uma pausa não programada.",
+    "coachMarkLand": "Toque aqui para encerrar sua sessão e aterrissar de volta em seu planeta. Ótimo trabalho no seu tempo de foco!"
+  },
+    "Shop": {
+    "title": "Loja",
+    "body": "Corpo",
+    "wings": "Asas",
+    "bBody": "Corpo Azul",
+    "rBody": "Corpo Vermelho",
+    "yBody": "Corpo Amarelo",
+    "gBody": "Corpo Verde",
+    "bWings": "Asas Azuis",
+    "rWings": "Asas Vermelhas",
+    "yWings": "Asas Amarelas",
+    "gWings": "Asas Verdes",
+    "equipped": "Equipado",
+    "owned": "Possuído"
   }
 }

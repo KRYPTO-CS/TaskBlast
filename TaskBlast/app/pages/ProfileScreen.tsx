@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   View,
   TouchableOpacity,
@@ -15,6 +15,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../server/firebase";
 import MainButton from "../components/MainButton";
 import { WebView } from "react-native-webview";
+import { useFocusEffect } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
 import {
   getFirestore,
@@ -35,6 +36,11 @@ import {
   updateUserProfilePicture,
   type UserProfile,
 } from "../../server/userProfileUtils";
+import {
+  CoachmarkAnchor,
+  useCoachmark,
+  createTour,
+} from "@edwardloopez/react-native-coachmark";
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -66,6 +72,34 @@ export default function ProfileScreen() {
   const [currentRocks, setCurrentRocks] = useState<number>(0);
   const [rocksSpent, setrocksSpent] = useState<number>(0);
   const { t, i18n } = useTranslation();
+  const { start } = useCoachmark();
+  const hasStartedTour = useRef(false);
+  const onboardingTour = React.useMemo(
+    () =>
+      createTour("profile-onboarding", [
+        {
+          id: "edit-profile-button",
+          title: t("Profile.editP"),
+          description: t("Profile.coachMarkeditP"),
+        },
+        {
+          id: "traits-section",
+          title: t("Profile.coachMarkTraitsTitle"),
+          description: t("Profile.coachMarkTraits"),
+        },
+        {
+          id: "awards-section",
+          title: t("Profile.coachMarkAwardsTitle"),
+          description: t("Profile.coachMarkAwards"),
+        },
+        {
+          id: "stats-section",
+          title: t("Profile.coachMarkStatsTitle"),
+          description: t("Profile.coachMarkStats"),
+        },
+      ]),
+    [t],
+  );
 
   // Load user profile on component mount
   useEffect(() => {
@@ -425,6 +459,33 @@ export default function ProfileScreen() {
   const handleProfileUpdate = (updatedProfile: UserProfile) => {
     setUserProfile(updatedProfile);
   };
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     if (hasStartedTour.current) return;
+
+  //     const timeout = setTimeout(async () => {
+  //       const seen = await AsyncStorage.getItem("profileOnboardingSeen");
+
+  //       if (!seen) {
+  //         await AsyncStorage.setItem("profileOnboardingSeen", "true");
+  //         hasStartedTour.current = true;
+  //         start(onboardingTour);
+  //       }
+  //     }, 700); // give ScrollView + WebViews time to mount
+
+  //     return () => clearTimeout(timeout);
+  //   }, [onboardingTour])
+  // );
+
+  useFocusEffect(
+    useCallback(() => {
+      const timeout = setTimeout(() => {
+        start(onboardingTour);
+      }, 300);
+
+      return () => clearTimeout(timeout);
+    }, []),
+  );
 
   return (
     <View className="flex-1">
@@ -519,46 +580,50 @@ export default function ProfileScreen() {
 
           {/* Edit Profile Button */}
           <View className="items-center mb-8">
-            <TouchableOpacity
-              className="flex-row items-center px-6 py-3 rounded-full"
-              style={{
-                backgroundColor: palette.accentSoft,
-                borderWidth: 2,
-                borderColor: palette.accentSoftBorder,
-                shadowColor: palette.modalShadow,
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.4,
-                shadowRadius: 8,
-              }}
-              onPress={() => {
-                setIsEditModalVisible(true);
-              }}
-            >
-              <Ionicons
-                name="create-outline"
-                size={20}
-                color="white"
-                style={{ marginRight: 8 }}
-              />
-              <Text className="font-orbitron-semibold text-xl text-white text-base">
-                {t("Profile.editP")}
-              </Text>
-            </TouchableOpacity>
+            <CoachmarkAnchor id="edit-profile-button" shape="circle">
+              <TouchableOpacity
+                className="flex-row items-center px-6 py-3 rounded-full"
+                style={{
+                  backgroundColor: palette.accentSoft,
+                  borderWidth: 2,
+                  borderColor: palette.accentSoftBorder,
+                  shadowColor: palette.modalShadow,
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.4,
+                  shadowRadius: 8,
+                }}
+                onPress={() => {
+                  setIsEditModalVisible(true);
+                }}
+              >
+                <Ionicons
+                  name="create-outline"
+                  size={20}
+                  color="white"
+                  style={{ marginRight: 8 }}
+                />
+                <Text className="font-orbitron-semibold text-xl text-white text-base">
+                  {t("Profile.editP")}
+                </Text>
+              </TouchableOpacity>
+            </CoachmarkAnchor>
           </View>
 
           {/* Traits Container */}
           <View className="mb-6">
             <View className="flex-row justify-between items-center mb-4">
-              <Text
-                className="font-orbitron-semibold text-xl text-white"
-                style={{
-                  textShadowColor: palette.statsAccentGlow,
-                  textShadowOffset: { width: 0, height: 0 },
-                  textShadowRadius: 10,
-                }}
-              >
-                {t("Profile.traits")}
-              </Text>
+              <CoachmarkAnchor id="traits-section" shape="circle">
+                <Text
+                  className="font-orbitron-semibold text-xl text-white"
+                  style={{
+                    textShadowColor: palette.statsAccentGlow,
+                    textShadowOffset: { width: 0, height: 0 },
+                    textShadowRadius: 10,
+                  }}
+                >
+                  {t("Profile.traits")}
+                </Text>
+              </CoachmarkAnchor>
               <TouchableOpacity
                 onPress={() => setIsTraitsModalVisible(true)}
                 className="flex-row items-center px-3 py-2 rounded-full"
@@ -613,16 +678,18 @@ export default function ProfileScreen() {
 
           {/* Awards Container */}
           <View className="mb-8">
-            <Text
-              className="font-orbitron-semibold text-xl text-white text-xl mb-4"
-              style={{
-                textShadowColor: `${palette.tertiary}99`,
-                textShadowOffset: { width: 0, height: 0 },
-                textShadowRadius: 10,
-              }}
-            >
-              {t("Profile.awards")}
-            </Text>
+            <CoachmarkAnchor id="awards-section" shape="circle">
+              <Text
+                className="font-orbitron-semibold text-xl text-white text-xl mb-4"
+                style={{
+                  textShadowColor: `${palette.tertiary}99`,
+                  textShadowOffset: { width: 0, height: 0 },
+                  textShadowRadius: 10,
+                }}
+              >
+                {t("Profile.awards")}
+              </Text>
+            </CoachmarkAnchor>
             <View
               className="p-4 rounded-2xl"
               style={{
@@ -657,16 +724,18 @@ export default function ProfileScreen() {
 
           {/* Analytics Container */}
           <View className="mb-8">
-            <Text
-              className="font-orbitron-semibold text-xl text-white mb-4"
-              style={{
-                textShadowColor: palette.statsAccentGlow,
-                textShadowOffset: { width: 0, height: 0 },
-                textShadowRadius: 10,
-              }}
-            >
-              {t("Profile.YourStats")}
-            </Text>
+            <CoachmarkAnchor id="stats-section" shape="circle">
+              <Text
+                className="font-orbitron-semibold text-xl text-white mb-4"
+                style={{
+                  textShadowColor: palette.statsAccentGlow,
+                  textShadowOffset: { width: 0, height: 0 },
+                  textShadowRadius: 10,
+                }}
+              >
+                {t("Profile.YourStats")}
+              </Text>
+            </CoachmarkAnchor>
             <View
               className="p-4 rounded-2xl"
               style={{
