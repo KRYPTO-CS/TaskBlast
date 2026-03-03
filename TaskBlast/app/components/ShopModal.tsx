@@ -13,11 +13,15 @@ import { getAuth } from "firebase/auth";
 import {
   getFirestore,
   doc,
-  getDoc,
   updateDoc,
   increment,
+  getDoc,
+  arrayUnion,
+  setDoc,
+  runTransaction,
 } from "firebase/firestore";
 import { useColorPalette } from "../styles/colorBlindThemes";
+import { update } from "firebase/database";
 
 interface ShopModalProps {
   visible: boolean;
@@ -196,6 +200,30 @@ export default function ShopModal({
     checkAndCreateShopItems();
   }, [visible]);
 
+  // function adapted from the one in GamePage, records rocks spent in the shop
+  const updateRocksSpent = async (score: number) => {
+    try {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const db = getFirestore();
+      const userRef = doc(db, "users", user.uid);
+
+      // add rocks and update all-time rocks atomically
+      // Atomically compute the new allTimeRocks and append it to the array (allow duplicates)
+      await runTransaction(db, async (tx) => {
+        const snap = await tx.get(userRef);
+        const data = snap.exists() ? snap.data() : {} as any;
+
+        tx.update(userRef, {
+          rocksSpent: increment(score),
+        });
+      });
+    }
+     catch (err) { console.warn("Failed to update rocks spent", err); }
+  };
+
   const handleEquip = async (item: ShopItem, index: number) => {
     try {
       const auth = getAuth();
@@ -271,6 +299,8 @@ export default function ShopModal({
       // Update local state
       setUnlockedItems(newUnlockedItems);
       setRocks(rocks - item.price);
+
+      await updateRocksSpent(item.price);
 
       // Notify parent component to refresh rocks
       if (onRocksChange) {

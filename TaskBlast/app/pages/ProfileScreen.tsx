@@ -64,6 +64,7 @@ export default function ProfileScreen() {
   const [playLabels, setPlayLabels] = useState<string[]>([]);
   const [totalRocksAllTime, setTotalRocksAllTime] = useState<number>(0);
   const [currentRocks, setCurrentRocks] = useState<number>(0);
+  const [rocksSpent, setrocksSpent] = useState<number>(0);
   const { t, i18n } = useTranslation();
 
   // Load user profile on component mount
@@ -189,7 +190,8 @@ export default function ProfileScreen() {
         const ptArr: number[] = data.playTimeMinutesArr || [];
         const totalAllTime = Number(data.allTimeRocks ?? 0);
 
-        setTotalRocksAllTime(Number.isNaN(totalAllTime) ? 0 : totalAllTime);
+        setTotalRocksAllTime(Number.isNaN(totalAllTime) ? 0 : Math.max(0, Math.floor(totalAllTime)));
+        setrocksSpent(Number.isNaN(data.rocksSpent) ? 0 : Math.max(0, Math.floor(data.rocksSpent)));
         setCurrentRocks(
           Number.isNaN(data.rocks) ? 0 : Math.max(0, Math.floor(data.rocks)),
         );
@@ -262,7 +264,7 @@ export default function ProfileScreen() {
         maintainAspectRatio: false,
         plugins: {
           legend: { display: false },
-          title: { display: true, text: 'Total Rocks Over Time', color: '#fff', font: { family:'Orbitron', size: 22, weight: '700' } },
+          title: { display: true, text: 'Total Rocks Earned', color: '#fff', font: { family:'Orbitron', size: 22, weight: '700' } },
           tooltip: { titleFont:{family:'Orbitron', size:14, weight:'600'}, bodyFont:{family:'Orbitron', size:13} }
         },
         scales: {
@@ -702,7 +704,7 @@ export default function ProfileScreen() {
               >
                 <Text className="font-orbitron-semibold text-white">
                   {t("Profile.rocksSpent")}
-                  {Math.max(0, totalRocksAllTime - currentRocks)}
+                  {Math.max(0, rocksSpent)}
                 </Text>
               </View>
               {/* Rocks Chart */}
