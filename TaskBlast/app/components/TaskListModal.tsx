@@ -38,6 +38,7 @@ import {
   useCoachmark,
   createTour,
 } from "@edwardloopez/react-native-coachmark";
+import { CoachmarkAnchor, useCoachmark, createTour } from '@edwardloopez/react-native-coachmark';
 
 interface Task {
   id: string;
@@ -714,6 +715,8 @@ export default function TaskListModal({
         >
           {/* Header */}
           <View className="flex-row justify-between items-center mb-4">
+           
+
             <Text className="font-orbitron-bold text-white text-2xl">
               {t("Tasks.title")}
             </Text>

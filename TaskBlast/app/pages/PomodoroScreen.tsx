@@ -34,6 +34,7 @@ import {
   useCoachmark,
   createTour,
 } from "@edwardloopez/react-native-coachmark";
+import { CoachmarkAnchor, useCoachmark, createTour } from '@edwardloopez/react-native-coachmark';
 // Ship component image mappings
 const BODY_IMAGES: { [key: number]: any } = {
   0: require("../../assets/images/ship_components/body/0.png"),

@@ -49,6 +49,7 @@ export default function HomeScreen() {
   const [rocks, setRocks] = useState<number>(0);
   const {t ,i18n} = useTranslation();
   const {start} = useCoachmark();
+  const hasStartedTour = useRef(false);
  const onboardingTour = React.useMemo(() => createTour("onboarding", [
   {
     id: "task-button",
@@ -249,6 +250,54 @@ useFocusEffect(
 
     return () => clearTimeout(timeout);
   }, [onboardingTour])
+// useFocusEffect(
+//   useCallback(() => {
+//     if (
+//       hasStartedTour.current ||
+//       isTaskModalVisible ||
+//       isSettingsModalVisible ||
+//       isShopModalVisible ||
+//       isPlanetModalVisible
+//     ) {
+//       return;
+//     }
+
+//     const timeout = setTimeout(async () => {
+//       const alreadySeen = await AsyncStorage.getItem("onboardingSeen");
+
+//       if (!alreadySeen) {
+//         await AsyncStorage.setItem("onboardingSeen", "true");
+//         hasStartedTour.current = true;
+//         start(onboardingTour);
+//       }
+//     }, 700); 
+
+//     return () => clearTimeout(timeout);
+//   }, [
+//     isTaskModalVisible,
+//     isSettingsModalVisible,
+//     isShopModalVisible,
+//     isPlanetModalVisible,
+//     onboardingTour
+//   ])
+// );
+
+  useFocusEffect( 
+
+  useCallback(() => { 
+
+    const timeout = setTimeout(() => { 
+
+      start(onboardingTour); 
+
+    }, 300); 
+
+  
+
+    return () => clearTimeout(timeout); 
+
+  }, []) 
+
 ); 
   return (
     <View className="flex-1">
