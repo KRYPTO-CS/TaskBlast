@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
-  Text,
   Modal,
   TouchableOpacity,
   ScrollView,
   Switch,
   Alert,
 } from "react-native";
+import { Text } from '../../TTS';
 import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../../server/firebase";
 import { signOut } from "firebase/auth";
@@ -15,6 +15,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAudio } from "../context/AudioContext";
 import { useNotifications } from "../context/NotificationContext";
 import NotificationPreferencesModal from "./NotificationPreferencesModal";
+import AccessibilityModal from "./AccessibilityModal";
+import { useAccessibility } from "../context/AccessibilityContext";
+import { useColorPalette } from "../styles/colorBlindThemes";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 
@@ -30,8 +33,8 @@ export default function SettingsModal({
   onLogout,
 }: SettingsModalProps) {
   const router = useRouter();
-  const {t ,i18n} = useTranslation();
-  
+  const { t, i18n } = useTranslation();
+
   // Get audio context for global audio control
   const { soundEnabled, musicEnabled, setSoundEnabled, setMusicEnabled } =
     useAudio();
@@ -39,11 +42,13 @@ export default function SettingsModal({
   // Get notification context
   const { preferences, updatePreferences } = useNotifications();
 
+  // Get accessibility context
+  const { language, colorBlindMode, reduceMotion } = useAccessibility();
+  const palette = useColorPalette();
+
   // Modal state
   const [showNotificationPrefs, setShowNotificationPrefs] = useState(false);
-
-  // Other settings state
-  const [darkModeEnabled, setDarkModeEnabled] = useState(false);
+  const [showAccessibilityPrefs, setShowAccessibilityPrefs] = useState(false);
 
   // Child profile state
   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
@@ -122,7 +127,7 @@ export default function SettingsModal({
 
   return (
     <Modal
-      animationType="fade"
+      animationType={reduceMotion ? "fade" : "slide"}
       transparent={true}
       visible={visible}
       onRequestClose={onClose}
@@ -134,8 +139,8 @@ export default function SettingsModal({
           style={{
             backgroundColor: "rgba(15, 23, 42, 0.95)",
             borderWidth: 2,
-            borderColor: "rgba(139, 92, 246, 0.5)",
-            shadowColor: "#a855f7",
+            borderColor: palette.modalBorder,
+            shadowColor: palette.modalShadow,
             shadowOffset: { width: 0, height: 8 },
             shadowOpacity: 0.6,
             shadowRadius: 20,
@@ -146,7 +151,7 @@ export default function SettingsModal({
             <Text
               className="font-orbitron-semibold text-white text-2xl"
               style={{
-                textShadowColor: "rgba(139, 92, 246, 0.8)",
+                textShadowColor: palette.accentGlow,
                 textShadowOffset: { width: 0, height: 0 },
                 textShadowRadius: 15,
               }}
@@ -158,9 +163,9 @@ export default function SettingsModal({
               onPress={onClose}
               className="w-10 h-10 rounded-full items-center justify-center"
               style={{
-                backgroundColor: "rgba(139, 92, 246, 0.3)",
+                backgroundColor: palette.accentSoft,
                 borderWidth: 1,
-                borderColor: "rgba(167, 139, 250, 0.5)",
+                borderColor: palette.accentSoftBorder,
               }}
             >
               <Ionicons name="close" size={24} color="white" />
@@ -174,13 +179,13 @@ export default function SettingsModal({
               style={{
                 backgroundColor:
                   currentProfileType === "parent"
-                    ? "rgba(59, 130, 246, 0.3)"
-                    : "rgba(168, 85, 247, 0.3)",
+                    ? palette.secondaryMed
+                    : palette.accentSoft,
                 borderWidth: 1,
                 borderColor:
                   currentProfileType === "parent"
-                    ? "rgba(96, 165, 250, 0.5)"
-                    : "rgba(192, 132, 252, 0.5)",
+                    ? palette.secondarySoftBorder
+                    : palette.accentSoftBorder,
               }}
             >
               <Text className="font-orbitron-semibold text-white text-xs">
@@ -196,16 +201,16 @@ export default function SettingsModal({
             <View
               className="flex-row justify-between items-center p-4 rounded-xl mb-3"
               style={{
-                backgroundColor: "rgba(59, 130, 246, 0.2)",
+                backgroundColor: palette.secondaryMed,
                 borderWidth: 1,
-                borderColor: "rgba(59, 130, 246, 0.3)",
+                borderColor: palette.rowBorderPrimary,
               }}
             >
               <View className="flex-row items-center flex-1">
                 <Ionicons
                   name="volume-high"
                   size={24}
-                  color="#60a5fa"
+                  color={palette.secondary}
                   style={{ marginRight: 12 }}
                 />
                 <Text className="font-orbitron-semibold text-white text-base">
@@ -215,8 +220,13 @@ export default function SettingsModal({
               <Switch
                 value={soundEnabled}
                 onValueChange={handleSoundToggle}
-                trackColor={{ false: "#334155", true: "#8b5cf6" }}
-                thumbColor={soundEnabled ? "#a855f7" : "#64748b"}
+                trackColor={{
+                  false: palette.switchTrackOff,
+                  true: palette.switchTrackOn,
+                }}
+                thumbColor={
+                  soundEnabled ? palette.switchThumbOn : palette.switchThumbOff
+                }
               />
             </View>
 
@@ -224,16 +234,16 @@ export default function SettingsModal({
             <View
               className="flex-row justify-between items-center p-4 rounded-xl mb-3"
               style={{
-                backgroundColor: "rgba(59, 130, 246, 0.2)",
+                backgroundColor: palette.secondaryMed,
                 borderWidth: 1,
-                borderColor: "rgba(59, 130, 246, 0.3)",
+                borderColor: palette.rowBorderPrimary,
               }}
             >
               <View className="flex-row items-center flex-1">
                 <Ionicons
                   name="musical-notes"
                   size={24}
-                  color="#60a5fa"
+                  color={palette.secondary}
                   style={{ marginRight: 12 }}
                 />
                 <Text className="font-orbitron-medium text-white text-base">
@@ -243,8 +253,13 @@ export default function SettingsModal({
               <Switch
                 value={musicEnabled}
                 onValueChange={handleMusicToggle}
-                trackColor={{ false: "#334155", true: "#8b5cf6" }}
-                thumbColor={musicEnabled ? "#a855f7" : "#64748b"}
+                trackColor={{
+                  false: palette.switchTrackOff,
+                  true: palette.switchTrackOn,
+                }}
+                thumbColor={
+                  musicEnabled ? palette.switchThumbOn : palette.switchThumbOff
+                }
               />
             </View>
 
@@ -253,16 +268,16 @@ export default function SettingsModal({
               onPress={() => setShowNotificationPrefs(true)}
               className="flex-row justify-between items-center p-4 rounded-xl mb-3"
               style={{
-                backgroundColor: "rgba(59, 130, 246, 0.2)",
+                backgroundColor: palette.secondaryMed,
                 borderWidth: 1,
-                borderColor: "rgba(59, 130, 246, 0.3)",
+                borderColor: palette.rowBorderPrimary,
               }}
             >
               <View className="flex-row items-center flex-1">
                 <Ionicons
                   name="notifications"
                   size={24}
-                  color="#60a5fa"
+                  color={palette.secondary}
                   style={{ marginRight: 12 }}
                 />
                 <View className="flex-1">
@@ -278,22 +293,67 @@ export default function SettingsModal({
                 <Switch
                   value={preferences.enabled}
                   onValueChange={handleNotificationToggle}
-                  trackColor={{ false: "#334155", true: "#8b5cf6" }}
-                  thumbColor={preferences.enabled ? "#a855f7" : "#64748b"}
+                  trackColor={{
+                    false: palette.switchTrackOff,
+                    true: palette.switchTrackOn,
+                  }}
+                  thumbColor={
+                    preferences.enabled
+                      ? palette.switchThumbOn
+                      : palette.switchThumbOff
+                  }
                 />
                 <Ionicons
                   name="chevron-forward"
                   size={20}
-                  color="#60a5fa"
+                  color={palette.secondary}
                   style={{ marginLeft: 8 }}
                 />
               </View>
             </TouchableOpacity>
 
+            {/* Accessibility */}
+            <TouchableOpacity
+              testID="accessibility-button"
+              onPress={() => setShowAccessibilityPrefs(true)}
+              className="flex-row justify-between items-center p-4 rounded-xl mb-3"
+              style={{
+                backgroundColor: palette.secondaryMed,
+                borderWidth: 1,
+                borderColor: palette.rowBorderPrimary,
+              }}
+            >
+              <View className="flex-row items-center flex-1">
+                <Ionicons
+                  name="accessibility"
+                  size={24}
+                  color={palette.secondary}
+                  style={{ marginRight: 12 }}
+                />
+                <View className="flex-1">
+                  <Text className="font-orbitron-medium text-white text-base">
+                    {t("Settings.accessibility")}
+                  </Text>
+                  <Text
+                    className="font-orbitron text-gray-400 text-xs mt-1"
+                    numberOfLines={1}
+                  >
+                    {language.toUpperCase()} ·{" "}
+                    {colorBlindMode === "none" ? "No filter" : colorBlindMode}
+                  </Text>
+                </View>
+              </View>
+              <Ionicons
+                name="chevron-forward"
+                size={20}
+                color={palette.secondary}
+              />
+            </TouchableOpacity>
+
             {/* Divider */}
             <View
               className="h-px my-4"
-              style={{ backgroundColor: "rgba(139, 92, 246, 0.3)" }}
+              style={{ backgroundColor: palette.divider }}
             />
 
             {/* Privacy - Only show for parent */}
@@ -301,9 +361,9 @@ export default function SettingsModal({
               <TouchableOpacity
                 className="flex-row items-center p-4 rounded-xl mb-3"
                 style={{
-                  backgroundColor: "rgba(236, 72, 153, 0.2)",
+                  backgroundColor: palette.tertiarySoft,
                   borderWidth: 1,
-                  borderColor: "rgba(236, 72, 153, 0.3)",
+                  borderColor: palette.tertiarySoftBorder,
                 }}
                 onPress={() => {
                   // Add privacy settings navigation
@@ -313,22 +373,26 @@ export default function SettingsModal({
                 <Ionicons
                   name="shield-checkmark"
                   size={24}
-                  color="#ec4899"
+                  color={palette.tertiary}
                   style={{ marginRight: 12 }}
                 />
                 <Text className="font-orbitron-semibold text-white text-base flex-1">
                   {t("Settings.privacy")}
                 </Text>
-                <Ionicons name="chevron-forward" size={20} color="#ec4899" />
+                <Ionicons
+                  name="chevron-forward"
+                  size={20}
+                  color={palette.tertiary}
+                />
               </TouchableOpacity>
             )}
 
             <TouchableOpacity
               className="flex-row items-center p-4 rounded-xl mb-3"
               style={{
-                backgroundColor: "rgba(236, 72, 153, 0.2)",
+                backgroundColor: palette.tertiarySoft,
                 borderWidth: 1,
-                borderColor: "rgba(236, 72, 153, 0.3)",
+                borderColor: palette.tertiarySoftBorder,
               }}
               onPress={() => {
                 // Add help & support navigation
@@ -338,21 +402,25 @@ export default function SettingsModal({
               <Ionicons
                 name="help-circle"
                 size={24}
-                color="#ec4899"
+                color={palette.tertiary}
                 style={{ marginRight: 12 }}
               />
               <Text className="font-orbitron-medium text-white text-base flex-1">
                 {t("Settings.Help")}
               </Text>
-              <Ionicons name="chevron-forward" size={20} color="#ec4899" />
+              <Ionicons
+                name="chevron-forward"
+                size={20}
+                color={palette.tertiary}
+              />
             </TouchableOpacity>
 
             <TouchableOpacity
               className="flex-row items-center p-4 rounded-xl mb-3"
               style={{
-                backgroundColor: "rgba(236, 72, 153, 0.2)",
+                backgroundColor: palette.tertiarySoft,
                 borderWidth: 1,
-                borderColor: "rgba(236, 72, 153, 0.3)",
+                borderColor: palette.tertiarySoftBorder,
               }}
               onPress={() => {
                 // Add about navigation
@@ -362,13 +430,17 @@ export default function SettingsModal({
               <Ionicons
                 name="information-circle"
                 size={24}
-                color="#ec4899"
+                color={palette.tertiary}
                 style={{ marginRight: 12 }}
               />
               <Text className="font-orbitron-semibold text-white text-base flex-1">
                 {t("Settings.About")}
               </Text>
-              <Ionicons name="chevron-forward" size={20} color="#ec4899" />
+              <Ionicons
+                name="chevron-forward"
+                size={20}
+                color={palette.tertiary}
+              />
             </TouchableOpacity>
 
             {/* Logout/Switch Profile Button */}
@@ -376,9 +448,9 @@ export default function SettingsModal({
               testID="logout-button"
               className="flex-row items-center justify-center p-4 rounded-xl"
               style={{
-                backgroundColor: "rgba(239, 68, 68, 0.2)",
+                backgroundColor: palette.errorSoft,
                 borderWidth: 1,
-                borderColor: "rgba(239, 68, 68, 0.3)",
+                borderColor: palette.errorSoftBorder,
               }}
               onPress={handleLogout}
             >
@@ -389,17 +461,23 @@ export default function SettingsModal({
                     : "log-out-outline"
                 }
                 size={24}
-                color="#ef4444"
+                color={palette.errorIcon}
                 style={{ marginRight: 12 }}
               />
-              <Text className="font-orbitron-bold text-red-400 text-base">
+              <Text
+                className="font-orbitron-bold text-base"
+                style={{ color: palette.errorIcon }}
+              >
                 {currentProfileType === "child" ? "Switch Profile" : "Logout"}
               </Text>
             </TouchableOpacity>
           </ScrollView>
 
           {/* App Version */}
-          <View className="items-center mt-6 pt-4 border-t border-purple-500/30">
+          <View
+            className="items-center mt-6 pt-4"
+            style={{ borderTopWidth: 1, borderTopColor: palette.divider }}
+          >
             <Text className="font-orbitron text-gray-400 text-xs">
               TaskBlast v1.0.0
             </Text>
@@ -411,6 +489,12 @@ export default function SettingsModal({
       <NotificationPreferencesModal
         visible={showNotificationPrefs}
         onClose={() => setShowNotificationPrefs(false)}
+      />
+
+      {/* Accessibility Modal */}
+      <AccessibilityModal
+        visible={showAccessibilityPrefs}
+        onClose={() => setShowAccessibilityPrefs(false)}
       />
     </Modal>
   );

@@ -1,9 +1,9 @@
 {
   "language": {
-  "selectLanguage": "Please select your language",
-  "continue": "Continue",
-  "backTo": "Back to",
-  "Login": "Login"
+    "selectLanguage": "Please select your language",
+    "continue": "Continue",
+    "backTo": "Back to",
+    "Login": "Login"
   },
   "birthdate": {
     "title": "What's Your Birthdate",
@@ -86,7 +86,6 @@
     "continue": "Continue"
   },
 
-  
   "Home": {
     "takeoff": "Take Off",
     "coachMarktaskstitle": "Add new Tasks",
@@ -105,12 +104,20 @@
     "privacy": "Privacy",
     "Help": "Help & Support",
     "About": "About",
-    "Logout": "Logout"
+    "Logout": "Logout",
+    "accessibility": "Accessibility",
+    "language": "Language",
+    "colorBlind": "Color Blind Mode",
+    "textSize": "Text Size",
+    "highContrast": "High Contrast",
+    "reduceMotion": "Reduce Motion",
+    "tts": "Text to Speech",
+    "done": "Done"
   },
   "Tasks": {
     "title": "Task List",
     "normal": "Normal",
-    "edit" : "Edit",
+    "edit": "Edit",
     "archive": "Archive",
     "empty": "No tasks yet. Add your first task!",
     "button": "Add New Task",
@@ -127,7 +134,7 @@
     "add": "Add Task",
     "editTask": "Edit Task",
     "save": "Save",
-    "coachMarkdesc": "This is where you can manage your tasks. Tap on a task to view details, start a focus session, or edit it. Use the tabs to switch between active and archived tasks.", 
+    "coachMarkdesc": "This is where you can manage your tasks. Tap on a task to view details, start a focus session, or edit it. Use the tabs to switch between active and archived tasks.",
     "Done": "Done"
   },
   "Profile": {
@@ -151,7 +158,6 @@
     "coachMarkAwards": "Here you can see your awards and accomplishments!",
     "coachMarkStatsTitle": "View Stats",
     "coachMarkStats": "Here you can see your stats and track your progress over time!"
-
   },
   "Pomodoro": {
     "time": "Time Remaining",
@@ -180,5 +186,4 @@
     "equipped": "Equipped",
     "owned": "Owned"
   }
-
 }

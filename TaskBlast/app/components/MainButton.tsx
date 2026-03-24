@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import {
   TouchableOpacity,
-  Text,
   StyleSheet,
   TouchableOpacityProps,
   ViewStyle,
@@ -9,9 +8,11 @@ import {
   Animated,
   Pressable,
 } from "react-native";
+import { Text } from "../../TTS";
 import { useAudioPlayer } from "expo-audio";
 import { buttons, buttonText } from "../styles/global";
 import { useSound } from "../hooks/useSound";
+import { useColorPalette } from "../styles/colorBlindThemes";
 
 type ButtonVariant =
   | "primary"
@@ -50,16 +51,28 @@ export default function MainButton({
   // Use the sound hook for button click sounds
   const { playButtonClick, soundEnabled } = useSound();
 
+  // Palette for color-blind-safe theming
+  const palette = useColorPalette();
+
   const getButtonStyle = (): ViewStyle => {
     const baseStyle = buttons[variant];
     const sizeStyle = size !== "medium" ? buttons[size] : {};
-    return { ...baseStyle, ...sizeStyle, ...customStyle };
+    const colorOverride =
+      variant === "primary" ? { backgroundColor: palette.buttonPrimaryBg } : {};
+    return { ...baseStyle, ...sizeStyle, ...colorOverride, ...customStyle };
   };
 
   const getTextStyle = (): TextStyle => {
     const baseTextStyle = buttonText[variant];
     const sizeTextStyle = size !== "medium" ? buttonText[size] : {};
-    return { ...baseTextStyle, ...sizeTextStyle, ...textStyle };
+    const colorOverride =
+      variant === "primary" ? { color: palette.buttonPrimaryText } : {};
+    return {
+      ...baseTextStyle,
+      ...sizeTextStyle,
+      ...colorOverride,
+      ...textStyle,
+    };
   };
 
   const getBorderRadius = () => {
@@ -72,7 +85,7 @@ export default function MainButton({
   // Get darker shade of button color for 3D effect
   const getDarkerColor = () => {
     const colorMap: { [key in ButtonVariant]: string } = {
-      primary: "#437B00", // Darker blue
+      primary: palette.buttonPrimaryDark, // Themed 3D shadow color
       secondary: "#4d4d4d", // Darker gray
       outline: "#3a7bc8", // Darker blue
       ghost: "#3a7bc8", // Darker blue

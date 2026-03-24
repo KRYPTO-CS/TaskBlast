@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   View,
-  Text,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -10,6 +9,7 @@ import {
   ImageBackground,
   Alert,
 } from "react-native";
+import { Text } from '../../TTS';
 import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../components/MainButton";
 import ForgotPassword from "./ForgotPassword";

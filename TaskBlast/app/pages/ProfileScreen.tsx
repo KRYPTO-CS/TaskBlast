@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   View,
-  Text,
   TouchableOpacity,
   ImageBackground,
   ScrollView,
   ActivityIndicator,
   Image,
 } from "react-native";
+import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -17,26 +17,42 @@ import MainButton from "../components/MainButton";
 import { WebView } from "react-native-webview";
 import { useFocusEffect } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs  } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import EditProfileModal from "../components/EditProfileModal";
 import TraitsModal from "../components/TraitsModal";
 import { updateProfilePicture } from "../../server/storageUtils";
 import { useTranslation } from "react-i18next";
+import { useColorPalette } from "../styles/colorBlindThemes";
 import {
   getUserProfile,
   updateUserProfilePicture,
   type UserProfile,
 } from "../../server/userProfileUtils";
-import { CoachmarkAnchor, useCoachmark, createTour } from '@edwardloopez/react-native-coachmark';
-
-
+import {
+  CoachmarkAnchor,
+  useCoachmark,
+  createTour,
+} from "@edwardloopez/react-native-coachmark";
 
 export default function ProfileScreen() {
   const router = useRouter();
+  const palette = useColorPalette();
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
-  const [currentProfileType, setCurrentProfileType] = useState<"parent" | "child">("parent");
-  const [currentChildUsername, setCurrentChildUsername] = useState<string | null>(null);
+  const [currentProfileType, setCurrentProfileType] = useState<
+    "parent" | "child"
+  >("parent");
+  const [currentChildUsername, setCurrentChildUsername] = useState<
+    string | null
+  >(null);
 
   // User data state
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -54,162 +70,186 @@ export default function ProfileScreen() {
   const [playLabels, setPlayLabels] = useState<string[]>([]);
   const [totalRocksAllTime, setTotalRocksAllTime] = useState<number>(0);
   const [currentRocks, setCurrentRocks] = useState<number>(0);
-  const {t ,i18n} = useTranslation();
-  const {start} = useCoachmark();
+  const [rocksSpent, setrocksSpent] = useState<number>(0);
+  const { t, i18n } = useTranslation();
+  const { start } = useCoachmark();
   const hasStartedTour = useRef(false);
- const onboardingTour = React.useMemo(() =>
-  createTour("profile-onboarding", [
-    {
-      id: "edit-profile-button",
-      title: t("Profile.editP"),
-      description: t("Profile.coachMarkeditP"),
-    },
-    {
-      id: "traits-section",
-      title: t("Profile.coachMarkTraitsTitle"),
-      description: t("Profile.coachMarkTraits"),
-    },
-    {
-      id: "awards-section",
-      title: t("Profile.coachMarkAwardsTitle"),
-      description: t("Profile.coachMarkAwards"),
-    },
-    {
-      id: "stats-section",
-      title: t("Profile.coachMarkStatsTitle"),
-      description: t("Profile.coachMarkStats"),
-    },
-  ]),
-[t]
-);
+  const onboardingTour = React.useMemo(
+    () =>
+      createTour("profile-onboarding", [
+        {
+          id: "edit-profile-button",
+          title: t("Profile.editP"),
+          description: t("Profile.coachMarkeditP"),
+        },
+        {
+          id: "traits-section",
+          title: t("Profile.coachMarkTraitsTitle"),
+          description: t("Profile.coachMarkTraits"),
+        },
+        {
+          id: "awards-section",
+          title: t("Profile.coachMarkAwardsTitle"),
+          description: t("Profile.coachMarkAwards"),
+        },
+        {
+          id: "stats-section",
+          title: t("Profile.coachMarkStatsTitle"),
+          description: t("Profile.coachMarkStats"),
+        },
+      ]),
+    [t],
+  );
 
   // Load user profile on component mount
- useEffect(() => {
-  const loadUserProfile = async () => {
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      try {
+        const currentUser = auth.currentUser;
+        if (!currentUser) return;
+
+        const db = getFirestore();
+
+        // Check if a child profile is active
+        const activeChild = await AsyncStorage.getItem("activeChildProfile");
+
+        let profileData = null;
+
+        if (activeChild) {
+          // Child is active - load from child's document
+          const childrenRef = collection(
+            db,
+            "users",
+            currentUser.uid,
+            "children",
+          );
+          const childQuery = query(
+            childrenRef,
+            where("username", "==", activeChild),
+          );
+          const childSnapshot = await getDocs(childQuery);
+
+          if (!childSnapshot.empty) {
+            const childDoc = childSnapshot.docs[0];
+            const childData = childDoc.data();
+
+            // Map child data to UserProfile format
+            profileData = {
+              uid: currentUser.uid,
+              firstName: childData.firstName || "",
+              lastName: childData.lastName || "",
+              displayName: childData.firstName || "Child", // Use firstName as display name for children
+              email: currentUser.email || "",
+              birthdate: childData.birthdate || "",
+              profilePicture: childData.profilePicture,
+              traits: childData.traits || [],
+              awards: childData.awards || [],
+            };
+          }
+        } else {
+          // Parent is active - load from parent's document
+          profileData = await getUserProfile(currentUser.uid);
+        }
+
+        if (profileData) {
+          setUserProfile(profileData);
+        } else {
+          // Set default profile if none exists
+          setUserProfile({
+            uid: currentUser.uid,
+            firstName: "Space",
+            lastName: "Explorer",
+            displayName: "Space",
+            email: currentUser.email || "",
+            traits: ["Focused", "Persistent", "Creative", "Goal-Oriented"],
+            awards: [
+              "🏆 First Mission",
+              "⭐ 10 Tasks Complete",
+              "🚀 Speed Runner",
+              "💎 Rock Collector",
+            ],
+          });
+        }
+      } catch (error) {
+        console.error("Error loading user profile:", error);
+      } finally {
+        setIsLoadingProfile(false);
+      }
+    };
+
+    loadUserProfile();
+    loadAllTimeStats();
+  }, []);
+
+  const loadAllTimeStats = useCallback(async () => {
     try {
-      const currentUser = auth.currentUser;
-      if (!currentUser) return;
-      
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (!user) return;
+
       const db = getFirestore();
-      
+
       // Check if a child profile is active
       const activeChild = await AsyncStorage.getItem("activeChildProfile");
-      
-      let profileData = null;
-      
+
+      let userDoc;
+
       if (activeChild) {
         // Child is active - load from child's document
-        const childrenRef = collection(db, "users", currentUser.uid, "children");
-        const childQuery = query(childrenRef, where("username", "==", activeChild));
+        const { collection, query, where, getDocs } =
+          await import("firebase/firestore");
+        const childrenRef = collection(db, "users", user.uid, "children");
+        const childQuery = query(
+          childrenRef,
+          where("username", "==", activeChild),
+        );
         const childSnapshot = await getDocs(childQuery);
-        
+
         if (!childSnapshot.empty) {
-          const childDoc = childSnapshot.docs[0];
-          const childData = childDoc.data();
-          
-          // Map child data to UserProfile format
-          profileData = {
-            uid: currentUser.uid,
-            firstName: childData.firstName || "",
-            lastName: childData.lastName || "",
-            displayName: childData.firstName || "Child", // Use firstName as display name for children
-            email: currentUser.email || "",
-            birthdate: childData.birthdate || "",
-            profilePicture: childData.profilePicture,
-            traits: childData.traits || [],
-            awards: childData.awards || [],
-          };
+          const childDocData = childSnapshot.docs[0];
+          userDoc = childDocData;
+        } else {
+          console.warn("Child profile not found");
+          return;
         }
       } else {
         // Parent is active - load from parent's document
-        profileData = await getUserProfile(currentUser.uid);
+        userDoc = await getDoc(doc(db, "users", user.uid));
       }
-      
-      if (profileData) {
-        setUserProfile(profileData);
-      } else {
-        // Set default profile if none exists
-        setUserProfile({
-          uid: currentUser.uid,
-          firstName: "Space",
-          lastName: "Explorer",
-          displayName: "Space",
-          email: currentUser.email || "",
-          traits: ["Focused", "Persistent", "Creative", "Goal-Oriented"],
-          awards: [
-            "🏆 First Mission",
-            "⭐ 10 Tasks Complete",
-            "🚀 Speed Runner",
-            "💎 Rock Collector",
-          ],
-        });
+
+      if (userDoc && userDoc.exists()) {
+        const data = userDoc.data();
+        const rocksArr: number[] = data.allTimeRocksArr || [];
+        const wtArr: number[] = data.workTimeMinutesArr || [];
+        const ptArr: number[] = data.playTimeMinutesArr || [];
+        const totalAllTime = Number(data.allTimeRocks ?? 0);
+
+        setTotalRocksAllTime(Number.isNaN(totalAllTime) ? 0 : Math.max(0, Math.floor(totalAllTime)));
+        setrocksSpent(Number.isNaN(data.rocksSpent) ? 0 : Math.max(0, Math.floor(data.rocksSpent)));
+        setCurrentRocks(
+          Number.isNaN(data.rocks) ? 0 : Math.max(0, Math.floor(data.rocks)),
+        );
+        setStatsLabels(rocksArr.map((_, i) => `#${i + 1}`));
+        setWorkLabels(wtArr.map((_, i) => `#${i + 1}`));
+        setPlayLabels(ptArr.map((_, i) => `#${i + 1}`));
+        setStatsValues(rocksArr);
+        setWorkTimes(wtArr);
+        setPlayTimes(ptArr);
       }
-    } catch (error) {
-      console.error("Error loading user profile:", error);
-    } finally {
-      setIsLoadingProfile(false);
+    } catch (e) {
+      console.warn("Failed to load stats", e);
     }
-  };
-
-  loadUserProfile();
-  loadAllTimeStats();
-}, []);
-
- const loadAllTimeStats = useCallback(async () => {
-  try {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    if (!user) return;
-
-    const db = getFirestore();
-    
-    // Check if a child profile is active
-    const activeChild = await AsyncStorage.getItem("activeChildProfile");
-    
-    let userDoc;
-    
-    if (activeChild) {
-      // Child is active - load from child's document
-      const { collection, query, where, getDocs } = await import("firebase/firestore");
-      const childrenRef = collection(db, "users", user.uid, "children");
-      const childQuery = query(childrenRef, where("username", "==", activeChild));
-      const childSnapshot = await getDocs(childQuery);
-      
-      if (!childSnapshot.empty) {
-        const childDocData = childSnapshot.docs[0];
-        userDoc = childDocData;
-      } else {
-        console.warn("Child profile not found");
-        return;
-      }
-    } else {
-      // Parent is active - load from parent's document
-      userDoc = await getDoc(doc(db, "users", user.uid));
-    }
-    
-    if (userDoc && userDoc.exists()) {
-      const data = userDoc.data();
-      const rocksArr: number[] = data.allTimeRocksArr || [];
-      const wtArr: number[] = data.workTimeMinutesArr || [];
-      const ptArr: number[] = data.playTimeMinutesArr || [];
-      const totalAllTime = Number(data.allTimeRocks ?? 0);
-      
-      setTotalRocksAllTime(Number.isNaN(totalAllTime) ? 0 : totalAllTime);
-      setCurrentRocks(Number.isNaN(data.rocks) ? 0 : Math.max(0, Math.floor(data.rocks)));
-      setStatsLabels(rocksArr.map((_, i) => `#${i + 1}`));
-      setWorkLabels(wtArr.map((_, i) => `#${i + 1}`));
-      setPlayLabels(ptArr.map((_, i) => `#${i + 1}`));
-      setStatsValues(rocksArr);
-      setWorkTimes(wtArr);
-      setPlayTimes(ptArr);
-    }
-  } catch (e) {
-    console.warn("Failed to load stats", e);
-  }
-}, []);
+  }, []);
 
   // Chart template helpers
-  const totalRocksChart = (labels: string[], values: number[]) => `
+  const totalRocksChart = (
+    labels: string[],
+    values: number[],
+    chartColor: string,
+    chartBorder: string,
+    chartFill: string,
+  ) =>
+    `
 <!DOCTYPE html>
 <html>
 <head>
@@ -218,7 +258,7 @@ export default function ProfileScreen() {
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body { margin:0; padding:0; background:transparent; font-family:'Orbitron',sans-serif; color:#fff; }
-    .wrap { padding:2%; border:4px solid rgba(85,247,104,0.5); border-radius:40px; height:100%; box-sizing:border-box; }
+    .wrap { padding:2%; border:4px solid ${chartBorder}; border-radius:40px; height:100%; box-sizing:border-box; }
     canvas { width:100%!important; height:100%!important; }
   </style>
  </head>
@@ -231,8 +271,8 @@ export default function ProfileScreen() {
     const values = ${JSON.stringify(values)};
     const ctx = document.getElementById('c').getContext('2d');
     const gradient = ctx.createLinearGradient(0,0,0,300);
-    gradient.addColorStop(0,'rgba(59,246,112,0.35)');
-    gradient.addColorStop(1,'rgba(59,246,112,0.05)');
+    gradient.addColorStop(0,'${chartFill}');
+    gradient.addColorStop(1,'rgba(0,0,0,0.0)');
     // Global font defaults (restore original appearance)
     Chart.defaults.font.family = 'Orbitron';
     Chart.defaults.font.size = 12;
@@ -244,7 +284,7 @@ export default function ProfileScreen() {
         datasets: [
           {
             data: values,
-            borderColor: 'rgba(59,246,112,1)',
+            borderColor: '${chartColor}',
             backgroundColor: gradient,
             borderWidth: 4,
             tension: 0.35,
@@ -258,7 +298,7 @@ export default function ProfileScreen() {
         maintainAspectRatio: false,
         plugins: {
           legend: { display: false },
-          title: { display: true, text: 'Total Rocks Over Time', color: '#fff', font: { family:'Orbitron', size: 22, weight: '700' } },
+          title: { display: true, text: 'Total Rocks Earned', color: '#fff', font: { family:'Orbitron', size: 22, weight: '700' } },
           tooltip: { titleFont:{family:'Orbitron', size:14, weight:'600'}, bodyFont:{family:'Orbitron', size:13} }
         },
         scales: {
@@ -272,8 +312,18 @@ export default function ProfileScreen() {
 </html>
 `.trim();
 
-  const cumulativeChart = (title: string, yLabel: string, labels: string[], values: number[]) => {
-    const cumulative = values.map((v, i) => values.slice(0, i + 1).reduce((a, b) => a + b, 0));
+  const cumulativeChart = (
+    title: string,
+    yLabel: string,
+    labels: string[],
+    values: number[],
+    chartColor: string,
+    chartBorder: string,
+    chartFill: string,
+  ) => {
+    const cumulative = values.map((v, i) =>
+      values.slice(0, i + 1).reduce((a, b) => a + b, 0),
+    );
     return `
 <!DOCTYPE html>
 <html>
@@ -283,7 +333,7 @@ export default function ProfileScreen() {
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body { margin:0; padding:0; background:transparent; font-family:'Orbitron',sans-serif; color:#fff; }
-    .wrap { padding:2%; border:4px solid rgba(85,247,104,0.5); border-radius:40px; height:100%; box-sizing:border-box; }
+    .wrap { padding:2%; border:4px solid ${chartBorder}; border-radius:40px; height:100%; box-sizing:border-box; }
     canvas { width:100%!important; height:100%!important; }
   </style>
 </head>
@@ -296,8 +346,8 @@ export default function ProfileScreen() {
     const cumulative = ${JSON.stringify(cumulative)};
     const ctx = document.getElementById('c').getContext('2d');
     const gradient = ctx.createLinearGradient(0,0,0,300);
-    gradient.addColorStop(0,'rgba(59,246,112,0.35)');
-    gradient.addColorStop(1,'rgba(59,246,112,0.05)');
+    gradient.addColorStop(0,'${chartFill}');
+    gradient.addColorStop(1,'rgba(0,0,0,0.0)');
     // Global font defaults (restore original appearance)
     Chart.defaults.font.family = 'Orbitron';
     Chart.defaults.font.size = 12;
@@ -309,7 +359,7 @@ export default function ProfileScreen() {
         datasets: [
           {
             data: cumulative,
-            borderColor: 'rgba(59,246,112,1)',
+            borderColor: '${chartColor}',
             backgroundColor: gradient,
             borderWidth: 4,
             tension: 0.35,
@@ -383,7 +433,7 @@ export default function ProfileScreen() {
       }
 
       const newImageUrl = await updateProfilePicture(
-        userProfile.profilePicture || undefined
+        userProfile.profilePicture || undefined,
       );
 
       if (newImageUrl) {
@@ -409,41 +459,33 @@ export default function ProfileScreen() {
   const handleProfileUpdate = (updatedProfile: UserProfile) => {
     setUserProfile(updatedProfile);
   };
-// useFocusEffect(
-//   useCallback(() => {
-//     if (hasStartedTour.current) return;
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     if (hasStartedTour.current) return;
 
-//     const timeout = setTimeout(async () => {
-//       const seen = await AsyncStorage.getItem("profileOnboardingSeen");
+  //     const timeout = setTimeout(async () => {
+  //       const seen = await AsyncStorage.getItem("profileOnboardingSeen");
 
-//       if (!seen) {
-//         await AsyncStorage.setItem("profileOnboardingSeen", "true");
-//         hasStartedTour.current = true;
-//         start(onboardingTour);
-//       }
-//     }, 700); // give ScrollView + WebViews time to mount
+  //       if (!seen) {
+  //         await AsyncStorage.setItem("profileOnboardingSeen", "true");
+  //         hasStartedTour.current = true;
+  //         start(onboardingTour);
+  //       }
+  //     }, 700); // give ScrollView + WebViews time to mount
 
-//     return () => clearTimeout(timeout);
-//   }, [onboardingTour])
-// );
+  //     return () => clearTimeout(timeout);
+  //   }, [onboardingTour])
+  // );
 
-  useFocusEffect( 
+  useFocusEffect(
+    useCallback(() => {
+      const timeout = setTimeout(() => {
+        start(onboardingTour);
+      }, 300);
 
-  useCallback(() => { 
-
-    const timeout = setTimeout(() => { 
-
-      start(onboardingTour); 
-
-    }, 300); 
-
-  
-
-    return () => clearTimeout(timeout); 
-
-  }, []) 
-
-); 
+      return () => clearTimeout(timeout);
+    }, []),
+  );
 
   return (
     <View className="flex-1">
@@ -477,13 +519,13 @@ export default function ProfileScreen() {
               style={{
                 backgroundColor:
                   currentProfileType === "parent"
-                    ? "rgba(59, 130, 246, 0.4)"
-                    : "rgba(168, 85, 247, 0.4)",
+                    ? palette.rowBgPrimary
+                    : palette.accentActive,
                 borderWidth: 1,
                 borderColor:
                   currentProfileType === "parent"
-                    ? "rgba(96, 165, 250, 0.6)"
-                    : "rgba(192, 132, 252, 0.6)",
+                    ? palette.secondaryLightBorder
+                    : palette.accentActiveBorder,
               }}
             >
               <Text className="font-orbitron-semibold text-white text-xs">
@@ -498,7 +540,7 @@ export default function ProfileScreen() {
           <Text
             className="font-orbitron-semibold text-xl text-white text-center text-3xl mt-4 mb-8"
             style={{
-              textShadowColor: "rgba(147, 51, 234, 0.8)",
+              textShadowColor: palette.accentGlow,
               textShadowOffset: { width: 0, height: 0 },
               textShadowRadius: 20,
             }}
@@ -513,8 +555,8 @@ export default function ProfileScreen() {
             <TouchableOpacity
               className="w-32 h-32 rounded-full items-center justify-center overflow-hidden"
               style={{
-                backgroundColor: "#7c3aed",
-                shadowColor: "#a855f7",
+                backgroundColor: palette.accent,
+                shadowColor: palette.modalShadow,
                 shadowOffset: { width: 0, height: 8 },
                 shadowOpacity: 0.6,
                 shadowRadius: 16,
@@ -539,56 +581,56 @@ export default function ProfileScreen() {
           {/* Edit Profile Button */}
           <View className="items-center mb-8">
             <CoachmarkAnchor id="edit-profile-button" shape="circle">
-            <TouchableOpacity
-              className="flex-row items-center px-6 py-3 rounded-full"
-              style={{
-                backgroundColor: "rgba(139, 92, 246, 0.3)",
-                borderWidth: 2,
-                borderColor: "rgba(167, 139, 250, 0.5)",
-                shadowColor: "#a855f7",
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.4,
-                shadowRadius: 8,
-              }}
-              onPress={() => {
-                setIsEditModalVisible(true);
-              }}
-            >
-              <Ionicons
-                name="create-outline"
-                size={20}
-                color="white"
-                style={{ marginRight: 8 }}
-              />
-              <Text className="font-orbitron-semibold text-xl text-white text-base">
-                {t("Profile.editP")}
-              </Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                className="flex-row items-center px-6 py-3 rounded-full"
+                style={{
+                  backgroundColor: palette.accentSoft,
+                  borderWidth: 2,
+                  borderColor: palette.accentSoftBorder,
+                  shadowColor: palette.modalShadow,
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.4,
+                  shadowRadius: 8,
+                }}
+                onPress={() => {
+                  setIsEditModalVisible(true);
+                }}
+              >
+                <Ionicons
+                  name="create-outline"
+                  size={20}
+                  color="white"
+                  style={{ marginRight: 8 }}
+                />
+                <Text className="font-orbitron-semibold text-xl text-white text-base">
+                  {t("Profile.editP")}
+                </Text>
+              </TouchableOpacity>
             </CoachmarkAnchor>
           </View>
 
           {/* Traits Container */}
           <View className="mb-6">
             <View className="flex-row justify-between items-center mb-4">
-            <CoachmarkAnchor id="traits-section" shape="circle">
-              <Text
-                className="font-orbitron-semibold text-xl text-white"
-                style={{
-                  textShadowColor: "rgba(59, 130, 246, 0.6)",
-                  textShadowOffset: { width: 0, height: 0 },
-                  textShadowRadius: 10,
-                }}
-              >
-                {t("Profile.traits")}
-              </Text>
+              <CoachmarkAnchor id="traits-section" shape="circle">
+                <Text
+                  className="font-orbitron-semibold text-xl text-white"
+                  style={{
+                    textShadowColor: palette.statsAccentGlow,
+                    textShadowOffset: { width: 0, height: 0 },
+                    textShadowRadius: 10,
+                  }}
+                >
+                  {t("Profile.traits")}
+                </Text>
               </CoachmarkAnchor>
               <TouchableOpacity
                 onPress={() => setIsTraitsModalVisible(true)}
                 className="flex-row items-center px-3 py-2 rounded-full"
                 style={{
-                  backgroundColor: "rgba(59, 130, 246, 0.3)",
+                  backgroundColor: palette.rowBgPrimary,
                   borderWidth: 1,
-                  borderColor: "rgba(96, 165, 250, 0.5)",
+                  borderColor: palette.secondaryLightBorder,
                 }}
               >
                 <Ionicons
@@ -605,10 +647,10 @@ export default function ProfileScreen() {
             <View
               className="p-4 rounded-2xl"
               style={{
-                backgroundColor: "rgba(30, 58, 138, 0.3)",
+                backgroundColor: palette.secondaryDeepBg,
                 borderWidth: 2,
-                borderColor: "rgba(59, 130, 246, 0.3)",
-                shadowColor: "#3b82f6",
+                borderColor: palette.rowBorderPrimary,
+                shadowColor: palette.secondary,
                 shadowOffset: { width: 0, height: 4 },
                 shadowOpacity: 0.3,
                 shadowRadius: 8,
@@ -620,9 +662,9 @@ export default function ProfileScreen() {
                     key={index}
                     className="px-4 py-2 rounded-full"
                     style={{
-                      backgroundColor: "rgba(59, 130, 246, 0.4)",
+                      backgroundColor: palette.secondaryMedBold,
                       borderWidth: 1,
-                      borderColor: "rgba(96, 165, 250, 0.6)",
+                      borderColor: palette.secondaryLightBorder,
                     }}
                   >
                     <Text className="font-orbitron-semibold text-xl text-white text-sm">
@@ -636,25 +678,25 @@ export default function ProfileScreen() {
 
           {/* Awards Container */}
           <View className="mb-8">
-              <CoachmarkAnchor id="awards-section" shape="circle">
-            <Text
-              className="font-orbitron-semibold text-xl text-white text-xl mb-4"
-              style={{
-                textShadowColor: "rgba(236, 72, 153, 0.6)",
-                textShadowOffset: { width: 0, height: 0 },
-                textShadowRadius: 10,
-              }}
-            >
-              {t("Profile.awards")}
-            </Text>
+            <CoachmarkAnchor id="awards-section" shape="circle">
+              <Text
+                className="font-orbitron-semibold text-xl text-white text-xl mb-4"
+                style={{
+                  textShadowColor: `${palette.tertiary}99`,
+                  textShadowOffset: { width: 0, height: 0 },
+                  textShadowRadius: 10,
+                }}
+              >
+                {t("Profile.awards")}
+              </Text>
             </CoachmarkAnchor>
             <View
               className="p-4 rounded-2xl"
               style={{
-                backgroundColor: "rgba(131, 24, 67, 0.3)",
+                backgroundColor: palette.tertiarySoft,
                 borderWidth: 2,
-                borderColor: "rgba(236, 72, 153, 0.3)",
-                shadowColor: "#ec4899",
+                borderColor: palette.tertiarySoftBorder,
+                shadowColor: palette.tertiary,
                 shadowOffset: { width: 0, height: 4 },
                 shadowOpacity: 0.3,
                 shadowRadius: 8,
@@ -666,9 +708,9 @@ export default function ProfileScreen() {
                     key={index}
                     className="px-4 py-2 rounded-full"
                     style={{
-                      backgroundColor: "rgba(236, 72, 153, 0.4)",
+                      backgroundColor: palette.tertiarySoftBorder,
                       borderWidth: 1,
-                      borderColor: "rgba(244, 114, 182, 0.6)",
+                      borderColor: palette.tertiary,
                     }}
                   >
                     <Text className="font-orbitron-semibold text-white text-">
@@ -682,49 +724,233 @@ export default function ProfileScreen() {
 
           {/* Analytics Container */}
           <View className="mb-8">
-              <CoachmarkAnchor id="stats-section" shape="circle">
-            <Text className="font-orbitron-semibold text-xl text-white mb-4" style={{ textShadowColor: "rgba(59,246,112,0.6)", textShadowOffset:{width:0,height:0}, textShadowRadius:10 }}>{t("Profile.YourStats")}</Text>
-            </CoachmarkAnchor>  
-            <View className="p-4 rounded-2xl" style={{ backgroundColor:"rgba(30,138,43,0.30)", borderWidth:2, borderColor:"rgba(59,246,112,0.35)", shadowColor:"#3bf670", shadowOffset:{width:0,height:6}, shadowOpacity:0.35, shadowRadius:12 }}>
+            <CoachmarkAnchor id="stats-section" shape="circle">
+              <Text
+                className="font-orbitron-semibold text-xl text-white mb-4"
+                style={{
+                  textShadowColor: palette.statsAccentGlow,
+                  textShadowOffset: { width: 0, height: 0 },
+                  textShadowRadius: 10,
+                }}
+              >
+                {t("Profile.YourStats")}
+              </Text>
+            </CoachmarkAnchor>
+            <View
+              className="p-4 rounded-2xl"
+              style={{
+                backgroundColor: palette.statsBg,
+                borderWidth: 2,
+                borderColor: palette.statsBgBorder,
+                shadowColor: palette.statsAccent,
+                shadowOffset: { width: 0, height: 6 },
+                shadowOpacity: 0.35,
+                shadowRadius: 12,
+              }}
+            >
               {/* Total Rocks */}
-              <View className="px-4 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                <Text className="font-orbitron-semibold text-white">{t("Profile.rocksEarned")}{totalRocksAllTime}</Text>
+              <View
+                className="px-4 py-2 rounded-full"
+                style={{
+                  backgroundColor: palette.statsAccentSoft,
+                  borderWidth: 1,
+                  borderColor: palette.statsAccentBorder,
+                }}
+              >
+                <Text className="font-orbitron-semibold text-white">
+                  {t("Profile.rocksEarned")}
+                  {totalRocksAllTime}
+                </Text>
               </View>
               {/* Rocks Spent */}
-              <View className="px-4 py-2 rounded-full mt-2" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                <Text className="font-orbitron-semibold text-white">{t("Profile.rocksSpent")}{Math.max(0, totalRocksAllTime - currentRocks)}</Text>
+              <View
+                className="px-4 py-2 rounded-full mt-2"
+                style={{
+                  backgroundColor: palette.statsAccentSoft,
+                  borderWidth: 1,
+                  borderColor: palette.statsAccentBorder,
+                }}
+              >
+                <Text className="font-orbitron-semibold text-white">
+                  {t("Profile.rocksSpent")}
+                  {Math.max(0, rocksSpent)}
+                </Text>
               </View>
               {/* Rocks Chart */}
-              <View style={{ height:200, borderRadius:16, overflow:"hidden", marginTop:16, marginBottom:16 }}>
+              <View
+                style={{
+                  height: 200,
+                  borderRadius: 16,
+                  overflow: "hidden",
+                  marginTop: 16,
+                  marginBottom: 16,
+                }}
+              >
                 {statsValues.length ? (
-                  <WebView originWhitelist={["*"]} source={{ html: totalRocksChart(statsLabels, statsValues) }} scrollEnabled={false} style={{ backgroundColor:"transparent" }} />
-                ) : (<Text className="text-white">No rock stats yet.</Text>)}
+                  <WebView
+                    originWhitelist={["*"]}
+                    source={{
+                      html: totalRocksChart(
+                        statsLabels,
+                        statsValues,
+                        palette.statsAccent,
+                        palette.statsChartBorder,
+                        palette.statsChartFill,
+                      ),
+                    }}
+                    scrollEnabled={false}
+                    style={{ backgroundColor: "transparent" }}
+                  />
+                ) : (
+                  <Text className="font-orbitron-semibold text-white px-2">
+                    No rock stats yet.
+                  </Text>
+                )}
               </View>
               {/* Work Time Chart */}
-              <View style={{ height:200, borderRadius:16, overflow:"hidden", marginTop:8, marginBottom:16 }}>
+              <View
+                style={{
+                  height: 200,
+                  borderRadius: 16,
+                  overflow: "hidden",
+                  marginTop: 8,
+                  marginBottom: 16,
+                }}
+              >
                 {workTimes.length ? (
-                  <WebView originWhitelist={["*"]} source={{ html: cumulativeChart("Cumulative Work Time", "Minutes", workLabels, workTimes) }} scrollEnabled={false} style={{ backgroundColor:"transparent" }} />
-                ) : (<Text className="text-white">No work sessions yet.</Text>)}
+                  <WebView
+                    originWhitelist={["*"]}
+                    source={{
+                      html: cumulativeChart(
+                        "Cumulative Work Time",
+                        "Minutes",
+                        workLabels,
+                        workTimes,
+                        palette.statsAccent,
+                        palette.statsChartBorder,
+                        palette.statsChartFill,
+                      ),
+                    }}
+                    scrollEnabled={false}
+                    style={{ backgroundColor: "transparent" }}
+                  />
+                ) : (
+                  <Text className="font-orbitron-semibold text-white px-2">
+                    No work sessions yet.
+                  </Text>
+                )}
               </View>
               {/* Play Time Chart */}
-              <View style={{ height:200, borderRadius:16, overflow:"hidden", marginTop:8, marginBottom:16 }}>
+              <View
+                style={{
+                  height: 200,
+                  borderRadius: 16,
+                  overflow: "hidden",
+                  marginTop: 8,
+                  marginBottom: 16,
+                }}
+              >
                 {playTimes.length ? (
-                  <WebView originWhitelist={["*"]} source={{ html: cumulativeChart("Cumulative Play Time", "Minutes", playLabels, playTimes) }} scrollEnabled={false} style={{ backgroundColor:"transparent" }} />
-                ) : (<Text className="text-white">No play sessions yet.</Text>)}
+                  <WebView
+                    originWhitelist={["*"]}
+                    source={{
+                      html: cumulativeChart(
+                        "Cumulative Play Time",
+                        "Minutes",
+                        playLabels,
+                        playTimes,
+                        palette.statsAccent,
+                        palette.statsChartBorder,
+                        palette.statsChartFill,
+                      ),
+                    }}
+                    scrollEnabled={false}
+                    style={{ backgroundColor: "transparent" }}
+                  />
+                ) : (
+                  <Text className="font-orbitron-semibold text-white px-2">
+                    No play sessions yet.
+                  </Text>
+                )}
               </View>
               {/* Averages */}
               <View className="flex-row flex-wrap gap-2 mt-2">
-                <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                  <Text className="font-orbitron-semibold text-white text-xs"> {t("Profile.AvgWorkCycle")}{workTimes.length ? Math.round(workTimes.reduce((a,b)=>a+b,0)/workTimes.length) : 0}m</Text>
+                <View
+                  className="px-3 py-2 rounded-full"
+                  style={{
+                    backgroundColor: palette.statsAccentSoft,
+                    borderWidth: 1,
+                    borderColor: palette.statsAccentBorder,
+                  }}
+                >
+                  <Text className="font-orbitron-semibold text-white text-xs">
+                    {" "}
+                    {t("Profile.AvgWorkCycle")}
+                    {workTimes.length
+                      ? Math.round(
+                          workTimes.reduce((a, b) => a + b, 0) /
+                            workTimes.length,
+                        )
+                      : 0}
+                    m
+                  </Text>
                 </View>
-                <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                  <Text className="font-orbitron-semibold text-white text-xs">{t("Profile.AvgPlayCycle")}{playTimes.length ? Math.round(playTimes.reduce((a,b)=>a+b,0)/playTimes.length) : 0}m</Text>
+                <View
+                  className="px-3 py-2 rounded-full"
+                  style={{
+                    backgroundColor: palette.statsAccentSoft,
+                    borderWidth: 1,
+                    borderColor: palette.statsAccentBorder,
+                  }}
+                >
+                  <Text className="font-orbitron-semibold text-white text-xs">
+                    {t("Profile.AvgPlayCycle")}
+                    {playTimes.length
+                      ? Math.round(
+                          playTimes.reduce((a, b) => a + b, 0) /
+                            playTimes.length,
+                        )
+                      : 0}
+                    m
+                  </Text>
                 </View>
-                <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                  <Text className="font-orbitron-semibold text-white text-xs">{t("Profile.work")}{playTimes.length && workTimes.length ? ((workTimes.reduce((a,b)=>a+b,0)/workTimes.length)/(playTimes.reduce((a,b)=>a+b,0)/playTimes.length)).toFixed(2) : 0}</Text>
+                <View
+                  className="px-3 py-2 rounded-full"
+                  style={{
+                    backgroundColor: palette.statsAccentSoft,
+                    borderWidth: 1,
+                    borderColor: palette.statsAccentBorder,
+                  }}
+                >
+                  <Text className="font-orbitron-semibold text-white text-xs">
+                    {t("Profile.work")}
+                    {playTimes.length && workTimes.length
+                      ? (
+                          workTimes.reduce((a, b) => a + b, 0) /
+                          workTimes.length /
+                          (playTimes.reduce((a, b) => a + b, 0) /
+                            playTimes.length)
+                        ).toFixed(2)
+                      : 0}
+                  </Text>
                 </View>
-                <View className="px-3 py-2 rounded-full" style={{ backgroundColor:"rgba(59,246,112,0.25)", borderWidth:1, borderColor:"rgba(59,246,112,0.45)" }}>
-                  <Text className="font-orbitron-semibold text-white text-xs">{t("Profile.total")}{(() => { const t = workTimes.reduce((a,b)=>a+b,0)+playTimes.reduce((a,b)=>a+b,0); return `${(t/60).toFixed(1)}h`; })()}</Text>
+                <View
+                  className="px-3 py-2 rounded-full"
+                  style={{
+                    backgroundColor: palette.statsAccentSoft,
+                    borderWidth: 1,
+                    borderColor: palette.statsAccentBorder,
+                  }}
+                >
+                  <Text className="font-orbitron-semibold text-white text-xs">
+                    {t("Profile.total")}
+                    {(() => {
+                      const t =
+                        workTimes.reduce((a, b) => a + b, 0) +
+                        playTimes.reduce((a, b) => a + b, 0);
+                      return `${(t / 60).toFixed(1)}h`;
+                    })()}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -733,12 +959,12 @@ export default function ProfileScreen() {
           {/* Add Child Button - NEW */}
           <View className="items-center mb-4">
             <MainButton
-            title={t("Profile.AddChildAccount")}
-            variant="primary"
-            onPress={() => router.push("/pages/CreateChildAccount")}
-            customStyle={{ width: "80%" }}
+              title={t("Profile.AddChildAccount")}
+              variant="primary"
+              onPress={() => router.push("/pages/CreateChildAccount")}
+              customStyle={{ width: "80%" }}
             />
-          </View>      
+          </View>
 
           {/* Switch Profile Button */}
           <View className="items-center mb-4">

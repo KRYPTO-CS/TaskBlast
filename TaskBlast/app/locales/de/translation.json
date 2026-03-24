@@ -103,12 +103,20 @@
     "privacy": "Datenschutz",
     "Help": "Hilfe & Support",
     "About": "Über uns",
-    "Logout": "Abmelden"
+    "Logout": "Abmelden",
+    "accessibility": "Barrierefreiheit",
+    "language": "Sprache",
+    "colorBlind": "Farbenblindmodus",
+    "textSize": "Textgröße",
+    "highContrast": "Hoher Kontrast",
+    "reduceMotion": "Bewegung reduzieren",
+    "tts": "Text to Speech",
+    "done": "Fertig"
   },
   "Tasks": {
     "title": "Aufgabenliste",
     "normal": "Normal",
-    "edit" : "Bearbeiten",
+    "edit": "Bearbeiten",
     "archive": "Archivieren",
     "empty": "Noch keine Aufgaben. Fügen Sie Ihre erste Aufgabe hinzu!",
     "button": "Neue Aufgabe hinzufügen",

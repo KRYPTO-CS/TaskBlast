@@ -1,9 +1,9 @@
 {
-  "language": {  
-  "selectLanguage": "Por favor selecciona tu idioma",
-  "continue": "Continuar",
-  "backTo": "Volver al",
-  "Login": "Inicio de sesión"
+  "language": {
+    "selectLanguage": "Por favor selecciona tu idioma",
+    "continue": "Continuar",
+    "backTo": "Volver al",
+    "Login": "Inicio de sesión"
   },
   "birthdate": {
     "title": "Cuál es tu fecha de nacimiento",
@@ -49,7 +49,7 @@
     "match": "Las contraseñas no coinciden",
     "length": "La contraseña debe tener al menos 8 caracteres"
   },
-  "Login" : {
+  "Login": {
     "title": "Iniciar sesión",
     "emailPlaceholder": "Correo electrónico o nombre de usuario",
     "passwordPlaceholder": "Contraseña",
@@ -103,7 +103,15 @@
     "privacy": "Privacidad",
     "Help": "Ayuda y soporte",
     "About": "Acerca de",
-    "Logout": "Cerrar sesión"
+    "Logout": "Cerrar sesión",
+    "accessibility": "Accesibilidad",
+    "language": "Idioma",
+    "colorBlind": "Modo Daltónico",
+    "textSize": "Tamaño del texto",
+    "highContrast": "Alto contraste",
+    "reduceMotion": "Reducir movimiento",
+    "tts": "Texto a voz",
+    "done": "Listo"
   },
   "Tasks": {
     "title": "Tareas",
@@ -149,7 +157,6 @@
     "coachMarkAwards": "¡Aquí puedes ver tus recompensas y logros!",
     "coachMarkStatsTitle": "Ver Estadísticas",
     "coachMarkStats": "¡Aquí puedes ver tus estadísticas y seguir tu progreso a lo largo del tiempo!"
-
   },
   "Pomodoro": {
     "time": "Tiempo Restante",
@@ -176,7 +183,6 @@
     "gWings": "Alas Verdes",
     "yWings": "Alas Amarillas",
     "equipped": "Equipado",
-    "owned" : "Poseído"
+    "owned": "Poseído"
   }
-
 }

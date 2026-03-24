@@ -103,12 +103,20 @@
     "privacy": "Confidentialité",
     "Help": "Aide et support",
     "About": "À propos de nous",
-    "Logout": "Se déconnecter"
+    "Logout": "Se déconnecter",
+    "accessibility": "Accessibilité",
+    "language": "Langue",
+    "colorBlind": "Mode daltonien",
+    "textSize": "Taille du texte",
+    "highContrast": "Contraste élevé",
+    "reduceMotion": "Réduire l'animation",
+    "tts": "Synthèse vocale",
+    "done": "Terminé"
   },
   "Tasks": {
     "title": "Mes tâches",
     "normal": "Normal",
-    "edit" : "Modifier",
+    "edit": "Modifier",
     "archive": "Archiver",
     "empty": "Aucune tâche pour le moment. Ajoutez votre première tâche !",
     "button": "Ajouter une nouvelle tâche",
@@ -128,7 +136,7 @@
     "coachMarkdesc": "C’est ici que vous pouvez gérer vos tâches. Appuyez sur une tâche pour voir les détails, démarrer une session de concentration ou la modifier. Utilisez les onglets pour basculer entre les tâches actives et archivées.",
     "Done": "Terminé"
   },
-"Profile": {
+  "Profile": {
     "traits": "Traits",
     "editP": "Editer Profil",
     "awards": "Récompenses",

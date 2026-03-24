@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   View,
-  Text,
   TouchableOpacity,
   Image,
   ImageBackground,
   AppState,
   InteractionManager
 } from "react-native";
+import { Text } from '../../TTS';
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
@@ -36,7 +36,8 @@ import PlanetModal from "../components/PlanetModal";
 import { CoachmarkAnchor, useCoachmark, createTour } from '@edwardloopez/react-native-coachmark';
 
 
-
+// Module-level variable to track if tour has been shown this app session
+let homeTourShown = false;
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -235,6 +236,20 @@ export default function HomeScreen() {
     }, [loadScore, musicPlayer, musicEnabled]),
   );
 
+useFocusEffect(
+  useCallback(() => {
+    // Only start tour if it hasn't been shown this app session
+    if (homeTourShown) {
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      homeTourShown = true;
+      start(onboardingTour);
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [onboardingTour])
 // useFocusEffect(
 //   useCallback(() => {
 //     if (

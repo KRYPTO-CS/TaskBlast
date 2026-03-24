@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   View,
-  Text,
   Modal,
   TouchableOpacity,
   ScrollView,
@@ -9,6 +8,7 @@ import {
   Image,
   Alert,
 } from "react-native";
+import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { getAuth } from "firebase/auth";
@@ -32,6 +32,12 @@ import {
 import { useNotifications } from "../context/NotificationContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
+import { useColorPalette } from "../styles/colorBlindThemes";
+import {
+  CoachmarkAnchor,
+  useCoachmark,
+  createTour,
+} from "@edwardloopez/react-native-coachmark";
 import { CoachmarkAnchor, useCoachmark, createTour } from '@edwardloopez/react-native-coachmark';
 
 interface Task {
@@ -63,6 +69,7 @@ export default function TaskListModal({
 }: TaskListModalProps) {
   const router = useRouter();
   const { scheduleDailyDigest, preferences } = useNotifications();
+  const palette = useColorPalette();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -78,16 +85,16 @@ export default function TaskListModal({
   const pinRefs = useRef<Array<TextInput | null>>([null, null, null, null]);
   const auth = getAuth();
   const db = getFirestore();
-  const {t ,i18n} = useTranslation();
-  const {start} = useCoachmark();
-  
-  const onboardingTour = createTour("onboarding",[
+  const { t, i18n } = useTranslation();
+  const { start } = useCoachmark();
+
+  const onboardingTour = createTour("onboarding", [
     {
-      id: 'task-button',
+      id: "task-button",
       title: t("Tasks.title"),
       description: t("Tasks.coachMarkdesc"),
-    }
-  ])
+    },
+  ]);
 
   // Child profile state
   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
@@ -672,15 +679,15 @@ export default function TaskListModal({
     }
   };
 
-//  useEffect(() => {
-//   if (!visible) return;
+  //  useEffect(() => {
+  //   if (!visible) return;
 
-//   const timeout = setTimeout(() => {
-//     start(onboardingTour);
-//   }, 500); 
+  //   const timeout = setTimeout(() => {
+  //     start(onboardingTour);
+  //   }, 500);
 
-//   return () => clearTimeout(timeout);
-// }, [visible]);
+  //   return () => clearTimeout(timeout);
+  // }, [visible]);
   return (
     <Modal
       visible={visible}
@@ -693,11 +700,18 @@ export default function TaskListModal({
         <View
           className={`w-full max-w-md rounded-3xl p-6 border-2 shadow-2xl ${
             isEditMode
-              ? "bg-[#2a2416] border-yellow-500/50"
+              ? "bg-[#2a2416]"
               : isArchiveMode
-                ? "bg-[#1a1a1a] border-gray-500/50"
-                : "bg-[#1a1f3a] border-purple-500/30"
+                ? "bg-[#1a1a1a]"
+                : "bg-[#1a1f3a]"
           }`}
+          style={{
+            borderColor: isEditMode
+              ? "rgba(234, 179, 8, 0.5)"
+              : isArchiveMode
+                ? "rgba(107, 114, 128, 0.5)"
+                : palette.modalBorder,
+          }}
         >
           {/* Header */}
           <View className="flex-row justify-between items-center mb-4">
@@ -706,7 +720,7 @@ export default function TaskListModal({
             <Text className="font-orbitron-bold text-white text-2xl">
               {t("Tasks.title")}
             </Text>
-          
+
             <TouchableOpacity
               testID="close-task-modal"
               onPress={onClose}
@@ -733,11 +747,13 @@ export default function TaskListModal({
                 setIsAddingTask(false);
                 setEditingTaskId(null);
               }}
-              className={`flex-1 py-3 rounded-xl items-center ${
-                !isEditMode && !isArchiveMode
-                  ? "bg-purple-500"
-                  : "bg-transparent"
-              }`}
+              className="flex-1 py-3 rounded-xl items-center"
+              style={{
+                backgroundColor:
+                  !isEditMode && !isArchiveMode
+                    ? palette.accent
+                    : "transparent",
+              }}
             >
               <Text className="font-orbitron-bold text-white text-sm">
                 {t("Tasks.normal")}
@@ -790,7 +806,9 @@ export default function TaskListModal({
               {displayedTasks.length === 0 ? (
                 <View className="items-center justify-center p-4">
                   <Text className="font-madimi text-white text-base">
-                    {isArchiveMode ? t("Tasks.archivedempty") : t("Tasks.empty")}
+                    {isArchiveMode
+                      ? t("Tasks.archivedempty")
+                      : t("Tasks.empty")}
                   </Text>
                 </View>
               ) : (
@@ -804,8 +822,16 @@ export default function TaskListModal({
                           ? "bg-yellow-600/20 border-yellow-500/40"
                           : isArchiveMode
                             ? "bg-gray-700/20 border-gray-500/40"
-                            : "bg-purple-500/10 border-purple-400/30"
+                            : ""
                     }`}
+                    style={
+                      !task.completed && !isEditMode && !isArchiveMode
+                        ? {
+                            backgroundColor: palette.accentSoft,
+                            borderColor: palette.accentSoftBorder,
+                          }
+                        : undefined
+                    }
                   >
                     <TouchableOpacity
                       className="flex-1"
@@ -832,8 +858,13 @@ export default function TaskListModal({
                               ? "text-yellow-300"
                               : isArchiveMode
                                 ? "text-gray-300"
-                                : "text-purple-300"
+                                : ""
                           }`}
+                          style={
+                            !isEditMode && !isArchiveMode
+                              ? { color: palette.sectionTextColor }
+                              : undefined
+                          }
                         >
                           {task.reward}
                         </Text>
@@ -870,7 +901,11 @@ export default function TaskListModal({
 
                           <TouchableOpacity
                             onPress={() => handleShowInfo(task)}
-                            className="w-10 h-10 rounded-full bg-purple-500/30 border-2 border-purple-400/30 items-center justify-center"
+                            className="w-10 h-10 rounded-full border-2 items-center justify-center"
+                            style={{
+                              backgroundColor: palette.accentSoft,
+                              borderColor: palette.accentSoftBorder,
+                            }}
                           >
                             <Ionicons
                               name="information-circle"
@@ -950,7 +985,11 @@ export default function TaskListModal({
 
                           <TouchableOpacity
                             onPress={() => handleShowInfo(task)}
-                            className="w-10 h-10 rounded-full bg-purple-500/30 border-2 border-purple-400/30 items-center justify-center"
+                            className="w-10 h-10 rounded-full border-2 items-center justify-center"
+                            style={{
+                              backgroundColor: palette.accentSoft,
+                              borderColor: palette.accentSoftBorder,
+                            }}
                           >
                             <Ionicons
                               name="information-circle"
