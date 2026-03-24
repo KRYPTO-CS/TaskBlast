@@ -282,23 +282,23 @@ useFocusEffect(
 //   ])
 // );
 
-  useFocusEffect( 
+//   useFocusEffect( 
 
-  useCallback(() => { 
+//   useCallback(() => { 
 
-    const timeout = setTimeout(() => { 
+//     const timeout = setTimeout(() => { 
 
-      start(onboardingTour); 
+//       start(onboardingTour); 
 
-    }, 300); 
+//     }, 300); 
 
   
 
-    return () => clearTimeout(timeout); 
+//     return () => clearTimeout(timeout); 
 
-  }, []) 
+//   }, []) 
 
-); 
+ ); 
   return (
     <View className="flex-1">
       {/* Animated stars background */}

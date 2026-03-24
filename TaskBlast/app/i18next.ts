@@ -60,6 +60,9 @@ i18n
       ar:
       {
        translation: require("./locales/ar/translation.json"),
+      },
+      pi: {
+        translation: require("./locales/pi/translation.json"),
       }
     },
     interpolation: {

@@ -23,6 +23,7 @@ const Lang_Map = {
     Bengali: "bn",
     Chinese: "zh",
     Hindi: "hi",
+    Pirate: "pi",
   } as const;
 
 type language = keyof typeof Lang_Map;
@@ -52,6 +53,7 @@ export default function SignUpAccountType({
   const Bengali = require("../../assets/images/bangladesh.png");
   const China = require("../../assets/images/china.png");
   const India = require("../../assets/images/india.png");
+  const Pirate = require("../../assets/images/pirate-flag.png");
   const {t ,i18n} = useTranslation();
   
 
@@ -72,7 +74,7 @@ export default function SignUpAccountType({
     image,
     title,
   }: {
-    value: "English" | "Spanish" | "Portuguese" | "French" | "German" | "Russian" | "Arabic" | "Bengali" | "Chinese" | "Hindi";
+    value: "English" | "Spanish" | "Portuguese" | "French" | "German" | "Russian" | "Arabic" | "Bengali" | "Chinese" | "Hindi" | "Pirate";
     image?: any;
     title: string;
   }) => {
@@ -172,6 +174,11 @@ export default function SignUpAccountType({
             value="Hindi"
             image={India}
             title="हिन्दी"
+          />
+          <Option
+            value="Pirate"
+            image={Pirate}
+            title="Pirate English"
           />
 
           {error ? (
