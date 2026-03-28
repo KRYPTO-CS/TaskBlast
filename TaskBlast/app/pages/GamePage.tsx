@@ -3,10 +3,10 @@ import {
   ActivityIndicator,
   StyleSheet,
   View,
-  Text,
   Pressable,
   TouchableOpacity,
 } from "react-native";
+import { Text } from '../../TTS';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";

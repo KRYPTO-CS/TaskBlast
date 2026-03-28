@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   View,
-  Text,
   TouchableOpacity,
   ImageBackground,
   Image,
   ScrollView
 } from "react-native";
+import { Text } from '../../TTS';
 import MainButton from "../components/MainButton";
 import { useTranslation } from "react-i18next";
 

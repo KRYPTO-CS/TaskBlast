@@ -86,7 +86,14 @@
     "continue": "继续"
   },
   "Home": {
-    "takeoff": "起飞"
+    "takeoff": "起飞",
+    "coachMarktaskstitle": "添加新任务",
+    "coachMarktasks": "点击这里添加新任务，设置奖励并个性化您的专注会话！",
+    "coachMarkProfiletitle": "查看您的个人资料",
+    "coachMarkProfile": "点击这里查看您的个人资料，跟踪您的进度并个性化您的头像！",
+    "coachMarksettings": "点击这里调整您的偏好设置，管理通知等！",
+    "coachMarktakeoff": "点击这里开始专注会话，朝着您的目标起飞！",
+    "coachMarkshop": "点击这里访问商店，并使用新的身体和翅膀自定义您的头像！"
   },
   "Settings": {
     "title": "设置",
@@ -96,12 +103,20 @@
     "privacy": "隐私",
     "Help": "帮助与支持",
     "About": "关于我们",
-    "Logout": "退出登录"
-   },
-   "Tasks": {
+    "Logout": "退出登录",
+    "accessibility": "无障碍",
+    "language": "语言",
+    "colorBlind": "色盲模式",
+    "textSize": "字体大小",
+    "highContrast": "高对比度",
+    "reduceMotion": "减少动画",
+    "tts": "文字转语音",
+    "done": "完成"
+  },
+  "Tasks": {
     "title": "任务列表",
     "normal": "普通",
-    "edit" : "编辑",
+    "edit": "编辑",
     "archive": "归档",
     "empty": "暂无任务。添加您的第一个任务！",
     "button": "添加新任务",
@@ -117,7 +132,9 @@
     "cancel": "取消",
     "add": "添加任务",
     "editTask": "编辑任务",
-    "save": "保存"
+    "save": "保存",
+    "coachMarkdesc": "这里您可以管理您的任务。点击一个任务查看详情，开始专注会话或编辑它。使用标签切换活动和归档任务。",
+    "Done": "完成"
   },
   "Profile": {
     "traits": "特征",
@@ -132,7 +149,14 @@
     "total": "任务总耗时: ",
     "AddChildAccount": "添加子账户",
     "SwitchProfile": "切换账户",
-    "Logout": "退出登录"
+    "Logout": "退出登录",
+    "coachMarkeditP": "点击这里更新您的个人资料信息！",
+    "coachMarkTraitsTitle": "查看特征",
+    "coachMarkTraits": "这里您可以查看您的特征并添加新的特征！",
+    "coachMarkAwardsTitle": "查看奖项",
+    "coachMarkAwards": "这里您可以查看您的奖项和成就！",
+    "coachMarkStatsTitle": "查看统计数据",
+    "coachMarkStats": "这里您可以查看您的统计数据并跟踪您的进度！"
   },
   "Pomodoro": {
     "time": "剩余时间",
@@ -140,6 +164,25 @@
     "Resume": "继续",
     "Pause": "暂停",
     "Land": "着陆",
-    "Play": "开始游戏"
+    "Play": "开始游戏",
+    "coachMarkTime": "这是您当前会话的剩余时间，结束时您将能够返回您的星球或玩游戏。专注并观看它倒计时！",
+    "coachMarkwork": "这表示您是在工作时段还是休息时段。工作时段保持专注，休息时放松！",
+    "coachMarkPause": "如果您需要进行非计划的休息，请点击这里暂停您的会话。",
+    "coachMarkLand": "点击这里结束您的会话并返回您的星球。在您的专注时间上做得很好！"
+  },
+    "Shop": {
+    "title": "商店",
+    "body": "身体",
+    "wings": "翅膀",
+    "bBody": "蓝色身体",
+    "rBody": "红色身体",
+    "yBody": "黄色身体",
+    "gBody": "绿色身体",
+    "bWings": "蓝色翅膀",
+    "rWings": "红色翅膀",
+    "yWings": "黄色翅膀",
+    "gWings": "绿色翅膀",
+    "equipped": "已装备",
+    "owned": "已拥有"
   }
 }

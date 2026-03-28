@@ -1,9 +1,9 @@
 {
   "language": {
-  "selectLanguage": "Please select your language",
-  "continue": "Continue",
-  "backTo": "Back to",
-  "Login": "Login"
+    "selectLanguage": "Please select your language",
+    "continue": "Continue",
+    "backTo": "Back to",
+    "Login": "Login"
   },
   "birthdate": {
     "title": "What's Your Birthdate",
@@ -85,8 +85,16 @@
     "confirmPinPlaceholder": "Confirm PIN",
     "continue": "Continue"
   },
+
   "Home": {
-    "takeoff": "Take Off"
+    "takeoff": "Take Off",
+    "coachMarktaskstitle": "Add new Tasks",
+    "coachMarktasks": "Tap here to add new tasks, set rewards, and customize your focus sessions!",
+    "coachMarkProfiletitle": "View Your Profile",
+    "coachMarkProfile": "Tap here to view your profile, track your progress, and customize your avatar!",
+    "coachMarksettings": "Tap here to adjust your preferences, manage notifications, and more!",
+    "coachMarktakeoff": "Tap here to start a focus session and blast off towards your goals!",
+    "coachMarkshop": "Tap here to visit the shop and customize your avatar with new bodies and wings!"
   },
   "Settings": {
     "title": "Settings",
@@ -96,12 +104,20 @@
     "privacy": "Privacy",
     "Help": "Help & Support",
     "About": "About",
-    "Logout": "Logout"
+    "Logout": "Logout",
+    "accessibility": "Accessibility",
+    "language": "Language",
+    "colorBlind": "Color Blind Mode",
+    "textSize": "Text Size",
+    "highContrast": "High Contrast",
+    "reduceMotion": "Reduce Motion",
+    "tts": "Text to Speech",
+    "done": "Done"
   },
   "Tasks": {
     "title": "Task List",
     "normal": "Normal",
-    "edit" : "Edit",
+    "edit": "Edit",
     "archive": "Archive",
     "empty": "No tasks yet. Add your first task!",
     "button": "Add New Task",
@@ -117,8 +133,9 @@
     "cancel": "Cancel",
     "add": "Add Task",
     "editTask": "Edit Task",
-    "save": "Save"
-
+    "save": "Save",
+    "coachMarkdesc": "This is where you can manage your tasks. Tap on a task to view details, start a focus session, or edit it. Use the tabs to switch between active and archived tasks.",
+    "Done": "Done"
   },
   "Profile": {
     "traits": "Traits",
@@ -133,7 +150,14 @@
     "total": "Total Time Spent on Tasks: ",
     "AddChildAccount": "Add Child Account",
     "SwitchProfile": "Switch Profile",
-    "Logout": "Logout"
+    "Logout": "Logout",
+    "coachMarkeditP": "Tap here to update your profile information!",
+    "coachMarkTraitsTitle": "View Traits",
+    "coachMarkTraits": "Here you can see your traits and add new ones!",
+    "coachMarkAwardsTitle": "View Awards",
+    "coachMarkAwards": "Here you can see your awards and accomplishments!",
+    "coachMarkStatsTitle": "View Stats",
+    "coachMarkStats": "Here you can see your stats and track your progress over time!"
   },
   "Pomodoro": {
     "time": "Time Remaining",
@@ -141,7 +165,25 @@
     "Resume": "Resume",
     "Pause": "Pause",
     "Land": "Land",
-    "Play": "Play Game"
+    "Play": "Play Game",
+    "coachMarkTime": "This is the time remaining in your current session at the end you will be able to land back on your planet or play a game. Focus and watch it count down!",
+    "coachMarkwork": "This indicates whether you're in a work session or a break. Stay focused during work sessions and relax during breaks!",
+    "coachMarkPause": "Tap here to pause your session if you need to take an unscheduled break.",
+    "coachMarkLand": "Tap here to end your session and land back on you planet. Great job on your focus time!"
+  },
+  "Shop": {
+    "title": "Shop",
+    "body": "Body",
+    "wings": "Wings",
+    "bBody": "Blue Body",
+    "rBody": "Red Body",
+    "yBody": "Yellow Body",
+    "gBody": "Green Body",
+    "bWings": "Blue Wings",
+    "rWings": "Red Wings",
+    "yWings": "Yellow Wings",
+    "gWings": "Green Wings",
+    "equipped": "Equipped",
+    "owned": "Owned"
   }
-
 }

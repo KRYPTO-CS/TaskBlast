@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
-  Text,
   TouchableOpacity,
   FlatList,
   TextInput,
@@ -9,6 +8,7 @@ import {
   ActivityIndicator,
   ImageBackground,
 } from "react-native";
+import { Text } from '../../TTS';
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";

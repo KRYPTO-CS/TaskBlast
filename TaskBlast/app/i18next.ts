@@ -1,5 +1,18 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+// Restore persisted language before the app finishes hydrating
+AsyncStorage.getItem("@taskblast_accessibility_settings")
+  .then((json) => {
+    if (json) {
+      const saved = JSON.parse(json);
+      if (saved?.language && saved.language !== i18n.language) {
+        i18n.changeLanguage(saved.language);
+      }
+    }
+  })
+  .catch(() => {/* silently ignore */});
 
 i18n
   .use(initReactI18next)

@@ -1,9 +1,9 @@
 {
-  "language": {  
-  "selectLanguage": "Por favor selecciona tu idioma",
-  "continue": "Continuar",
-  "backTo": "Volver al",
-  "Login": "Inicio de sesión"
+  "language": {
+    "selectLanguage": "Por favor selecciona tu idioma",
+    "continue": "Continuar",
+    "backTo": "Volver al",
+    "Login": "Inicio de sesión"
   },
   "birthdate": {
     "title": "Cuál es tu fecha de nacimiento",
@@ -49,7 +49,7 @@
     "match": "Las contraseñas no coinciden",
     "length": "La contraseña debe tener al menos 8 caracteres"
   },
-  "Login" : {
+  "Login": {
     "title": "Iniciar sesión",
     "emailPlaceholder": "Correo electrónico o nombre de usuario",
     "passwordPlaceholder": "Contraseña",
@@ -86,7 +86,14 @@
     "continue": "Continuar"
   },
   "Home": {
-    "takeoff": "Despegue"
+    "takeoff": "Despegue",
+    "coachMarktaskstitle": "Agrega nuevas tareas",
+    "coachMarktasks": "Toca aquí para agregar nuevas tareas, establecer recompensas y personalizar tus sesiones de enfoque!",
+    "coachMarkProfiletitle": "Ver tu perfil",
+    "coachMarkProfile": "Toca aquí para ver tu perfil, seguir tu progreso y personalizar tu avatar!",
+    "coachMarksettings": "Toca aquí para ajustar tus preferencias, gestionar notificaciones y más!",
+    "coachMarktakeoff": "Toca aquí para iniciar una sesión de enfoque y despegar hacia tus metas!",
+    "coachMarkshop": "Toca aquí para visitar la tienda y personalizar tu avatar con nuevos cuerpos y alas!"
   },
   "Settings": {
     "title": "Configuración",
@@ -96,7 +103,15 @@
     "privacy": "Privacidad",
     "Help": "Ayuda y soporte",
     "About": "Acerca de",
-    "Logout": "Cerrar sesión"
+    "Logout": "Cerrar sesión",
+    "accessibility": "Accesibilidad",
+    "language": "Idioma",
+    "colorBlind": "Modo Daltónico",
+    "textSize": "Tamaño del texto",
+    "highContrast": "Alto contraste",
+    "reduceMotion": "Reducir movimiento",
+    "tts": "Texto a voz",
+    "done": "Listo"
   },
   "Tasks": {
     "title": "Tareas",
@@ -117,7 +132,9 @@
     "cancel": "Cancelar",
     "add": "Agregar Tarea",
     "editTask": "Editar Tarea",
-    "save": "Guardar"
+    "save": "Guardar",
+    "coachMarkdesc": "Aquí puedes gestionar tus tareas. Toca una tarea para ver detalles, iniciar una sesión de enfoque o editarla. Usa las pestañas para cambiar entre tareas activas y archivadas.",
+    "Done": "Hecho"
   },
   "Profile": {
     "traits": "Rasgos",
@@ -132,8 +149,14 @@
     "total": "Tiempo Total Invertido en Tareas: ",
     "AddChildAccount": "Agregar Cuenta de Niño",
     "SwitchProfile": "Cambiar Perfil",
-    "Logout": "Cerrar Sesión"
-
+    "Logout": "Cerrar Sesión",
+    "coachMarkeditP": "¡Toca aquí para actualizar la información de tu perfil!",
+    "coachMarkTraitsTitle": "Ver Rasgos",
+    "coachMarkTraits": "¡Aquí puedes ver tus rasgos y agregar nuevos!",
+    "coachMarkAwardsTitle": "Ver Recompensas",
+    "coachMarkAwards": "¡Aquí puedes ver tus recompensas y logros!",
+    "coachMarkStatsTitle": "Ver Estadísticas",
+    "coachMarkStats": "¡Aquí puedes ver tus estadísticas y seguir tu progreso a lo largo del tiempo!"
   },
   "Pomodoro": {
     "time": "Tiempo Restante",
@@ -141,7 +164,25 @@
     "Resume": "Reanudar",
     "Pause": "Pausar",
     "Land": "Aterrizar",
-    "Play": "Jugar Juego"
+    "Play": "Jugar Juego",
+    "coachMarkTime": "Este es el tiempo restante en tu sesión actual al final podrás aterrizar de nuevo en tu planeta o jugar un juego. ¡Concéntrate y míralo contar regresivamente!",
+    "coachMarkwork": "Esto indica si estás en una sesión de trabajo o un descanso. ¡Mantente enfocado durante las sesiones de trabajo y relájate durante los descansos!",
+    "coachMarkPause": "Toca aquí para pausar tu sesión si necesitas tomar un descanso no programado.",
+    "coachMarkLand": "Toca aquí para finalizar tu sesión y aterrizar de nuevo en tu planeta. ¡Buen trabajo en tu tiempo de enfoque!"
+  },
+  "Shop": {
+    "title": "Tienda",
+    "body": "Cuerpo",
+    "wings": "Alas",
+    "bBody": "Cuerpo Azul",
+    "rBody": "Cuerpo Rojo",
+    "gBody": "Cuerpo Verde",
+    "yBody": "Cuerpo Amarillo",
+    "bWings": "Alas Azules",
+    "rWings": "Alas Rojas",
+    "gWings": "Alas Verdes",
+    "yWings": "Alas Amarillas",
+    "equipped": "Equipado",
+    "owned": "Poseído"
   }
-
 }

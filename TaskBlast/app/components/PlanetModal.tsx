@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Modal, TouchableOpacity, ActivityIndicator, Image, Alert } from "react-native";
+import { View, Modal, TouchableOpacity, ActivityIndicator, Image, Alert } from "react-native";
+import { Text } from '../../TTS';
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
 import {
@@ -18,6 +19,7 @@ import {
   increment,
   where,
   query,
+  runTransaction,
 } from "firebase/firestore";
 import MainButton from "./MainButton";
 import { CurrentRenderContext } from "@react-navigation/native";
@@ -80,6 +82,27 @@ export default function PlanetModal({ visible, onClose, planetId, isLocked, sele
 		// Planets are stored as top-level documents under `planets/{id}`
 		return doc(db, "planets", id.toString());
 	};
+	
+	// function adapted from the one in GamePage, records rocks spent in the shop
+	const updateRocksSpent = async (score: number) => {
+	try {
+		const auth = getAuth();
+		const user = auth.currentUser;
+		if (!user) return;
+
+		const db = getFirestore();
+		const userRef = doc(db, "users", user.uid);
+
+		// add rocks and update all-time rocks atomically
+		// Atomically compute the new allTimeRocks and append it to the array (allow duplicates)
+		await runTransaction(db, async (tx) => {
+		tx.update(userRef, {
+			rocksSpent: increment(score),
+		});
+		});
+	}
+		catch (err) { console.warn("Failed to update rocks spent", err); }
+	};
 
 	// Check if the user has enough rocks and unlock the planet if so
 	const handlePlanetUnlock = async () => {
@@ -124,6 +147,8 @@ export default function PlanetModal({ visible, onClose, planetId, isLocked, sele
 			if (onRocksChange) {
 				onRocksChange();
 			}
+
+			updateRocksSpent((planet?.cost ?? 0));
 			console.log("Planet ", selectedPlanet ?? currentProgress ?? 1, "unlocked for user", user.uid);
 		} catch (err) {
 			console.error("Error unlocking planet:", err);

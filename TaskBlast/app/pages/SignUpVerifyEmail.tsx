@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
   View,
-  Text,
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
+import { Text } from '../../TTS';
 import MainButton from "../components/MainButton";
 import { auth } from "../../server/firebase";
 import { sendEmailVerification } from "firebase/auth";
