@@ -25,16 +25,12 @@ import {
   arrayUnion,
   setDoc,
 } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAudio } from "../context/AudioContext";
 import { useTranslation } from "react-i18next";
 import { useNotifications } from "../context/NotificationContext";
 import { useColorPalette } from "../styles/colorBlindThemes";
-import {
-  CoachmarkAnchor,
-  useCoachmark,
-  createTour,
-} from "@edwardloopez/react-native-coachmark";
-import { CoachmarkAnchor, useCoachmark, createTour } from '@edwardloopez/react-native-coachmark';
+import { CoachmarkAnchor, useCoachmark, createTour } from "@edwardloopez/react-native-coachmark";
 // Ship component image mappings
 const BODY_IMAGES: { [key: number]: any } = {
   0: require("../../assets/images/ship_components/body/0.png"),
@@ -49,9 +45,6 @@ const WING_IMAGES: { [key: number]: any } = {
   2: require("../../assets/images/ship_components/wing/2.png"),
   3: require("../../assets/images/ship_components/wing/3.png"),
 };
-
-// Module-level variable to track if tour has been shown this app session
-let pomodoroTourShown = false;
 
 export default function PomodoroScreen() {
   const router = useRouter();
@@ -495,17 +488,20 @@ export default function PomodoroScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      // Only start tour if it hasn't been shown this app session
-      if (pomodoroTourShown) {
-        return;
-      }
+      let cancelled = false;
+      const timeout = setTimeout(async () => {
+        const alreadySeen = await AsyncStorage.getItem("pomodoroOnboardingSeen");
 
-      const timeout = setTimeout(() => {
-        pomodoroTourShown = true;
-        start(onboardingTour);
-      }, 300);
+        if (!alreadySeen && !cancelled) {
+          await AsyncStorage.setItem("pomodoroOnboardingSeen", "true");
+          start(onboardingTour);
+        }
+      }, 700);
 
-      return () => clearTimeout(timeout);
+      return () => {
+        cancelled = true;
+        clearTimeout(timeout);
+      };
     }, [onboardingTour]),
   );
 
