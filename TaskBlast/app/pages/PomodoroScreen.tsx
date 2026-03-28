@@ -22,8 +22,12 @@ import {
   updateDoc,
   increment,
   getDoc,
-  arrayUnion,
   setDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  runTransaction,
 } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAudio } from "../context/AudioContext";
@@ -279,17 +283,85 @@ export default function PomodoroScreen() {
       if (!user) return;
 
       const db = getFirestore();
-      const userRef = doc(db, "users", user.uid);
       const value = Math.max(0, Math.floor(minutes));
+      const getNeededExpForLevel = (level: number) =>
+        30 + 5 * Math.floor(Math.max(0, level - 1) / 5);
 
-      // arrayUnion de-duplicates identical primitives; to allow repeated values, manually append
-      const snap = await getDoc(userRef);
-      const current =
-        snap.exists() && Array.isArray(snap.data().workTimeMinutesArr)
-          ? [...snap.data().workTimeMinutesArr]
+      const activeChild = await AsyncStorage.getItem("activeChildProfile");
+
+      let profileRef;
+      if (activeChild) {
+        const childrenRef = collection(db, "users", user.uid, "children");
+        const childQuery = query(
+          childrenRef,
+          where("username", "==", activeChild),
+        );
+        const childSnapshot = await getDocs(childQuery);
+
+        if (!childSnapshot.empty) {
+          profileRef = childSnapshot.docs[0].ref;
+        } else {
+          console.warn("Child profile not found for EXP update, using parent");
+          profileRef = doc(db, "users", user.uid);
+        }
+      } else {
+        profileRef = doc(db, "users", user.uid);
+      }
+
+      await runTransaction(db, async (tx) => {
+        const snap = await tx.get(profileRef);
+        const data = snap.exists() ? snap.data() : ({} as any);
+
+        const currentArr = Array.isArray(data.workTimeMinutesArr)
+          ? [...data.workTimeMinutesArr]
           : [];
-      current.push(value);
-      await setDoc(userRef, { workTimeMinutesArr: current }, { merge: true });
+        currentArr.push(value);
+
+        const prevExp = Number.isFinite(Number(data.currentExp))
+          ? Math.max(0, Math.floor(Number(data.currentExp)))
+          : 0;
+        const prevLevel = Number.isFinite(Number(data.currentLevel))
+          ? Math.max(1, Math.floor(Number(data.currentLevel)))
+          : 1;
+
+        // Normalize existing data if stored EXP already exceeds current threshold.
+        let workingLevel = prevLevel;
+        let workingExp = prevExp;
+        while (workingExp >= getNeededExpForLevel(workingLevel)) {
+          workingExp -= getNeededExpForLevel(workingLevel);
+          workingLevel += 1;
+        }
+
+        // Apply gained EXP with dynamic thresholds that scale every 5 levels.
+        let remainingExpGain = value;
+        while (remainingExpGain > 0) {
+          const neededThisLevel = getNeededExpForLevel(workingLevel);
+          const expToNextLevel = neededThisLevel - workingExp;
+
+          if (remainingExpGain >= expToNextLevel) {
+            remainingExpGain -= expToNextLevel;
+            workingLevel += 1;
+            workingExp = 0;
+          } else {
+            workingExp += remainingExpGain;
+            remainingExpGain = 0;
+          }
+        }
+
+        const newExp = workingExp;
+        const newLevel = workingLevel;
+
+        tx.set(
+          profileRef,
+          {
+            workTimeMinutesArr: currentArr,
+            currentExp: newExp,
+            currentLevel: newLevel,
+          },
+          { merge: true },
+        );
+      });
+
       console.log(`Recorded work session: ${minutes} minutes`);
     } catch (err) {
       console.warn("Failed to record work session", err);

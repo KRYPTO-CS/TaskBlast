@@ -5,7 +5,10 @@ import {
   Image,
   ImageBackground,
   AppState,
-  InteractionManager
+  InteractionManager,
+  Modal,
+  ScrollView,
+  Alert,
 } from "react-native";
 import { Text } from '../../TTS';
 import { useFocusEffect } from "@react-navigation/native";
@@ -22,6 +25,7 @@ import {
   query,
   where,
   getDocs,
+  runTransaction,
 } from "firebase/firestore";
 import { useAudioPlayer } from "expo-audio";
 import MainButton from "../components/MainButton";
@@ -33,16 +37,49 @@ import { useRouter } from "expo-router";
 import { useAudio } from "../context/AudioContext";
 import { useTranslation } from "react-i18next";
 import PlanetModal from "../components/PlanetModal";
+import { useColorPalette } from "../styles/colorBlindThemes";
 import { CoachmarkAnchor, useCoachmark, createTour } from '@edwardloopez/react-native-coachmark';
+import Svg, { Circle, G } from "react-native-svg";
 
 export default function HomeScreen() {
   const router = useRouter();
+  const palette = useColorPalette();
   const { musicEnabled } = useAudio();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
   const [isPlanetModalVisible, setIsPlanetModalVisible] = useState(false);
   const [isShopModalVisible, setIsShopModalVisible] = useState(false);
+  const [isLevelModalVisible, setIsLevelModalVisible] = useState(false);
   const [rocks, setRocks] = useState<number>(0);
+  const [galaxyCrystals, setGalaxyCrystals] = useState<number>(0);
+  const [currentExp, setCurrentExp] = useState<number>(0);
+  const [currentLevel, setCurrentLevel] = useState<number>(1);
+  const [claimedRewardLevels, setClaimedRewardLevels] = useState<number[]>([]);
+  const [claimingLevel, setClaimingLevel] = useState<number | null>(null);
+  const maxBattlePassLevel = 100;
+  const getBattlePassReward = (level: number) =>
+    250 + 50 * Math.floor(Math.max(0, level - 1) / 5);
+  const neededExp = 30 + 5 * Math.floor(Math.max(0, currentLevel - 1) / 5);
+  const clampedCurrentExp = Math.max(0, Math.min(currentExp, neededExp));
+  const expProgress = neededExp > 0 ? clampedCurrentExp / neededExp : 0;
+
+  const smallRingSize = 56;
+  const smallRingStroke = 4;
+  const smallRingRadius = (smallRingSize - smallRingStroke) / 2;
+  const smallRingCircumference = 2 * Math.PI * smallRingRadius;
+  const smallRingOffset =
+    smallRingCircumference * (1 - Math.min(Math.max(expProgress, 0), 1));
+
+  const modalRingSize = 96;
+  const modalRingStroke = 6;
+  const modalRingRadius = (modalRingSize - modalRingStroke) / 2;
+  const modalRingCircumference = 2 * Math.PI * modalRingRadius;
+  const modalRingOffset =
+    modalRingCircumference * (1 - Math.min(Math.max(expProgress, 0), 1));
+  const battlePassLevels = React.useMemo(
+    () => Array.from({ length: maxBattlePassLevel }, (_, i) => i + 1),
+    [maxBattlePassLevel],
+  );
   const {t ,i18n} = useTranslation();
   const {start} = useCoachmark();
  const onboardingTour = React.useMemo(() => createTour("onboarding", [
@@ -95,6 +132,9 @@ export default function HomeScreen() {
       const user = auth.currentUser;
       if (!user) {
         setRocks(0);
+        setGalaxyCrystals(0);
+        setCurrentExp(0);
+        setCurrentLevel(1);
         return;
       }
 
@@ -122,6 +162,10 @@ export default function HomeScreen() {
         } else {
           console.warn("Child profile not found");
           setRocks(0);
+          setGalaxyCrystals(0);
+          setCurrentExp(0);
+          setCurrentLevel(1);
+          setClaimedRewardLevels([]);
           return;
         }
       } else {
@@ -133,15 +177,130 @@ export default function HomeScreen() {
       if (userDoc && userDoc.exists()) {
         const userData = userDoc.data();
         const rocksValue = userData.rocks || 0;
+        const galaxyCrystalsValue = userData.galaxyCrystals || 0;
+        const expValue = userData.currentExp || 0;
+        const levelValue = userData.currentLevel || 1;
         setRocks(isNaN(rocksValue) ? 0 : Math.max(0, Math.floor(rocksValue)));
+        setGalaxyCrystals(
+          isNaN(galaxyCrystalsValue)
+            ? 0
+            : Math.max(0, Math.floor(galaxyCrystalsValue)),
+        );
+        setCurrentExp(isNaN(expValue) ? 0 : Math.max(0, Math.floor(expValue)));
+        setCurrentLevel(
+          isNaN(levelValue) ? 1 : Math.max(1, Math.floor(levelValue)),
+        );
+        const claimedLevelsRaw = Array.isArray(userData.claimedRewardLevels)
+          ? userData.claimedRewardLevels
+          : [];
+        setClaimedRewardLevels(
+          claimedLevelsRaw
+            .map((v: unknown) => Number(v))
+            .filter((v: number) => Number.isFinite(v) && v >= 1)
+            .map((v: number) => Math.floor(v)),
+        );
       } else {
         setRocks(0);
+        setGalaxyCrystals(0);
+        setCurrentExp(0);
+        setCurrentLevel(1);
+        setClaimedRewardLevels([]);
       }
     } catch (err) {
       console.warn("Failed to load rocks from database", err);
       setRocks(0);
+      setGalaxyCrystals(0);
+      setCurrentExp(0);
+      setCurrentLevel(1);
+      setClaimedRewardLevels([]);
     }
   }, []);
+
+  const handleClaimBattlePassReward = async (level: number) => {
+    if (level < 1 || level > maxBattlePassLevel) return;
+
+    const isGalaxyReward = level % 5 === 0;
+    const rewardAmount = getBattlePassReward(level);
+
+    try {
+      setClaimingLevel(level);
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const db = getFirestore();
+      const activeChild = await AsyncStorage.getItem("activeChildProfile");
+
+      let profileRef = doc(db, "users", user.uid);
+      if (activeChild) {
+        const childrenRef = collection(db, "users", user.uid, "children");
+        const childQuery = query(
+          childrenRef,
+          where("username", "==", activeChild),
+        );
+        const childSnapshot = await getDocs(childQuery);
+        if (!childSnapshot.empty) {
+          profileRef = childSnapshot.docs[0].ref;
+        }
+      }
+
+      await runTransaction(db, async (tx) => {
+        const snap = await tx.get(profileRef);
+        const data = snap.exists() ? snap.data() : ({} as any);
+        const liveLevel = Number.isFinite(Number(data.currentLevel))
+          ? Math.max(1, Math.floor(Number(data.currentLevel)))
+          : 1;
+        const claimed = Array.isArray(data.claimedRewardLevels)
+          ? data.claimedRewardLevels
+              .map((v: unknown) => Number(v))
+              .filter((v: number) => Number.isFinite(v) && v >= 1)
+              .map((v: number) => Math.floor(v))
+          : [];
+
+        if (level > liveLevel) {
+          throw new Error("LEVEL_NOT_REACHED");
+        }
+        if (claimed.includes(level)) {
+          throw new Error("ALREADY_CLAIMED");
+        }
+
+        const updatedClaimed = [...new Set([...claimed, level])].sort(
+          (a, b) => a - b,
+        );
+
+        const rewardField = isGalaxyReward ? "galaxyCrystals" : "rocks";
+
+        tx.set(
+          profileRef,
+          {
+            claimedRewardLevels: updatedClaimed,
+            [rewardField]: increment(isGalaxyReward ? 5 : rewardAmount),
+          },
+          { merge: true },
+        );
+      });
+
+      setClaimedRewardLevels((prev) =>
+        [...new Set([...prev, level])].sort((a, b) => a - b),
+      );
+      if (isGalaxyReward) {
+        setGalaxyCrystals((prev) => prev + 5);
+      } else {
+        setRocks((prev) => prev + rewardAmount);
+      }
+    } catch (error: any) {
+      if (error?.message === "LEVEL_NOT_REACHED") {
+        Alert.alert("Level Rewards", "You need to reach this level first.");
+      } else if (error?.message === "ALREADY_CLAIMED") {
+        Alert.alert("Level Rewards", "This reward has already been claimed.");
+      } else {
+        console.warn("Failed to claim battle pass reward", error);
+        Alert.alert("Level Rewards", "Failed to claim reward. Please try again.");
+      }
+    } finally {
+      setClaimingLevel(null);
+    }
+  };
 
   // Play background music on mount and loop it
   useEffect(() => {
@@ -275,6 +434,54 @@ useFocusEffect(
       />
       {/* All UI elements above the background */}
       <View className="flex-1">
+        {/* Top Center - Level Button */}
+        <View className="absolute top-14 self-center z-10 items-center">
+          <TouchableOpacity
+            testID="level-button"
+            className="w-14 h-14 rounded-full items-center justify-center"
+            style={{
+              backgroundColor: "rgba(0, 0, 0, 0)",
+              shadowColor: "#f472b6",
+              shadowOpacity: 0.55,
+              shadowRadius: 10,
+              shadowOffset: { width: 0, height: 0 },
+            }}
+            onPress={() => setIsLevelModalVisible(true)}
+          >
+            <Svg
+              width={smallRingSize}
+              height={smallRingSize}
+              style={{ position: "absolute", top: 0, left: 0 }}
+            >
+              <G rotation="-90" origin={`${smallRingSize / 2}, ${smallRingSize / 2}`}>
+                <Circle
+                  cx={smallRingSize / 2}
+                  cy={smallRingSize / 2}
+                  r={smallRingRadius}
+                  stroke="rgba(244, 114, 182, 0.25)"
+                  strokeWidth={smallRingStroke}
+                  fill="transparent"
+                />
+                <Circle
+                  cx={smallRingSize / 2}
+                  cy={smallRingSize / 2}
+                  r={smallRingRadius}
+                  stroke="rgba(74, 222, 128, 0.98)"
+                  strokeWidth={smallRingStroke}
+                  fill="transparent"
+                  strokeLinecap="round"
+                  strokeDasharray={`${smallRingCircumference} ${smallRingCircumference}`}
+                  strokeDashoffset={smallRingOffset}
+                />
+              </G>
+            </Svg>
+            <Text className="font-orbitron-bold text-pink-200 text-lg">
+              {currentLevel}
+            </Text>
+          </TouchableOpacity>
+          <Text className="font-orbitron text-pink-100/90 text-xs mt-1">LEVEL</Text>
+        </View>
+
         {/* Top Right Section - Profile & Settings above Task Button */}
         <View className="absolute top-14 right-5 z-10 items-center">
           {/* Profile & Settings - Horizontal */}
@@ -368,7 +575,7 @@ useFocusEffect(
               style={{ transform: [{ scale: 1.5 }], marginBottom: 2 }}
               />
             <Text className="font-orbitron-bold text-white text-md ml-2">
-              0000
+              {String(galaxyCrystals).padStart(4, "0")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -417,6 +624,176 @@ useFocusEffect(
           onClose={() => setIsShopModalVisible(false)}
           onRocksChange={loadScore}
         />
+
+        {/* Level Modal (preview only) */}
+        <Modal
+          visible={isLevelModalVisible}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setIsLevelModalVisible(false)}
+        >
+          <View className="flex-1 bg-black/50 items-center justify-center p-5">
+            <View
+              className="w-full max-w-md rounded-3xl p-6 border-2 shadow-2xl bg-[#1a1f3a]"
+              style={{
+                borderColor: palette.modalBorder,
+              }}
+            >
+              <View className="flex-row justify-between items-center mb-4">
+                <Text className="font-orbitron-bold text-white text-2xl">
+                  Player Level
+                </Text>
+                <TouchableOpacity
+                  onPress={() => setIsLevelModalVisible(false)}
+                  className="rounded-full p-2"
+                  style={{ backgroundColor: palette.accent }}
+                >
+                  <Ionicons name="close" size={24} color="white" />
+                </TouchableOpacity>
+              </View>
+
+              <View className="items-center my-5">
+                <View
+                  className="w-24 h-24 rounded-full items-center justify-center"
+                  style={{
+                    backgroundColor: "rgba(0, 0, 0, 0)",
+                    shadowColor: "#f472b6",
+                    shadowOpacity: 0.6,
+                    shadowRadius: 12,
+                    shadowOffset: { width: 0, height: 0 },
+                  }}
+                >
+                  <Svg
+                    width={modalRingSize}
+                    height={modalRingSize}
+                    style={{ position: "absolute", top: 0, left: 0 }}
+                  >
+                    <G rotation="-90" origin={`${modalRingSize / 2}, ${modalRingSize / 2}`}>
+                      <Circle
+                        cx={modalRingSize / 2}
+                        cy={modalRingSize / 2}
+                        r={modalRingRadius}
+                        stroke="rgba(244, 114, 182, 0.25)"
+                        strokeWidth={modalRingStroke}
+                        fill="transparent"
+                      />
+                      <Circle
+                        cx={modalRingSize / 2}
+                        cy={modalRingSize / 2}
+                        r={modalRingRadius}
+                        stroke="rgba(74, 222, 128, 0.98)"
+                        strokeWidth={modalRingStroke}
+                        fill="transparent"
+                        strokeLinecap="round"
+                        strokeDasharray={`${modalRingCircumference} ${modalRingCircumference}`}
+                        strokeDashoffset={modalRingOffset}
+                      />
+                    </G>
+                  </Svg>
+                  <Text className="font-orbitron-bold text-pink-200 text-3xl">
+                    {currentLevel}
+                  </Text>
+                </View>
+              </View>
+
+              <Text className="font-orbitron text-white/80 text-left">
+                EXP: {clampedCurrentExp}/{neededExp}
+              </Text>
+
+              <Text className="font-orbitron-bold text-white text-lg mt-5 mb-3">
+                Level Rewards
+              </Text>
+
+              <ScrollView
+                style={{ maxHeight: 220 }}
+                showsVerticalScrollIndicator={false}
+              >
+                <View className="gap-2">
+                  {battlePassLevels.map((level) => {
+                    const isClaimed = claimedRewardLevels.includes(level);
+                    const isUnlocked = level <= currentLevel;
+                    const isClaiming = claimingLevel === level;
+                    const isGalaxyReward = level % 5 === 0;
+                    const rewardAmount = getBattlePassReward(level);
+
+                    return (
+                      <View
+                        key={level}
+                        className="rounded-xl px-3 py-2 flex-row items-center justify-between"
+                        style={{
+                          backgroundColor: isUnlocked
+                            ? palette.secondarySoft
+                            : "rgba(255,255,255,0.04)",
+                          borderWidth: 1,
+                          borderColor: isUnlocked
+                            ? palette.secondarySoftBorder
+                            : "rgba(255,255,255,0.12)",
+                        }}
+                      >
+                        <View className="flex-row items-center">
+                          <Text className="font-orbitron-bold text-white mr-2">
+                            Lv {level}
+                          </Text>
+                          <View className="flex-row items-center">
+                            <Text className="font-orbitron text-white/80 text-xs mr-1">
+                              {isGalaxyReward ? 5 : rewardAmount}
+                            </Text>
+                            <Image
+                              source={
+                                isGalaxyReward
+                                  ? require("../../assets/images/sprites/galaxyCrystal.png")
+                                  : require("../../assets/images/sprites/crystal.png")
+                              }
+                              style={{ width: 14, height: 14 }}
+                              resizeMode="contain"
+                            />
+                            <Text className="font-orbitron text-white/80 text-xs ml-1">
+                              {isGalaxyReward ? "Galaxy Crystals" : "Crystals"}
+                            </Text>
+                          </View>
+                        </View>
+
+                        {isClaimed ? (
+                          <View
+                            className="px-3 py-1 rounded-full"
+                            style={{ backgroundColor: "rgba(34,197,94,0.25)" }}
+                          >
+                            <Text className="font-orbitron-bold text-green-300 text-xs">
+                              Claimed
+                            </Text>
+                          </View>
+                        ) : isUnlocked ? (
+                          <TouchableOpacity
+                            onPress={() => handleClaimBattlePassReward(level)}
+                            disabled={isClaiming}
+                            className="px-3 py-1 rounded-full"
+                            style={{
+                              backgroundColor: palette.accent,
+                              opacity: isClaiming ? 0.6 : 1,
+                            }}
+                          >
+                            <Text className="font-orbitron-bold text-white text-xs">
+                              {isClaiming ? "Claiming..." : "Claim"}
+                            </Text>
+                          </TouchableOpacity>
+                        ) : (
+                          <View
+                            className="px-3 py-1 rounded-full"
+                            style={{ backgroundColor: "rgba(148,163,184,0.22)" }}
+                          >
+                            <Text className="font-orbitron-bold text-slate-300 text-xs">
+                              Locked
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    );
+                  })}
+                </View>
+              </ScrollView>
+            </View>
+          </View>
+        </Modal>
       </View>
     </View>
   );
