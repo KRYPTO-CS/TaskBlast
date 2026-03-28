@@ -97,6 +97,7 @@ export default function PomodoroScreen() {
   const [currentCompletedCycles, setCurrentCompletedCycles] = useState(0);
   const [equipped, setEquipped] = useState<number[]>([0, 1]);
   const [showGameSelection, setShowGameSelection] = useState(false);
+  const [inFreeTimeMode, setInFreeTimeMode] = useState(false);
   const totalTime = workTime * 60; // Total duration in seconds
   const backgroundTime = useRef<number | null>(null);
   const tapCount = useRef(0);
@@ -384,6 +385,17 @@ export default function PomodoroScreen() {
             } catch (e) {
               console.warn("Audio player error on timer finish:", e);
             }
+            
+            // Handle free time mode completion
+            if (inFreeTimeMode) {
+              setInFreeTimeMode(false);
+              notifyTimerComplete("Free Time", false).catch((err) =>
+                console.warn("Notification error:", err),
+              );
+              setFinished(true);
+              return 0;
+            }
+
             setFinished(true);
 
             // restore original flow
@@ -411,7 +423,7 @@ export default function PomodoroScreen() {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isRunning, isPaused, timeLeft, router]);
+  }, [isRunning, isPaused, timeLeft, router, inFreeTimeMode]);
 
   // Handle app state changes (pause when app goes to background)
   useEffect(() => {
@@ -500,6 +512,18 @@ export default function PomodoroScreen() {
     } catch (e) {
       console.warn("Audio player error on play game:", e);
     }
+    
+    // Handle Free Time mode
+    if (gameId === 2) {
+      setShowGameSelection(false);
+      setInFreeTimeMode(true);
+      setHasPlayedGame(true);
+      setTimeLeft(playTime * 60); // Set timer to free time duration
+      setIsRunning(true);
+      setIsPaused(false);
+      return;
+    }
+    
     // Mark that we're entering game mode
     setHasPlayedGame(true);
     router.push({
@@ -525,6 +549,12 @@ export default function PomodoroScreen() {
     } catch (e) {
       console.warn("Audio player error on resume:", e);
     }
+  };
+
+  const handleStartTask = () => {
+    // Exit free time and start the next task
+    setInFreeTimeMode(false);
+    handleResumeTask();
   };
 
   const handleRocketTap = () => {
@@ -655,17 +685,21 @@ export default function PomodoroScreen() {
           <Text className="font-orbitron text-white/80 text-lg mt-2">
             {t("Pomodoro.time")}
           </Text>
-          {taskName && (
+          {(inFreeTimeMode || taskName) && (
             <View
               className="px-4 py-2 rounded-xl mt-3"
               style={{
-                backgroundColor: palette.accentSoft,
+                backgroundColor: inFreeTimeMode
+                  ? "rgba(34, 197, 94, 0.3)"
+                  : palette.accentSoft,
                 borderWidth: 2,
-                borderColor: palette.accentSoftBorder,
+                borderColor: inFreeTimeMode
+                  ? "rgba(34, 197, 94, 0.5)"
+                  : palette.accentSoftBorder,
               }}
             >
               <Text className="font-madimi text-white text-base">
-                {taskName}
+                {inFreeTimeMode ? "Free Time" : taskName}
               </Text>
             </View>
           )}
@@ -728,7 +762,15 @@ export default function PomodoroScreen() {
         <View className="items-center mb-24">
           <View className="flex-col gap-4 w-48">
             <CoachmarkAnchor id="pause-button" shape="circle">
-              {hasPlayedGame ? (
+              {inFreeTimeMode ? (
+                <MainButton
+                  title="Start Task"
+                  onPress={handleStartTask}
+                  variant="warning"
+                  testID="start-task-button"
+                  customStyle={{ width: 192 }}
+                />
+              ) : hasPlayedGame ? (
                 <MainButton
                   title={t("Pomodoro.Resume")}
                   onPress={handleResumeTask}
