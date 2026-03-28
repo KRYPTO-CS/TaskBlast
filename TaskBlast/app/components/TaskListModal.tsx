@@ -38,7 +38,6 @@ import {
   useCoachmark,
   createTour,
 } from "@edwardloopez/react-native-coachmark";
-import { CoachmarkAnchor, useCoachmark, createTour } from '@edwardloopez/react-native-coachmark';
 
 interface Task {
   id: string;

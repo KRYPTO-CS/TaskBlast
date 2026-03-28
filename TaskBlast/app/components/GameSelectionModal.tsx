@@ -25,13 +25,18 @@ type GameOption = {
 const GAME_OPTIONS: GameOption[] = [
   {
     id: 0,
-    name: "Space Shooter",
+    name: "Asteroid Blaster",
     description: "Blast the asteroids!",
   },
   {
     id: 1,
-    name: "Space Bird",
+    name: "Space Swerve",
     description: "Dodge the asteroids!",
+  },
+  {
+    id: 2,
+    name: "Free Time",
+    description: "Take a break YOUR way!",
   },
   // Add more games here in the future
 ];
@@ -88,8 +93,14 @@ export default function GameSelectionModal({
                   onPress={() => handleGameSelect(game.id)}
                   className="rounded-2xl p-4 border-2"
                   style={{
-                    backgroundColor: "rgba(88, 28, 135, 0.3)",
-                    borderColor: "rgba(168, 85, 247, 0.5)",
+                    backgroundColor:
+                      game.id === 2
+                        ? "rgba(34, 197, 94, 0.3)"
+                        : "rgba(88, 28, 135, 0.3)",
+                    borderColor:
+                      game.id === 2
+                        ? "rgba(34, 197, 94, 0.5)"
+                        : "rgba(168, 85, 247, 0.5)",
                   }}
                   testID={`game-option-${game.id}`}
                 >
@@ -105,9 +116,9 @@ export default function GameSelectionModal({
                       )}
                     </View>
                     <Ionicons
-                      name="game-controller"
+                      name={game.id === 2 ? "hourglass" : "game-controller"}
                       size={32}
-                      color="#a855f7"
+                      color={game.id === 2 ? "#22c55e" : "#a855f7"}
                     />
                   </View>
                 </TouchableOpacity>

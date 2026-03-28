@@ -23,8 +23,6 @@ import {
 import { useColorPalette } from "../styles/colorBlindThemes";
 import { useTranslation } from "react-i18next";
 import { update } from "firebase/database";
-import { getFirestore, doc, getDoc, updateDoc, increment } from "firebase/firestore";
-import { useTranslation } from "react-i18next";
 
 interface ShopModalProps {
   visible: boolean;
