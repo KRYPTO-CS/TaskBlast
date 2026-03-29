@@ -170,7 +170,7 @@
     "coachMarkPause": "如果您需要进行非计划的休息，请点击这里暂停您的会话。",
     "coachMarkLand": "点击这里结束您的会话并返回您的星球。在您的专注时间上做得很好！"
   },
-    "Shop": {
+  "Shop": {
     "title": "商店",
     "body": "身体",
     "wings": "翅膀",
@@ -184,5 +184,18 @@
     "gWings": "绿色翅膀",
     "equipped": "已装备",
     "owned": "已拥有"
+  },
+  "Games": {
+    "chooseTitle": "Choose Your Game",
+    "asteroidBlaster": "Asteroid Blaster",
+    "asteroidBlasterDesc": "Blast the asteroids!",
+    "spaceSwerve": "Space Swerve",
+    "spaceSwerveDesc": "Dodge the asteroids!",
+    "freeTime": "Free Time",
+    "freeTimeDesc": "Take a break YOUR way!",
+    "game2048": "2048",
+    "game2048Desc": "Merge tiles. Aim for 2048!",
+    "sequentBlast": "Sequent Blast",
+    "sequentBlastDesc": "Memorize and tap the hidden sequence."
   }
 }

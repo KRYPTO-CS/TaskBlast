@@ -169,7 +169,7 @@
     "coachMarkPause": "Toque aqui para pausar sua sessão se precisar fazer uma pausa não programada.",
     "coachMarkLand": "Toque aqui para encerrar sua sessão e aterrissar de volta em seu planeta. Ótimo trabalho no seu tempo de foco!"
   },
-    "Shop": {
+  "Shop": {
     "title": "Loja",
     "body": "Corpo",
     "wings": "Asas",
@@ -183,5 +183,18 @@
     "gWings": "Asas Verdes",
     "equipped": "Equipado",
     "owned": "Possuído"
+  },
+  "Games": {
+    "chooseTitle": "Choose Your Game",
+    "asteroidBlaster": "Asteroid Blaster",
+    "asteroidBlasterDesc": "Blast the asteroids!",
+    "spaceSwerve": "Space Swerve",
+    "spaceSwerveDesc": "Dodge the asteroids!",
+    "freeTime": "Free Time",
+    "freeTimeDesc": "Take a break YOUR way!",
+    "game2048": "2048",
+    "game2048Desc": "Merge tiles. Aim for 2048!",
+    "sequentBlast": "Sequent Blast",
+    "sequentBlastDesc": "Memorize and tap the hidden sequence."
   }
 }

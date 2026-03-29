@@ -34,7 +34,12 @@ import { useAudio } from "../context/AudioContext";
 import { useTranslation } from "react-i18next";
 import { useNotifications } from "../context/NotificationContext";
 import { useColorPalette } from "../styles/colorBlindThemes";
-import { CoachmarkAnchor, useCoachmark, createTour } from "@edwardloopez/react-native-coachmark";
+import {
+  CoachmarkAnchor,
+  useCoachmark,
+  createTour,
+} from "@edwardloopez/react-native-coachmark";
+import { getGameDefinition } from "../services/gameRegistry";
 // Ship component image mappings
 const BODY_IMAGES: { [key: number]: any } = {
   0: require("../../assets/images/ship_components/body/0.png"),
@@ -385,7 +390,7 @@ export default function PomodoroScreen() {
             } catch (e) {
               console.warn("Audio player error on timer finish:", e);
             }
-            
+
             // Handle free time mode completion
             if (inFreeTimeMode) {
               setInFreeTimeMode(false);
@@ -512,9 +517,11 @@ export default function PomodoroScreen() {
     } catch (e) {
       console.warn("Audio player error on play game:", e);
     }
-    
+
+    const selectedGame = getGameDefinition(gameId);
+
     // Handle Free Time mode
-    if (gameId === 2) {
+    if (selectedGame.isFreeTime) {
       setShowGameSelection(false);
       setInFreeTimeMode(true);
       setHasPlayedGame(true);
@@ -523,7 +530,7 @@ export default function PomodoroScreen() {
       setIsPaused(false);
       return;
     }
-    
+
     // Mark that we're entering game mode
     setHasPlayedGame(true);
     router.push({
@@ -592,7 +599,9 @@ export default function PomodoroScreen() {
     useCallback(() => {
       let cancelled = false;
       const timeout = setTimeout(async () => {
-        const alreadySeen = await AsyncStorage.getItem("pomodoroOnboardingSeen");
+        const alreadySeen = await AsyncStorage.getItem(
+          "pomodoroOnboardingSeen",
+        );
 
         if (!alreadySeen && !cancelled) {
           await AsyncStorage.setItem("pomodoroOnboardingSeen", "true");

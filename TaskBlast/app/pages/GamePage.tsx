@@ -6,12 +6,26 @@ import {
   Pressable,
   TouchableOpacity,
 } from "react-native";
-import { Text } from '../../TTS';
+import { Text } from "../../TTS";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, updateDoc, increment, runTransaction, getDoc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  updateDoc,
+  increment,
+  runTransaction,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
+import {
+  GAME_HIGHEST_TILE_STORAGE_KEY,
+  GAME_SCORE_STORAGE_KEY,
+  getGameDefinition,
+  getRocksReward,
+} from "../services/gameRegistry";
 
 let WebView: any = null;
 try {
@@ -25,18 +39,24 @@ export default function GamePage() {
   const webviewRef = useRef<any>(null);
   const router = useRouter();
   const params = useLocalSearchParams();
-  
+
   const playTime = params.playTime ? parseInt(params.playTime as string) : 5;
   const taskId = params.taskId as string;
   const gameId = params.gameId ? parseInt(params.gameId as string) : 0;
-  const gameUrl = "https://krypto-cs.github.io/SpaceShooter/";
-  
+  const selectedGame = getGameDefinition(gameId);
+  const defaultGame = getGameDefinition(0);
+  const gameUrl =
+    selectedGame.url ??
+    defaultGame.url ??
+    "https://krypto-cs.github.io/SpaceShooter/";
+
   const [timeLeft, setTimeLeft] = useState(playTime * 60); // Convert minutes to seconds
   const [equipped, setEquipped] = useState<number[]>([0, 1]);
   const tapCount = useRef(0);
   const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const rewardsProcessedRef = useRef(false);
 
-  const saveRocksToDatabase = async (score: number) => {
+  const saveRocksToDatabase = async (rocksAwarded: number) => {
     try {
       const auth = getAuth();
       const user = auth.currentUser;
@@ -49,15 +69,18 @@ export default function GamePage() {
       // Atomically compute the new allTimeRocks and append it to the array (allow duplicates)
       await runTransaction(db, async (tx) => {
         const snap = await tx.get(userRef);
-        const data = snap.exists() ? snap.data() : {} as any;
+        const data = snap.exists() ? snap.data() : ({} as any);
         const currentTotal = Number(data.allTimeRocks ?? 0);
-        const newTotal = currentTotal + Math.max(0, Math.floor(score));
-        const arr = Array.isArray(data.allTimeRocksArr) ? [...data.allTimeRocksArr] : [];
+        const safeRocks = Math.max(0, Math.floor(rocksAwarded));
+        const newTotal = currentTotal + safeRocks;
+        const arr = Array.isArray(data.allTimeRocksArr)
+          ? [...data.allTimeRocksArr]
+          : [];
         arr.push(newTotal);
 
         tx.update(userRef, {
-          rocks: increment(score),
-          allTimeRocks: increment(score),
+          rocks: increment(safeRocks),
+          allTimeRocks: increment(safeRocks),
           allTimeRocksArr: arr,
         });
       });
@@ -66,21 +89,47 @@ export default function GamePage() {
       try {
         const minutes = Math.max(0, Math.floor(playTime));
         const snap = await getDoc(userRef);
-        const current = snap.exists() && Array.isArray(snap.data().playTimeMinutesArr)
-          ? [...snap.data().playTimeMinutesArr]
-          : [];
+        const current =
+          snap.exists() && Array.isArray(snap.data().playTimeMinutesArr)
+            ? [...snap.data().playTimeMinutesArr]
+            : [];
         current.push(minutes);
         await setDoc(userRef, { playTimeMinutesArr: current }, { merge: true });
         console.log(`Recorded play session: ${minutes} minutes`);
       } catch (e) {
         console.warn("Failed to record play session", e);
       }
-      
-      console.log(`Added ${score} rocks to user's account`);
+
+      console.log(`Added ${rocksAwarded} rocks to user's account`);
     } catch (err) {
       console.warn("Failed to save rocks to database", err);
     }
   };
+
+  const processGameRewards = useCallback(async () => {
+    if (rewardsProcessedRef.current) {
+      return;
+    }
+    rewardsProcessedRef.current = true;
+
+    const scoreStr = await AsyncStorage.getItem(GAME_SCORE_STORAGE_KEY);
+    const highestTileStr = await AsyncStorage.getItem(
+      GAME_HIGHEST_TILE_STORAGE_KEY,
+    );
+
+    const score = scoreStr ? Math.max(0, Math.floor(Number(scoreStr))) : 0;
+    const highestTile = highestTileStr
+      ? Math.max(0, Math.floor(Number(highestTileStr)))
+      : 0;
+    const rocksAwarded = getRocksReward(gameId, score, highestTile);
+
+    if (rocksAwarded > 0) {
+      await saveRocksToDatabase(rocksAwarded);
+    }
+
+    await AsyncStorage.removeItem(GAME_SCORE_STORAGE_KEY);
+    await AsyncStorage.removeItem(GAME_HIGHEST_TILE_STORAGE_KEY);
+  }, [gameId]);
 
   // Load equipped items from Firebase
   useEffect(() => {
@@ -113,13 +162,7 @@ export default function GamePage() {
   const handleBackPress = async () => {
     // Save score before going back
     try {
-      const scoreStr = await AsyncStorage.getItem("game_score");
-      const score = scoreStr ? Math.max(0, Math.floor(Number(scoreStr))) : 0;
-      if (score > 0) {
-        await saveRocksToDatabase(score);
-        // Clear the temporary score
-        await AsyncStorage.removeItem("game_score");
-      }
+      await processGameRewards();
     } catch (err) {
       console.warn("Failed to process game score on back", err);
     }
@@ -132,18 +175,12 @@ export default function GamePage() {
       // Get final score from AsyncStorage and save to database
       (async () => {
         try {
-          const scoreStr = await AsyncStorage.getItem("game_score");
-          const score = scoreStr ? Math.max(0, Math.floor(Number(scoreStr))) : 0;
-          if (score > 0) {
-            await saveRocksToDatabase(score);
-            // Clear the temporary score
-            await AsyncStorage.removeItem("game_score");
-          }
+          await processGameRewards();
         } catch (err) {
           console.warn("Failed to process game score", err);
         }
       })();
-      
+
       router.back();
       return;
     }
@@ -158,7 +195,7 @@ export default function GamePage() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timeLeft, router]);
+  }, [timeLeft, processGameRewards, router]);
 
   // Format time as MM:SS
   const formatTime = (seconds: number) => {
@@ -188,34 +225,63 @@ export default function GamePage() {
     }
   };
 
-  const handleMessage = useCallback((event: any) => {
-    try {
-      const payload = JSON.parse(event.nativeEvent.data);
+  const handleMessage = useCallback(
+    (event: any) => {
+      try {
+        const payload = JSON.parse(event.nativeEvent.data);
 
-      if (payload.type === "scoreUpdate") {
-        console.log("Score from Godot:", payload);
-        // Persist the score so HomeScreen can read it later. Temporary.
-        (async () => {
-          try {
-            let s = Number(payload.score) || 0;
-            if (s < 0) { // Handle negative scores
-              s = 0;
+        if (payload.type === "scoreUpdate") {
+          console.log("Score from Godot:", payload);
+          // Persist the score so HomeScreen can read it later. Temporary.
+          (async () => {
+            try {
+              let s = Number(payload.score) || 0;
+              if (s < 0) {
+                // Handle negative scores
+                s = 0;
+              }
+
+              await AsyncStorage.setItem(GAME_SCORE_STORAGE_KEY, String(s));
+
+              const highestTile = Number(
+                payload.highestTile ?? payload.maxTile ?? payload.bestTile ?? 0,
+              );
+              if (highestTile > 0) {
+                await AsyncStorage.setItem(
+                  GAME_HIGHEST_TILE_STORAGE_KEY,
+                  String(Math.floor(highestTile)),
+                );
+              }
+            } catch (err) {
+              console.warn("Failed to persist game score", err);
             }
-            await AsyncStorage.setItem("game_score", String(s));
-          } catch (err) {
-            console.warn("Failed to persist game score", err);
-          }
-        })();
-      } else if (payload.type === "testMessage") {
-        console.log("Godot Initialized");
-        sendMessageToGodot();
-      } else {
-        console.log("Other message:", payload);
+          })();
+        } else if (payload.type === "tileUpdate") {
+          (async () => {
+            try {
+              const tile = Number(payload.highestTile ?? payload.maxTile ?? 0);
+              if (tile > 0) {
+                await AsyncStorage.setItem(
+                  GAME_HIGHEST_TILE_STORAGE_KEY,
+                  String(Math.floor(tile)),
+                );
+              }
+            } catch (err) {
+              console.warn("Failed to persist game tile", err);
+            }
+          })();
+        } else if (payload.type === "testMessage") {
+          console.log("Godot Initialized");
+          sendMessageToGodot();
+        } else {
+          console.log("Other message:", payload);
+        }
+      } catch (err) {
+        console.warn("Invalid message from WebView:", event.nativeEvent.data);
       }
-    } catch (err) {
-      console.warn("Invalid message from WebView:", event.nativeEvent.data);
-    }
-  }, [equipped]);
+    },
+    [equipped, gameId],
+  );
 
   const sendMessageToGodot = useCallback(() => {
     console.log("Sending skins message to Godot.");
@@ -228,7 +294,7 @@ export default function GamePage() {
         data1: String(equipped[0]).trim(),
         data2: String(equipped[1]).trim(),
         data3: String(gameId).trim(),
-      })
+      }),
     );
   }, [equipped, gameId]);
 
@@ -251,42 +317,46 @@ export default function GamePage() {
     <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
       <View testID="safe-area-view" style={{ flex: 1 }}>
         <View style={styles.header} testID="game-header">
-        <Pressable
-          onPress={handleBackPress}
-          style={styles.backButton}
-          testID="back-button"
-        >
-          <Text style={styles.backText}>{"< Back"}</Text>
-        </Pressable>
-        <TouchableOpacity onPress={handleTimerTap} activeOpacity={1} style={styles.timerContainer}>
-          <Text style={styles.timerText}>{formatTime(timeLeft)}</Text>
-        </TouchableOpacity>
-        <View style={styles.rightButton} />
-      </View>
-      <View style={styles.container}>
-        {loading && (
-          <View
-            style={styles.loader}
-            pointerEvents="none"
-            testID="loading-indicator"
+          <Pressable
+            onPress={handleBackPress}
+            style={styles.backButton}
+            testID="back-button"
           >
-            <ActivityIndicator size="large" />
-          </View>
-        )}
-        <WebView
-          ref={webviewRef}
-          source={{ uri: gameUrl }}
-          testID="webview"
-          style={styles.webview}
-          onLoadEnd={() => setLoading(false)}
-          startInLoadingState
-          allowsInlineMediaPlayback
-          mediaPlaybackRequiresUserAction={false}
-          javaScriptEnabled={true}
-          onMessage={handleMessage}
-          originWhitelist={["*"]}
-        />
-      </View>
+            <Text style={styles.backText}>{"< Back"}</Text>
+          </Pressable>
+          <TouchableOpacity
+            onPress={handleTimerTap}
+            activeOpacity={1}
+            style={styles.timerContainer}
+          >
+            <Text style={styles.timerText}>{formatTime(timeLeft)}</Text>
+          </TouchableOpacity>
+          <View style={styles.rightButton} />
+        </View>
+        <View style={styles.container}>
+          {loading && (
+            <View
+              style={styles.loader}
+              pointerEvents="none"
+              testID="loading-indicator"
+            >
+              <ActivityIndicator size="large" />
+            </View>
+          )}
+          <WebView
+            ref={webviewRef}
+            source={{ uri: gameUrl }}
+            testID="webview"
+            style={styles.webview}
+            onLoadEnd={() => setLoading(false)}
+            startInLoadingState
+            allowsInlineMediaPlayback
+            mediaPlaybackRequiresUserAction={false}
+            javaScriptEnabled={true}
+            onMessage={handleMessage}
+            originWhitelist={["*"]}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );

@@ -94,8 +94,8 @@
     "coachMarksettings": "Нажмите здесь, чтобы настроить свои предпочтения, управлять уведомлениями и многое другое!",
     "coachMarktakeoff": "Нажмите здесь, чтобы начать сеанс фокусировки и взлететь к своим целям!",
     "coachMarkshop": "Нажмите здесь, чтобы посетить магазин и настроить свой аватар с новыми телами и крыльями!"
-   },
-   "Settings": {
+  },
+  "Settings": {
     "title": "Настройки",
     "sound": "Звуковые эффекты",
     "music": "Музыка",
@@ -184,5 +184,18 @@
     "gWings": "Зеленые Крылья",
     "equipped": "Экипировано",
     "owned": "Владеется"
+  },
+  "Games": {
+    "chooseTitle": "Choose Your Game",
+    "asteroidBlaster": "Asteroid Blaster",
+    "asteroidBlasterDesc": "Blast the asteroids!",
+    "spaceSwerve": "Space Swerve",
+    "spaceSwerveDesc": "Dodge the asteroids!",
+    "freeTime": "Free Time",
+    "freeTimeDesc": "Take a break YOUR way!",
+    "game2048": "2048",
+    "game2048Desc": "Merge tiles. Aim for 2048!",
+    "sequentBlast": "Sequent Blast",
+    "sequentBlastDesc": "Memorize and tap the hidden sequence."
   }
 }

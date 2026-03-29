@@ -170,7 +170,7 @@
     "coachMarkPause": "Tippen Sie hier, um Ihre Sitzung zu pausieren, wenn Sie eine ungeplante Pause einlegen müssen.",
     "coachMarkLand": "Tippen Sie hier, um Ihre Sitzung zu beenden und zurück auf Ihrem Planeten zu landen. Großartige Arbeit bei Ihrer Fokuszeit!"
   },
-    "Shop": {
+  "Shop": {
     "title": "Shop",
     "body": "Körper",
     "wings": "Flügel",
@@ -184,5 +184,18 @@
     "gWings": "Grüne Flügel",
     "equipped": "Ausgerüstet",
     "owned": "Besitzt"
+  },
+  "Games": {
+    "chooseTitle": "Choose Your Game",
+    "asteroidBlaster": "Asteroid Blaster",
+    "asteroidBlasterDesc": "Blast the asteroids!",
+    "spaceSwerve": "Space Swerve",
+    "spaceSwerveDesc": "Dodge the asteroids!",
+    "freeTime": "Free Time",
+    "freeTimeDesc": "Take a break YOUR way!",
+    "game2048": "2048",
+    "game2048Desc": "Merge tiles. Aim for 2048!",
+    "sequentBlast": "Sequent Blast",
+    "sequentBlastDesc": "Memorize and tap the hidden sequence."
   }
 }
