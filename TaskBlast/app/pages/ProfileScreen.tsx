@@ -479,12 +479,24 @@ export default function ProfileScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      const timeout = setTimeout(() => {
-        start(onboardingTour);
-      }, 300);
+      if (hasStartedTour.current) return;
 
-      return () => clearTimeout(timeout);
-    }, []),
+      let cancelled = false;
+      const timeout = setTimeout(async () => {
+        const seen = await AsyncStorage.getItem("profileOnboardingSeen");
+
+        if (!seen && !cancelled) {
+          await AsyncStorage.setItem("profileOnboardingSeen", "true");
+          hasStartedTour.current = true;
+          start(onboardingTour);
+        }
+      }, 700);
+
+      return () => {
+        cancelled = true;
+        clearTimeout(timeout);
+      };
+    }, [onboardingTour, start]),
   );
 
   return (

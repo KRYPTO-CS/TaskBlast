@@ -24,7 +24,6 @@ import { useColorPalette } from "../styles/colorBlindThemes";
 import { useTranslation } from "react-i18next";
 import { update } from "firebase/database";
 
-
 interface ShopModalProps {
   visible: boolean;
   onClose: () => void;

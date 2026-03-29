@@ -39,7 +39,6 @@ import {
   createTour,
 } from "@edwardloopez/react-native-coachmark";
 
-
 interface Task {
   id: string;
   name: string;

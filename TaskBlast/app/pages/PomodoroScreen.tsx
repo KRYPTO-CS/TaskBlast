@@ -22,18 +22,19 @@ import {
   updateDoc,
   increment,
   getDoc,
-  arrayUnion,
   setDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  runTransaction,
 } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAudio } from "../context/AudioContext";
 import { useTranslation } from "react-i18next";
 import { useNotifications } from "../context/NotificationContext";
 import { useColorPalette } from "../styles/colorBlindThemes";
-import {
-  CoachmarkAnchor,
-  useCoachmark,
-  createTour,
-} from "@edwardloopez/react-native-coachmark";
+import { CoachmarkAnchor, useCoachmark, createTour } from "@edwardloopez/react-native-coachmark";
 // Ship component image mappings
 const BODY_IMAGES: { [key: number]: any } = {
   0: require("../../assets/images/ship_components/body/0.png"),
@@ -48,9 +49,6 @@ const WING_IMAGES: { [key: number]: any } = {
   2: require("../../assets/images/ship_components/wing/2.png"),
   3: require("../../assets/images/ship_components/wing/3.png"),
 };
-
-// Module-level variable to track if tour has been shown this app session
-let pomodoroTourShown = false;
 
 export default function PomodoroScreen() {
   const router = useRouter();
@@ -99,6 +97,7 @@ export default function PomodoroScreen() {
   const [currentCompletedCycles, setCurrentCompletedCycles] = useState(0);
   const [equipped, setEquipped] = useState<number[]>([0, 1]);
   const [showGameSelection, setShowGameSelection] = useState(false);
+  const [inFreeTimeMode, setInFreeTimeMode] = useState(false);
   const totalTime = workTime * 60; // Total duration in seconds
   const backgroundTime = useRef<number | null>(null);
   const tapCount = useRef(0);
@@ -285,17 +284,85 @@ export default function PomodoroScreen() {
       if (!user) return;
 
       const db = getFirestore();
-      const userRef = doc(db, "users", user.uid);
       const value = Math.max(0, Math.floor(minutes));
+      const getNeededExpForLevel = (level: number) =>
+        30 + 5 * Math.floor(Math.max(0, level - 1) / 5);
 
-      // arrayUnion de-duplicates identical primitives; to allow repeated values, manually append
-      const snap = await getDoc(userRef);
-      const current =
-        snap.exists() && Array.isArray(snap.data().workTimeMinutesArr)
-          ? [...snap.data().workTimeMinutesArr]
+      const activeChild = await AsyncStorage.getItem("activeChildProfile");
+
+      let profileRef;
+      if (activeChild) {
+        const childrenRef = collection(db, "users", user.uid, "children");
+        const childQuery = query(
+          childrenRef,
+          where("username", "==", activeChild),
+        );
+        const childSnapshot = await getDocs(childQuery);
+
+        if (!childSnapshot.empty) {
+          profileRef = childSnapshot.docs[0].ref;
+        } else {
+          console.warn("Child profile not found for EXP update, using parent");
+          profileRef = doc(db, "users", user.uid);
+        }
+      } else {
+        profileRef = doc(db, "users", user.uid);
+      }
+
+      await runTransaction(db, async (tx) => {
+        const snap = await tx.get(profileRef);
+        const data = snap.exists() ? snap.data() : ({} as any);
+
+        const currentArr = Array.isArray(data.workTimeMinutesArr)
+          ? [...data.workTimeMinutesArr]
           : [];
-      current.push(value);
-      await setDoc(userRef, { workTimeMinutesArr: current }, { merge: true });
+        currentArr.push(value);
+
+        const prevExp = Number.isFinite(Number(data.currentExp))
+          ? Math.max(0, Math.floor(Number(data.currentExp)))
+          : 0;
+        const prevLevel = Number.isFinite(Number(data.currentLevel))
+          ? Math.max(1, Math.floor(Number(data.currentLevel)))
+          : 1;
+
+        // Normalize existing data if stored EXP already exceeds current threshold.
+        let workingLevel = prevLevel;
+        let workingExp = prevExp;
+        while (workingExp >= getNeededExpForLevel(workingLevel)) {
+          workingExp -= getNeededExpForLevel(workingLevel);
+          workingLevel += 1;
+        }
+
+        // Apply gained EXP with dynamic thresholds that scale every 5 levels.
+        let remainingExpGain = value;
+        while (remainingExpGain > 0) {
+          const neededThisLevel = getNeededExpForLevel(workingLevel);
+          const expToNextLevel = neededThisLevel - workingExp;
+
+          if (remainingExpGain >= expToNextLevel) {
+            remainingExpGain -= expToNextLevel;
+            workingLevel += 1;
+            workingExp = 0;
+          } else {
+            workingExp += remainingExpGain;
+            remainingExpGain = 0;
+          }
+        }
+
+        const newExp = workingExp;
+        const newLevel = workingLevel;
+
+        tx.set(
+          profileRef,
+          {
+            workTimeMinutesArr: currentArr,
+            currentExp: newExp,
+            currentLevel: newLevel,
+          },
+          { merge: true },
+        );
+      });
+
       console.log(`Recorded work session: ${minutes} minutes`);
     } catch (err) {
       console.warn("Failed to record work session", err);
@@ -318,6 +385,17 @@ export default function PomodoroScreen() {
             } catch (e) {
               console.warn("Audio player error on timer finish:", e);
             }
+            
+            // Handle free time mode completion
+            if (inFreeTimeMode) {
+              setInFreeTimeMode(false);
+              notifyTimerComplete("Free Time", false).catch((err) =>
+                console.warn("Notification error:", err),
+              );
+              setFinished(true);
+              return 0;
+            }
+
             setFinished(true);
 
             // restore original flow
@@ -345,7 +423,7 @@ export default function PomodoroScreen() {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isRunning, isPaused, timeLeft, router]);
+  }, [isRunning, isPaused, timeLeft, router, inFreeTimeMode]);
 
   // Handle app state changes (pause when app goes to background)
   useEffect(() => {
@@ -434,6 +512,18 @@ export default function PomodoroScreen() {
     } catch (e) {
       console.warn("Audio player error on play game:", e);
     }
+    
+    // Handle Free Time mode
+    if (gameId === 2) {
+      setShowGameSelection(false);
+      setInFreeTimeMode(true);
+      setHasPlayedGame(true);
+      setTimeLeft(playTime * 60); // Set timer to free time duration
+      setIsRunning(true);
+      setIsPaused(false);
+      return;
+    }
+    
     // Mark that we're entering game mode
     setHasPlayedGame(true);
     router.push({
@@ -459,6 +549,12 @@ export default function PomodoroScreen() {
     } catch (e) {
       console.warn("Audio player error on resume:", e);
     }
+  };
+
+  const handleStartTask = () => {
+    // Exit free time and start the next task
+    setInFreeTimeMode(false);
+    handleResumeTask();
   };
 
   const handleRocketTap = () => {
@@ -494,17 +590,20 @@ export default function PomodoroScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      // Only start tour if it hasn't been shown this app session
-      if (pomodoroTourShown) {
-        return;
-      }
+      let cancelled = false;
+      const timeout = setTimeout(async () => {
+        const alreadySeen = await AsyncStorage.getItem("pomodoroOnboardingSeen");
 
-      const timeout = setTimeout(() => {
-        pomodoroTourShown = true;
-        start(onboardingTour);
-      }, 300);
+        if (!alreadySeen && !cancelled) {
+          await AsyncStorage.setItem("pomodoroOnboardingSeen", "true");
+          start(onboardingTour);
+        }
+      }, 700);
 
-      return () => clearTimeout(timeout);
+      return () => {
+        cancelled = true;
+        clearTimeout(timeout);
+      };
     }, [onboardingTour]),
   );
 
@@ -586,17 +685,21 @@ export default function PomodoroScreen() {
           <Text className="font-orbitron text-white/80 text-lg mt-2">
             {t("Pomodoro.time")}
           </Text>
-          {taskName && (
+          {(inFreeTimeMode || taskName) && (
             <View
               className="px-4 py-2 rounded-xl mt-3"
               style={{
-                backgroundColor: palette.accentSoft,
+                backgroundColor: inFreeTimeMode
+                  ? "rgba(34, 197, 94, 0.3)"
+                  : palette.accentSoft,
                 borderWidth: 2,
-                borderColor: palette.accentSoftBorder,
+                borderColor: inFreeTimeMode
+                  ? "rgba(34, 197, 94, 0.5)"
+                  : palette.accentSoftBorder,
               }}
             >
               <Text className="font-madimi text-white text-base">
-                {taskName}
+                {inFreeTimeMode ? "Free Time" : taskName}
               </Text>
             </View>
           )}
@@ -659,7 +762,15 @@ export default function PomodoroScreen() {
         <View className="items-center mb-24">
           <View className="flex-col gap-4 w-48">
             <CoachmarkAnchor id="pause-button" shape="circle">
-              {hasPlayedGame ? (
+              {inFreeTimeMode ? (
+                <MainButton
+                  title="Start Task"
+                  onPress={handleStartTask}
+                  variant="warning"
+                  testID="start-task-button"
+                  customStyle={{ width: 192 }}
+                />
+              ) : hasPlayedGame ? (
                 <MainButton
                   title={t("Pomodoro.Resume")}
                   onPress={handleResumeTask}
