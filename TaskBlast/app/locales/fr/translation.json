@@ -93,7 +93,15 @@
     "coachMarkProfile": "Appuyez ici pour voir votre profil, suivre vos progrès et personnaliser votre avatar !",
     "coachMarksettings": "Appuyez ici pour ajuster vos préférences, gérer les notifications et plus encore !",
     "coachMarktakeoff": "Appuyez ici pour démarrer une session de concentration et décoller vers vos objectifs !",
-    "coachMarkshop": "Appuyez ici pour visiter la boutique et personnaliser votre avatar avec de nouveaux corps et ailes !"
+    "coachMarkshop": "Appuyez ici pour visiter la boutique et personnaliser votre avatar avec de nouveaux corps et ailes !",
+    "playerLevel": "Niveau du joueur",
+    "Level Rewards": "Récompenses de niveau",
+    "Claimed": "Réclamé",
+    "Locked": "Verrouillé",
+    "Crystals": "Cristaux",
+    "galaxyCrystals": "Cristaux galactiques",
+    "level": "Niveau",
+    "coachMarklevel": "Ceci est votre niveau de joueur actuel. Gagnez des points d'expérience en complétant des tâches et des sessions de concentration pour monter de niveau et gagner des récompenses !"
   },
   "Settings": {
     "title": "Paramètres",

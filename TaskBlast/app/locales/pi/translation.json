@@ -93,7 +93,15 @@
     "coachMarkProfile": "Check yer stats, progress, and customize yer pirate!",
     "coachMarksettings": "Adjust yer settings and ship controls here!",
     "coachMarktakeoff": "Start a focus voyage and chase yer goals!",
-    "coachMarkshop": "Visit the shop and upgrade yer gear!"
+    "coachMarkshop": "Visit the shop and upgrade yer gear!",
+    "playerLevel": "Player Level",
+    "Level Rewards": "Level Rewards",
+    "Claimed": "Claimed",
+    "Locked": "Locked",
+    "Crystals": "Crystals",
+    "galaxyCrystals": "Galaxy Crystals",
+    "level": "Level",
+    "coachMarklevel": "This is yer current player level. Earn experience by completing tasks and voyages to level up and earn rewards!"
   },
   "Settings": {
     "title": "Ship Settings",

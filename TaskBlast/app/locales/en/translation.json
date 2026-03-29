@@ -94,7 +94,15 @@
     "coachMarkProfile": "Tap here to view your profile, track your progress, and customize your avatar!",
     "coachMarksettings": "Tap here to adjust your preferences, manage notifications, and more!",
     "coachMarktakeoff": "Tap here to start a focus session and blast off towards your goals!",
-    "coachMarkshop": "Tap here to visit the shop and customize your avatar with new bodies and wings!"
+    "coachMarkshop": "Tap here to visit the shop and customize your avatar with new bodies and wings!",
+    "playerLevel": "Player Level",
+    "Level Rewards": "Level Rewards",
+    "Claimed": "Claimed",
+    "Locked": "Locked",
+    "Crystals": "Crystals",
+    "galaxyCrystals": "Galaxy Crystals",
+    "level": "Level",
+    "coachMarklevel": "This is your current player level. Earn experience points by completing tasks and focus sessions to level up and earn rewards!"
   },
   "Settings": {
     "title": "Settings",

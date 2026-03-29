@@ -33,6 +33,7 @@ const LANGUAGES: { code: string; name: string; flag: string }[] = [
   { code: "bn", name: "বাংলা", flag: "🇧🇩" },
   { code: "zh", name: "中文", flag: "🇨🇳" },
   { code: "hi", name: "हिन्दी", flag: "🇮🇳" },
+  {code: "pi", name: "Piratese", flag: "🏴‍☠️"},
 ];
 
 // ─── Color blind mode data ─────────────────────────────────────────────────────
