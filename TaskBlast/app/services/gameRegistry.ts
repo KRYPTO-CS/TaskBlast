@@ -42,6 +42,13 @@ export const GAME_DEFINITIONS: GameDefinition[] = [
     url: "https://vinbi07.github.io/2048Blast/",
     rewardStrategy: "highest-tile",
   },
+  {
+    id: 4,
+    name: "MatchBlast",
+    description: "Match pairs fast for bonus rocks!",
+    url: "https://vinbi07.github.io/MatchBlast/",
+    rewardStrategy: "raw-score",
+  },
 ];
 
 const DEFAULT_GAME = GAME_DEFINITIONS[0];

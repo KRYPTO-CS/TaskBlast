@@ -13,7 +13,7 @@ jest.mock("../TTS", () => {
 });
 
 describe("GameSelectionModal", () => {
-  it("renders all game options including 2048", () => {
+  it("renders all game options including MatchBlast", () => {
     const { getByTestId, getByText } = render(
       <GameSelectionModal
         visible
@@ -26,7 +26,9 @@ describe("GameSelectionModal", () => {
     expect(getByTestId("game-option-1")).toBeTruthy();
     expect(getByTestId("game-option-2")).toBeTruthy();
     expect(getByTestId("game-option-3")).toBeTruthy();
+    expect(getByTestId("game-option-4")).toBeTruthy();
     expect(getByText("2048")).toBeTruthy();
+    expect(getByText("MatchBlast")).toBeTruthy();
   });
 
   it("selects 2048 and closes modal", () => {
@@ -44,6 +46,24 @@ describe("GameSelectionModal", () => {
     fireEvent.press(getByTestId("game-option-3"));
 
     expect(onSelectGame).toHaveBeenCalledWith(3);
+    expect(onClose).toHaveBeenCalled();
+  });
+
+  it("selects MatchBlast and closes modal", () => {
+    const onClose = jest.fn();
+    const onSelectGame = jest.fn();
+
+    const { getByTestId } = render(
+      <GameSelectionModal
+        visible
+        onClose={onClose}
+        onSelectGame={onSelectGame}
+      />,
+    );
+
+    fireEvent.press(getByTestId("game-option-4"));
+
+    expect(onSelectGame).toHaveBeenCalledWith(4);
     expect(onClose).toHaveBeenCalled();
   });
 
