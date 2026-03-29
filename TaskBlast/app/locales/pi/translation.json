@@ -146,6 +146,8 @@
     "AvgWorkCycle": "Avg Work Cycle: ",
     "AvgPlayCycle": "Avg Play Cycle: ",
     "work": "Work/Play Ratio: ",
+    "level": "Current Rank: ",
+    "planets": "Planets Charted: ",
     "total": "Total Time Spent: ",
     "AddChildAccount": "Add Deckhand",
     "SwitchProfile": "Switch Sailor",

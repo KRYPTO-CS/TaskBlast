@@ -146,6 +146,8 @@
     "AvgWorkCycle": "平均工作周期长度: ",
     "AvgPlayCycle": "平均休息周期长度: ",
     "work": "工作/休息比例: ",
+    "level": "当前等级: ",
+    "planets": "已发现的星球: ",
     "total": "任务总耗时: ",
     "AddChildAccount": "添加子账户",
     "SwitchProfile": "切换账户",

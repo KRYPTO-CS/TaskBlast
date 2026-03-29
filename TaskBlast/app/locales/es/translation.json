@@ -146,6 +146,8 @@
     "AvgWorkCycle": "Duración Promedio del Ciclo de Trabajo: ",
     "AvgPlayCycle": "Duración Promedio del Ciclo de Descanso: ",
     "work": "Proporción de Trabajo/Descanso: ",
+    "level": "Nivel Actual: ",
+    "planets": "Planetas Descubiertos: ",
     "total": "Tiempo Total Invertido en Tareas: ",
     "AddChildAccount": "Agregar Cuenta de Niño",
     "SwitchProfile": "Cambiar Perfil",

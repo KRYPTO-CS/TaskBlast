@@ -146,6 +146,8 @@
     "AvgWorkCycle": "Durée moyenne du cycle de travail : ",
     "AvgPlayCycle": "Durée moyenne du cycle de pause : ",
     "work": "Ratio travail/temps de pause : ",
+    "level": "Niveau actuel : ",
+    "planets": "Planètes découvertes : ",
     "total": "Temps total passé sur les tâches : ",
     "AddChildAccount": "Ajouter un compte enfant",
     "SwitchProfile": "Changer de profil",

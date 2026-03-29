@@ -146,6 +146,8 @@
     "AvgWorkCycle": "Durchschnittliche Arbeitszykluslänge: ",
     "AvgPlayCycle": "Durchschnittliche Pausezykluslänge: ",
     "work": "Arbeits-/Pausenverhältnis: ",
+    "level": "Aktuelles Level: ",
+    "planets": "Entdeckte Planeten: ",
     "total": "Gesamte Zeit aufgabenbezogen verbracht: ",
     "AddChildAccount": "Kind-Konto hinzufügen",
     "SwitchProfile": "Profil wechseln",

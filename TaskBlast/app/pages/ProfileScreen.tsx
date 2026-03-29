@@ -28,6 +28,7 @@ import {
 } from "firebase/firestore";
 import EditProfileModal from "../components/EditProfileModal";
 import TraitsModal from "../components/TraitsModal";
+import AnalyticsChartsModal from "../components/AnalyticsChartsModal";
 import { updateProfilePicture } from "../../server/storageUtils";
 import { useTranslation } from "react-i18next";
 import { useColorPalette } from "../styles/colorBlindThemes";
@@ -60,6 +61,7 @@ export default function ProfileScreen() {
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isTraitsModalVisible, setIsTraitsModalVisible] = useState(false);
+  const [isAnalyticsModalVisible, setIsAnalyticsModalVisible] = useState(false);
 
   // Stats state
   const [statsValues, setStatsValues] = useState<number[]>([]);
@@ -71,6 +73,8 @@ export default function ProfileScreen() {
   const [totalRocksAllTime, setTotalRocksAllTime] = useState<number>(0);
   const [currentRocks, setCurrentRocks] = useState<number>(0);
   const [rocksSpent, setrocksSpent] = useState<number>(0);
+  const [level, setLevel] = useState<number>(0);
+  const [planets, setPlanets] = useState<number>(0);
   const { t, i18n } = useTranslation();
   const { start } = useCoachmark();
   const hasStartedTour = useRef(false);
@@ -226,6 +230,8 @@ export default function ProfileScreen() {
 
         setTotalRocksAllTime(Number.isNaN(totalAllTime) ? 0 : Math.max(0, Math.floor(totalAllTime)));
         setrocksSpent(Number.isNaN(data.rocksSpent) ? 0 : Math.max(0, Math.floor(data.rocksSpent)));
+        setLevel(Number.isNaN(data.level) ? 0 : Math.max(0, Math.floor(data.currentLevel)));
+        setPlanets(Number.isNaN(data.planets) ? 0 : Math.max(0, Math.floor(data.currPlanet)));
         setCurrentRocks(
           Number.isNaN(data.rocks) ? 0 : Math.max(0, Math.floor(data.rocks)),
         );
@@ -240,153 +246,6 @@ export default function ProfileScreen() {
       console.warn("Failed to load stats", e);
     }
   }, []);
-
-  // Chart template helpers
-  const totalRocksChart = (
-    labels: string[],
-    values: number[],
-    chartColor: string,
-    chartBorder: string,
-    chartFill: string,
-  ) =>
-    `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body { margin:0; padding:0; background:transparent; font-family:'Orbitron',sans-serif; color:#fff; }
-    .wrap { padding:2%; border:4px solid ${chartBorder}; border-radius:40px; height:100%; box-sizing:border-box; }
-    canvas { width:100%!important; height:100%!important; }
-  </style>
- </head>
- <body>
-  <div class="wrap">
-    <canvas id="c"></canvas>
-  </div>
-  <script>
-    const labels = ${JSON.stringify(labels)};
-    const values = ${JSON.stringify(values)};
-    const ctx = document.getElementById('c').getContext('2d');
-    const gradient = ctx.createLinearGradient(0,0,0,300);
-    gradient.addColorStop(0,'${chartFill}');
-    gradient.addColorStop(1,'rgba(0,0,0,0.0)');
-    // Global font defaults (restore original appearance)
-    Chart.defaults.font.family = 'Orbitron';
-    Chart.defaults.font.size = 12;
-    Chart.defaults.color = '#e5e7eb';
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [
-          {
-            data: values,
-            borderColor: '${chartColor}',
-            backgroundColor: gradient,
-            borderWidth: 4,
-            tension: 0.35,
-            pointRadius: 5,
-            fill: true
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          title: { display: true, text: 'Total Rocks Earned', color: '#fff', font: { family:'Orbitron', size: 22, weight: '700' } },
-          tooltip: { titleFont:{family:'Orbitron', size:14, weight:'600'}, bodyFont:{family:'Orbitron', size:13} }
-        },
-        scales: {
-          y: { beginAtZero: true, ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: 'Rocks', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } },
-          x: { ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: 'Attempt #', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } }
-        }
-      }
-    });
-  </script>
- </body>
-</html>
-`.trim();
-
-  const cumulativeChart = (
-    title: string,
-    yLabel: string,
-    labels: string[],
-    values: number[],
-    chartColor: string,
-    chartBorder: string,
-    chartFill: string,
-  ) => {
-    const cumulative = values.map((v, i) =>
-      values.slice(0, i + 1).reduce((a, b) => a + b, 0),
-    );
-    return `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body { margin:0; padding:0; background:transparent; font-family:'Orbitron',sans-serif; color:#fff; }
-    .wrap { padding:2%; border:4px solid ${chartBorder}; border-radius:40px; height:100%; box-sizing:border-box; }
-    canvas { width:100%!important; height:100%!important; }
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <canvas id="c"></canvas>
-  </div>
-  <script>
-    const labels = ${JSON.stringify(labels)};
-    const cumulative = ${JSON.stringify(cumulative)};
-    const ctx = document.getElementById('c').getContext('2d');
-    const gradient = ctx.createLinearGradient(0,0,0,300);
-    gradient.addColorStop(0,'${chartFill}');
-    gradient.addColorStop(1,'rgba(0,0,0,0.0)');
-    // Global font defaults (restore original appearance)
-    Chart.defaults.font.family = 'Orbitron';
-    Chart.defaults.font.size = 12;
-    Chart.defaults.color = '#e5e7eb';
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [
-          {
-            data: cumulative,
-            borderColor: '${chartColor}',
-            backgroundColor: gradient,
-            borderWidth: 4,
-            tension: 0.35,
-            pointRadius: 5,
-            fill: true
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          title: { display: true, text: '${title}', color: '#fff', font: { family:'Orbitron', size: 22, weight: '700' } },
-          tooltip: { titleFont:{family:'Orbitron', size:14, weight:'600'}, bodyFont:{family:'Orbitron', size:13} }
-        },
-        scales: {
-          y: { beginAtZero: true, ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: '${yLabel}', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } },
-          x: { ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: 'Cycle #', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } }
-        }
-      }
-    });
-  </script>
-</body>
-</html>
-`.trim();
-  };
 
   // Load current profile on mount
   useEffect(() => {
@@ -736,18 +595,39 @@ export default function ProfileScreen() {
 
           {/* Analytics Container */}
           <View className="mb-8">
-            <CoachmarkAnchor id="stats-section" shape="circle">
-              <Text
-                className="font-orbitron-semibold text-xl text-white mb-4"
+            <View className="flex-row justify-between items-center mb-4">
+              <CoachmarkAnchor id="stats-section" shape="circle">
+                <Text
+                  className="font-orbitron-semibold text-xl text-white"
+                  style={{
+                    textShadowColor: palette.statsAccentGlow,
+                    textShadowOffset: { width: 0, height: 0 },
+                    textShadowRadius: 10,
+                  }}
+                >
+                  {t("Profile.YourStats")}
+                </Text>
+              </CoachmarkAnchor>
+              <TouchableOpacity
+                onPress={() => setIsAnalyticsModalVisible(true)}
+                className="flex-row items-center px-3 py-2 rounded-full"
                 style={{
-                  textShadowColor: palette.statsAccentGlow,
-                  textShadowOffset: { width: 0, height: 0 },
-                  textShadowRadius: 10,
+                  backgroundColor: palette.rowBgPrimary,
+                  borderWidth: 1,
+                  borderColor: palette.secondaryLightBorder,
                 }}
               >
-                {t("Profile.YourStats")}
-              </Text>
-            </CoachmarkAnchor>
+                <Ionicons
+                  name="add"
+                  size={16}
+                  color="white"
+                  style={{ marginRight: 4 }}
+                />
+                <Text className="font-orbitron-semibold text-white text-xs">
+                  Advanced
+                </Text>
+              </TouchableOpacity>
+            </View>
             <View
               className="p-4 rounded-2xl"
               style={{
@@ -788,102 +668,33 @@ export default function ProfileScreen() {
                   {Math.max(0, rocksSpent)}
                 </Text>
               </View>
-              {/* Rocks Chart */}
+              {/* Current Level */}
               <View
+                className="px-4 py-2 rounded-full mt-2"
                 style={{
-                  height: 200,
-                  borderRadius: 16,
-                  overflow: "hidden",
-                  marginTop: 16,
-                  marginBottom: 16,
+                  backgroundColor: palette.statsAccentSoft,
+                  borderWidth: 1,
+                  borderColor: palette.statsAccentBorder,
                 }}
               >
-                {statsValues.length ? (
-                  <WebView
-                    originWhitelist={["*"]}
-                    source={{
-                      html: totalRocksChart(
-                        statsLabels,
-                        statsValues,
-                        palette.statsAccent,
-                        palette.statsChartBorder,
-                        palette.statsChartFill,
-                      ),
-                    }}
-                    scrollEnabled={false}
-                    style={{ backgroundColor: "transparent" }}
-                  />
-                ) : (
-                  <Text className="font-orbitron-semibold text-white px-2">
-                    No rock stats yet.
-                  </Text>
-                )}
+                <Text className="font-orbitron-semibold text-white">
+                  {t("Profile.level")}
+                  {Math.max(0, level) || "1"}
+                </Text>
               </View>
-              {/* Work Time Chart */}
+              {/* Planets Discovered */}
               <View
+                className="px-4 py-2 rounded-full mt-2"
                 style={{
-                  height: 200,
-                  borderRadius: 16,
-                  overflow: "hidden",
-                  marginTop: 8,
-                  marginBottom: 16,
+                  backgroundColor: palette.statsAccentSoft,
+                  borderWidth: 1,
+                  borderColor: palette.statsAccentBorder,
                 }}
               >
-                {workTimes.length ? (
-                  <WebView
-                    originWhitelist={["*"]}
-                    source={{
-                      html: cumulativeChart(
-                        "Cumulative Work Time",
-                        "Minutes",
-                        workLabels,
-                        workTimes,
-                        palette.statsAccent,
-                        palette.statsChartBorder,
-                        palette.statsChartFill,
-                      ),
-                    }}
-                    scrollEnabled={false}
-                    style={{ backgroundColor: "transparent" }}
-                  />
-                ) : (
-                  <Text className="font-orbitron-semibold text-white px-2">
-                    No work sessions yet.
-                  </Text>
-                )}
-              </View>
-              {/* Play Time Chart */}
-              <View
-                style={{
-                  height: 200,
-                  borderRadius: 16,
-                  overflow: "hidden",
-                  marginTop: 8,
-                  marginBottom: 16,
-                }}
-              >
-                {playTimes.length ? (
-                  <WebView
-                    originWhitelist={["*"]}
-                    source={{
-                      html: cumulativeChart(
-                        "Cumulative Play Time",
-                        "Minutes",
-                        playLabels,
-                        playTimes,
-                        palette.statsAccent,
-                        palette.statsChartBorder,
-                        palette.statsChartFill,
-                      ),
-                    }}
-                    scrollEnabled={false}
-                    style={{ backgroundColor: "transparent" }}
-                  />
-                ) : (
-                  <Text className="font-orbitron-semibold text-white px-2">
-                    No play sessions yet.
-                  </Text>
-                )}
+                <Text className="font-orbitron-semibold text-white">
+                  {t("Profile.planets")}
+                  {Math.max(0, planets) || "0"}
+                </Text>
               </View>
               {/* Averages */}
               <View className="flex-row flex-wrap gap-2 mt-2">
@@ -1019,6 +830,18 @@ export default function ProfileScreen() {
           onTraitsUpdate={handleProfileUpdate}
         />
       )}
+
+      {/* Analytics Charts Modal */}
+      <AnalyticsChartsModal
+        visible={isAnalyticsModalVisible}
+        onClose={() => setIsAnalyticsModalVisible(false)}
+        statsLabels={statsLabels}
+        statsValues={statsValues}
+        workLabels={workLabels}
+        workTimes={workTimes}
+        playLabels={playLabels}
+        playTimes={playTimes}
+      />
     </View>
   );
 }
