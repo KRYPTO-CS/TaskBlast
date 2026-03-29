@@ -1,0 +1,188 @@
+{
+  "language": {
+    "selectLanguage": "Choose yer tongue, matey",
+    "continue": "Sail On",
+    "backTo": "Back to",
+    "Login": "Board Ship"
+  },
+  "birthdate": {
+    "title": "When be ye born?",
+    "notice": "Ye must be at least 13 summers old to join the crew",
+    "month": "Moon",
+    "day": "Day",
+    "year": "Year",
+    "continue": "Sail On",
+    "previousStep": "Previous Step",
+    "error": "That be no proper date, try again",
+    "age": "Hand the device to yer captain (parent/guardian)",
+    "empty": "Fill all the blanks, ye scallywag"
+  },
+  "AccountType": {
+    "title": "Who be sailin' TaskBlast?",
+    "type": "Choose the account that best fits the sailor",
+    "managetitle": "Guarded Account",
+    "managedesc": "For young deckhands. Some features be locked by a captain's PIN.",
+    "indetitle": "Free Sailor Account",
+    "indedesc": "For lone adventurers. Full access to all treasures.",
+    "continue": "Sail On",
+    "error": "Choose an account type, or walk the plank!"
+  },
+  "Name": {
+    "title": "What be yer name?",
+    "desc": "Tell us what the crew should call ye",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "continue": "Sail On"
+  },
+  "Email": {
+    "title": "What be yer email?",
+    "desc": "We’ll send ye a message in a bottle (verification code)",
+    "emailPlaceholder": "Email Address",
+    "send": "Send Message"
+  },
+  "Password": {
+    "title": "Forge Yer Secret Code",
+    "desc": "Choose a strong password to guard yer treasure",
+    "passwordPlaceholder": "Password",
+    "ConfirmPasswordPlaceholder": "Confirm Password",
+    "submit": "Create Account",
+    "match": "Yer passwords don’t match, matey",
+    "length": "Password must be at least 8 characters long"
+  },
+  "Login": {
+    "title": "Board Ship",
+    "emailPlaceholder": "Email or Username",
+    "passwordPlaceholder": "Password",
+    "forgotPassword": "Forgot Yer Secret?",
+    "loginButton": "Enter",
+    "noAccount": "No account yet?",
+    "signUp": "Join the Crew"
+  },
+  "ForgotPassword": {
+    "title": "Lost Yer Secret?",
+    "desc": "Enter yer email and we’ll send ye a code",
+    "emailPlaceholder": "Email Address",
+    "submit": "Send"
+  },
+  "VerifyCode": {
+    "title": "Verify Code",
+    "desc": "Enter the 5-digit code sent to",
+    "notreceived": "Didn’t get the code?",
+    "resend": "Send Again",
+    "submit": "Submit"
+  },
+  "ResetPassword": {
+    "title": "Forge a New Secret",
+    "desc": "Enter yer new password below",
+    "newPasswordPlaceholder": "New Password",
+    "confirmPasswordPlaceholder": "Confirm Password",
+    "submit": "Reset Password"
+  },
+  "ManagerPin": {
+    "title": "Set a Captain’s PIN",
+    "desc": "This 4-digit PIN lets a captain control the ship. Keep it secret!",
+    "pin": "PIN (4 digits)",
+    "confirmPinPlaceholder": "Confirm PIN",
+    "continue": "Sail On"
+  },
+  "Home": {
+    "takeoff": "Set Sail",
+    "coachMarktaskstitle": "Add New Tasks",
+    "coachMarktasks": "Tap here to add tasks, set rewards, and plan yer voyages!",
+    "coachMarkProfiletitle": "View Yer Profile",
+    "coachMarkProfile": "Check yer stats, progress, and customize yer pirate!",
+    "coachMarksettings": "Adjust yer settings and ship controls here!",
+    "coachMarktakeoff": "Start a focus voyage and chase yer goals!",
+    "coachMarkshop": "Visit the shop and upgrade yer gear!"
+  },
+  "Settings": {
+    "title": "Ship Settings",
+    "sound": "Sound Effects",
+    "music": "Music",
+    "notifications": "Signals",
+    "privacy": "Privacy",
+    "Help": "Help & Support",
+    "About": "About",
+    "Logout": "Abandon Ship",
+    "accessibility": "Accessibility",
+    "language": "Language",
+    "colorBlind": "Color Blind Mode",
+    "textSize": "Text Size",
+    "highContrast": "High Contrast",
+    "reduceMotion": "Reduce Motion",
+    "tts": "Text to Speech",
+    "done": "Done"
+  },
+  "Tasks": {
+    "title": "Task Ledger",
+    "normal": "Active",
+    "edit": "Edit",
+    "archive": "Archive",
+    "empty": "No tasks yet. Add yer first voyage!",
+    "button": "Add New Task",
+    "archivedempty": "No archived tasks.",
+    "new": "New Task",
+    "desc": "Description (optional, max 200 characters)",
+    "reward": "Reward (rocks)",
+    "min": "Allow Minimization",
+    "settings": "Pomodoro Settings",
+    "worktime": "Work Time (minutes)",
+    "playtime": "Play Time (minutes)",
+    "cycles": "Number of Cycles",
+    "cancel": "Cancel",
+    "add": "Add Task",
+    "editTask": "Edit Task",
+    "save": "Save",
+    "coachMarkdesc": "Manage yer tasks here. Start voyages or edit them as ye wish.",
+    "Done": "Done"
+  },
+  "Profile": {
+    "traits": "Traits",
+    "editP": "Edit Profile",
+    "awards": "Awards",
+    "YourStats": "Yer Stats",
+    "rocksEarned": "Total Rocks Earned: ",
+    "rocksSpent": "Total Rocks Spent: ",
+    "AvgWorkCycle": "Avg Work Cycle: ",
+    "AvgPlayCycle": "Avg Play Cycle: ",
+    "work": "Work/Play Ratio: ",
+    "total": "Total Time Spent: ",
+    "AddChildAccount": "Add Deckhand",
+    "SwitchProfile": "Switch Sailor",
+    "Logout": "Abandon Ship",
+    "coachMarkeditP": "Update yer info here!",
+    "coachMarkTraitsTitle": "View Traits",
+    "coachMarkTraits": "See and add traits here!",
+    "coachMarkAwardsTitle": "View Awards",
+    "coachMarkAwards": "See yer achievements!",
+    "coachMarkStatsTitle": "View Stats",
+    "coachMarkStats": "Track yer progress over time!"
+  },
+  "Pomodoro": {
+    "time": "Time Remaining",
+    "work": "Work Voyage",
+    "Resume": "Resume",
+    "Pause": "Pause",
+    "Land": "Dock Ship",
+    "Play": "Play Game",
+    "coachMarkTime": "Watch the time tick down, stay focused!",
+    "coachMarkwork": "Work hard, rest well during breaks!",
+    "coachMarkPause": "Pause yer voyage if needed.",
+    "coachMarkLand": "End yer voyage and dock. Well done!"
+  },
+  "Shop": {
+    "title": "Treasure Shop",
+    "body": "Body",
+    "wings": "Wings",
+    "bBody": "Blue Hull",
+    "rBody": "Red Hull",
+    "yBody": "Yellow Hull",
+    "gBody": "Green Hull",
+    "bWings": "Blue Sails",
+    "rWings": "Red Sails",
+    "yWings": "Yellow Sails",
+    "gWings": "Green Sails",
+    "equipped": "Equipped",
+    "owned": "Owned"
+  }
+}
