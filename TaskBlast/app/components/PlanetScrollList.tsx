@@ -13,6 +13,7 @@ import {
   Platform,
 } from "react-native";
 import { Text } from '../../TTS';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   SafeAreaView,
   SafeAreaProvider,
@@ -22,6 +23,7 @@ import {
 import { getFirestore, collection, query, where, getDocs, doc, updateDoc, onSnapshot } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import PlanetModal from "./PlanetModal";
+import { ACTIVE_PLANET_STORAGE_KEY } from "../services/gameRegistry";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -143,6 +145,9 @@ export default function PlanetScrollList({ onRocksChange, onActivePlanetChange }
             // update selectedPlanet without opening modal
             setSelectedPlanet(id);
             onActivePlanetChange?.(id > currentProgress);
+            void AsyncStorage.setItem(ACTIVE_PLANET_STORAGE_KEY, String(id)).catch((err) => {
+                console.warn("Failed to store active planet id", err);
+            });
             console.log('Active planet changed to', id);
         }
     };

@@ -22,6 +22,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import {
+  ACTIVE_PLANET_STORAGE_KEY,
   GAME_HIGHEST_TILE_STORAGE_KEY,
   GAME_SCORE_STORAGE_KEY,
   getGameDefinition,
@@ -55,9 +56,28 @@ export default function GamePage() {
 
   const [timeLeft, setTimeLeft] = useState(playTime * 60); // Convert minutes to seconds
   const [equipped, setEquipped] = useState<number[]>([0, 1]);
+  const [activePlanetId, setActivePlanetId] = useState<number>(1);
   const tapCount = useRef(0);
   const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rewardsProcessedRef = useRef(false);
+
+  useEffect(() => {
+    const loadActivePlanetId = async () => {
+      try {
+        const storedActivePlanetId = await AsyncStorage.getItem(
+          ACTIVE_PLANET_STORAGE_KEY,
+        );
+        const parsed = Number(storedActivePlanetId);
+        if (Number.isFinite(parsed) && parsed >= 1) {
+          setActivePlanetId(Math.floor(parsed));
+        }
+      } catch (err) {
+        console.warn("Failed to load active planet id", err);
+      }
+    };
+
+    loadActivePlanetId();
+  }, []);
 
   const saveRocksToDatabase = async (rocksAwarded: number) => {
     try {
@@ -283,7 +303,7 @@ export default function GamePage() {
         console.warn("Invalid message from WebView:", event.nativeEvent.data);
       }
     },
-    [equipped, gameId, colorBlindMode],
+    [equipped, gameId, colorBlindMode, activePlanetId],
   );
 
   const sendMessageToGodot = useCallback(() => {
@@ -299,6 +319,7 @@ export default function GamePage() {
     console.log("Sending skins message to Godot.");
     console.log("Current equipped values:", equipped);
     console.log("Game ID:", gameId);
+    console.log("Active planet ID:", activePlanetId);
     console.log("Colorblind mode:", colorBlindMode, "->", colorBlindModeValue);
 
     webviewRef.current?.postMessage(
@@ -307,11 +328,11 @@ export default function GamePage() {
         data1: String(equipped[0]).trim(),
         data2: String(equipped[1]).trim(),
         data3: String(gameId).trim(),
-        data4: String(0),
+        data4: String(activePlanetId).trim(),
         data5: String(colorBlindModeValue).trim(),
       }),
     );
-  }, [equipped, gameId, colorBlindMode]);
+  }, [equipped, gameId, activePlanetId, colorBlindMode]);
 
   if (!WebView) {
     return (
