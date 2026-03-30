@@ -325,7 +325,10 @@ export default function GamePage() {
             skinSyncIntervalRef.current = setInterval(() => {
               skinSyncCountRef.current += 1;
               sendMessageToGodot(`godot-sync-${skinSyncCountRef.current}`);
-              if (skinSyncCountRef.current >= 8 && skinSyncIntervalRef.current) {
+              if (
+                skinSyncCountRef.current >= 8 &&
+                skinSyncIntervalRef.current
+              ) {
                 clearInterval(skinSyncIntervalRef.current);
                 skinSyncIntervalRef.current = null;
               }
@@ -351,56 +354,64 @@ export default function GamePage() {
     [equipped, gameId, colorBlindMode, activePlanetId, isSpaceSwerve],
   );
 
-  const sendMessageToGodot = useCallback((reason = "manual") => {
-    // Map colorBlindMode to numeric value: none=0, deuteranopia=1, protanopia=2, tritanopia=3
-    const colorBlindModeMap: Record<string, number> = {
-      none: 0,
-      deuteranopia: 1,
-      protanopia: 2,
-      tritanopia: 3,
-    };
-    const colorBlindModeValue = colorBlindModeMap[colorBlindMode] ?? 0;
-
-    const bodyId = Number.isFinite(equipped[0]) ? Math.floor(equipped[0]) : 0;
-    const wingsId = Number.isFinite(equipped[1]) ? Math.floor(equipped[1]) : 1;
-    const safeGameId = Number.isFinite(gameId) ? Math.floor(gameId) : 0;
-    const safePlanetId = Number.isFinite(activePlanetId)
-      ? Math.floor(activePlanetId)
-      : 1;
-
-    console.log("Sending skins message to Godot.");
-    console.log("Send reason:", reason);
-    console.log("Current equipped values:", equipped);
-    console.log("Game ID:", gameId);
-    console.log("Active planet ID:", activePlanetId);
-    console.log("Colorblind mode:", colorBlindMode, "->", colorBlindModeValue);
-
-    const sendPayload = (type: string) => {
-      const payload = {
-        type,
-        // Keep legacy positional fields as strings for strict Godot comparisons.
-        data1: String(bodyId),
-        data2: String(wingsId),
-        data3: String(safeGameId),
-        data4: String(safePlanetId),
-        data5: String(colorBlindModeValue),
-        // Named aliases for newer contracts.
-        bodyId,
-        wingsId,
-        gameId: safeGameId,
-        planetId: safePlanetId,
-        colorBlindMode: colorBlindModeValue,
+  const sendMessageToGodot = useCallback(
+    (reason = "manual") => {
+      // Map colorBlindMode to numeric value: none=0, deuteranopia=1, protanopia=2, tritanopia=3
+      const colorBlindModeMap: Record<string, number> = {
+        none: 0,
+        deuteranopia: 1,
+        protanopia: 2,
+        tritanopia: 3,
       };
+      const colorBlindModeValue = colorBlindModeMap[colorBlindMode] ?? 0;
 
-      const payloadString = JSON.stringify(payload);
+      const bodyId = Number.isFinite(equipped[0]) ? Math.floor(equipped[0]) : 0;
+      const wingsId = Number.isFinite(equipped[1])
+        ? Math.floor(equipped[1])
+        : 1;
+      const safeGameId = Number.isFinite(gameId) ? Math.floor(gameId) : 0;
+      const safePlanetId = Number.isFinite(activePlanetId)
+        ? Math.floor(activePlanetId)
+        : 1;
 
-      // Path 1: standard RN WebView -> page message channel.
-      webviewRef.current?.postMessage(payloadString);
+      console.log("Sending skins message to Godot.");
+      console.log("Send reason:", reason);
+      console.log("Current equipped values:", equipped);
+      console.log("Game ID:", gameId);
+      console.log("Active planet ID:", activePlanetId);
+      console.log(
+        "Colorblind mode:",
+        colorBlindMode,
+        "->",
+        colorBlindModeValue,
+      );
 
-      // Path 2: direct fallback for pages that do not receive message events consistently.
-      const escapedPayload = JSON.stringify(payloadString);
-      webviewRef.current?.injectJavaScript(
-        `(() => {
+      const sendPayload = (type: string) => {
+        const payload = {
+          type,
+          // Keep legacy positional fields as strings for strict Godot comparisons.
+          data1: String(bodyId),
+          data2: String(wingsId),
+          data3: String(safeGameId),
+          data4: String(safePlanetId),
+          data5: String(colorBlindModeValue),
+          // Named aliases for newer contracts.
+          bodyId,
+          wingsId,
+          gameId: safeGameId,
+          planetId: safePlanetId,
+          colorBlindMode: colorBlindModeValue,
+        };
+
+        const payloadString = JSON.stringify(payload);
+
+        // Path 1: standard RN WebView -> page message channel.
+        webviewRef.current?.postMessage(payloadString);
+
+        // Path 2: direct fallback for pages that do not receive message events consistently.
+        const escapedPayload = JSON.stringify(payloadString);
+        webviewRef.current?.injectJavaScript(
+          `(() => {
           try {
             const raw = ${escapedPayload};
             const msg = JSON.parse(raw);
@@ -426,25 +437,34 @@ export default function GamePage() {
             }
           }
         })(); true;`,
-      );
-    };
+        );
+      };
 
-    if (isSpaceSwerve) {
-      // Space Swerve uses evolving contracts across builds.
-      ["skins", "setSkins", "applySkins", "playerConfig"].forEach(
-        sendPayload,
-      );
-    } else {
-      // Keep Space Shooter on the known-stable contract.
-      sendPayload("skins");
-    }
-  }, [equipped, gameId, activePlanetId, colorBlindMode, isSpaceSwerve]);
+      if (isSpaceSwerve) {
+        // Space Swerve uses evolving contracts across builds.
+        ["skins", "setSkins", "applySkins", "playerConfig"].forEach(
+          sendPayload,
+        );
+      } else {
+        // Keep Space Shooter on the known-stable contract.
+        sendPayload("skins");
+      }
+    },
+    [equipped, gameId, activePlanetId, colorBlindMode, isSpaceSwerve],
+  );
 
   useEffect(() => {
     if (!loading && godotReadyRef.current) {
       sendMessageToGodot("config-updated");
     }
-  }, [loading, equipped, gameId, activePlanetId, colorBlindMode, sendMessageToGodot]);
+  }, [
+    loading,
+    equipped,
+    gameId,
+    activePlanetId,
+    colorBlindMode,
+    sendMessageToGodot,
+  ]);
 
   if (!WebView) {
     return (
