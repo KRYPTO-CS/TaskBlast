@@ -59,7 +59,7 @@ const DEFAULT_SETTINGS: AccessibilitySettings = {
 
 // ─── Context ──────────────────────────────────────────────────────────────────
 
-const AccessibilityContext = createContext<
+export const AccessibilityContext = createContext<
   AccessibilityContextType | undefined
 >(undefined);
 

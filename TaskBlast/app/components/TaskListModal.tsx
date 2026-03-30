@@ -58,12 +58,14 @@ interface TaskListModalProps {
   visible: boolean;
   onClose: () => void;
   onRocksChange?: () => void;
+  isSelectedPlanetLocked?: boolean;
 }
 
 export default function TaskListModal({
   visible,
   onClose,
   onRocksChange,
+  isSelectedPlanetLocked = false,
 }: TaskListModalProps) {
   const router = useRouter();
   const { scheduleDailyDigest, preferences } = useNotifications();
@@ -597,6 +599,11 @@ export default function TaskListModal({
   };
 
   const handleStartTask = (task: Task) => {
+    // Check if planet is locked
+    if (isSelectedPlanetLocked) {
+      Alert.alert("Planet Locked", "This planet is locked. Unlock it before playing tasks!");
+      return;
+    }
     // Close the modal and navigate to Pomodoro screen with task data
     onClose();
     router.push({
@@ -752,6 +759,14 @@ export default function TaskListModal({
                 {t("Tasks.archive")}
               </Text>
             </TouchableOpacity>
+          </View>
+
+          {/* Planet Disclaimer */}
+          <View>
+            <Text className="font-madimi text-white text-sm pb-4">
+              {t("Tasks.planetDisclaimer")}
+            </Text>
+
           </View>
 
           {/* Error Message */}

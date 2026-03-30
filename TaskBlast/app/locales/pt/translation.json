@@ -131,6 +131,7 @@
     "cycles": "Número de Ciclos",
     "cancel": "Cancelar",
     "add": "Adicionar Tarefa",
+    "planetDisclaimer": "Você receberá o multiplicador de cristais desbloqueado mais alto para tarefas personalizadas.",
     "editTask": "Editar Tarefa",
     "save": "Salvar",
     "coachMarkdesc": "Aqui você pode gerenciar suas tarefas. Toque em uma tarefa para ver detalhes, iniciar uma sessão de foco ou editá-la. Use as guias para alternar entre tarefas ativas e arquivadas."
@@ -145,6 +146,8 @@
     "AvgWorkCycle": "Comprimento Médio do Ciclo de Trabalho: ",
     "AvgPlayCycle": "Comprimento Médio do Ciclo de Pausa: ",
     "work": "Proporção Trabalho/Pausa: ",
+    "level": "Nível Atual: ",
+    "planets": "Planetas Descobertos: ",
     "total": "Tempo Total Gasto em Tarefas: ",
     "AddChildAccount": "Adicionar Conta de Criança",
     "SwitchProfile": "Trocar Perfil",
