@@ -1,13 +1,8 @@
 import React from "react";
-import {
-  View,
-  Modal,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-} from "react-native";
-import { Text } from '../../TTS';
+import { View, Modal, TouchableOpacity, ScrollView, Image } from "react-native";
+import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
+import { GAME_DEFINITIONS } from "../services/gameRegistry";
 
 interface GameSelectionModalProps {
   visible: boolean;
@@ -20,26 +15,15 @@ type GameOption = {
   name: string;
   iconPath?: any;
   description?: string;
+  isFreeTime?: boolean;
 };
 
-const GAME_OPTIONS: GameOption[] = [
-  {
-    id: 0,
-    name: "Asteroid Blaster",
-    description: "Blast the asteroids!",
-  },
-  {
-    id: 1,
-    name: "Space Swerve",
-    description: "Dodge the asteroids!",
-  },
-  {
-    id: 2,
-    name: "Free Time",
-    description: "Take a break YOUR way!",
-  },
-  // Add more games here in the future
-];
+const GAME_OPTIONS: GameOption[] = GAME_DEFINITIONS.map((game) => ({
+  id: game.id,
+  name: game.name,
+  description: game.description,
+  isFreeTime: game.isFreeTime,
+}));
 
 export default function GameSelectionModal({
   visible,
@@ -82,10 +66,7 @@ export default function GameSelectionModal({
           </View>
 
           {/* Game Options */}
-          <ScrollView
-            className="max-h-96"
-            showsVerticalScrollIndicator={false}
-          >
+          <ScrollView className="max-h-96" showsVerticalScrollIndicator={false}>
             <View className="gap-3">
               {GAME_OPTIONS.map((game) => (
                 <TouchableOpacity
@@ -93,14 +74,12 @@ export default function GameSelectionModal({
                   onPress={() => handleGameSelect(game.id)}
                   className="rounded-2xl p-4 border-2"
                   style={{
-                    backgroundColor:
-                      game.id === 2
-                        ? "rgba(34, 197, 94, 0.3)"
-                        : "rgba(88, 28, 135, 0.3)",
-                    borderColor:
-                      game.id === 2
-                        ? "rgba(34, 197, 94, 0.5)"
-                        : "rgba(168, 85, 247, 0.5)",
+                    backgroundColor: game.isFreeTime
+                      ? "rgba(34, 197, 94, 0.3)"
+                      : "rgba(88, 28, 135, 0.3)",
+                    borderColor: game.isFreeTime
+                      ? "rgba(34, 197, 94, 0.5)"
+                      : "rgba(168, 85, 247, 0.5)",
                   }}
                   testID={`game-option-${game.id}`}
                 >
@@ -116,9 +95,9 @@ export default function GameSelectionModal({
                       )}
                     </View>
                     <Ionicons
-                      name={game.id === 2 ? "hourglass" : "game-controller"}
+                      name={game.isFreeTime ? "hourglass" : "game-controller"}
                       size={32}
-                      color={game.id === 2 ? "#22c55e" : "#a855f7"}
+                      color={game.isFreeTime ? "#22c55e" : "#a855f7"}
                     />
                   </View>
                 </TouchableOpacity>
