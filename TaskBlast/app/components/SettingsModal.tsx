@@ -451,8 +451,8 @@ export default function SettingsModal({
                   borderColor: palette.tertiarySoftBorder,
                 }}
                 onPress={() => {
-                  // Add privacy settings navigation
-                  console.log("Privacy pressed");
+                  router.push("/pages/PrivacyScreen");
+                  onClose();
                 }}
               >
                 <Ionicons
@@ -564,6 +564,7 @@ export default function SettingsModal({
               </TouchableOpacity>
             )}
 
+            {/*Support*/}
             <TouchableOpacity
               className="flex-row items-center p-4 rounded-xl mb-3"
               style={{
@@ -572,8 +573,8 @@ export default function SettingsModal({
                 borderColor: palette.tertiarySoftBorder,
               }}
               onPress={() => {
-                // Add help & support navigation
-                console.log("Help & Support pressed");
+                router.push("/pages/SupportScreen");
+                onClose();
               }}
             >
               <Ionicons
@@ -592,6 +593,7 @@ export default function SettingsModal({
               />
             </TouchableOpacity>
 
+            {/*About us*/}
             <TouchableOpacity
               className="flex-row items-center p-4 rounded-xl mb-3"
               style={{
@@ -600,8 +602,8 @@ export default function SettingsModal({
                 borderColor: palette.tertiarySoftBorder,
               }}
               onPress={() => {
-                // Add about navigation
-                console.log("About pressed");
+                router.push("/pages/AboutUsScreen");
+                onClose();
               }}
             >
               <Ionicons
