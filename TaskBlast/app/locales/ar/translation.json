@@ -131,6 +131,7 @@
     "cycles": "عدد الدورات",
     "cancel": "إلغاء",
     "add": "إضافة مهمة",
+    "planetDisclaimer": "ستتلقى أعلى مضاعف كريستال مفتوح للمهام المخصصة.",
     "editTask": "تعديل مهمة",
     "save": "حفظ",
     "coachMarkdesc": "هنا يمكنك إدارة مهامك. اضغط على مهمة لعرض التفاصيل، بدء جلسة تركيز أو تعديلها. استخدم علامات التبويب للتبديل بين المهام النشطة والمؤرشفة.",
@@ -146,6 +147,8 @@
     "AvgWorkCycle": "متوسط طول دورة العمل: ",
     "AvgPlayCycle": "متوسط طول دورة الراحة: ",
     "work": "نسبة العمل/الراحة: ",
+    "level": "المستوى الحالي: ",
+    "planets": "الكواكب المكتشفة: ",
     "total": "إجمالي الوقت المستغرق في المهام: ",
     "AddChildAccount": "إضافة حساب طفل",
     "SwitchProfile": "تبديل الملف الشخصي",
@@ -170,7 +173,7 @@
     "coachMarkPause": "اضغط هنا لإيقاف جلستك مؤقتًا إذا كنت بحاجة إلى أخذ استراحة غير مجدولة.",
     "coachMarkLand": "اضغط هنا لإنهاء جلستك والهبوط مرة أخرى على كوكبك. عمل رائع على وقت تركيزك!"
   },
-    "Shop": {
+  "Shop": {
     "title": "المتجر",
     "body": "الجسم",
     "wings": "الкрыات",
@@ -184,5 +187,18 @@
     "gWings": "الкрыات الخضراء",
     "equipped": "تم التجهيز",
     "owned": "تم امتلاكه"
+  },
+  "Games": {
+    "chooseTitle": "Choose Your Game",
+    "asteroidBlaster": "Asteroid Blaster",
+    "asteroidBlasterDesc": "Blast the asteroids!",
+    "spaceSwerve": "Space Swerve",
+    "spaceSwerveDesc": "Dodge the asteroids!",
+    "freeTime": "Free Time",
+    "freeTimeDesc": "Take a break YOUR way!",
+    "game2048": "2048",
+    "game2048Desc": "Merge tiles. Aim for 2048!",
+    "sequentBlast": "Sequent Blast",
+    "sequentBlastDesc": "Memorize and tap the hidden sequence."
   }
 }

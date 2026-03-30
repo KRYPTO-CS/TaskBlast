@@ -85,7 +85,6 @@
     "confirmPinPlaceholder": "Confirm PIN",
     "continue": "Continue"
   },
-
   "Home": {
     "takeoff": "Take Off",
     "coachMarktaskstitle": "Add new Tasks",
@@ -132,6 +131,7 @@
     "cycles": "Number of Cycles",
     "cancel": "Cancel",
     "add": "Add Task",
+    "planetDisclaimer": "You will receive the highest unlocked crystal multiplier for custom tasks.",
     "editTask": "Edit Task",
     "save": "Save",
     "coachMarkdesc": "This is where you can manage your tasks. Tap on a task to view details, start a focus session, or edit it. Use the tabs to switch between active and archived tasks.",
@@ -147,6 +147,8 @@
     "AvgWorkCycle": "Average Work Cycle Length: ",
     "AvgPlayCycle": "Average Play Cycle Length: ",
     "work": "Work/Play Ratio: ",
+    "level": "Current Level: ",
+    "planets": "Planets Discovered: ",
     "total": "Total Time Spent on Tasks: ",
     "AddChildAccount": "Add Child Account",
     "SwitchProfile": "Switch Profile",
@@ -185,5 +187,18 @@
     "gWings": "Green Wings",
     "equipped": "Equipped",
     "owned": "Owned"
+  },
+  "Games": {
+    "chooseTitle": "Choose Your Game",
+    "asteroidBlaster": "Asteroid Blaster",
+    "asteroidBlasterDesc": "Blast the asteroids!",
+    "spaceSwerve": "Space Swerve",
+    "spaceSwerveDesc": "Dodge the asteroids!",
+    "freeTime": "Free Time",
+    "freeTimeDesc": "Take a break YOUR way!",
+    "game2048": "2048",
+    "game2048Desc": "Merge tiles. Aim for 2048!",
+    "sequentBlast": "Sequent Blast",
+    "sequentBlastDesc": "Memorize and tap the hidden sequence."
   }
 }

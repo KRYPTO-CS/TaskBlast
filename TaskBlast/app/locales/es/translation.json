@@ -131,6 +131,7 @@
     "cycles": "Número de Ciclos",
     "cancel": "Cancelar",
     "add": "Agregar Tarea",
+    "planetDisclaimer": "Recibirás el multiplicador de cristales desbloqueado más alto para tareas personalizadas.",
     "editTask": "Editar Tarea",
     "save": "Guardar",
     "coachMarkdesc": "Aquí puedes gestionar tus tareas. Toca una tarea para ver detalles, iniciar una sesión de enfoque o editarla. Usa las pestañas para cambiar entre tareas activas y archivadas.",
@@ -146,6 +147,8 @@
     "AvgWorkCycle": "Duración Promedio del Ciclo de Trabajo: ",
     "AvgPlayCycle": "Duración Promedio del Ciclo de Descanso: ",
     "work": "Proporción de Trabajo/Descanso: ",
+    "level": "Nivel Actual: ",
+    "planets": "Planetas Descubiertos: ",
     "total": "Tiempo Total Invertido en Tareas: ",
     "AddChildAccount": "Agregar Cuenta de Niño",
     "SwitchProfile": "Cambiar Perfil",
@@ -184,5 +187,18 @@
     "yWings": "Alas Amarillas",
     "equipped": "Equipado",
     "owned": "Poseído"
+  },
+  "Games": {
+    "chooseTitle": "Choose Your Game",
+    "asteroidBlaster": "Asteroid Blaster",
+    "asteroidBlasterDesc": "Blast the asteroids!",
+    "spaceSwerve": "Space Swerve",
+    "spaceSwerveDesc": "Dodge the asteroids!",
+    "freeTime": "Free Time",
+    "freeTimeDesc": "Take a break YOUR way!",
+    "game2048": "2048",
+    "game2048Desc": "Merge tiles. Aim for 2048!",
+    "sequentBlast": "Sequent Blast",
+    "sequentBlastDesc": "Memorize and tap the hidden sequence."
   }
 }

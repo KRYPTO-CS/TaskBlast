@@ -94,8 +94,8 @@
     "coachMarksettings": "Нажмите здесь, чтобы настроить свои предпочтения, управлять уведомлениями и многое другое!",
     "coachMarktakeoff": "Нажмите здесь, чтобы начать сеанс фокусировки и взлететь к своим целям!",
     "coachMarkshop": "Нажмите здесь, чтобы посетить магазин и настроить свой аватар с новыми телами и крыльями!"
-   },
-   "Settings": {
+  },
+  "Settings": {
     "title": "Настройки",
     "sound": "Звуковые эффекты",
     "music": "Музыка",
@@ -131,6 +131,7 @@
     "cycles": "Количество циклов",
     "cancel": "Отменить",
     "add": "Добавить задачу",
+    "planetDisclaimer": "Вы получите наивысший разблокированный множитель кристаллов для пользовательских задач.",
     "editTask": "Редактировать задачу",
     "save": "Сохранить",
     "coachMarkdesc": "Здесь вы можете управлять своими задачами. Нажмите на задачу, чтобы просмотреть детали, начать сеанс фокусировки или отредактировать ее. Используйте вкладки для переключения между активными и архивированными задачами.",
@@ -146,6 +147,8 @@
     "AvgWorkCycle": "Средняя продолжительность рабочего цикла: ",
     "AvgPlayCycle": "Средняя продолжительность цикла отдыха: ",
     "work": "Соотношение рабочего/отдыха: ",
+    "level": "Текущий уровень: ",
+    "planets": "Открытые планеты: ",
     "total": "Общее время, потраченное на задачи: ",
     "AddChildAccount": "Добавить дочернюю учетную запись",
     "SwitchProfile": "Переключить профиль",
@@ -184,5 +187,18 @@
     "gWings": "Зеленые Крылья",
     "equipped": "Экипировано",
     "owned": "Владеется"
+  },
+  "Games": {
+    "chooseTitle": "Choose Your Game",
+    "asteroidBlaster": "Asteroid Blaster",
+    "asteroidBlasterDesc": "Blast the asteroids!",
+    "spaceSwerve": "Space Swerve",
+    "spaceSwerveDesc": "Dodge the asteroids!",
+    "freeTime": "Free Time",
+    "freeTimeDesc": "Take a break YOUR way!",
+    "game2048": "2048",
+    "game2048Desc": "Merge tiles. Aim for 2048!",
+    "sequentBlast": "Sequent Blast",
+    "sequentBlastDesc": "Memorize and tap the hidden sequence."
   }
 }

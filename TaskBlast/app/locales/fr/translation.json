@@ -131,6 +131,7 @@
     "cycles": "Nombre de cycles",
     "cancel": "Annuler",
     "add": "Ajouter une tâche",
+    "planetDisclaimer": "Vous recevrez le multiplicateur de cristaux débloqué le plus élevé pour les tâches personnalisées.",
     "editTask": "Modifier la tâche",
     "save": "Sauvegarder",
     "coachMarkdesc": "C’est ici que vous pouvez gérer vos tâches. Appuyez sur une tâche pour voir les détails, démarrer une session de concentration ou la modifier. Utilisez les onglets pour basculer entre les tâches actives et archivées.",
@@ -146,6 +147,8 @@
     "AvgWorkCycle": "Durée moyenne du cycle de travail : ",
     "AvgPlayCycle": "Durée moyenne du cycle de pause : ",
     "work": "Ratio travail/temps de pause : ",
+    "level": "Niveau actuel : ",
+    "planets": "Planètes découvertes : ",
     "total": "Temps total passé sur les tâches : ",
     "AddChildAccount": "Ajouter un compte enfant",
     "SwitchProfile": "Changer de profil",
@@ -157,7 +160,6 @@
     "coachMarkAwards": "Ici, vous pouvez voir vos récompenses et réalisations !",
     "coachMarkStatsTitle": "Voir les statistiques",
     "coachMarkStats": "Ici, vous pouvez voir vos statistiques et suivre votre progression au fil du temps !"
-
   },
   "Pomodoro": {
     "time": "Temps restant",
@@ -171,7 +173,7 @@
     "coachMarkwork": "Cela indique si vous êtes dans une session de travail ou une pause. Restez concentré pendant les sessions de travail et détendez-vous pendant les pauses !",
     "coachMarkPause": "Appuyez ici pour mettre votre session en pause si vous devez prendre une pause imprévue.",
     "coachMarkLand": "Appuyez ici pour terminer votre session et atterrir de nouveau sur votre planète. Bon travail sur votre temps de concentration !"
-   },
+  },
   "Shop": {
     "title": "Boutique",
     "body": "Corps",
@@ -186,6 +188,18 @@
     "gWings": "Ailes Vertes",
     "equipped": "Équipé",
     "owned": "Possédé"
+  },
+  "Games": {
+    "chooseTitle": "Choose Your Game",
+    "asteroidBlaster": "Asteroid Blaster",
+    "asteroidBlasterDesc": "Blast the asteroids!",
+    "spaceSwerve": "Space Swerve",
+    "spaceSwerveDesc": "Dodge the asteroids!",
+    "freeTime": "Free Time",
+    "freeTimeDesc": "Take a break YOUR way!",
+    "game2048": "2048",
+    "game2048Desc": "Merge tiles. Aim for 2048!",
+    "sequentBlast": "Sequent Blast",
+    "sequentBlastDesc": "Memorize and tap the hidden sequence."
   }
-
 }

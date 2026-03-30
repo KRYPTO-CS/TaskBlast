@@ -131,6 +131,7 @@
     "cycles": "循环次数",
     "cancel": "取消",
     "add": "添加任务",
+    "planetDisclaimer": "您将获得自定义任务的最高已解锁水晶倍增器。",
     "editTask": "编辑任务",
     "save": "保存",
     "coachMarkdesc": "这里您可以管理您的任务。点击一个任务查看详情，开始专注会话或编辑它。使用标签切换活动和归档任务。",
@@ -146,6 +147,8 @@
     "AvgWorkCycle": "平均工作周期长度: ",
     "AvgPlayCycle": "平均休息周期长度: ",
     "work": "工作/休息比例: ",
+    "level": "当前等级: ",
+    "planets": "已发现的星球: ",
     "total": "任务总耗时: ",
     "AddChildAccount": "添加子账户",
     "SwitchProfile": "切换账户",
@@ -170,7 +173,7 @@
     "coachMarkPause": "如果您需要进行非计划的休息，请点击这里暂停您的会话。",
     "coachMarkLand": "点击这里结束您的会话并返回您的星球。在您的专注时间上做得很好！"
   },
-    "Shop": {
+  "Shop": {
     "title": "商店",
     "body": "身体",
     "wings": "翅膀",
@@ -184,5 +187,18 @@
     "gWings": "绿色翅膀",
     "equipped": "已装备",
     "owned": "已拥有"
+  },
+  "Games": {
+    "chooseTitle": "Choose Your Game",
+    "asteroidBlaster": "Asteroid Blaster",
+    "asteroidBlasterDesc": "Blast the asteroids!",
+    "spaceSwerve": "Space Swerve",
+    "spaceSwerveDesc": "Dodge the asteroids!",
+    "freeTime": "Free Time",
+    "freeTimeDesc": "Take a break YOUR way!",
+    "game2048": "2048",
+    "game2048Desc": "Merge tiles. Aim for 2048!",
+    "sequentBlast": "Sequent Blast",
+    "sequentBlastDesc": "Memorize and tap the hidden sequence."
   }
 }

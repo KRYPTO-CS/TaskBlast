@@ -785,6 +785,14 @@ export default function TaskListModal({
             </TouchableOpacity>
           </View>
 
+          {/* Planet Disclaimer */}
+          <View>
+            <Text className="font-madimi text-white text-sm pb-4">
+              {t("Tasks.planetDisclaimer")}
+            </Text>
+
+          </View>
+
           {/* Error Message */}
           {error && (
             <View className="bg-red-500/20 border-2 border-red-400/30 p-4 rounded-2xl mb-4">

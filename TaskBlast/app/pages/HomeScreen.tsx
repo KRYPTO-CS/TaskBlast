@@ -50,6 +50,7 @@ export default function HomeScreen() {
   const [isPlanetModalVisible, setIsPlanetModalVisible] = useState(false);
   const [isShopModalVisible, setIsShopModalVisible] = useState(false);
   const [isLevelModalVisible, setIsLevelModalVisible] = useState(false);
+  const [isSelectedPlanetLocked, setIsSelectedPlanetLocked] = useState(false);
   const [rocks, setRocks] = useState<number>(0);
   const [galaxyCrystals, setGalaxyCrystals] = useState<number>(0);
   const [currentExp, setCurrentExp] = useState<number>(0);
@@ -584,15 +585,24 @@ useFocusEffect(
 
         {/* Center - Planet Scroll List Component*/}
         
-        <PlanetScrollList onRocksChange={loadScore} />
+        <PlanetScrollList onRocksChange={loadScore} onActivePlanetChange={(isLocked) => setIsSelectedPlanetLocked(isLocked)} />
 
         {/* Take Off Button - Bottom Center */}
         <CoachmarkAnchor id="takeoff-button" shape="circle">
 
         <View className="items-center mb-24">
           <MainButton
+
+           // send out an alert if the selected planet is locked; this value comes from the PlanetScrollList component via the onActivePlanetChange callback
+           // this will help the game crystal boost logic in the future
             title={t("Home.takeoff")}
-            onPress={() => router.push("/pages/PomodoroScreen")}
+            onPress={() => {
+              if (isSelectedPlanetLocked) {
+                Alert.alert("Planet Locked", "This planet is locked. Unlock it before taking off!");
+              } else {
+                router.push("/pages/PomodoroScreen");
+              }
+            }}
             />
         </View>
             </CoachmarkAnchor>
