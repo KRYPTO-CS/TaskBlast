@@ -607,6 +607,8 @@ export default function TaskListModal({
         workTime: task.workTime.toString(),
         playTime: task.playTime.toString(),
         cycles: task.cycles.toString(),
+        taskReward: task.reward.toString(),
+        childDocId: childDocId || "",
         allowMinimization: task.allowMinimization.toString(),
       },
     });

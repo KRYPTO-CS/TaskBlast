@@ -40,6 +40,7 @@ import {
   createTour,
 } from "@edwardloopez/react-native-coachmark";
 import { getGameDefinition } from "../services/gameRegistry";
+import { claimTaskReward } from "../services/economyService";
 // Ship component image mappings
 const BODY_IMAGES: { [key: number]: any } = {
   0: require("../../assets/images/ship_components/body/0.png"),
@@ -67,6 +68,13 @@ export default function PomodoroScreen() {
   const playTime = params.playTime ? parseInt(params.playTime as string) : 5;
   const cycles = params.cycles ? parseInt(params.cycles as string) : 1;
   const taskId = params.taskId as string;
+  const taskReward = params.taskReward
+    ? parseInt(params.taskReward as string)
+    : 0;
+  const childDocId =
+    typeof params.childDocId === "string" && params.childDocId.length > 0
+      ? params.childDocId
+      : undefined;
   const allowMinimization = params.allowMinimization === "true" || false;
   const { start } = useCoachmark();
   const { t, i18n } = useTranslation();
@@ -108,6 +116,7 @@ export default function PomodoroScreen() {
   const tapCount = useRef(0);
   const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasRecordedRef = useRef(false);
+  const hasClaimedTaskRewardRef = useRef(false);
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -502,6 +511,29 @@ export default function PomodoroScreen() {
   };
 
   const handleLand = async () => {
+    const shouldClaimTaskReward =
+      !hasClaimedTaskRewardRef.current &&
+      finished &&
+      !inFreeTimeMode &&
+      Boolean(taskId) &&
+      Number.isFinite(taskReward) &&
+      taskReward > 0 &&
+      cycles !== -1 &&
+      (isTaskCompleted || currentCompletedCycles >= cycles);
+
+    if (shouldClaimTaskReward) {
+      try {
+        await claimTaskReward({
+          taskId,
+          reward: taskReward,
+          childDocId,
+        });
+        hasClaimedTaskRewardRef.current = true;
+      } catch (error) {
+        console.warn("Failed to claim task reward on land:", error);
+      }
+    }
+
     // Land - go back to home
     try {
       player.pause();
