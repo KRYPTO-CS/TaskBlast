@@ -17,12 +17,13 @@ import "../global.css";
 import { AudioProvider } from "./context/AudioContext";
 import { NotificationProvider } from "./context/NotificationContext";
 import { AccessibilityProvider } from "./context/AccessibilityContext";
+import { AdminProvider } from "./context/AdminContext";
 import {
   CoachmarkProvider,
   CoachmarkOverlay,
 } from "@edwardloopez/react-native-coachmark";
 // Prevent the splash screen from auto-hiding before fonts are loaded
-SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync().catch(() => {});
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -37,7 +38,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (fontsLoaded) {
-      SplashScreen.hideAsync();
+      SplashScreen.hideAsync().catch(() => {});
     }
   }, [fontsLoaded]);
 
@@ -50,27 +51,29 @@ export default function RootLayout() {
       <AudioProvider>
         <TTSProvider>
           <NotificationProvider>
-            <CoachmarkProvider
-              theme={{
-                tooltip: {
-                  maxWidth: 300,
-                  radius: 15,
-                  bg: "#rgba(15, 23, 42, 0.95)",
-                  fg: "#eeee",
-                  arrowSize: 10,
-                  padding: 16,
-                  buttonPrimaryBg: "#rgba(139, 92, 246, 0.5)",
-                  buttonSecondaryBg: "#8E8E93",
-                },
-              }}
-            >
-              <Stack
-                screenOptions={{
-                  headerShown: false,
+            <AdminProvider>
+              <CoachmarkProvider
+                theme={{
+                  tooltip: {
+                    maxWidth: 300,
+                    radius: 15,
+                    bg: "#rgba(15, 23, 42, 0.95)",
+                    fg: "#eeee",
+                    arrowSize: 10,
+                    padding: 16,
+                    buttonPrimaryBg: "#rgba(139, 92, 246, 0.5)",
+                    buttonSecondaryBg: "#8E8E93",
+                  },
                 }}
-              />
-              <CoachmarkOverlay />
-            </CoachmarkProvider>
+              >
+                <Stack
+                  screenOptions={{
+                    headerShown: false,
+                  }}
+                />
+                <CoachmarkOverlay />
+              </CoachmarkProvider>
+            </AdminProvider>
           </NotificationProvider>
         </TTSProvider>
       </AudioProvider>

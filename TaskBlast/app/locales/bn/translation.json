@@ -139,6 +139,7 @@
     "cycles": "চক্রের সংখ্যা",
     "cancel": "বাতিল",
     "add": "কাজ যোগ করুন",
+    "planetDisclaimer": "আপনি কাস্টম কাজের জন্য সর্বোচ্চ আনলক করা ক্রিস্টাল গুণক পাবেন।",
     "editTask": "কাজ সম্পাদনা",
     "save": "সংরক্ষণ করুন",
     "coachMarkdesc": "এখানে আপনি আপনার কাজগুলি পরিচালনা করতে পারেন। একটি কাজের উপর ট্যাপ করে বিস্তারিত দেখুন, ফোকাস সেশন শুরু করুন বা এটি সম্পাদনা করুন। সক্রিয় এবং আর্কাইভ করা কাজগুলির মধ্যে ট্যাব ব্যবহার করে স্যুইচ করুন।",
@@ -154,6 +155,8 @@
     "AvgWorkCycle": "গড় কাজের চক্রের দৈর্ঘ্য: ",
     "AvgPlayCycle": "গড় বিশ্রামের চক্রের দৈর্ঘ্য: ",
     "work": "কাজ/বিশ্রাম অনুপাত: ",
+    "level": "বর্তমান স্তর: ",
+    "planets": "আবিষ্কৃত গ্রহ: ",
     "total": "মোট কাজে সময় ব্যয়: ",
     "AddChildAccount": "শিশু অ্যাকাউন্ট যোগ করুন",
     "SwitchProfile": "প্রোফাইল পরিবর্তন করুন",
@@ -178,7 +181,7 @@
     "coachMarkPause": "আপনি যদি একটি অনিয়োজিত বিরতি নিতে প্রয়োজন হয়, তবে আপনার সেশনটি বিরতিতে রাখতে এখানে ট্যাপ করুন।",
     "coachMarkLand": "আপনার সেশন শেষ করতে এবং আপনার গ্রহে ফিরে আসতে এখানে ট্যাপ করুন। আপনার ফোকাস সময়ে দুর্দান্ত কাজ!"
   },
-    "Shop": {
+  "Shop": {
     "title": "দোকান",
     "body": "শরীর",
     "wings": "প্রস্থান",
@@ -192,5 +195,18 @@
     "gWings": "সবুজ প্রস্থান",
     "equipped": "সজ্জিত",
     "owned": "মালিকানাধীন"
+  },
+  "Games": {
+    "chooseTitle": "Choose Your Game",
+    "asteroidBlaster": "Asteroid Blaster",
+    "asteroidBlasterDesc": "Blast the asteroids!",
+    "spaceSwerve": "Space Swerve",
+    "spaceSwerveDesc": "Dodge the asteroids!",
+    "freeTime": "Free Time",
+    "freeTimeDesc": "Take a break YOUR way!",
+    "game2048": "2048",
+    "game2048Desc": "Merge tiles. Aim for 2048!",
+    "sequentBlast": "Sequent Blast",
+    "sequentBlastDesc": "Memorize and tap the hidden sequence."
   }
 }

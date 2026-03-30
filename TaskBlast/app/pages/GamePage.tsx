@@ -1,4 +1,10 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+  useContext,
+} from "react";
 import {
   ActivityIndicator,
   StyleSheet,
@@ -6,12 +12,20 @@ import {
   Pressable,
   TouchableOpacity,
 } from "react-native";
-import { Text } from '../../TTS';
+import { Text } from "../../TTS";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, updateDoc, increment, runTransaction, getDoc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { AccessibilityContext } from "../context/AccessibilityContext";
+import {
+  ACTIVE_PLANET_STORAGE_KEY,
+  GAME_HIGHEST_TILE_STORAGE_KEY,
+  GAME_SCORE_STORAGE_KEY,
+  getGameDefinition,
+} from "../services/gameRegistry";
+import { awardGameRewards } from "../services/economyService";
 
 let WebView: any = null;
 try {
@@ -25,62 +39,111 @@ export default function GamePage() {
   const webviewRef = useRef<any>(null);
   const router = useRouter();
   const params = useLocalSearchParams();
-  
+  const accessibilityContext = useContext(AccessibilityContext);
+  const colorBlindMode = accessibilityContext?.colorBlindMode || "none";
+
   const playTime = params.playTime ? parseInt(params.playTime as string) : 5;
   const taskId = params.taskId as string;
   const gameId = params.gameId ? parseInt(params.gameId as string) : 0;
-  const gameUrl = "https://krypto-cs.github.io/SpaceShooter/";
-  
+  const selectedGame = getGameDefinition(gameId);
+  const defaultGame = getGameDefinition(0);
+  const gameUrl =
+    selectedGame.url ??
+    defaultGame.url ??
+    "https://krypto-cs.github.io/SpaceShooter/";
+  const isSpaceSwerve = gameId === 1;
+
   const [timeLeft, setTimeLeft] = useState(playTime * 60); // Convert minutes to seconds
   const [equipped, setEquipped] = useState<number[]>([0, 1]);
+  const [activePlanetId, setActivePlanetId] = useState<number>(1);
   const tapCount = useRef(0);
   const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const rewardsProcessedRef = useRef(false);
+  const scorePersistQueueRef = useRef<Promise<void>>(Promise.resolve());
+  const godotReadyRef = useRef(false);
+  const skinSyncIntervalRef = useRef<ReturnType<typeof setInterval> | null>(
+    null,
+  );
+  const skinSyncCountRef = useRef(0);
 
-  const saveRocksToDatabase = async (score: number) => {
-    try {
-      const auth = getAuth();
-      const user = auth.currentUser;
-      if (!user) return;
-
-      const db = getFirestore();
-      const userRef = doc(db, "users", user.uid);
-
-      // add rocks and update all-time rocks atomically
-      // Atomically compute the new allTimeRocks and append it to the array (allow duplicates)
-      await runTransaction(db, async (tx) => {
-        const snap = await tx.get(userRef);
-        const data = snap.exists() ? snap.data() : {} as any;
-        const currentTotal = Number(data.allTimeRocks ?? 0);
-        const newTotal = currentTotal + Math.max(0, Math.floor(score));
-        const arr = Array.isArray(data.allTimeRocksArr) ? [...data.allTimeRocksArr] : [];
-        arr.push(newTotal);
-
-        tx.update(userRef, {
-          rocks: increment(score),
-          allTimeRocks: increment(score),
-          allTimeRocksArr: arr,
-        });
-      });
-
-      // Also record play session duration (minutes) for stats, allowing duplicates
+  useEffect(() => {
+    const loadActivePlanetId = async () => {
       try {
-        const minutes = Math.max(0, Math.floor(playTime));
-        const snap = await getDoc(userRef);
-        const current = snap.exists() && Array.isArray(snap.data().playTimeMinutesArr)
-          ? [...snap.data().playTimeMinutesArr]
-          : [];
-        current.push(minutes);
-        await setDoc(userRef, { playTimeMinutesArr: current }, { merge: true });
-        console.log(`Recorded play session: ${minutes} minutes`);
-      } catch (e) {
-        console.warn("Failed to record play session", e);
+        const storedActivePlanetId = await AsyncStorage.getItem(
+          ACTIVE_PLANET_STORAGE_KEY,
+        );
+        const parsed = Number(storedActivePlanetId);
+        if (Number.isFinite(parsed) && parsed >= 1) {
+          setActivePlanetId(Math.floor(parsed));
+        }
+      } catch (err) {
+        console.warn("Failed to load active planet id", err);
       }
-      
-      console.log(`Added ${score} rocks to user's account`);
+    };
+
+    loadActivePlanetId();
+  }, []);
+
+  useEffect(() => {
+    // Start each game session with a clean temporary score/tile cache.
+    scorePersistQueueRef.current = scorePersistQueueRef.current
+      .then(async () => {
+        rewardsProcessedRef.current = false;
+        await AsyncStorage.removeItem(GAME_SCORE_STORAGE_KEY);
+        await AsyncStorage.removeItem(GAME_HIGHEST_TILE_STORAGE_KEY);
+        console.log("Reset game score cache for new session");
+      })
+      .catch((err) => {
+        console.warn("Failed to reset game score cache", err);
+      });
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (skinSyncIntervalRef.current) {
+        clearInterval(skinSyncIntervalRef.current);
+        skinSyncIntervalRef.current = null;
+      }
+    };
+  }, []);
+
+  const saveRocksToDatabase = async (score: number, highestTile: number) => {
+    try {
+      const result = await awardGameRewards({
+        gameId,
+        score,
+        highestTile,
+        playTimeMinutes: playTime,
+      });
+      console.log(`Game rewards applied: +${result.awardedRocks ?? 0} rocks`);
     } catch (err) {
       console.warn("Failed to save rocks to database", err);
     }
   };
+
+  const processGameRewards = useCallback(async () => {
+    if (rewardsProcessedRef.current) {
+      return;
+    }
+    rewardsProcessedRef.current = true;
+
+    // Flush queued score writes so final rewards use the latest value.
+    await scorePersistQueueRef.current;
+
+    const scoreStr = await AsyncStorage.getItem(GAME_SCORE_STORAGE_KEY);
+    const highestTileStr = await AsyncStorage.getItem(
+      GAME_HIGHEST_TILE_STORAGE_KEY,
+    );
+
+    const score = scoreStr ? Math.max(0, Math.floor(Number(scoreStr))) : 0;
+    const highestTile = highestTileStr
+      ? Math.max(0, Math.floor(Number(highestTileStr)))
+      : 0;
+    await saveRocksToDatabase(score, highestTile);
+
+    await AsyncStorage.removeItem(GAME_SCORE_STORAGE_KEY);
+    await AsyncStorage.removeItem(GAME_HIGHEST_TILE_STORAGE_KEY);
+  }, [gameId]);
 
   // Load equipped items from Firebase
   useEffect(() => {
@@ -113,13 +176,7 @@ export default function GamePage() {
   const handleBackPress = async () => {
     // Save score before going back
     try {
-      const scoreStr = await AsyncStorage.getItem("game_score");
-      const score = scoreStr ? Math.max(0, Math.floor(Number(scoreStr))) : 0;
-      if (score > 0) {
-        await saveRocksToDatabase(score);
-        // Clear the temporary score
-        await AsyncStorage.removeItem("game_score");
-      }
+      await processGameRewards();
     } catch (err) {
       console.warn("Failed to process game score on back", err);
     }
@@ -132,18 +189,12 @@ export default function GamePage() {
       // Get final score from AsyncStorage and save to database
       (async () => {
         try {
-          const scoreStr = await AsyncStorage.getItem("game_score");
-          const score = scoreStr ? Math.max(0, Math.floor(Number(scoreStr))) : 0;
-          if (score > 0) {
-            await saveRocksToDatabase(score);
-            // Clear the temporary score
-            await AsyncStorage.removeItem("game_score");
-          }
+          await processGameRewards();
         } catch (err) {
           console.warn("Failed to process game score", err);
         }
       })();
-      
+
       router.back();
       return;
     }
@@ -158,7 +209,7 @@ export default function GamePage() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timeLeft, router]);
+  }, [timeLeft, processGameRewards, router]);
 
   // Format time as MM:SS
   const formatTime = (seconds: number) => {
@@ -188,49 +239,232 @@ export default function GamePage() {
     }
   };
 
-  const handleMessage = useCallback((event: any) => {
-    try {
-      const payload = JSON.parse(event.nativeEvent.data);
+  const handleMessage = useCallback(
+    (event: any) => {
+      try {
+        const payload = JSON.parse(event.nativeEvent.data);
 
-      if (payload.type === "scoreUpdate") {
-        console.log("Score from Godot:", payload);
-        // Persist the score so HomeScreen can read it later. Temporary.
-        (async () => {
-          try {
-            let s = Number(payload.score) || 0;
-            if (s < 0) { // Handle negative scores
-              s = 0;
+        if (payload.type === "scoreUpdate") {
+          console.log("Score from Godot:", payload);
+          // Persist the score so HomeScreen can read it later. Temporary.
+          const incomingScore = Number(payload.score);
+          const safeIncomingScore = Number.isFinite(incomingScore)
+            ? Math.floor(incomingScore)
+            : 0;
+
+          scorePersistQueueRef.current = scorePersistQueueRef.current
+            .then(async () => {
+              const prevScoreStr = await AsyncStorage.getItem(
+                GAME_SCORE_STORAGE_KEY,
+              );
+              const prevScore = prevScoreStr
+                ? Math.max(0, Math.floor(Number(prevScoreStr) || 0))
+                : 0;
+
+              // Space Swerve sends absolute score snapshots; Space Shooter sends deltas.
+              const isAbsoluteScoreUpdate =
+                isSpaceSwerve ||
+                payload.scoreMode === "absolute" ||
+                payload.isDelta === false;
+              const nextScore = isAbsoluteScoreUpdate
+                ? Math.max(0, safeIncomingScore)
+                : Math.max(0, prevScore + safeIncomingScore);
+
+              await AsyncStorage.setItem(
+                GAME_SCORE_STORAGE_KEY,
+                String(nextScore),
+              );
+              console.log(
+                "Persisted cumulative score:",
+                nextScore,
+                "(mode:",
+                isAbsoluteScoreUpdate ? "absolute" : "delta",
+                ")",
+              );
+
+              const highestTile = Number(
+                payload.highestTile ?? payload.maxTile ?? payload.bestTile ?? 0,
+              );
+              if (highestTile > 0) {
+                await AsyncStorage.setItem(
+                  GAME_HIGHEST_TILE_STORAGE_KEY,
+                  String(Math.floor(highestTile)),
+                );
+              }
+            })
+            .catch((err) => {
+              console.warn("Failed to persist game score", err);
+            });
+        } else if (payload.type === "tileUpdate") {
+          (async () => {
+            try {
+              const tile = Number(payload.highestTile ?? payload.maxTile ?? 0);
+              if (tile > 0) {
+                await AsyncStorage.setItem(
+                  GAME_HIGHEST_TILE_STORAGE_KEY,
+                  String(Math.floor(tile)),
+                );
+              }
+            } catch (err) {
+              console.warn("Failed to persist game tile", err);
             }
-            await AsyncStorage.setItem("game_score", String(s));
-          } catch (err) {
-            console.warn("Failed to persist game score", err);
+          })();
+        } else if (payload.type === "testMessage") {
+          console.log("Godot Initialized");
+          godotReadyRef.current = true;
+          sendMessageToGodot("godot-handshake");
+
+          if (isSpaceSwerve) {
+            if (skinSyncIntervalRef.current) {
+              clearInterval(skinSyncIntervalRef.current);
+              skinSyncIntervalRef.current = null;
+            }
+            skinSyncCountRef.current = 0;
+
+            // Keep syncing briefly while the game scene fully initializes.
+            skinSyncIntervalRef.current = setInterval(() => {
+              skinSyncCountRef.current += 1;
+              sendMessageToGodot(`godot-sync-${skinSyncCountRef.current}`);
+              if (
+                skinSyncCountRef.current >= 8 &&
+                skinSyncIntervalRef.current
+              ) {
+                clearInterval(skinSyncIntervalRef.current);
+                skinSyncIntervalRef.current = null;
+              }
+            }, 1500);
           }
-        })();
-      } else if (payload.type === "testMessage") {
-        console.log("Godot Initialized");
-        sendMessageToGodot();
-      } else {
-        console.log("Other message:", payload);
+
+          // Some game scenes apply skins only after entities spawn.
+          setTimeout(() => sendMessageToGodot("godot-handshake-retry-1"), 600);
+          setTimeout(() => sendMessageToGodot("godot-handshake-retry-2"), 1800);
+        } else if (payload.type === "ack") {
+          console.log("Godot ack:", payload);
+        } else if (payload.type === "ackInjected") {
+          console.log("Godot injected ack:", payload);
+        } else if (payload.type === "bridgeError") {
+          console.warn("Godot bridge error:", payload);
+        } else {
+          console.log("Other message:", payload);
+        }
+      } catch (err) {
+        console.warn("Invalid message from WebView:", event.nativeEvent.data);
       }
-    } catch (err) {
-      console.warn("Invalid message from WebView:", event.nativeEvent.data);
+    },
+    [equipped, gameId, colorBlindMode, activePlanetId, isSpaceSwerve],
+  );
+
+  const sendMessageToGodot = useCallback(
+    (reason = "manual") => {
+      // Map colorBlindMode to numeric value: none=0, deuteranopia=1, protanopia=2, tritanopia=3
+      const colorBlindModeMap: Record<string, number> = {
+        none: 0,
+        deuteranopia: 1,
+        protanopia: 2,
+        tritanopia: 3,
+      };
+      const colorBlindModeValue = colorBlindModeMap[colorBlindMode] ?? 0;
+
+      const bodyId = Number.isFinite(equipped[0]) ? Math.floor(equipped[0]) : 0;
+      const wingsId = Number.isFinite(equipped[1])
+        ? Math.floor(equipped[1])
+        : 1;
+      const safeGameId = Number.isFinite(gameId) ? Math.floor(gameId) : 0;
+      const safePlanetId = Number.isFinite(activePlanetId)
+        ? Math.floor(activePlanetId)
+        : 1;
+
+      console.log("Sending skins message to Godot.");
+      console.log("Send reason:", reason);
+      console.log("Current equipped values:", equipped);
+      console.log("Game ID:", gameId);
+      console.log("Active planet ID:", activePlanetId);
+      console.log(
+        "Colorblind mode:",
+        colorBlindMode,
+        "->",
+        colorBlindModeValue,
+      );
+
+      const sendPayload = (type: string) => {
+        const payload = {
+          type,
+          // Keep legacy positional fields as strings for strict Godot comparisons.
+          data1: String(bodyId),
+          data2: String(wingsId),
+          data3: String(safeGameId),
+          data4: String(safePlanetId),
+          data5: String(colorBlindModeValue),
+          // Named aliases for newer contracts.
+          bodyId,
+          wingsId,
+          gameId: safeGameId,
+          planetId: safePlanetId,
+          colorBlindMode: colorBlindModeValue,
+        };
+
+        const payloadString = JSON.stringify(payload);
+
+        // Path 1: standard RN WebView -> page message channel.
+        webviewRef.current?.postMessage(payloadString);
+
+        // Path 2: direct fallback for pages that do not receive message events consistently.
+        const escapedPayload = JSON.stringify(payloadString);
+        webviewRef.current?.injectJavaScript(
+          `(() => {
+          try {
+            const raw = ${escapedPayload};
+            const msg = JSON.parse(raw);
+            if (typeof window.sendToGodot === "function") {
+              window.sendToGodot(msg.type, msg.data1, msg.data2, msg.data3, msg.data4, msg.data5);
+            }
+            const enableCbCompatibility = ${isSpaceSwerve ? "true" : "false"};
+            if (enableCbCompatibility && typeof window.cb === "function") {
+              // Compatibility calls for different callback signatures used by Godot scenes.
+              window.cb(msg.type, msg.data1, msg.data2, msg.data3, msg.data4, msg.data5);
+              window.cb(msg.type, Number(msg.data1), Number(msg.data2), Number(msg.data3), Number(msg.data4), Number(msg.data5));
+              window.cb(msg.type, msg.data1, msg.data2);
+              window.cb(msg.type, Number(msg.data1), Number(msg.data2));
+              window.cb(msg.data1, msg.data2);
+              window.cb(Number(msg.data1), Number(msg.data2));
+            }
+            if (window.ReactNativeWebView) {
+              window.ReactNativeWebView.postMessage(JSON.stringify({ type: "ackInjected", received: msg.type }));
+            }
+          } catch (e) {
+            if (window.ReactNativeWebView) {
+              window.ReactNativeWebView.postMessage(JSON.stringify({ type: "bridgeError", message: String(e) }));
+            }
+          }
+        })(); true;`,
+        );
+      };
+
+      if (isSpaceSwerve) {
+        // Space Swerve uses evolving contracts across builds.
+        ["skins", "setSkins", "applySkins", "playerConfig"].forEach(
+          sendPayload,
+        );
+      } else {
+        // Keep Space Shooter on the known-stable contract.
+        sendPayload("skins");
+      }
+    },
+    [equipped, gameId, activePlanetId, colorBlindMode, isSpaceSwerve],
+  );
+
+  useEffect(() => {
+    if (!loading && godotReadyRef.current) {
+      sendMessageToGodot("config-updated");
     }
-  }, [equipped]);
-
-  const sendMessageToGodot = useCallback(() => {
-    console.log("Sending skins message to Godot.");
-    console.log("Current equipped values:", equipped);
-    console.log("Game ID:", gameId);
-
-    webviewRef.current?.postMessage(
-      JSON.stringify({
-        type: "skins",
-        data1: String(equipped[0]).trim(),
-        data2: String(equipped[1]).trim(),
-        data3: String(gameId).trim(),
-      })
-    );
-  }, [equipped, gameId]);
+  }, [
+    loading,
+    equipped,
+    gameId,
+    activePlanetId,
+    colorBlindMode,
+    sendMessageToGodot,
+  ]);
 
   if (!WebView) {
     return (
@@ -251,42 +485,50 @@ export default function GamePage() {
     <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
       <View testID="safe-area-view" style={{ flex: 1 }}>
         <View style={styles.header} testID="game-header">
-        <Pressable
-          onPress={handleBackPress}
-          style={styles.backButton}
-          testID="back-button"
-        >
-          <Text style={styles.backText}>{"< Back"}</Text>
-        </Pressable>
-        <TouchableOpacity onPress={handleTimerTap} activeOpacity={1} style={styles.timerContainer}>
-          <Text style={styles.timerText}>{formatTime(timeLeft)}</Text>
-        </TouchableOpacity>
-        <View style={styles.rightButton} />
-      </View>
-      <View style={styles.container}>
-        {loading && (
-          <View
-            style={styles.loader}
-            pointerEvents="none"
-            testID="loading-indicator"
+          <Pressable
+            onPress={handleBackPress}
+            style={styles.backButton}
+            testID="back-button"
           >
-            <ActivityIndicator size="large" />
-          </View>
-        )}
-        <WebView
-          ref={webviewRef}
-          source={{ uri: gameUrl }}
-          testID="webview"
-          style={styles.webview}
-          onLoadEnd={() => setLoading(false)}
-          startInLoadingState
-          allowsInlineMediaPlayback
-          mediaPlaybackRequiresUserAction={false}
-          javaScriptEnabled={true}
-          onMessage={handleMessage}
-          originWhitelist={["*"]}
-        />
-      </View>
+            <Text style={styles.backText}>{"< Back"}</Text>
+          </Pressable>
+          <TouchableOpacity
+            onPress={handleTimerTap}
+            activeOpacity={1}
+            style={styles.timerContainer}
+          >
+            <Text style={styles.timerText}>{formatTime(timeLeft)}</Text>
+          </TouchableOpacity>
+          <View style={styles.rightButton} />
+        </View>
+        <View style={styles.container}>
+          {loading && (
+            <View
+              style={styles.loader}
+              pointerEvents="none"
+              testID="loading-indicator"
+            >
+              <ActivityIndicator size="large" />
+            </View>
+          )}
+          <WebView
+            ref={webviewRef}
+            source={{ uri: gameUrl }}
+            testID="webview"
+            style={styles.webview}
+            onLoadEnd={() => {
+              setLoading(false);
+              // Try once after the page is loaded in case handshake arrives late.
+              setTimeout(() => sendMessageToGodot("webview-load-end"), 250);
+            }}
+            startInLoadingState
+            allowsInlineMediaPlayback
+            mediaPlaybackRequiresUserAction={false}
+            javaScriptEnabled={true}
+            onMessage={handleMessage}
+            originWhitelist={["*"]}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );

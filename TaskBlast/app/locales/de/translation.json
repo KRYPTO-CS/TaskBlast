@@ -139,6 +139,7 @@
     "cycles": "Anzahl der Zyklen",
     "cancel": "Abbrechen",
     "add": "Aufgabe hinzufügen",
+    "planetDisclaimer": "Sie erhalten den höchsten freigeschalteten Kristall-Multiplikator für benutzerdefinierte Aufgaben.",
     "editTask": "Aufgabe bearbeiten",
     "save": "Speichern",
     "coachMarkdesc": "Hier können Sie Ihre Aufgaben verwalten. Tippen Sie auf eine Aufgabe, um Details anzuzeigen, eine Fokus-Sitzung zu starten oder sie zu bearbeiten. Verwenden Sie die Registerkarten, um zwischen aktiven und archivierten Aufgaben zu wechseln.",
@@ -154,6 +155,8 @@
     "AvgWorkCycle": "Durchschnittliche Arbeitszykluslänge: ",
     "AvgPlayCycle": "Durchschnittliche Pausezykluslänge: ",
     "work": "Arbeits-/Pausenverhältnis: ",
+    "level": "Aktuelles Level: ",
+    "planets": "Entdeckte Planeten: ",
     "total": "Gesamte Zeit aufgabenbezogen verbracht: ",
     "AddChildAccount": "Kind-Konto hinzufügen",
     "SwitchProfile": "Profil wechseln",
@@ -178,7 +181,7 @@
     "coachMarkPause": "Tippen Sie hier, um Ihre Sitzung zu pausieren, wenn Sie eine ungeplante Pause einlegen müssen.",
     "coachMarkLand": "Tippen Sie hier, um Ihre Sitzung zu beenden und zurück auf Ihrem Planeten zu landen. Großartige Arbeit bei Ihrer Fokuszeit!"
   },
-    "Shop": {
+  "Shop": {
     "title": "Shop",
     "body": "Körper",
     "wings": "Flügel",
@@ -192,5 +195,18 @@
     "gWings": "Grüne Flügel",
     "equipped": "Ausgerüstet",
     "owned": "Besitzt"
+  },
+  "Games": {
+    "chooseTitle": "Choose Your Game",
+    "asteroidBlaster": "Asteroid Blaster",
+    "asteroidBlasterDesc": "Blast the asteroids!",
+    "spaceSwerve": "Space Swerve",
+    "spaceSwerveDesc": "Dodge the asteroids!",
+    "freeTime": "Free Time",
+    "freeTimeDesc": "Take a break YOUR way!",
+    "game2048": "2048",
+    "game2048Desc": "Merge tiles. Aim for 2048!",
+    "sequentBlast": "Sequent Blast",
+    "sequentBlastDesc": "Memorize and tap the hidden sequence."
   }
 }

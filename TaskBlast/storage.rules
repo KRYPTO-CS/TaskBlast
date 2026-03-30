@@ -1,0 +1,23 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdminByEmail() {
+      return isSignedIn()
+        && request.auth.token.email != null
+        && firestore.exists(/databases/(default)/documents/admins/$(request.auth.token.email));
+    }
+
+    match /profilePictures/{userId}/{allPaths=**} {
+      allow read: if isSignedIn();
+      allow write: if request.auth.uid == userId || isAdminByEmail();
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

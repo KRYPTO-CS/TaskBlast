@@ -6,8 +6,10 @@ import {
   ScrollView,
   Switch,
   Alert,
+  TextInput,
+  ActivityIndicator,
 } from "react-native";
-import { Text } from '../../TTS';
+import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../../server/firebase";
 import { signOut } from "firebase/auth";
@@ -20,6 +22,7 @@ import { useAccessibility } from "../context/AccessibilityContext";
 import { useColorPalette } from "../styles/colorBlindThemes";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
+import { useAdmin } from "../context/AdminContext";
 
 interface SettingsModalProps {
   visible: boolean;
@@ -34,6 +37,14 @@ export default function SettingsModal({
 }: SettingsModalProps) {
   const router = useRouter();
   const { t, i18n } = useTranslation();
+  const {
+    isAdminVerified,
+    isAdminEligible,
+    checkEligibility,
+    verifyAdminPin,
+    clearAdminSession,
+    error: adminError,
+  } = useAdmin();
 
   // Get audio context for global audio control
   const { soundEnabled, musicEnabled, setSoundEnabled, setMusicEnabled } =
@@ -49,6 +60,10 @@ export default function SettingsModal({
   // Modal state
   const [showNotificationPrefs, setShowNotificationPrefs] = useState(false);
   const [showAccessibilityPrefs, setShowAccessibilityPrefs] = useState(false);
+  const [showAdminPinModal, setShowAdminPinModal] = useState(false);
+  const [adminPinInput, setAdminPinInput] = useState("");
+  const [isVerifyingAdmin, setIsVerifyingAdmin] = useState(false);
+  const [isDisablingAdmin, setIsDisablingAdmin] = useState(false);
 
   // Child profile state
   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
@@ -65,6 +80,10 @@ export default function SettingsModal({
         const activeChild = await AsyncStorage.getItem("activeChildProfile");
         setActiveChildProfile(activeChild);
         setCurrentProfileType(activeChild ? "child" : "parent");
+
+        if (!activeChild && auth.currentUser?.email) {
+          await checkEligibility(auth.currentUser.email);
+        }
       }
     };
 
@@ -104,10 +123,12 @@ export default function SettingsModal({
               if (isChild) {
                 // Child "logout" - just clear active child profile
                 await AsyncStorage.removeItem("activeChildProfile");
+                await clearAdminSession();
                 onClose();
                 router.push("/pages/ProfileSelection");
               } else {
                 // Parent logout - full logout
+                await clearAdminSession();
                 await AsyncStorage.clear();
                 await signOut(auth);
                 if (onLogout) {
@@ -118,6 +139,70 @@ export default function SettingsModal({
             } catch (error) {
               console.error("Logout error:", error);
               Alert.alert("Error", "Failed to logout. Please try again.");
+            }
+          },
+        },
+      ],
+    );
+  };
+
+  const handleVerifyAdminAccess = async () => {
+    const email = auth.currentUser?.email;
+    if (!email) {
+      Alert.alert(
+        "Sign In Required",
+        "Please sign in again to verify admin access.",
+      );
+      return;
+    }
+
+    if (!adminPinInput.trim()) {
+      Alert.alert("PIN Required", "Please enter your admin PIN.");
+      return;
+    }
+
+    setIsVerifyingAdmin(true);
+    const verified = await verifyAdminPin(email, adminPinInput.trim());
+    setIsVerifyingAdmin(false);
+
+    if (verified) {
+      setShowAdminPinModal(false);
+      setAdminPinInput("");
+      Alert.alert(
+        "Admin Verified",
+        "Admin access has been enabled for this session.",
+      );
+      return;
+    }
+
+    Alert.alert("Verification Failed", adminError || "Invalid admin PIN.");
+  };
+
+  const handleDisableAdminAccess = () => {
+    Alert.alert(
+      "Disable Admin Access",
+      "Disable admin access for this session now?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Disable",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              setIsDisablingAdmin(true);
+              await clearAdminSession();
+              Alert.alert(
+                "Admin Access Disabled",
+                "Admin controls are now locked.",
+              );
+            } catch (error) {
+              console.error("Disable admin access failed", error);
+              Alert.alert(
+                "Disable Failed",
+                "Could not disable admin access. Please try again.",
+              );
+            } finally {
+              setIsDisablingAdmin(false);
             }
           },
         },
@@ -387,6 +472,98 @@ export default function SettingsModal({
               </TouchableOpacity>
             )}
 
+            {currentProfileType === "parent" &&
+              isAdminEligible &&
+              !isAdminVerified && (
+                <TouchableOpacity
+                  className="flex-row items-center p-4 rounded-xl mb-3"
+                  style={{
+                    backgroundColor: palette.secondaryMed,
+                    borderWidth: 1,
+                    borderColor: palette.rowBorderPrimary,
+                  }}
+                  onPress={() => {
+                    setAdminPinInput("");
+                    setShowAdminPinModal(true);
+                  }}
+                >
+                  <Ionicons
+                    name="shield-outline"
+                    size={24}
+                    color={palette.secondary}
+                    style={{ marginRight: 12 }}
+                  />
+                  <Text className="font-orbitron-semibold text-white text-base flex-1">
+                    Verify Admin Access
+                  </Text>
+                  <Ionicons
+                    name="chevron-forward"
+                    size={20}
+                    color={palette.secondary}
+                  />
+                </TouchableOpacity>
+              )}
+
+            {currentProfileType === "parent" && isAdminVerified && (
+              <TouchableOpacity
+                className="flex-row items-center p-4 rounded-xl mb-3"
+                style={{
+                  backgroundColor: palette.secondaryMed,
+                  borderWidth: 1,
+                  borderColor: palette.rowBorderPrimary,
+                }}
+                onPress={() => {
+                  onClose();
+                  router.push("/pages/AdminDashboard");
+                }}
+              >
+                <Ionicons
+                  name="shield-checkmark"
+                  size={24}
+                  color={palette.secondary}
+                  style={{ marginRight: 12 }}
+                />
+                <Text className="font-orbitron-semibold text-white text-base flex-1">
+                  Admin Dashboard
+                </Text>
+                <Ionicons
+                  name="chevron-forward"
+                  size={20}
+                  color={palette.secondary}
+                />
+              </TouchableOpacity>
+            )}
+
+            {currentProfileType === "parent" && isAdminVerified && (
+              <TouchableOpacity
+                className="flex-row items-center p-4 rounded-xl mb-3"
+                style={{
+                  backgroundColor: palette.errorSoft,
+                  borderWidth: 1,
+                  borderColor: palette.errorSoftBorder,
+                }}
+                onPress={handleDisableAdminAccess}
+                disabled={isDisablingAdmin}
+              >
+                {isDisablingAdmin ? (
+                  <ActivityIndicator
+                    color={palette.errorIcon}
+                    style={{ marginRight: 12 }}
+                  />
+                ) : (
+                  <Ionicons
+                    name="shield-half"
+                    size={24}
+                    color={palette.errorIcon}
+                    style={{ marginRight: 12 }}
+                  />
+                )}
+                <Text className="font-orbitron-semibold text-white text-base flex-1">
+                  Disable Admin Access
+                </Text>
+              </TouchableOpacity>
+            )}
+
             <TouchableOpacity
               className="flex-row items-center p-4 rounded-xl mb-3"
               style={{
@@ -496,6 +673,73 @@ export default function SettingsModal({
         visible={showAccessibilityPrefs}
         onClose={() => setShowAccessibilityPrefs(false)}
       />
+
+      <Modal
+        animationType={reduceMotion ? "fade" : "slide"}
+        transparent={true}
+        visible={showAdminPinModal}
+        onRequestClose={() => setShowAdminPinModal(false)}
+      >
+        <View className="flex-1 justify-center items-center bg-black/70">
+          <View
+            className="w-10/12 max-w-sm rounded-3xl p-6"
+            style={{
+              backgroundColor: "rgba(15, 23, 42, 0.95)",
+              borderWidth: 2,
+              borderColor: palette.modalBorder,
+            }}
+          >
+            <Text className="font-orbitron-semibold text-white text-xl text-center mb-2">
+              Verify Admin PIN
+            </Text>
+            <Text className="font-orbitron text-gray-300 text-center mb-4">
+              Enter your admin PIN to unlock admin actions.
+            </Text>
+
+            <TextInput
+              value={adminPinInput}
+              onChangeText={setAdminPinInput}
+              secureTextEntry
+              keyboardType="number-pad"
+              maxLength={8}
+              placeholder="Enter PIN"
+              placeholderTextColor="rgba(255,255,255,0.4)"
+              className="bg-white/15 text-white text-center text-2xl rounded-xl p-4 mb-4"
+              autoFocus
+            />
+
+            <TouchableOpacity
+              onPress={handleVerifyAdminAccess}
+              disabled={isVerifyingAdmin}
+              className="rounded-xl p-4 mb-3"
+              style={{ backgroundColor: palette.secondary }}
+            >
+              {isVerifyingAdmin ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text className="font-orbitron-semibold text-white text-center">
+                  Verify
+                </Text>
+              )}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                if (!isVerifyingAdmin) {
+                  setShowAdminPinModal(false);
+                }
+              }}
+              disabled={isVerifyingAdmin}
+              className="rounded-xl p-4"
+              style={{ backgroundColor: palette.tertiarySoft }}
+            >
+              <Text className="font-orbitron-semibold text-white text-center">
+                Cancel
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </Modal>
   );
 }

@@ -9,7 +9,7 @@ import {
   ImageBackground,
   Alert,
 } from "react-native";
-import { Text } from '../../TTS';
+import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../components/MainButton";
 import ForgotPassword from "./ForgotPassword";
@@ -35,6 +35,8 @@ import {
 } from "firebase/auth";
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAdmin } from "../context/AdminContext";
+import { normalizeAdminEmail } from "../services/adminService";
 
 type Screen =
   | "login"
@@ -58,6 +60,7 @@ export default function Login() {
   const [resetEmail, setResetEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [t, i18n] = useTranslation();
+  const { checkEligibility, clearAdminSession } = useAdmin();
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -75,42 +78,44 @@ export default function Login() {
   const [signUpLoading, setSignUpLoading] = useState(false);
 
   useEffect(() => {
-  const checkAuthAndProfile = async () => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user && user.emailVerified) {
-        // Check if there's an active child profile
-        const activeChildProfile = await AsyncStorage.getItem("activeChildProfile");
-        
-        if (activeChildProfile) {
-          // Child profile is active - load child view
-          console.log("Auto-login: Child profile active:", activeChildProfile);
-          // TODO: Navigate to child home screen with activeChildProfile
-          setCurrentScreen("homeScreen"); // For now - we'll make this child-specific later
-        } else {
-          // No child profile - default to parent view
-          console.log("Auto-login: Parent profile active:", user.email);
-          setCurrentScreen("homeScreen");
+    const checkAuthAndProfile = async () => {
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        if (user && user.emailVerified) {
+          const normalizedEmail = normalizeAdminEmail(user.email ?? "");
+          const eligibleForAdmin = await checkEligibility(normalizedEmail);
+          if (!eligibleForAdmin) {
+            await clearAdminSession();
+          }
+
+          // Check if there's an active child profile
+          const activeChildProfile =
+            await AsyncStorage.getItem("activeChildProfile");
+
+          if (activeChildProfile) {
+            // Child profile is active - load child view
+            console.log(
+              "Auto-login: Child profile active:",
+              activeChildProfile,
+            );
+            // TODO: Navigate to child home screen with activeChildProfile
+            setCurrentScreen("homeScreen"); // For now - we'll make this child-specific later
+          } else {
+            // No child profile - default to parent view
+            console.log("Auto-login: Parent profile active:", user.email);
+            setCurrentScreen("homeScreen");
+          }
         }
-      }
-    });
-    return () => unsubscribe();
-  };
+      });
+      return () => unsubscribe();
+    };
 
-  checkAuthAndProfile();
-}, []);
-
+    checkAuthAndProfile();
+  }, []);
 
   const handleLogin = () => {
     // Normalize inputs to make bypass resilient to whitespace/casing
     const u = username.trim().toLowerCase();
     const p = password.trim();
-
-    // Bypass login for testing (case-insensitive username, trim whitespace)
-    if (u === "admin" && p === "taskblaster") {
-      console.log("Bypass login successful");
-      setCurrentScreen("homeScreen");
-      return;
-    }
 
     if (!u || !p) {
       console.error("Login error: username and password are required");
@@ -125,12 +130,18 @@ export default function Login() {
         console.log("Login successful:", user.email);
         // no home screen unless email verified
         if (user.emailVerified) {
+          const normalizedEmail = normalizeAdminEmail(user.email ?? "");
+          const eligibleForAdmin = await checkEligibility(normalizedEmail);
+          if (!eligibleForAdmin) {
+            await clearAdminSession();
+          }
+
           setCurrentScreen("homeScreen");
         } else {
           Alert.alert(
             "Verify Your Email",
             "A verification email was sent. Please verify your email before signing in. Make sure to check spam/junk folders if you don't see it.",
-            [{ text: "OK" }]
+            [{ text: "OK" }],
           );
           setCurrentScreen("login");
         }
@@ -234,7 +245,7 @@ export default function Login() {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         payload.email,
-        password
+        password,
       );
       const user = userCredential.user;
       console.log("Sign up successful:", user.email);
@@ -249,7 +260,7 @@ export default function Login() {
         console.log("Verification email sent to:", user.email);
         Alert.alert(
           "Verification Email Sent",
-          "A verification email has been sent to your address. Please check your email and verify your account."
+          "A verification email has been sent to your address. Please check your email and verify your account.",
         );
       } catch (verifErr) {
         console.error("Failed to send verification email:", verifErr);
@@ -259,7 +270,7 @@ export default function Login() {
         "auth.currentUser uid:",
         auth.currentUser?.uid,
         "created user uid:",
-        user.uid
+        user.uid,
       );
 
       const userDocRef = doc(firestore, "users", user.uid);
@@ -286,7 +297,7 @@ export default function Login() {
         } catch (deleteErr) {
           console.error(
             "Failed to delete auth user after write failure:",
-            deleteErr
+            deleteErr,
           );
         }
         throw writeErr;

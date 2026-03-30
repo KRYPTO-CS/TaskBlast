@@ -24,8 +24,6 @@ import {
   Timestamp,
   getDoc,
   getDocs,
-  setDoc,
-  increment,
   where,
   query,
 } from "firebase/firestore";
@@ -38,6 +36,7 @@ import {
   useCoachmark,
   createTour,
 } from "@edwardloopez/react-native-coachmark";
+import { claimTaskReward } from "../services/economyService";
 
 interface Task {
   id: string;
@@ -59,12 +58,14 @@ interface TaskListModalProps {
   visible: boolean;
   onClose: () => void;
   onRocksChange?: () => void;
+  isSelectedPlanetLocked?: boolean;
 }
 
 export default function TaskListModal({
   visible,
   onClose,
   onRocksChange,
+  isSelectedPlanetLocked = false,
 }: TaskListModalProps) {
   const router = useRouter();
   const { scheduleDailyDigest, preferences } = useNotifications();
@@ -337,41 +338,11 @@ export default function TaskListModal({
       const task = tasks.find((t) => t.id === taskId);
       if (!task) return;
 
-      // Update task to archived
-      const taskRef = getTaskDocRef(taskId);
-      await updateDoc(taskRef, {
-        archived: true,
-        updatedAt: serverTimestamp(),
+      await claimTaskReward({
+        taskId,
+        reward: task.reward,
+        childDocId,
       });
-
-      // Add rocks to the appropriate account
-      if (childDocId) {
-        // Child is active - add rocks to child's document
-        const childRef = doc(
-          db,
-          "users",
-          auth.currentUser.uid,
-          "children",
-          childDocId,
-        );
-        await setDoc(
-          childRef,
-          {
-            rocks: increment(task.reward),
-          },
-          { merge: true },
-        ); // ← CHANGED: setDoc with merge
-      } else {
-        // Parent is active - add rocks to parent's document
-        const userRef = doc(db, "users", auth.currentUser.uid);
-        await setDoc(
-          userRef,
-          {
-            rocks: increment(task.reward),
-          },
-          { merge: true },
-        ); // ← CHANGED: setDoc with merge
-      }
 
       // Notify parent component to update rocks display
       if (onRocksChange) {
@@ -628,6 +599,11 @@ export default function TaskListModal({
   };
 
   const handleStartTask = (task: Task) => {
+    // Check if planet is locked
+    if (isSelectedPlanetLocked) {
+      Alert.alert("Planet Locked", "This planet is locked. Unlock it before playing tasks!");
+      return;
+    }
     // Close the modal and navigate to Pomodoro screen with task data
     onClose();
     router.push({
@@ -638,6 +614,8 @@ export default function TaskListModal({
         workTime: task.workTime.toString(),
         playTime: task.playTime.toString(),
         cycles: task.cycles.toString(),
+        taskReward: task.reward.toString(),
+        childDocId: childDocId || "",
         allowMinimization: task.allowMinimization.toString(),
       },
     });
@@ -714,8 +692,6 @@ export default function TaskListModal({
         >
           {/* Header */}
           <View className="flex-row justify-between items-center mb-4">
-           
-
             <Text className="font-orbitron-bold text-white text-2xl">
               {t("Tasks.title")}
             </Text>
@@ -783,6 +759,14 @@ export default function TaskListModal({
                 {t("Tasks.archive")}
               </Text>
             </TouchableOpacity>
+          </View>
+
+          {/* Planet Disclaimer */}
+          <View>
+            <Text className="font-madimi text-white text-sm pb-4">
+              {t("Tasks.planetDisclaimer")}
+            </Text>
+
           </View>
 
           {/* Error Message */}

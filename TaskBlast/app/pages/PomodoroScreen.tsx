@@ -34,7 +34,13 @@ import { useAudio } from "../context/AudioContext";
 import { useTranslation } from "react-i18next";
 import { useNotifications } from "../context/NotificationContext";
 import { useColorPalette } from "../styles/colorBlindThemes";
-import { CoachmarkAnchor, useCoachmark, createTour } from "@edwardloopez/react-native-coachmark";
+import {
+  CoachmarkAnchor,
+  useCoachmark,
+  createTour,
+} from "@edwardloopez/react-native-coachmark";
+import { getGameDefinition } from "../services/gameRegistry";
+import { claimTaskReward } from "../services/economyService";
 // Ship component image mappings
 const BODY_IMAGES: { [key: number]: any } = {
   0: require("../../assets/images/ship_components/body/0.png"),
@@ -56,12 +62,23 @@ export default function PomodoroScreen() {
   const { notifyTimerComplete } = useNotifications();
   const palette = useColorPalette();
 
+  const getSingleParam = (value: string | string[] | undefined) =>
+    Array.isArray(value) ? value[0] : value;
+
   // Extract task parameters from route params
-  const taskName = (params.taskName as string) || "Work Session";
-  const workTime = params.workTime ? parseInt(params.workTime as string) : 25;
-  const playTime = params.playTime ? parseInt(params.playTime as string) : 5;
-  const cycles = params.cycles ? parseInt(params.cycles as string) : 1;
-  const taskId = params.taskId as string;
+  const taskName = getSingleParam(params.taskName) || "Work Session";
+  const workTime = Number.parseInt(getSingleParam(params.workTime) || "25", 10);
+  const playTime = Number.parseInt(getSingleParam(params.playTime) || "5", 10);
+  const cycles = Number.parseInt(getSingleParam(params.cycles) || "1", 10);
+  const taskId = getSingleParam(params.taskId) || "";
+  const taskReward = Number.parseInt(
+    getSingleParam(params.taskReward) || "0",
+    10,
+  );
+  const childDocId =
+    (getSingleParam(params.childDocId) || "").length > 0
+      ? getSingleParam(params.childDocId)
+      : undefined;
   const allowMinimization = params.allowMinimization === "true" || false;
   const { start } = useCoachmark();
   const { t, i18n } = useTranslation();
@@ -103,6 +120,7 @@ export default function PomodoroScreen() {
   const tapCount = useRef(0);
   const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasRecordedRef = useRef(false);
+  const hasClaimedTaskRewardRef = useRef(false);
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -385,7 +403,7 @@ export default function PomodoroScreen() {
             } catch (e) {
               console.warn("Audio player error on timer finish:", e);
             }
-            
+
             // Handle free time mode completion
             if (inFreeTimeMode) {
               setInFreeTimeMode(false);
@@ -497,6 +515,27 @@ export default function PomodoroScreen() {
   };
 
   const handleLand = async () => {
+    const shouldClaimTaskReward =
+      !hasClaimedTaskRewardRef.current &&
+      finished &&
+      !inFreeTimeMode &&
+      Boolean(taskId) &&
+      Number.isFinite(taskReward) &&
+      taskReward > 0;
+
+    if (shouldClaimTaskReward) {
+      try {
+        await claimTaskReward({
+          taskId,
+          reward: taskReward,
+          childDocId,
+        });
+        hasClaimedTaskRewardRef.current = true;
+      } catch (error) {
+        console.warn("Failed to claim task reward on land:", error);
+      }
+    }
+
     // Land - go back to home
     try {
       player.pause();
@@ -512,9 +551,11 @@ export default function PomodoroScreen() {
     } catch (e) {
       console.warn("Audio player error on play game:", e);
     }
-    
+
+    const selectedGame = getGameDefinition(gameId);
+
     // Handle Free Time mode
-    if (gameId === 2) {
+    if (selectedGame.isFreeTime) {
       setShowGameSelection(false);
       setInFreeTimeMode(true);
       setHasPlayedGame(true);
@@ -523,7 +564,7 @@ export default function PomodoroScreen() {
       setIsPaused(false);
       return;
     }
-    
+
     // Mark that we're entering game mode
     setHasPlayedGame(true);
     router.push({
@@ -592,7 +633,9 @@ export default function PomodoroScreen() {
     useCallback(() => {
       let cancelled = false;
       const timeout = setTimeout(async () => {
-        const alreadySeen = await AsyncStorage.getItem("pomodoroOnboardingSeen");
+        const alreadySeen = await AsyncStorage.getItem(
+          "pomodoroOnboardingSeen",
+        );
 
         if (!alreadySeen && !cancelled) {
           await AsyncStorage.setItem("pomodoroOnboardingSeen", "true");
