@@ -93,7 +93,15 @@
     "coachMarkProfile": "点击这里查看您的个人资料，跟踪您的进度并个性化您的头像！",
     "coachMarksettings": "点击这里调整您的偏好设置，管理通知等！",
     "coachMarktakeoff": "点击这里开始专注会话，朝着您的目标起飞！",
-    "coachMarkshop": "点击这里访问商店，并使用新的身体和翅膀自定义您的头像！"
+    "coachMarkshop": "点击这里访问商店，并使用新的身体和翅膀自定义您的头像！",
+    "playerLevel": "玩家等级",
+    "Level Rewards": "等级奖励",
+    "Claimed": "已领取",
+    "Locked": "已锁定",
+    "Crystals": "水晶",
+    "galaxyCrystals": "银河水晶",
+    "level": "等级",
+    "coachMarklevel": "这是您当前的玩家等级。通过完成任务和专注会话来获得经验值，升级并获得奖励！"
   },
   "Settings": {
     "title": "设置",

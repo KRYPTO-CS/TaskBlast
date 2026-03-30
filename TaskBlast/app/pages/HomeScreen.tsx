@@ -109,6 +109,11 @@ export default function HomeScreen() {
     title: t("Shop.title"),
     description: t("Home.coachMarkshop"),
   },
+  {
+    id: "level-button",
+    title: t("Home.playerLevel"),
+    description: t("Home.coachMarklevel"),
+  }
 
 ]),
   [t]
@@ -436,7 +441,9 @@ useFocusEffect(
       {/* All UI elements above the background */}
       <View className="flex-1">
         {/* Top Center - Level Button */}
+        
         <View className="absolute top-14 self-center z-10 items-center">
+          <CoachmarkAnchor id="level-button">
           <TouchableOpacity
             testID="level-button"
             className="w-14 h-14 rounded-full items-center justify-center"
@@ -448,12 +455,12 @@ useFocusEffect(
               shadowOffset: { width: 0, height: 0 },
             }}
             onPress={() => setIsLevelModalVisible(true)}
-          >
+            >
             <Svg
               width={smallRingSize}
               height={smallRingSize}
               style={{ position: "absolute", top: 0, left: 0 }}
-            >
+              >
               <G rotation="-90" origin={`${smallRingSize / 2}, ${smallRingSize / 2}`}>
                 <Circle
                   cx={smallRingSize / 2}
@@ -462,7 +469,7 @@ useFocusEffect(
                   stroke="rgba(244, 114, 182, 0.25)"
                   strokeWidth={smallRingStroke}
                   fill="transparent"
-                />
+                  />
                 <Circle
                   cx={smallRingSize / 2}
                   cy={smallRingSize / 2}
@@ -473,13 +480,15 @@ useFocusEffect(
                   strokeLinecap="round"
                   strokeDasharray={`${smallRingCircumference} ${smallRingCircumference}`}
                   strokeDashoffset={smallRingOffset}
-                />
+                  />
               </G>
             </Svg>
             <Text className="font-orbitron-bold text-pink-200 text-lg">
               {currentLevel}
             </Text>
           </TouchableOpacity>
+            </CoachmarkAnchor>
+          <Text className="font-orbitron text-pink-100/90 text-xs mt-1">{t("Home.level")}</Text>
         </View>
 
         {/* Top Right Section - Profile & Settings above Task Button */}
@@ -651,7 +660,7 @@ useFocusEffect(
             >
               <View className="flex-row justify-between items-center mb-4">
                 <Text className="font-orbitron-bold text-white text-2xl">
-                  Player Level
+                  {t("Home.playerLevel")}
                 </Text>
                 <TouchableOpacity
                   onPress={() => setIsLevelModalVisible(false)}
@@ -711,7 +720,7 @@ useFocusEffect(
               </Text>
 
               <Text className="font-orbitron-bold text-white text-lg mt-5 mb-3">
-                Level Rewards
+                {t("Home.Level Rewards")}
               </Text>
 
               <ScrollView
@@ -766,7 +775,7 @@ useFocusEffect(
                             style={{ backgroundColor: "rgba(34,197,94,0.25)" }}
                           >
                             <Text className="font-orbitron-bold text-green-300 text-xs">
-                              Claimed
+                              {t("Home.Claimed")}
                             </Text>
                           </View>
                         ) : isUnlocked ? (
@@ -789,7 +798,7 @@ useFocusEffect(
                             style={{ backgroundColor: "rgba(148,163,184,0.22)" }}
                           >
                             <Text className="font-orbitron-bold text-slate-300 text-xs">
-                              Locked
+                              {t("Home.Locked")}
                             </Text>
                           </View>
                         )}
