@@ -612,6 +612,7 @@ useFocusEffect(
           visible={isTaskModalVisible}
           onClose={() => setIsTaskModalVisible(false)}
           onRocksChange={loadScore}
+          isSelectedPlanetLocked={isSelectedPlanetLocked}
         />
 
         {/* Planet Modal */}
