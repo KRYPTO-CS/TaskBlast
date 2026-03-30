@@ -62,18 +62,22 @@ export default function PomodoroScreen() {
   const { notifyTimerComplete } = useNotifications();
   const palette = useColorPalette();
 
+  const getSingleParam = (value: string | string[] | undefined) =>
+    Array.isArray(value) ? value[0] : value;
+
   // Extract task parameters from route params
-  const taskName = (params.taskName as string) || "Work Session";
-  const workTime = params.workTime ? parseInt(params.workTime as string) : 25;
-  const playTime = params.playTime ? parseInt(params.playTime as string) : 5;
-  const cycles = params.cycles ? parseInt(params.cycles as string) : 1;
-  const taskId = params.taskId as string;
-  const taskReward = params.taskReward
-    ? parseInt(params.taskReward as string)
-    : 0;
+  const taskName = getSingleParam(params.taskName) || "Work Session";
+  const workTime = Number.parseInt(getSingleParam(params.workTime) || "25", 10);
+  const playTime = Number.parseInt(getSingleParam(params.playTime) || "5", 10);
+  const cycles = Number.parseInt(getSingleParam(params.cycles) || "1", 10);
+  const taskId = getSingleParam(params.taskId) || "";
+  const taskReward = Number.parseInt(
+    getSingleParam(params.taskReward) || "0",
+    10,
+  );
   const childDocId =
-    typeof params.childDocId === "string" && params.childDocId.length > 0
-      ? params.childDocId
+    (getSingleParam(params.childDocId) || "").length > 0
+      ? getSingleParam(params.childDocId)
       : undefined;
   const allowMinimization = params.allowMinimization === "true" || false;
   const { start } = useCoachmark();
@@ -517,9 +521,7 @@ export default function PomodoroScreen() {
       !inFreeTimeMode &&
       Boolean(taskId) &&
       Number.isFinite(taskReward) &&
-      taskReward > 0 &&
-      cycles !== -1 &&
-      (isTaskCompleted || currentCompletedCycles >= cycles);
+      taskReward > 0;
 
     if (shouldClaimTaskReward) {
       try {
