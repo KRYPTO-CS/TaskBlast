@@ -39,14 +39,14 @@ export const GAME_DEFINITIONS: GameDefinition[] = [
     id: 3,
     name: "2048",
     description: "Merge tiles. Aim for 2048!",
-    url: "https://vinbi07.github.io/2048Blast/",
+    url: "https://krypto-cs.github.io/2048Blast/",
     rewardStrategy: "highest-tile",
   },
   {
     id: 4,
     name: "MatchBlast",
     description: "Match pairs fast for bonus rocks!",
-    url: "https://vinbi07.github.io/MatchBlast/",
+    url: "https://krypto-cs.github.io/MatchBlast/",
     rewardStrategy: "raw-score",
   },
 ];
