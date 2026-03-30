@@ -11,6 +11,7 @@ export type GameDefinition = {
 
 export const GAME_SCORE_STORAGE_KEY = "game_score";
 export const GAME_HIGHEST_TILE_STORAGE_KEY = "game_highest_tile";
+export const ACTIVE_PLANET_STORAGE_KEY = "active_planet_id";
 
 export const GAME_DEFINITIONS: GameDefinition[] = [
   {
@@ -22,9 +23,9 @@ export const GAME_DEFINITIONS: GameDefinition[] = [
   },
   {
     id: 1,
-    name: "Space Bird",
+    name: "Space Swerve",
     description: "Dodge the asteroids!",
-    url: "https://krypto-cs.github.io/SpaceBird/",
+    url: "https://krypto-cs.github.io/SpaceShooter/",
     rewardStrategy: "raw-score",
   },
   {

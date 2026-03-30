@@ -23,7 +23,10 @@ const GAME_OPTIONS: GameOption[] = GAME_DEFINITIONS.map((game) => ({
   name: game.name,
   description: game.description,
   isFreeTime: game.isFreeTime,
-}));
+})).sort((a, b) => {
+  if (a.isFreeTime === b.isFreeTime) return 0;
+  return a.isFreeTime ? 1 : -1;
+});
 
 export default function GameSelectionModal({
   visible,

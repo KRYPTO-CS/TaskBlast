@@ -480,7 +480,6 @@ useFocusEffect(
               {currentLevel}
             </Text>
           </TouchableOpacity>
-          <Text className="font-orbitron text-pink-100/90 text-xs mt-1">LEVEL</Text>
         </View>
 
         {/* Top Right Section - Profile & Settings above Task Button */}
@@ -612,6 +611,7 @@ useFocusEffect(
           visible={isTaskModalVisible}
           onClose={() => setIsTaskModalVisible(false)}
           onRocksChange={loadScore}
+          isSelectedPlanetLocked={isSelectedPlanetLocked}
         />
 
         {/* Planet Modal */}
@@ -757,9 +757,6 @@ useFocusEffect(
                               style={{ width: 14, height: 14 }}
                               resizeMode="contain"
                             />
-                            <Text className="font-orbitron text-white/80 text-xs ml-1">
-                              {isGalaxyReward ? "Galaxy Crystals" : "Crystals"}
-                            </Text>
                           </View>
                         </View>
 
