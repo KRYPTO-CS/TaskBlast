@@ -93,7 +93,7 @@ const Planet = ({planetID, islocked, onPress, isLast}: PlanetScrollListProps & {
 };
 
 // Main component that renders the horizontal scroll list of planets
-export default function PlanetScrollList({ onRocksChange }: { onRocksChange?: () => void }) {
+export default function PlanetScrollList({ onRocksChange, onActivePlanetChange }: { onRocksChange?: () => void; onActivePlanetChange?: (isLocked: boolean) => void }) {
     const [planets] = useState<number[]>([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
     const auth = getAuth();
@@ -142,6 +142,7 @@ export default function PlanetScrollList({ onRocksChange }: { onRocksChange?: ()
             setActivePlanet(id);
             // update selectedPlanet without opening modal
             setSelectedPlanet(id);
+            onActivePlanetChange?.(id > currentProgress);
             console.log('Active planet changed to', id);
         }
     };
