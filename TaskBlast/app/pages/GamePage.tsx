@@ -51,6 +51,7 @@ export default function GamePage() {
     selectedGame.url ??
     defaultGame.url ??
     "https://krypto-cs.github.io/SpaceShooter/";
+  const isSpaceSwerve = gameId === 1;
 
   const [timeLeft, setTimeLeft] = useState(playTime * 60); // Convert minutes to seconds
   const [equipped, setEquipped] = useState<number[]>([0, 1]);
@@ -58,6 +59,12 @@ export default function GamePage() {
   const tapCount = useRef(0);
   const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rewardsProcessedRef = useRef(false);
+  const scorePersistQueueRef = useRef<Promise<void>>(Promise.resolve());
+  const godotReadyRef = useRef(false);
+  const skinSyncIntervalRef = useRef<ReturnType<typeof setInterval> | null>(
+    null,
+  );
+  const skinSyncCountRef = useRef(0);
 
   useEffect(() => {
     const loadActivePlanetId = async () => {
@@ -75,6 +82,29 @@ export default function GamePage() {
     };
 
     loadActivePlanetId();
+  }, []);
+
+  useEffect(() => {
+    // Start each game session with a clean temporary score/tile cache.
+    scorePersistQueueRef.current = scorePersistQueueRef.current
+      .then(async () => {
+        rewardsProcessedRef.current = false;
+        await AsyncStorage.removeItem(GAME_SCORE_STORAGE_KEY);
+        await AsyncStorage.removeItem(GAME_HIGHEST_TILE_STORAGE_KEY);
+        console.log("Reset game score cache for new session");
+      })
+      .catch((err) => {
+        console.warn("Failed to reset game score cache", err);
+      });
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (skinSyncIntervalRef.current) {
+        clearInterval(skinSyncIntervalRef.current);
+        skinSyncIntervalRef.current = null;
+      }
+    };
   }, []);
 
   const saveRocksToDatabase = async (score: number, highestTile: number) => {
@@ -96,6 +126,9 @@ export default function GamePage() {
       return;
     }
     rewardsProcessedRef.current = true;
+
+    // Flush queued score writes so final rewards use the latest value.
+    await scorePersistQueueRef.current;
 
     const scoreStr = await AsyncStorage.getItem(GAME_SCORE_STORAGE_KEY);
     const highestTileStr = await AsyncStorage.getItem(
@@ -214,15 +247,40 @@ export default function GamePage() {
         if (payload.type === "scoreUpdate") {
           console.log("Score from Godot:", payload);
           // Persist the score so HomeScreen can read it later. Temporary.
-          (async () => {
-            try {
-              let s = Number(payload.score) || 0;
-              if (s < 0) {
-                // Handle negative scores
-                s = 0;
-              }
+          const incomingScore = Number(payload.score);
+          const safeIncomingScore = Number.isFinite(incomingScore)
+            ? Math.floor(incomingScore)
+            : 0;
 
-              await AsyncStorage.setItem(GAME_SCORE_STORAGE_KEY, String(s));
+          scorePersistQueueRef.current = scorePersistQueueRef.current
+            .then(async () => {
+              const prevScoreStr = await AsyncStorage.getItem(
+                GAME_SCORE_STORAGE_KEY,
+              );
+              const prevScore = prevScoreStr
+                ? Math.max(0, Math.floor(Number(prevScoreStr) || 0))
+                : 0;
+
+              // Space Swerve sends absolute score snapshots; Space Shooter sends deltas.
+              const isAbsoluteScoreUpdate =
+                isSpaceSwerve ||
+                payload.scoreMode === "absolute" ||
+                payload.isDelta === false;
+              const nextScore = isAbsoluteScoreUpdate
+                ? Math.max(0, safeIncomingScore)
+                : Math.max(0, prevScore + safeIncomingScore);
+
+              await AsyncStorage.setItem(
+                GAME_SCORE_STORAGE_KEY,
+                String(nextScore),
+              );
+              console.log(
+                "Persisted cumulative score:",
+                nextScore,
+                "(mode:",
+                isAbsoluteScoreUpdate ? "absolute" : "delta",
+                ")",
+              );
 
               const highestTile = Number(
                 payload.highestTile ?? payload.maxTile ?? payload.bestTile ?? 0,
@@ -233,10 +291,10 @@ export default function GamePage() {
                   String(Math.floor(highestTile)),
                 );
               }
-            } catch (err) {
+            })
+            .catch((err) => {
               console.warn("Failed to persist game score", err);
-            }
-          })();
+            });
         } else if (payload.type === "tileUpdate") {
           (async () => {
             try {
@@ -253,7 +311,36 @@ export default function GamePage() {
           })();
         } else if (payload.type === "testMessage") {
           console.log("Godot Initialized");
-          sendMessageToGodot();
+          godotReadyRef.current = true;
+          sendMessageToGodot("godot-handshake");
+
+          if (isSpaceSwerve) {
+            if (skinSyncIntervalRef.current) {
+              clearInterval(skinSyncIntervalRef.current);
+              skinSyncIntervalRef.current = null;
+            }
+            skinSyncCountRef.current = 0;
+
+            // Keep syncing briefly while the game scene fully initializes.
+            skinSyncIntervalRef.current = setInterval(() => {
+              skinSyncCountRef.current += 1;
+              sendMessageToGodot(`godot-sync-${skinSyncCountRef.current}`);
+              if (skinSyncCountRef.current >= 8 && skinSyncIntervalRef.current) {
+                clearInterval(skinSyncIntervalRef.current);
+                skinSyncIntervalRef.current = null;
+              }
+            }, 1500);
+          }
+
+          // Some game scenes apply skins only after entities spawn.
+          setTimeout(() => sendMessageToGodot("godot-handshake-retry-1"), 600);
+          setTimeout(() => sendMessageToGodot("godot-handshake-retry-2"), 1800);
+        } else if (payload.type === "ack") {
+          console.log("Godot ack:", payload);
+        } else if (payload.type === "ackInjected") {
+          console.log("Godot injected ack:", payload);
+        } else if (payload.type === "bridgeError") {
+          console.warn("Godot bridge error:", payload);
         } else {
           console.log("Other message:", payload);
         }
@@ -261,10 +348,10 @@ export default function GamePage() {
         console.warn("Invalid message from WebView:", event.nativeEvent.data);
       }
     },
-    [equipped, gameId, colorBlindMode, activePlanetId],
+    [equipped, gameId, colorBlindMode, activePlanetId, isSpaceSwerve],
   );
 
-  const sendMessageToGodot = useCallback(() => {
+  const sendMessageToGodot = useCallback((reason = "manual") => {
     // Map colorBlindMode to numeric value: none=0, deuteranopia=1, protanopia=2, tritanopia=3
     const colorBlindModeMap: Record<string, number> = {
       none: 0,
@@ -274,23 +361,90 @@ export default function GamePage() {
     };
     const colorBlindModeValue = colorBlindModeMap[colorBlindMode] ?? 0;
 
+    const bodyId = Number.isFinite(equipped[0]) ? Math.floor(equipped[0]) : 0;
+    const wingsId = Number.isFinite(equipped[1]) ? Math.floor(equipped[1]) : 1;
+    const safeGameId = Number.isFinite(gameId) ? Math.floor(gameId) : 0;
+    const safePlanetId = Number.isFinite(activePlanetId)
+      ? Math.floor(activePlanetId)
+      : 1;
+
     console.log("Sending skins message to Godot.");
+    console.log("Send reason:", reason);
     console.log("Current equipped values:", equipped);
     console.log("Game ID:", gameId);
     console.log("Active planet ID:", activePlanetId);
     console.log("Colorblind mode:", colorBlindMode, "->", colorBlindModeValue);
 
-    webviewRef.current?.postMessage(
-      JSON.stringify({
-        type: "skins",
-        data1: String(equipped[0]).trim(),
-        data2: String(equipped[1]).trim(),
-        data3: String(gameId).trim(),
-        data4: String(activePlanetId).trim(),
-        data5: String(colorBlindModeValue).trim(),
-      }),
-    );
-  }, [equipped, gameId, activePlanetId, colorBlindMode]);
+    const sendPayload = (type: string) => {
+      const payload = {
+        type,
+        // Keep legacy positional fields as strings for strict Godot comparisons.
+        data1: String(bodyId),
+        data2: String(wingsId),
+        data3: String(safeGameId),
+        data4: String(safePlanetId),
+        data5: String(colorBlindModeValue),
+        // Named aliases for newer contracts.
+        bodyId,
+        wingsId,
+        gameId: safeGameId,
+        planetId: safePlanetId,
+        colorBlindMode: colorBlindModeValue,
+      };
+
+      const payloadString = JSON.stringify(payload);
+
+      // Path 1: standard RN WebView -> page message channel.
+      webviewRef.current?.postMessage(payloadString);
+
+      // Path 2: direct fallback for pages that do not receive message events consistently.
+      const escapedPayload = JSON.stringify(payloadString);
+      webviewRef.current?.injectJavaScript(
+        `(() => {
+          try {
+            const raw = ${escapedPayload};
+            const msg = JSON.parse(raw);
+            if (typeof window.sendToGodot === "function") {
+              window.sendToGodot(msg.type, msg.data1, msg.data2, msg.data3, msg.data4, msg.data5);
+            }
+            const enableCbCompatibility = ${isSpaceSwerve ? "true" : "false"};
+            if (enableCbCompatibility && typeof window.cb === "function") {
+              // Compatibility calls for different callback signatures used by Godot scenes.
+              window.cb(msg.type, msg.data1, msg.data2, msg.data3, msg.data4, msg.data5);
+              window.cb(msg.type, Number(msg.data1), Number(msg.data2), Number(msg.data3), Number(msg.data4), Number(msg.data5));
+              window.cb(msg.type, msg.data1, msg.data2);
+              window.cb(msg.type, Number(msg.data1), Number(msg.data2));
+              window.cb(msg.data1, msg.data2);
+              window.cb(Number(msg.data1), Number(msg.data2));
+            }
+            if (window.ReactNativeWebView) {
+              window.ReactNativeWebView.postMessage(JSON.stringify({ type: "ackInjected", received: msg.type }));
+            }
+          } catch (e) {
+            if (window.ReactNativeWebView) {
+              window.ReactNativeWebView.postMessage(JSON.stringify({ type: "bridgeError", message: String(e) }));
+            }
+          }
+        })(); true;`,
+      );
+    };
+
+    if (isSpaceSwerve) {
+      // Space Swerve uses evolving contracts across builds.
+      ["skins", "setSkins", "applySkins", "playerConfig"].forEach(
+        sendPayload,
+      );
+    } else {
+      // Keep Space Shooter on the known-stable contract.
+      sendPayload("skins");
+    }
+  }, [equipped, gameId, activePlanetId, colorBlindMode, isSpaceSwerve]);
+
+  useEffect(() => {
+    if (!loading && godotReadyRef.current) {
+      sendMessageToGodot("config-updated");
+    }
+  }, [loading, equipped, gameId, activePlanetId, colorBlindMode, sendMessageToGodot]);
 
   if (!WebView) {
     return (
@@ -342,7 +496,11 @@ export default function GamePage() {
             source={{ uri: gameUrl }}
             testID="webview"
             style={styles.webview}
-            onLoadEnd={() => setLoading(false)}
+            onLoadEnd={() => {
+              setLoading(false);
+              // Try once after the page is loaded in case handshake arrives late.
+              setTimeout(() => sendMessageToGodot("webview-load-end"), 250);
+            }}
             startInLoadingState
             allowsInlineMediaPlayback
             mediaPlaybackRequiresUserAction={false}

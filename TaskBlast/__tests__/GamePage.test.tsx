@@ -17,8 +17,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 
 describe("Game Screen", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.clearAllMocks();
+    await AsyncStorage.clear();
   });
 
   describe("UI Rendering", () => {
@@ -157,7 +158,7 @@ describe("Game Screen", () => {
         await waitFor(() => {
           expect(AsyncStorage.setItem).toHaveBeenCalledWith(
             "game_score",
-            "500",
+            "600",
           );
         });
       }
@@ -184,14 +185,16 @@ describe("Game Screen", () => {
       });
     });
 
-    it("should handle negative scores as zero", async () => {
+    it("should apply negative score deltas without going below zero", async () => {
       const { getByTestId } = render(<GamePage />);
+      await AsyncStorage.setItem("game_score", "50");
+      jest.clearAllMocks();
 
       const mockScoreMessage = {
         nativeEvent: {
           data: JSON.stringify({
             type: "scoreUpdate",
-            score: -100,
+            score: -20,
           }),
         },
       };
@@ -201,7 +204,7 @@ describe("Game Screen", () => {
       if (onMessage) onMessage(mockScoreMessage);
 
       await waitFor(() => {
-        expect(AsyncStorage.setItem).toHaveBeenCalledWith("game_score", "0");
+        expect(AsyncStorage.setItem).toHaveBeenCalledWith("game_score", "30");
       });
     });
   });

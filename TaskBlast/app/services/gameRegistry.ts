@@ -6,6 +6,7 @@ export type GameDefinition = {
   description: string;
   url: string | null;
   rewardStrategy: GameRewardStrategy;
+  rawScoreMultiplier?: number;
   isFreeTime?: boolean;
 };
 
@@ -25,7 +26,7 @@ export const GAME_DEFINITIONS: GameDefinition[] = [
     id: 1,
     name: "Space Swerve",
     description: "Dodge the asteroids!",
-    url: "https://krypto-cs.github.io/SpaceShooter/",
+    url: "https://krypto-cs.github.io/SpaceBird/",
     rewardStrategy: "raw-score",
   },
   {
@@ -49,6 +50,7 @@ export const GAME_DEFINITIONS: GameDefinition[] = [
     description: "Match pairs fast for bonus rocks!",
     url: "https://krypto-cs.github.io/MatchBlast/",
     rewardStrategy: "raw-score",
+    rawScoreMultiplier: 0.1,
   },
 ];
 
@@ -88,6 +90,10 @@ export const getRocksReward = (
 
     // Keep 2048 rewards bounded so long sessions do not inflate progression.
     return Math.min(120, baseReward + scoreBonus);
+  }
+
+  if (typeof game.rawScoreMultiplier === "number") {
+    return Math.max(0, Math.floor(safeScore * game.rawScoreMultiplier));
   }
 
   return safeScore;
