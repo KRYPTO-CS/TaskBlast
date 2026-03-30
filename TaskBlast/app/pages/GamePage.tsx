@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useRef, useCallback, useEffect, useContext } from "react";
 import {
   ActivityIndicator,
   StyleSheet,
@@ -11,6 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getAuth } from "firebase/auth";
+import { AccessibilityContext } from "../context/AccessibilityContext";
 import {
   getFirestore,
   doc,
@@ -39,6 +40,8 @@ export default function GamePage() {
   const webviewRef = useRef<any>(null);
   const router = useRouter();
   const params = useLocalSearchParams();
+  const accessibilityContext = useContext(AccessibilityContext);
+  const colorBlindMode = accessibilityContext?.colorBlindMode || "none";
 
   const playTime = params.playTime ? parseInt(params.playTime as string) : 5;
   const taskId = params.taskId as string;
@@ -280,13 +283,23 @@ export default function GamePage() {
         console.warn("Invalid message from WebView:", event.nativeEvent.data);
       }
     },
-    [equipped, gameId],
+    [equipped, gameId, colorBlindMode],
   );
 
   const sendMessageToGodot = useCallback(() => {
+    // Map colorBlindMode to numeric value: none=0, deuteranopia=1, protanopia=2, tritanopia=3
+    const colorBlindModeMap: Record<string, number> = {
+      none: 0,
+      deuteranopia: 1,
+      protanopia: 2,
+      tritanopia: 3,
+    };
+    const colorBlindModeValue = colorBlindModeMap[colorBlindMode] ?? 0;
+
     console.log("Sending skins message to Godot.");
     console.log("Current equipped values:", equipped);
     console.log("Game ID:", gameId);
+    console.log("Colorblind mode:", colorBlindMode, "->", colorBlindModeValue);
 
     webviewRef.current?.postMessage(
       JSON.stringify({
@@ -294,9 +307,11 @@ export default function GamePage() {
         data1: String(equipped[0]).trim(),
         data2: String(equipped[1]).trim(),
         data3: String(gameId).trim(),
+        data4: String(0),
+        data5: String(colorBlindModeValue).trim(),
       }),
     );
-  }, [equipped, gameId]);
+  }, [equipped, gameId, colorBlindMode]);
 
   if (!WebView) {
     return (

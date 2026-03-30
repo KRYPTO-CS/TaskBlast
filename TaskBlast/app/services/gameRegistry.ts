@@ -22,9 +22,9 @@ export const GAME_DEFINITIONS: GameDefinition[] = [
   },
   {
     id: 1,
-    name: "Space Bird",
+    name: "Space Swerve",
     description: "Dodge the asteroids!",
-    url: "https://krypto-cs.github.io/SpaceBird/",
+    url: "https://krypto-cs.github.io/SpaceShooter/",
     rewardStrategy: "raw-score",
   },
   {
