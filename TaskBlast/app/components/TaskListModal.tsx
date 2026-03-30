@@ -24,8 +24,6 @@ import {
   Timestamp,
   getDoc,
   getDocs,
-  setDoc,
-  increment,
   where,
   query,
 } from "firebase/firestore";
@@ -38,6 +36,7 @@ import {
   useCoachmark,
   createTour,
 } from "@edwardloopez/react-native-coachmark";
+import { claimTaskReward } from "../services/economyService";
 
 interface Task {
   id: string;
@@ -337,41 +336,11 @@ export default function TaskListModal({
       const task = tasks.find((t) => t.id === taskId);
       if (!task) return;
 
-      // Update task to archived
-      const taskRef = getTaskDocRef(taskId);
-      await updateDoc(taskRef, {
-        archived: true,
-        updatedAt: serverTimestamp(),
+      await claimTaskReward({
+        taskId,
+        reward: task.reward,
+        childDocId,
       });
-
-      // Add rocks to the appropriate account
-      if (childDocId) {
-        // Child is active - add rocks to child's document
-        const childRef = doc(
-          db,
-          "users",
-          auth.currentUser.uid,
-          "children",
-          childDocId,
-        );
-        await setDoc(
-          childRef,
-          {
-            rocks: increment(task.reward),
-          },
-          { merge: true },
-        ); // ← CHANGED: setDoc with merge
-      } else {
-        // Parent is active - add rocks to parent's document
-        const userRef = doc(db, "users", auth.currentUser.uid);
-        await setDoc(
-          userRef,
-          {
-            rocks: increment(task.reward),
-          },
-          { merge: true },
-        ); // ← CHANGED: setDoc with merge
-      }
 
       // Notify parent component to update rocks display
       if (onRocksChange) {
@@ -714,8 +683,6 @@ export default function TaskListModal({
         >
           {/* Header */}
           <View className="flex-row justify-between items-center mb-4">
-           
-
             <Text className="font-orbitron-bold text-white text-2xl">
               {t("Tasks.title")}
             </Text>

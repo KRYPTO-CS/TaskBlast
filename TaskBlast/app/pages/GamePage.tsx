@@ -11,21 +11,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getAuth } from "firebase/auth";
-import {
-  getFirestore,
-  doc,
-  updateDoc,
-  increment,
-  runTransaction,
-  getDoc,
-  setDoc,
-} from "firebase/firestore";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 import {
   GAME_HIGHEST_TILE_STORAGE_KEY,
   GAME_SCORE_STORAGE_KEY,
   getGameDefinition,
-  getRocksReward,
 } from "../services/gameRegistry";
+import { awardGameRewards } from "../services/economyService";
 
 let WebView: any = null;
 try {
@@ -56,51 +48,15 @@ export default function GamePage() {
   const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rewardsProcessedRef = useRef(false);
 
-  const saveRocksToDatabase = async (rocksAwarded: number) => {
+  const saveRocksToDatabase = async (score: number, highestTile: number) => {
     try {
-      const auth = getAuth();
-      const user = auth.currentUser;
-      if (!user) return;
-
-      const db = getFirestore();
-      const userRef = doc(db, "users", user.uid);
-
-      // add rocks and update all-time rocks atomically
-      // Atomically compute the new allTimeRocks and append it to the array (allow duplicates)
-      await runTransaction(db, async (tx) => {
-        const snap = await tx.get(userRef);
-        const data = snap.exists() ? snap.data() : ({} as any);
-        const currentTotal = Number(data.allTimeRocks ?? 0);
-        const safeRocks = Math.max(0, Math.floor(rocksAwarded));
-        const newTotal = currentTotal + safeRocks;
-        const arr = Array.isArray(data.allTimeRocksArr)
-          ? [...data.allTimeRocksArr]
-          : [];
-        arr.push(newTotal);
-
-        tx.update(userRef, {
-          rocks: increment(safeRocks),
-          allTimeRocks: increment(safeRocks),
-          allTimeRocksArr: arr,
-        });
+      const result = await awardGameRewards({
+        gameId,
+        score,
+        highestTile,
+        playTimeMinutes: playTime,
       });
-
-      // Also record play session duration (minutes) for stats, allowing duplicates
-      try {
-        const minutes = Math.max(0, Math.floor(playTime));
-        const snap = await getDoc(userRef);
-        const current =
-          snap.exists() && Array.isArray(snap.data().playTimeMinutesArr)
-            ? [...snap.data().playTimeMinutesArr]
-            : [];
-        current.push(minutes);
-        await setDoc(userRef, { playTimeMinutesArr: current }, { merge: true });
-        console.log(`Recorded play session: ${minutes} minutes`);
-      } catch (e) {
-        console.warn("Failed to record play session", e);
-      }
-
-      console.log(`Added ${rocksAwarded} rocks to user's account`);
+      console.log(`Game rewards applied: +${result.awardedRocks ?? 0} rocks`);
     } catch (err) {
       console.warn("Failed to save rocks to database", err);
     }
@@ -121,11 +77,7 @@ export default function GamePage() {
     const highestTile = highestTileStr
       ? Math.max(0, Math.floor(Number(highestTileStr)))
       : 0;
-    const rocksAwarded = getRocksReward(gameId, score, highestTile);
-
-    if (rocksAwarded > 0) {
-      await saveRocksToDatabase(rocksAwarded);
-    }
+    await saveRocksToDatabase(score, highestTile);
 
     await AsyncStorage.removeItem(GAME_SCORE_STORAGE_KEY);
     await AsyncStorage.removeItem(GAME_HIGHEST_TILE_STORAGE_KEY);

@@ -11,18 +11,21 @@ import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
 import {
+  collection,
   getFirestore,
   doc,
   updateDoc,
-  increment,
   getDoc,
-  arrayUnion,
-  setDoc,
-  runTransaction,
+  getDocs,
 } from "firebase/firestore";
 import { useColorPalette } from "../styles/colorBlindThemes";
 import { useTranslation } from "react-i18next";
-import { update } from "firebase/database";
+import { purchaseShopItem } from "../services/economyService";
+import {
+  DEFAULT_SHOP_CATALOG,
+  getShopIconSource,
+  ShopCategory,
+} from "../services/shopCatalog";
 
 interface ShopModalProps {
   visible: boolean;
@@ -39,11 +42,11 @@ type ShopPage = {
 
 type ShopItem = {
   id: string;
-  name: string;
+  index: number;
   nameKey: string;
   iconPath: any;
   price: number;
-  category: "Body" | "Wings";
+  category: ShopCategory;
 };
 
 const shopPages: ShopPage[] = [
@@ -61,72 +64,14 @@ const shopPages: ShopPage[] = [
   },
 ];
 
-const shopItems: ShopItem[] = [
-  {
-    id: "body-0",
-    name: "Blue Body",
-    nameKey: "Shop.bBody",
-    iconPath: require("../../assets/images/shop_icons/ShipBodyIconBlue.png"),
-    price: 0,
-    category: "Body",
-  },
-  {
-    id: "body-1",
-    name: "Red Body",
-    nameKey: "Shop.rBody",
-    iconPath: require("../../assets/images/shop_icons/ShipBodyIconRed.png"),
-    price: 500,
-    category: "Body",
-  },
-  {
-    id: "body-2",
-    name: "Green Body",
-    nameKey: "Shop.gBody",
-    iconPath: require("../../assets/images/shop_icons/ShipBodyIconGreen.png"),
-    price: 750,
-    category: "Body",
-  },
-  {
-    id: "body-3",
-    name: "Yellow Body",
-    nameKey: "Shop.yBody",
-    iconPath: require("../../assets/images/shop_icons/ShipBodyIconYellow.png"),
-    price: 750,
-    category: "Body",
-  },
-  {
-    id: "wing-0",
-    name: "Blue Wings",
-    nameKey: "Shop.bWings",
-    iconPath: require("../../assets/images/shop_icons/ShipWingIconBlue.png"),
-    price: 500,
-    category: "Wings",
-  },
-  {
-    id: "wing-1",
-    name: "Red Wings",
-    nameKey: "Shop.rWings",
-    iconPath: require("../../assets/images/shop_icons/ShipWingIconRed.png"),
-    price: 0,
-    category: "Wings",
-  },
-  {
-    id: "wing-2",
-    name: "Green Wings",
-    nameKey: "Shop.gWings",
-    iconPath: require("../../assets/images/shop_icons/ShipWingIconGreen.png"),
-    price: 750,
-    category: "Wings",
-  },
-  {
-    id: "wing-3",
-    name: "Yellow Wings",
-    nameKey: "Shop.yWings",
-    iconPath: require("../../assets/images/shop_icons/ShipWingIconYellow.png"),
-    price: 750,
-    category: "Wings",
-  },
-];
+const fallbackShopItems: ShopItem[] = DEFAULT_SHOP_CATALOG.map((item) => ({
+  id: item.id,
+  index: item.index,
+  nameKey: item.nameKey,
+  iconPath: getShopIconSource(item.iconKey),
+  price: item.price,
+  category: item.category,
+}));
 
 export default function ShopModal({
   visible,
@@ -136,20 +81,20 @@ export default function ShopModal({
   const palette = useColorPalette();
   const [selectedPage, setSelectedPage] = useState(0);
   const [rocks, setRocks] = useState<number>(0);
+  const [shopItems, setShopItems] = useState<ShopItem[]>(fallbackShopItems);
   const [unlockedItems, setUnlockedItems] = useState<{
     body: boolean[];
     wings: boolean[];
   }>({
-    body: [true, false, false],
-    wings: [false, true, false],
+    body: [true, false, false, false],
+    wings: [false, true, false, false],
   });
   const [equipped, setEquipped] = useState<number[]>([0, 1]);
   const [confirmPurchase, setConfirmPurchase] = useState<{
     item: ShopItem | null;
-    index: number;
-  }>({ item: null, index: -1 });
+  }>({ item: null });
 
-  const currentCategory = shopPages[selectedPage].name as "Body" | "Wings";
+  const currentCategory = shopPages[selectedPage].name as ShopCategory;
   const filteredItems = shopItems.filter(
     (item) => item.category === currentCategory,
   );
@@ -165,6 +110,67 @@ export default function ShopModal({
         if (!user) return;
 
         const db = getFirestore();
+
+        const shopSnapshot = await getDocs(collection(db, "shopItems"));
+        const catalogFromDb = shopSnapshot.docs
+          .map((docSnap) => {
+            const data = docSnap.data() as {
+              id?: string;
+              category?: string;
+              index?: number;
+              nameKey?: string;
+              iconKey?: string;
+              price?: number;
+              cost?: number;
+              active?: boolean;
+            };
+
+            const category =
+              data.category === "Body" || data.category === "Wings"
+                ? data.category
+                : null;
+            const index = Number(data.index);
+            const price = Number(
+              data.price !== undefined ? data.price : data.cost,
+            );
+
+            if (
+              !category ||
+              !Number.isFinite(index) ||
+              !Number.isFinite(price)
+            ) {
+              return null;
+            }
+
+            if (data.active === false) {
+              return null;
+            }
+
+            return {
+              id: String(data.id || docSnap.id),
+              index,
+              category,
+              nameKey: String(data.nameKey || "Shop.bBody"),
+              iconPath: getShopIconSource(
+                String(data.iconKey || "ship-body-blue"),
+              ),
+              price,
+            } as ShopItem;
+          })
+          .filter((item): item is ShopItem => Boolean(item))
+          .sort((a, b) => {
+            if (a.category !== b.category) {
+              return a.category === "Body" ? -1 : 1;
+            }
+            return a.index - b.index;
+          });
+
+        if (catalogFromDb.length > 0) {
+          setShopItems(catalogFromDb);
+        } else {
+          setShopItems(fallbackShopItems);
+        }
+
         const userDocRef = doc(db, "users", user.uid);
         const userDoc = await getDoc(userDocRef);
 
@@ -181,8 +187,8 @@ export default function ShopModal({
           // Check if shopItems exist, if not create them
           if (!userData.shopItems) {
             updates.shopItems = {
-              body: [true, false, false],
-              wings: [false, true, false],
+              body: [true, false, false, false],
+              wings: [false, true, false, false],
             };
             setUnlockedItems(updates.shopItems);
             needsUpdate = true;
@@ -214,31 +220,7 @@ export default function ShopModal({
     checkAndCreateShopItems();
   }, [visible]);
 
-  // function adapted from the one in GamePage, records rocks spent in the shop
-  const updateRocksSpent = async (score: number) => {
-    try {
-      const auth = getAuth();
-      const user = auth.currentUser;
-      if (!user) return;
-
-      const db = getFirestore();
-      const userRef = doc(db, "users", user.uid);
-
-      // add rocks and update all-time rocks atomically
-      // Atomically compute the new allTimeRocks and append it to the array (allow duplicates)
-      await runTransaction(db, async (tx) => {
-        const snap = await tx.get(userRef);
-        const data = snap.exists() ? snap.data() : {} as any;
-
-        tx.update(userRef, {
-          rocksSpent: increment(score),
-        });
-      });
-    }
-     catch (err) { console.warn("Failed to update rocks spent", err); }
-  };
-
-  const handleEquip = async (item: ShopItem, index: number) => {
+  const handleEquip = async (item: ShopItem) => {
     try {
       const auth = getAuth();
       const user = auth.currentUser;
@@ -249,7 +231,7 @@ export default function ShopModal({
 
       const categoryIndex = item.category === "Body" ? 0 : 1;
       const newEquipped = [...equipped];
-      newEquipped[categoryIndex] = index;
+      newEquipped[categoryIndex] = item.index;
 
       // Update Firebase
       await updateDoc(userDocRef, {
@@ -263,13 +245,13 @@ export default function ShopModal({
     }
   };
 
-  const handlePurchase = async (item: ShopItem, index: number) => {
+  const handlePurchase = async (item: ShopItem) => {
     const categoryKey = item.category.toLowerCase() as "body" | "wings";
-    const isUnlocked = unlockedItems[categoryKey][index];
+    const isUnlocked = unlockedItems[categoryKey][item.index];
 
     if (isUnlocked) {
       // Already owned, equip it
-      await handleEquip(item, index);
+      await handleEquip(item);
       return;
     }
 
@@ -282,11 +264,11 @@ export default function ShopModal({
     }
 
     // Show confirmation modal
-    setConfirmPurchase({ item, index });
+    setConfirmPurchase({ item });
   };
 
   const confirmPurchaseItem = async () => {
-    const { item, index } = confirmPurchase;
+    const { item } = confirmPurchase;
     if (!item) return;
 
     try {
@@ -294,27 +276,21 @@ export default function ShopModal({
       const user = auth.currentUser;
       if (!user) return;
 
-      const db = getFirestore();
-      const userDocRef = doc(db, "users", user.uid);
+      const purchaseResult = await purchaseShopItem({ itemId: item.id });
 
-      const categoryKey = item.category.toLowerCase() as "body" | "wings";
+      if (!purchaseResult.success) {
+        throw new Error(purchaseResult.message || "Purchase failed");
+      }
 
-      // Create updated shopItems
-      const newUnlockedItems = { ...unlockedItems };
-      newUnlockedItems[categoryKey] = [...newUnlockedItems[categoryKey]];
-      newUnlockedItems[categoryKey][index] = true;
-
-      // Update Firebase
-      await updateDoc(userDocRef, {
-        shopItems: newUnlockedItems,
-        rocks: increment(-item.price),
-      });
+      const newUnlockedItems = purchaseResult.shopItems || { ...unlockedItems };
 
       // Update local state
       setUnlockedItems(newUnlockedItems);
-      setRocks(rocks - item.price);
-
-      await updateRocksSpent(item.price);
+      setRocks(
+        typeof purchaseResult.newRocks === "number"
+          ? purchaseResult.newRocks
+          : Math.max(0, rocks - item.price),
+      );
 
       // Notify parent component to refresh rocks
       if (onRocksChange) {
@@ -322,14 +298,14 @@ export default function ShopModal({
       }
 
       // Close confirmation modal
-      setConfirmPurchase({ item: null, index: -1 });
+      setConfirmPurchase({ item: null });
     } catch (error) {
       console.error("Error purchasing item:", error);
       Alert.alert(
         "Purchase Failed",
         "There was an error processing your purchase.",
       );
-      setConfirmPurchase({ item: null, index: -1 });
+      setConfirmPurchase({ item: null });
     }
   };
 
@@ -411,18 +387,18 @@ export default function ShopModal({
           {/* Content */}
           <ScrollView className="flex-1 p-5">
             <View className="flex-row flex-wrap justify-between">
-              {filteredItems.map((item, index) => {
+              {filteredItems.map((item) => {
                 const categoryKey = currentCategory.toLowerCase() as
                   | "body"
                   | "wings";
-                const isUnlocked = unlockedItems[categoryKey][index];
+                const isUnlocked = unlockedItems[categoryKey][item.index];
                 const categoryIndex = item.category === "Body" ? 0 : 1;
-                const isEquipped = equipped[categoryIndex] === index;
+                const isEquipped = equipped[categoryIndex] === item.index;
 
                 return (
                   <TouchableOpacity
                     key={item.id}
-                    onPress={() => handlePurchase(item, index)}
+                    onPress={() => handlePurchase(item)}
                     className="w-[48%] rounded-2xl p-4 mb-4 items-center"
                     style={{
                       borderWidth: 2,
@@ -555,7 +531,7 @@ export default function ShopModal({
 
             <View className="flex-row gap-3">
               <TouchableOpacity
-                onPress={() => setConfirmPurchase({ item: null, index: -1 })}
+                onPress={() => setConfirmPurchase({ item: null })}
                 className="flex-1 bg-gray-600 py-3 rounded-xl"
               >
                 <Text className="font-orbitron-bold text-white text-center">
