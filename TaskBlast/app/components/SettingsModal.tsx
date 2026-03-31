@@ -8,12 +8,14 @@ import {
   Alert,
   TextInput,
   ActivityIndicator,
+  Keyboard,
 } from "react-native";
 import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
-import { auth } from "../../server/firebase";
+import { auth, firestore } from "../../server/firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useActiveProfile } from "../context/ActiveProfileContext";
 import { useAudio } from "../context/AudioContext";
 import { useNotifications } from "../context/NotificationContext";
 import NotificationPreferencesModal from "./NotificationPreferencesModal";
@@ -65,29 +67,35 @@ export default function SettingsModal({
   const [isVerifyingAdmin, setIsVerifyingAdmin] = useState(false);
   const [isDisablingAdmin, setIsDisablingAdmin] = useState(false);
 
-  // Child profile state
-  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
-    null,
-  );
-  const [currentProfileType, setCurrentProfileType] = useState<
-    "parent" | "child"
-  >("parent");
+  // Managed mode state
+  const [accountType, setAccountType] = useState<string | null>(null);
+  const [managerialPin, setManagerialPin] = useState<string | null>(null);
+  const [showDisableManagedModal, setShowDisableManagedModal] = useState(false);
+  const [disableManagedPinInput, setDisableManagedPinInput] = useState("");
+  const [disableManagedError, setDisableManagedError] = useState("");
+  const [isDisablingManaged, setIsDisablingManaged] = useState(false);
 
-  // Check for active child profile when modal opens
+  const { activeChildProfile, refresh } = useActiveProfile();
+  const currentProfileType = activeChildProfile ? "child" : "parent";
+
   useEffect(() => {
-    const checkActiveProfile = async () => {
+    const handleVisible = async () => {
       if (visible) {
-        const activeChild = await AsyncStorage.getItem("activeChildProfile");
-        setActiveChildProfile(activeChild);
-        setCurrentProfileType(activeChild ? "child" : "parent");
-
-        if (!activeChild && auth.currentUser?.email) {
-          await checkEligibility(auth.currentUser.email);
+        await refresh();
+        const user = auth.currentUser;
+        if (user) {
+          if (!activeChildProfile && user.email) {
+            await checkEligibility(user.email);
+          }
+          const userDoc = await getDoc(doc(firestore, "users", user.uid));
+          if (userDoc.exists()) {
+            setAccountType(userDoc.data().accountType ?? null);
+            setManagerialPin(userDoc.data().managerialPin ?? null);
+          }
         }
       }
     };
-
-    checkActiveProfile();
+    handleVisible();
   }, [visible]);
 
   const handleSoundToggle = async (value: boolean) => {
@@ -121,15 +129,13 @@ export default function SettingsModal({
           onPress: async () => {
             try {
               if (isChild) {
-                // Child "logout" - just clear active child profile
-                await AsyncStorage.removeItem("activeChildProfile");
+                // Route to ProfileSelection — it will gate the switch behind the managerial PIN
                 await clearAdminSession();
                 onClose();
                 router.push("/pages/ProfileSelection");
               } else {
                 // Parent logout - full logout
                 await clearAdminSession();
-                await AsyncStorage.clear();
                 await signOut(auth);
                 if (onLogout) {
                   onLogout();
@@ -208,6 +214,35 @@ export default function SettingsModal({
         },
       ],
     );
+  };
+
+  const handleDisableManagedMode = async (pinOverride?: string) => {
+    const pin = pinOverride ?? disableManagedPinInput;
+    if (pin !== managerialPin) {
+      setDisableManagedError("Incorrect PIN");
+      setDisableManagedPinInput("");
+      return;
+    }
+    setIsDisablingManaged(true);
+    try {
+      const user = auth.currentUser;
+      if (!user) return;
+      await updateDoc(doc(firestore, "users", user.uid), {
+        accountType: "independent",
+        managerialPin: null,
+      });
+      setAccountType("independent");
+      setManagerialPin(null);
+      setShowDisableManagedModal(false);
+      setDisableManagedPinInput("");
+      setDisableManagedError("");
+      Alert.alert("Managed Mode Disabled", "This account is now independent.");
+    } catch (error) {
+      console.error("Failed to disable managed mode", error);
+      setDisableManagedError("Failed to update. Please try again.");
+    } finally {
+      setIsDisablingManaged(false);
+    }
   };
 
   return (
@@ -564,6 +599,34 @@ export default function SettingsModal({
               </TouchableOpacity>
             )}
 
+            {/* Disable Managed Mode - only show for parent profile on a managed account */}
+            {currentProfileType === "parent" && accountType === "managed" && (
+              <TouchableOpacity
+                className="flex-row items-center p-4 rounded-xl mb-3"
+                style={{
+                  backgroundColor: palette.errorSoft,
+                  borderWidth: 1,
+                  borderColor: palette.errorSoftBorder,
+                }}
+                onPress={() => {
+                  setDisableManagedPinInput("");
+                  setDisableManagedError("");
+                  setShowDisableManagedModal(true);
+                }}
+              >
+                <Ionicons
+                  name="shield-half-outline"
+                  size={24}
+                  color={palette.errorIcon}
+                  style={{ marginRight: 12 }}
+                />
+                <Text className="font-orbitron-semibold text-white text-base flex-1">
+                  Disable Managed Mode
+                </Text>
+                <Ionicons name="chevron-forward" size={20} color={palette.errorIcon} />
+              </TouchableOpacity>
+            )}
+
             {/*Support*/}
             <TouchableOpacity
               className="flex-row items-center p-4 rounded-xl mb-3"
@@ -732,6 +795,79 @@ export default function SettingsModal({
                 }
               }}
               disabled={isVerifyingAdmin}
+              className="rounded-xl p-4"
+              style={{ backgroundColor: palette.tertiarySoft }}
+            >
+              <Text className="font-orbitron-semibold text-white text-center">
+                {t("Tasks.cancel")}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      {/* Disable Managed Mode PIN Modal */}
+      <Modal
+        animationType={reduceMotion ? "fade" : "slide"}
+        transparent={true}
+        visible={showDisableManagedModal}
+        onRequestClose={() => setShowDisableManagedModal(false)}
+      >
+        <View className="flex-1 justify-center items-center bg-black/70">
+          <View
+            className="w-10/12 max-w-sm rounded-3xl p-6"
+            style={{
+              backgroundColor: "rgba(15, 23, 42, 0.95)",
+              borderWidth: 2,
+              borderColor: palette.errorSoftBorder,
+            }}
+          >
+            <Text className="font-orbitron-semibold text-white text-xl text-center mb-2">
+              Disable Managed Mode
+            </Text>
+            <Text className="font-orbitron text-gray-300 text-center text-xs mb-4">
+              Enter your managerial PIN to remove managed mode from this account.
+            </Text>
+            <TextInput
+              value={disableManagedPinInput}
+              onChangeText={(text) => {
+                setDisableManagedPinInput(text);
+                if (text.length === 4) {
+                  Keyboard.dismiss();
+                  handleDisableManagedMode(text);
+                }
+              }}
+              secureTextEntry
+              keyboardType="number-pad"
+              maxLength={4}
+              returnKeyType="done"
+              onSubmitEditing={() => handleDisableManagedMode()}
+              placeholder="****"
+              placeholderTextColor="rgba(255,255,255,0.4)"
+              className="bg-white/15 text-white text-center text-2xl rounded-xl p-4 mb-2"
+              autoFocus
+            />
+            {disableManagedError ? (
+              <Text className="text-red-400 text-center font-orbitron text-xs mb-3">
+                {disableManagedError}
+              </Text>
+            ) : <View className="mb-3" />}
+            <TouchableOpacity
+              onPress={() => handleDisableManagedMode()}
+              disabled={isDisablingManaged}
+              className="rounded-xl p-4 mb-3"
+              style={{ backgroundColor: palette.errorSoft, borderWidth: 1, borderColor: palette.errorSoftBorder, opacity: isDisablingManaged ? 0.5 : 1 }}
+            >
+              {isDisablingManaged ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text className="font-orbitron-semibold text-white text-center">
+                  Confirm
+                </Text>
+              )}
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => !isDisablingManaged && setShowDisableManagedModal(false)}
+              disabled={isDisablingManaged}
               className="rounded-xl p-4"
               style={{ backgroundColor: palette.tertiarySoft }}
             >

@@ -13,7 +13,7 @@ import { Text } from '../../TTS';
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { auth, firestore } from "../../server/firebase";
-import { collection, doc, setDoc, query, where, getDocs, collectionGroup, serverTimestamp } from "firebase/firestore";
+import { collection, doc, setDoc, query, where, getDocs, serverTimestamp } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
 
 
@@ -25,8 +25,6 @@ export default function CreateChildAccount() {
   const [lastName, setLastName] = useState("");
   const [birthdate, setBirthdate] = useState("");
   const [username, setUsername] = useState("");
-  const [pin, setPin] = useState("");
-  const [confirmPin, setConfirmPin] = useState("");
   const [loading, setLoading] = useState(false);
   const [t, i18n] = useTranslation();
 
@@ -51,18 +49,8 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
 
   const handleCreateChild = async () => {
     // Validation
-    if (!firstName || !lastName || !birthdate || !username || !pin || !confirmPin) {
+    if (!firstName || !lastName || !birthdate || !username) {
       Alert.alert("Missing Information", "Please fill in all fields");
-      return;
-    }
-
-    if (pin.length !== 4) {
-      Alert.alert("Invalid PIN", "PIN must be 4 digits");
-      return;
-    }
-
-    if (pin !== confirmPin) {
-      Alert.alert("PIN Mismatch", "PINs do not match");
       return;
     }
 
@@ -95,8 +83,7 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
       const newChildRef = doc(childrenRef);
 
       await setDoc(newChildRef, {
-        username: username.toLowerCase(), // Store lowercase for consistent queries
-        pin: pin,
+        username: username.toLowerCase(),
         firstName: firstName,
         lastName: lastName,
         birthdate: birthdate,
@@ -206,36 +193,6 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
               value={username}
               onChangeText={(text) => setUsername(text.toLowerCase())}
               autoCapitalize="none"
-            />
-          </View>
-
-          {/* PIN */}
-          <View className="mb-4">
-            <Text className="text-white font-orbitron-semibold mb-2">{t("ManagerPin.pin")}</Text>
-            <TextInput
-              className="bg-white/20 text-white font-orbitron p-4 rounded-xl text-center text-2xl"
-              placeholder="****"
-              placeholderTextColor="rgba(255,255,255,0.5)"
-              value={pin}
-              onChangeText={setPin}
-              secureTextEntry
-              keyboardType="numeric"
-              maxLength={4}
-            />
-          </View>
-
-          {/* Confirm PIN */}
-          <View className="mb-8">
-            <Text className="text-white font-orbitron-semibold mb-2">{t("ManagerPin.confirmPinPlaceholder")}</Text>
-            <TextInput
-              className="bg-white/20 text-white font-orbitron p-4 rounded-xl text-center text-2xl"
-              placeholder="****"
-              placeholderTextColor="rgba(255,255,255,0.5)"
-              value={confirmPin}
-              onChangeText={setConfirmPin}
-              secureTextEntry
-              keyboardType="numeric"
-              maxLength={4}
             />
           </View>
 

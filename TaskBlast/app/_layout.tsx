@@ -18,6 +18,7 @@ import { AudioProvider } from "./context/AudioContext";
 import { NotificationProvider } from "./context/NotificationContext";
 import { AccessibilityProvider } from "./context/AccessibilityContext";
 import { AdminProvider } from "./context/AdminContext";
+import { ActiveProfileProvider } from "./context/ActiveProfileContext";
 import {
   CoachmarkProvider,
   CoachmarkOverlay,
@@ -52,6 +53,7 @@ export default function RootLayout() {
         <TTSProvider>
           <NotificationProvider>
             <AdminProvider>
+              <ActiveProfileProvider>
               <CoachmarkProvider
                 theme={{
                   tooltip: {
@@ -73,6 +75,7 @@ export default function RootLayout() {
                 />
                 <CoachmarkOverlay />
               </CoachmarkProvider>
+              </ActiveProfileProvider>
             </AdminProvider>
           </NotificationProvider>
         </TTSProvider>

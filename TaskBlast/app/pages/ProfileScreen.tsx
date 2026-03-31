@@ -6,11 +6,15 @@ import {
   ScrollView,
   ActivityIndicator,
   Image,
+  Modal,
+  TextInput,
+  Keyboard,
 } from "react-native";
 import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useActiveProfile } from "../context/ActiveProfileContext";
 import { signOut } from "firebase/auth";
 import { auth } from "../../server/firebase";
 import MainButton from "../components/MainButton";
@@ -21,10 +25,7 @@ import {
   getFirestore,
   doc,
   getDoc,
-  collection,
-  query,
-  where,
-  getDocs,
+  updateDoc,
 } from "firebase/firestore";
 import EditProfileModal from "../components/EditProfileModal";
 import TraitsModal from "../components/TraitsModal";
@@ -48,12 +49,9 @@ export default function ProfileScreen() {
   const palette = useColorPalette();
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
-  const [currentProfileType, setCurrentProfileType] = useState<
-    "parent" | "child"
-  >("parent");
-  const [currentChildUsername, setCurrentChildUsername] = useState<
-    string | null
-  >(null);
+  const { activeChildProfile, refresh } = useActiveProfile();
+  const currentProfileType = activeChildProfile ? "child" : "parent";
+  const currentChildUsername = activeChildProfile;
 
   // User data state
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -62,6 +60,12 @@ export default function ProfileScreen() {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isTraitsModalVisible, setIsTraitsModalVisible] = useState(false);
   const [isAnalyticsModalVisible, setIsAnalyticsModalVisible] = useState(false);
+
+  // Disable managed mode state
+  const [showDisableManagedModal, setShowDisableManagedModal] = useState(false);
+  const [disableManagedPinInput, setDisableManagedPinInput] = useState("");
+  const [disableManagedError, setDisableManagedError] = useState("");
+  const [isDisablingManaged, setIsDisablingManaged] = useState(false);
 
   // Stats state
   const [statsValues, setStatsValues] = useState<number[]>([]);
@@ -114,35 +118,19 @@ export default function ProfileScreen() {
 
         const db = getFirestore();
 
-        // Check if a child profile is active
-        const activeChild = await AsyncStorage.getItem("activeChildProfile");
+        const { activeChildProfile: freshActive, childDocId: freshChildDocId } = await refresh();
 
         let profileData = null;
 
-        if (activeChild) {
-          // Child is active - load from child's document
-          const childrenRef = collection(
-            db,
-            "users",
-            currentUser.uid,
-            "children",
-          );
-          const childQuery = query(
-            childrenRef,
-            where("username", "==", activeChild),
-          );
-          const childSnapshot = await getDocs(childQuery);
-
-          if (!childSnapshot.empty) {
-            const childDoc = childSnapshot.docs[0];
+        if (freshActive && freshChildDocId) {
+          const childDoc = await getDoc(doc(db, "users", currentUser.uid, "children", freshChildDocId));
+          if (childDoc.exists()) {
             const childData = childDoc.data();
-
-            // Map child data to UserProfile format
             profileData = {
               uid: currentUser.uid,
               firstName: childData.firstName || "",
               lastName: childData.lastName || "",
-              displayName: childData.firstName || "Child", // Use firstName as display name for children
+              displayName: childData.firstName || "Child",
               email: currentUser.email || "",
               birthdate: childData.birthdate || "",
               profilePicture: childData.profilePicture,
@@ -150,8 +138,7 @@ export default function ProfileScreen() {
               awards: childData.awards || [],
             };
           }
-        } else {
-          // Parent is active - load from parent's document
+        } else if (!freshActive) {
           profileData = await getUserProfile(currentUser.uid);
         }
 
@@ -193,31 +180,20 @@ export default function ProfileScreen() {
 
       const db = getFirestore();
 
-      // Check if a child profile is active
-      const activeChild = await AsyncStorage.getItem("activeChildProfile");
+      const { activeChildProfile: freshActive, childDocId: freshChildDocId } = await refresh();
 
       let userDoc;
 
-      if (activeChild) {
-        // Child is active - load from child's document
-        const { collection, query, where, getDocs } =
-          await import("firebase/firestore");
-        const childrenRef = collection(db, "users", user.uid, "children");
-        const childQuery = query(
-          childrenRef,
-          where("username", "==", activeChild),
-        );
-        const childSnapshot = await getDocs(childQuery);
-
-        if (!childSnapshot.empty) {
-          const childDocData = childSnapshot.docs[0];
-          userDoc = childDocData;
-        } else {
+      if (freshActive && freshChildDocId) {
+        userDoc = await getDoc(doc(db, "users", user.uid, "children", freshChildDocId));
+        if (!userDoc.exists()) {
           console.warn("Child profile not found");
           return;
         }
+      } else if (freshActive && !freshChildDocId) {
+        console.warn("Child profile not found");
+        return;
       } else {
-        // Parent is active - load from parent's document
         userDoc = await getDoc(doc(db, "users", user.uid));
       }
 
@@ -271,19 +247,31 @@ export default function ProfileScreen() {
     }
   }, []);
 
-  // Load current profile on mount
-  useEffect(() => {
-    loadCurrentProfile();
-  }, []);
-
-  const loadCurrentProfile = async () => {
-    const activeChild = await AsyncStorage.getItem("activeChildProfile");
-    if (activeChild) {
-      setCurrentProfileType("child");
-      setCurrentChildUsername(activeChild);
-    } else {
-      setCurrentProfileType("parent");
-      setCurrentChildUsername(null);
+  const handleDisableManagedMode = async (pinOverride?: string) => {
+    const pin = pinOverride ?? disableManagedPinInput;
+    if (pin !== userProfile?.managerialPin) {
+      setDisableManagedError("Incorrect PIN");
+      setDisableManagedPinInput("");
+      return;
+    }
+    setIsDisablingManaged(true);
+    try {
+      const currentUser = auth.currentUser;
+      if (!currentUser) return;
+      const db = getFirestore();
+      await updateDoc(doc(db, "users", currentUser.uid), {
+        accountType: "independent",
+        managerialPin: null,
+      });
+      setUserProfile(userProfile ? { ...userProfile, accountType: "independent", managerialPin: null } : null);
+      setShowDisableManagedModal(false);
+      setDisableManagedPinInput("");
+      setDisableManagedError("");
+    } catch (error) {
+      console.error("Failed to disable managed mode", error);
+      setDisableManagedError("Failed to update. Please try again.");
+    } finally {
+      setIsDisablingManaged(false);
     }
   };
 
@@ -803,15 +791,42 @@ export default function ProfileScreen() {
             </View>
           </View>
 
-          {/* Add Child Button - NEW */}
-          <View className="items-center mb-4">
-            <MainButton
-              title={t("Profile.AddChildAccount")}
-              variant="primary"
-              onPress={() => router.push("/pages/CreateChildAccount")}
-              customStyle={{ width: "80%" }}
-            />
-          </View>
+          {/* Add Child Button - only for main profile */}
+          {currentProfileType === "parent" && (
+            <View className="items-center mb-4">
+              <MainButton
+                title={t("Profile.AddChildAccount")}
+                variant="primary"
+                onPress={() => router.push("/pages/CreateChildAccount")}
+                customStyle={{ width: "80%" }}
+              />
+            </View>
+          )}
+
+          {/* Disable Managed Mode - only for main profile on a managed account */}
+          {currentProfileType === "parent" && userProfile?.accountType === "managed" && (
+            <View className="items-center mb-4">
+              <TouchableOpacity
+                onPress={() => {
+                  setDisableManagedPinInput("");
+                  setDisableManagedError("");
+                  setShowDisableManagedModal(true);
+                }}
+                className="flex-row items-center justify-center px-6 py-3 rounded-full"
+                style={{
+                  width: "80%",
+                  backgroundColor: "rgba(239, 68, 68, 0.2)",
+                  borderWidth: 2,
+                  borderColor: "rgba(239, 68, 68, 0.4)",
+                }}
+              >
+                <Ionicons name="shield-half-outline" size={18} color="#f87171" style={{ marginRight: 8 }} />
+                <Text className="font-orbitron-semibold text-red-400 text-base">
+                  Disable Managed Mode
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
           {/* Switch Profile Button */}
           <View className="items-center mb-4">
@@ -866,6 +881,84 @@ export default function ProfileScreen() {
         playLabels={playLabels}
         playTimes={playTimes}
       />
+      {/* Disable Managed Mode Modal */}
+      <Modal
+        visible={showDisableManagedModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowDisableManagedModal(false)}
+      >
+        <View className="flex-1 justify-center items-center bg-black/70">
+          <View
+            className="w-10/12 max-w-sm rounded-3xl p-6"
+            style={{
+              backgroundColor: "rgba(15, 23, 42, 0.97)",
+              borderWidth: 2,
+              borderColor: "rgba(239, 68, 68, 0.4)",
+            }}
+          >
+            <Text className="font-orbitron-semibold text-white text-xl text-center mb-2">
+              Disable Managed Mode
+            </Text>
+            <Text className="font-orbitron text-gray-300 text-center text-xs mb-4">
+              Enter your managerial PIN to remove managed mode from this account.
+            </Text>
+            <TextInput
+              value={disableManagedPinInput}
+              onChangeText={(text) => {
+                setDisableManagedPinInput(text);
+                if (text.length === 4) {
+                  Keyboard.dismiss();
+                  handleDisableManagedMode(text);
+                }
+              }}
+              secureTextEntry
+              keyboardType="number-pad"
+              maxLength={4}
+              returnKeyType="done"
+              onSubmitEditing={handleDisableManagedMode}
+              placeholder="****"
+              placeholderTextColor="rgba(255,255,255,0.4)"
+              className="bg-white/15 text-white text-center text-2xl rounded-xl p-4 mb-2"
+              autoFocus
+            />
+            {disableManagedError ? (
+              <Text className="text-red-400 text-center font-orbitron text-xs mb-3">
+                {disableManagedError}
+              </Text>
+            ) : <View className="mb-3" />}
+            <TouchableOpacity
+              onPress={handleDisableManagedMode}
+              disabled={isDisablingManaged}
+              className="rounded-xl p-4 mb-3"
+              style={{
+                backgroundColor: "rgba(239, 68, 68, 0.3)",
+                borderWidth: 1,
+                borderColor: "rgba(239, 68, 68, 0.5)",
+                opacity: isDisablingManaged ? 0.5 : 1,
+              }}
+            >
+              {isDisablingManaged ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text className="font-orbitron-semibold text-white text-center">
+                  Confirm
+                </Text>
+              )}
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => !isDisablingManaged && setShowDisableManagedModal(false)}
+              disabled={isDisablingManaged}
+              className="rounded-xl p-4"
+              style={{ backgroundColor: "rgba(255,255,255,0.1)" }}
+            >
+              <Text className="font-orbitron-semibold text-white text-center">
+                Cancel
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }

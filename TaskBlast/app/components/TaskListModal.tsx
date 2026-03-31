@@ -7,6 +7,7 @@ import {
   TextInput,
   Image,
   Alert,
+  Keyboard,
 } from "react-native";
 import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
@@ -23,12 +24,9 @@ import {
   serverTimestamp,
   Timestamp,
   getDoc,
-  getDocs,
-  where,
-  query,
 } from "firebase/firestore";
 import { useNotifications } from "../context/NotificationContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useActiveProfile } from "../context/ActiveProfileContext";
 import { useTranslation } from "react-i18next";
 import { useColorPalette } from "../styles/colorBlindThemes";
 import {
@@ -121,50 +119,13 @@ export default function TaskListModal({
     },
   ]);
 
-  // Child profile state
-  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
-    null,
-  );
-  const [childDocId, setChildDocId] = useState<string | null>(null);
-
-  // Helper to get the correct tasks collection reference
-  const getTasksCollectionRef = () => {
-    if (!auth.currentUser) throw new Error("No authenticated user");
-
-    if (childDocId) {
-      // Child tasks: users/{parentId}/children/{childId}/tasks
-      return collection(
-        db,
-        "users",
-        auth.currentUser.uid,
-        "children",
-        childDocId,
-        "tasks",
-      );
-    } else {
-      // Parent tasks: users/{parentId}/tasks
-      return collection(db, "users", auth.currentUser.uid, "tasks");
-    }
-  };
-
-  // Helper to get task document reference
-  const getTaskDocRef = (taskId: string) => {
-    if (!auth.currentUser) throw new Error("No authenticated user");
-
-    if (childDocId) {
-      return doc(
-        db,
-        "users",
-        auth.currentUser.uid,
-        "children",
-        childDocId,
-        "tasks",
-        taskId,
-      );
-    } else {
-      return doc(db, "users", auth.currentUser.uid, "tasks", taskId);
-    }
-  };
+  const {
+    activeChildProfile,
+    childDocId,
+    getTasksCollectionRef,
+    getTaskDocRef,
+    refresh,
+  } = useActiveProfile();
 
   // Reset to normal mode when modal becomes visible
   useEffect(() => {
@@ -176,7 +137,7 @@ export default function TaskListModal({
     }
   }, [visible]);
 
-  // Load profile and fetch child doc ID if needed
+  // Load profile metadata (accountType, managerialPin) and refresh active profile
   useEffect(() => {
     const loadProfileAndTasks = async () => {
       if (!auth.currentUser) {
@@ -186,33 +147,7 @@ export default function TaskListModal({
       }
 
       try {
-        // Check if a child profile is active
-        const activeChild = await AsyncStorage.getItem("activeChildProfile");
-        setActiveChildProfile(activeChild);
-
-        // If child is active, find their document ID
-        if (activeChild) {
-          const childrenRef = collection(
-            db,
-            "users",
-            auth.currentUser.uid,
-            "children",
-          );
-          const childrenQuery = query(
-            childrenRef,
-            where("username", "==", activeChild),
-          );
-          const childrenSnapshot = await getDocs(childrenQuery);
-
-          if (!childrenSnapshot.empty) {
-            const childDoc = childrenSnapshot.docs[0];
-            setChildDocId(childDoc.id);
-          } else {
-            setChildDocId(null);
-          }
-        } else {
-          setChildDocId(null);
-        }
+        await refresh();
 
         // Fetch user data to get accountType and managerialPin
         const userDocRef = doc(db, "users", auth.currentUser.uid);
@@ -229,8 +164,10 @@ export default function TaskListModal({
       }
     };
 
-    loadProfileAndTasks();
-  }, [auth.currentUser]);
+    if (visible) {
+      loadProfileAndTasks();
+    }
+  }, [auth.currentUser, visible]);
 
   // Separate useEffect for tasks listener (runs after childDocId is set)
   useEffect(() => {
@@ -593,12 +530,33 @@ export default function TaskListModal({
 
     setPinInput(newPin);
 
-    // Auto-focus next input if digit entered
     if (sanitized && index < 3) {
-      // Small delay to prevent the number from showing
       setTimeout(() => {
         pinRefs.current[index + 1]?.focus();
       }, 0);
+    }
+
+    // Auto-submit when 4th digit is entered, using newPin directly (not stale state)
+    if (newPin.length === 4) {
+      Keyboard.dismiss();
+      if (newPin === managerialPin) {
+        if (showUnarchivePinModal) {
+          setShowUnarchivePinModal(false);
+          setPinInput("");
+          setPinError("");
+          if (pendingUnarchiveTaskId) {
+            handleUnarchiveTask(pendingUnarchiveTaskId);
+            setPendingUnarchiveTaskId(null);
+          }
+        } else {
+          setIsEditMode(true);
+          setShowPinModal(false);
+          setPinInput("");
+          setPinError("");
+        }
+      } else {
+        setPinError("Incorrect PIN. Please try again.");
+      }
     }
   };
 

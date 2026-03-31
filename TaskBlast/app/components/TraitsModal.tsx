@@ -8,13 +8,13 @@ import {
 } from "react-native";
 import { Text } from '../../TTS';
 import { Ionicons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   updateUserProfile,
   type UserProfile,
 } from "../../server/userProfileUtils";
 import { auth } from "../../server/firebase";
-import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
+import { useActiveProfile } from "../context/ActiveProfileContext";
 import { useTranslation } from "react-i18next";
 
 
@@ -55,34 +55,12 @@ export default function TraitsModal({
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState("");
   
-  // Child profile state
-  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(null);
-  const [childDocId, setChildDocId] = useState<string | null>(null);
+  const { activeChildProfile, childDocId, refresh } = useActiveProfile();
   const { t } = useTranslation();
 
-  // Check for active child profile
   useEffect(() => {
-    const checkActiveProfile = async () => {
-      const activeChild = await AsyncStorage.getItem("activeChildProfile");
-      setActiveChildProfile(activeChild);
-      
-      if (activeChild && auth.currentUser) {
-        // Find child's document ID
-        const db = getFirestore();
-        const childrenRef = collection(db, "users", auth.currentUser.uid, "children");
-        const childQuery = query(childrenRef, where("username", "==", activeChild));
-        const childSnapshot = await getDocs(childQuery);
-        
-        if (!childSnapshot.empty) {
-          setChildDocId(childSnapshot.docs[0].id);
-        }
-      } else {
-        setChildDocId(null);
-      }
-    };
-    
     if (visible) {
-      checkActiveProfile();
+      refresh();
     }
   }, [visible]);
 

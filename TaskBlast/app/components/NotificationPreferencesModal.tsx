@@ -77,7 +77,7 @@ function TimePicker({ value, onChange, palette }: TimePickerProps) {
           marginBottom: 4,
         }}
       >
-        Reminder Time
+        Daily Reminder Time
       </Text>
       <DateTimePicker
         value={date}

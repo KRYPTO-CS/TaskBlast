@@ -13,6 +13,7 @@ import {
 import { Text } from "../../TTS";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useActiveProfile } from "../context/ActiveProfileContext";
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
 import {
@@ -20,10 +21,6 @@ import {
   doc,
   getDoc,
   updateDoc,
-  collection,
-  query,
-  where,
-  getDocs,
 } from "firebase/firestore";
 import { useAudioPlayer } from "expo-audio";
 import MainButton from "../components/MainButton";
@@ -123,11 +120,7 @@ export default function HomeScreen() {
     [t],
   );
 
-  // Child profile state
-  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
-    null,
-  );
-  const [childDocId, setChildDocId] = useState<string | null>(null);
+  const { childDocId, activeChildProfile, refresh } = useActiveProfile();
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -149,27 +142,13 @@ export default function HomeScreen() {
       }
 
       const db = getFirestore();
-
-      // Check if a child profile is active
-      const activeChild = await AsyncStorage.getItem("activeChildProfile");
-      setActiveChildProfile(activeChild);
+      const { activeChildProfile: freshActive, childDocId: freshChildDocId } = await refresh();
 
       let userDoc;
 
-      if (activeChild) {
-        // Child is active - find child's document
-        const childrenRef = collection(db, "users", user.uid, "children");
-        const childQuery = query(
-          childrenRef,
-          where("username", "==", activeChild),
-        );
-        const childSnapshot = await getDocs(childQuery);
-
-        if (!childSnapshot.empty) {
-          const childDocData = childSnapshot.docs[0];
-          setChildDocId(childDocData.id);
-          userDoc = childDocData;
-        } else {
+      if (freshActive && freshChildDocId) {
+        userDoc = await getDoc(doc(db, "users", user.uid, "children", freshChildDocId));
+        if (!userDoc.exists()) {
           console.warn("Child profile not found");
           setRocks(0);
           setGalaxyCrystals(0);
@@ -178,9 +157,15 @@ export default function HomeScreen() {
           setClaimedRewardLevels([]);
           return;
         }
+      } else if (freshActive && !freshChildDocId) {
+        console.warn("Child profile not found");
+        setRocks(0);
+        setGalaxyCrystals(0);
+        setCurrentExp(0);
+        setCurrentLevel(1);
+        setClaimedRewardLevels([]);
+        return;
       } else {
-        // Parent is active - load from parent's document
-        setChildDocId(null);
         userDoc = await getDoc(doc(db, "users", user.uid));
       }
 
@@ -224,7 +209,7 @@ export default function HomeScreen() {
       setCurrentLevel(1);
       setClaimedRewardLevels([]);
     }
-  }, []);
+  }, [refresh]);
 
   const handleClaimBattlePassReward = async (level: number) => {
     if (level < 1 || level > maxBattlePassLevel) return;
