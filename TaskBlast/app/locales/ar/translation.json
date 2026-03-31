@@ -119,7 +119,14 @@
     "highContrast": "تباين عالٍ",
     "reduceMotion": "تقليل الحركة",
     "tts": "تحويل النص إلى كلام",
-    "done": "تم"
+    "ttsDesc": "قراءة محتوى الشاشة بصوت عالٍ",
+    "done": "تم",
+    "logout": "تسجيل الخروج",
+    "switchProfile": "تبديل الملف الشخصي",
+    "logoutText": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+    "parentAccount": "👤 حساب الوالدين",
+    "noFilter": "بدون فلتر",
+    "customize": "اضغط للتخصيص"
   },
   "Tasks": {
     "title": "قائمة المهام",
@@ -143,8 +150,49 @@
     "editTask": "تعديل مهمة",
     "save": "حفظ",
     "coachMarkdesc": "هنا يمكنك إدارة مهامك. اضغط على مهمة لعرض التفاصيل، بدء جلسة تركيز أو تعديلها. استخدم علامات التبويب للتبديل بين المهام النشطة والمؤرشفة.",
-    "Done": "تم"
+    "Done": "تم",
+    "TaskName": "اسم المهمة",
+    "description": "الوصف",
+    "reward2": "المكافأة",
+    "status": "الحالة",
+    "complete": "مكتمل",
+    "incomplete": "غير مكتمل",
+    "yes": "نعم",
+    "no": "لا",
+    "workTime": "وقت العمل",
+    "playTime": "وقت الراحة",
+    "Cycles": "الدورات",
+    "created": "تم الإنشاء",
+    "details": "معلومات المهمة",
+    "close": "إغلاق",
+    "managerAccess": "الوصول إلى الإدارة",
+    "managerAccessDesc": "أدخل رمز PIN من 4 أرقام للوصول إلى وضع التحرير مع الصلاحيات المرتفعة.",
+    "unlock": "فتح القفل"
+
   },
+
+  "Traits": {
+
+  "ADHD" : "ADHD",
+  "Aspergers": "Aspergers",
+  "Autism": "Autism",
+  "DevelopmentalLanguageDisorder": "Developmental Language Disorder",
+  "Disability Confident": "Disability Confident",
+  "Dyscalculia": "Dyscalculia",
+  "Dysgraphia": "Dysgraphia",
+  "Dyslexia": "Dyslexia",
+  "Dyspraxia": "Dyspraxia",
+  "Hyperlexia": "Hyperlexia",
+  "Irlen Syndrome": "Irlen Syndrome",
+  "OCD": "OCD",
+  "Synthesia": "Synthesia",
+  "Tourette's Syndrome": "Tourette's Syndrome",
+  "selectTraits": "اختر الخصائص",
+  "saveTraits"  : "احفظ الخصائص"
+
+  },
+
+
   "Profile": {
     "traits": "الخصائص",
     "editP": "تعديل الملف الشخصي",
@@ -167,7 +215,9 @@
     "coachMarkAwardsTitle": "عرض الجوائز",
     "coachMarkAwards": "هنا يمكنك رؤية جوائزك وإنجازاتك!",
     "coachMarkStatsTitle": "عرض الإحصائيات",
-    "coachMarkStats": "هنا يمكنك رؤية إحصائياتك وتتبع تقدمك مع مرور الوقت!"
+    "coachMarkStats": "هنا يمكنك رؤية إحصائياتك وتتبع تقدمك مع مرور الوقت!",
+    "edit": "تعديل",
+    "advanced": "متقدم"
   },
   "Pomodoro": {
     "time": "الوقت المتبقي",
@@ -179,7 +229,11 @@
     "coachMarkTime": "هذا هو الوقت المتبقي في جلستك الحالية في النهاية ستتمكن من الهبوط مرة أخرى على كوكبك أو لعب لعبة. ركز وشاهد العد التنازلي!",
     "coachMarkwork": "هذا يشير إلى ما إذا كنت في جلسة عمل أو استراحة. ابق مركزًا أثناء جلسات العمل واسترخ أثناء الاستراحات!",
     "coachMarkPause": "اضغط هنا لإيقاف جلستك مؤقتًا إذا كنت بحاجة إلى أخذ استراحة غير مجدولة.",
-    "coachMarkLand": "اضغط هنا لإنهاء جلستك والهبوط مرة أخرى على كوكبك. عمل رائع على وقت تركيزك!"
+    "coachMarkLand": "اضغط هنا لإنهاء جلستك والهبوط مرة أخرى على كوكبك. عمل رائع على وقت تركيزك!",
+    "worksession": "جلسة العمل",
+    "freeTime": "وقت الفراغ",
+    "startTask": "ابدأ المهمة",
+    "ChooseGame": "اختر لعبتك"
   },
   "Shop": {
     "title": "المتجر",
@@ -208,5 +262,24 @@
     "game2048Desc": "Merge tiles. Aim for 2048!",
     "sequentBlast": "Sequent Blast",
     "sequentBlastDesc": "Memorize and tap the hidden sequence."
+  },
+  "ChildAccount": {
+    "title": "إنشاء حساب طفل",
+    "firstName": "أدخل الاسم الأول",
+    "lastName": "أدخل الاسم الأخير",
+    "birthdate": "تاريخ الميلاد",
+    "username": "اسم المستخدم",
+    "usernameDesc": "اختر اسم مستخدم فريد",
+    "create": "إنشاء حساب طفل"
+  },
+  "ProfileSelection": {
+    "title": "من يستخدم TaskBlast؟",
+    "parentProfile": "حساب الوالدين",
+    "childProfile": "حساب الطفل",
+    "desc": "لا توجد حسابات أطفال بعد.",
+    "desc2": "أنشئ واحدة من حساب الوالدين",
+    "text": "أو اختر الطفل",
+    "EnterPin": "أدخل PIN لـ"
   }
+
 }

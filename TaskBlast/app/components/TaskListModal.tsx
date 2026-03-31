@@ -1207,12 +1207,11 @@ export default function TaskListModal({
                 <Ionicons name="shield-checkmark" size={40} color="#fbbf24" />
               </View>
               <Text className="font-orbitron-bold text-yellow-300 text-2xl text-center">
-                Manager Access
+                {t("Tasks.managerAccess")}
               </Text>
             </View>
             <Text className="font-madimi text-yellow-100/80 text-sm mb-6 text-center">
-              Enter the 4-digit PIN to access edit mode with elevated
-              permissions.
+              {t("Tasks.managerAccessDesc")}
             </Text>
 
             <View className="mb-4">
@@ -1262,7 +1261,7 @@ export default function TaskListModal({
                 className="flex-1 bg-gray-500/30 py-3 rounded-xl items-center border-2 border-gray-400/30"
               >
                 <Text className="font-orbitron-bold text-white text-base">
-                  Cancel
+                  ({t("Tasks.cancel")})
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -1275,7 +1274,7 @@ export default function TaskListModal({
                 }`}
               >
                 <Text className="font-orbitron-bold text-white text-base">
-                  Unlock
+                  {t("Tasks.unlock")}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -1297,11 +1296,11 @@ export default function TaskListModal({
                 <Ionicons name="shield-checkmark" size={40} color="#fbbf24" />
               </View>
               <Text className="font-orbitron-bold text-yellow-300 text-2xl text-center">
-                Manager Access
+                {t("Tasks.managerAccess")}
               </Text>
             </View>
             <Text className="font-madimi text-yellow-100/80 text-sm mb-6 text-center">
-              Enter the 4-digit PIN to unarchive this task.
+              {t("Tasks.managerAccessDesc")}
             </Text>
 
             <View className="mb-4">
@@ -1351,7 +1350,7 @@ export default function TaskListModal({
                 className="flex-1 bg-gray-500/30 py-3 rounded-xl items-center border-2 border-gray-400/30"
               >
                 <Text className="font-orbitron-bold text-white text-base">
-                  Cancel
+                  ({t("Tasks.cancel")})
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -1364,7 +1363,7 @@ export default function TaskListModal({
                 }`}
               >
                 <Text className="font-orbitron-bold text-white text-base">
-                  Unlock
+                  {t("Tasks.unlock")}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -1383,7 +1382,7 @@ export default function TaskListModal({
           <View className="bg-[#1a1f3a] w-full max-w-sm rounded-3xl p-6 border-2 border-purple-500/30 shadow-2xl">
             <View className="flex-row justify-between items-center mb-4">
               <Text className="font-orbitron-bold text-white text-2xl">
-                Task Info
+                {t("Tasks.details")}
               </Text>
               <TouchableOpacity
                 onPress={handleCloseInfo}
@@ -1397,7 +1396,7 @@ export default function TaskListModal({
               <View>
                 <View className="bg-purple-500/10 border-2 border-purple-400/30 rounded-2xl p-4 mb-4">
                   <Text className="font-madimi text-purple-300 text-sm mb-1">
-                    Task Name
+                    {t("Tasks.TaskName")}
                   </Text>
                   <Text className="font-orbitron-bold text-white text-lg mb-4">
                     {selectedTask.name}
@@ -1406,7 +1405,7 @@ export default function TaskListModal({
                   {selectedTask.description && (
                     <>
                       <Text className="font-madimi text-purple-300 text-sm mb-1">
-                        Description
+                        {t("Tasks.description")}
                       </Text>
                       <Text className="font-madimi text-white text-base mb-4">
                         {selectedTask.description}
@@ -1415,7 +1414,7 @@ export default function TaskListModal({
                   )}
 
                   <Text className="font-madimi text-purple-300 text-sm mb-1">
-                    Reward
+                    {t("Tasks.reward2")}
                   </Text>
                   <View className="flex-row items-center mb-4">
                     <Image
@@ -1430,7 +1429,7 @@ export default function TaskListModal({
                   </View>
 
                   <Text className="font-madimi text-purple-300 text-sm mb-1">
-                    Status
+                    {t("Tasks.status")}
                   </Text>
                   <View className="flex-row items-center mb-4">
                     <View
@@ -1447,13 +1446,13 @@ export default function TaskListModal({
                             : "text-gray-300"
                         }`}
                       >
-                        {selectedTask.completed ? "Complete" : "Incomplete"}
+                        {selectedTask.completed ? t("Tasks.complete") : t("Tasks.incomplete")}
                       </Text>
                     </View>
                   </View>
 
                   <Text className="font-madimi text-purple-300 text-sm mb-1">
-                    Allow Minimization
+                    {t("Tasks.min")}
                   </Text>
                   <View className="flex-row items-center mb-4">
                     <View
@@ -1470,18 +1469,18 @@ export default function TaskListModal({
                             : "text-red-300"
                         }`}
                       >
-                        {selectedTask.allowMinimization ? "Yes" : "No"}
+                        {selectedTask.allowMinimization ? t("Tasks.yes") : t("Tasks.no")}
                       </Text>
                     </View>
                   </View>
 
                   <Text className="font-madimi text-purple-300 text-sm mb-1">
-                    Pomodoro Settings
+                    {t("Tasks.settings")}
                   </Text>
                   <View className="flex-row justify-between mb-4">
                     <View className="bg-purple-600/20 border border-purple-500/40 rounded-lg px-3 py-2 flex-1 mr-2">
                       <Text className="font-madimi text-purple-300 text-xs mb-1">
-                        Work Time
+                        {t("Tasks.workTime")}
                       </Text>
                       <Text className="font-orbitron-bold text-white text-base">
                         {selectedTask.workTime} min
@@ -1489,7 +1488,7 @@ export default function TaskListModal({
                     </View>
                     <View className="bg-purple-600/20 border border-purple-500/40 rounded-lg px-3 py-2 flex-1 mr-2">
                       <Text className="font-madimi text-purple-300 text-xs mb-1">
-                        Play Time
+                        {t("Tasks.playTime")}
                       </Text>
                       <Text className="font-orbitron-bold text-white text-base">
                         {selectedTask.playTime} min
@@ -1497,7 +1496,7 @@ export default function TaskListModal({
                     </View>
                     <View className="bg-purple-600/20 border border-purple-500/40 rounded-lg px-3 py-2 flex-1">
                       <Text className="font-madimi text-purple-300 text-xs mb-1">
-                        Cycles
+                        {t("Tasks.Cycles")}
                       </Text>
                       <Text className="font-orbitron-bold text-white text-base">
                         {selectedTask.cycles === -1
@@ -1508,7 +1507,7 @@ export default function TaskListModal({
                   </View>
 
                   <Text className="font-madimi text-purple-300 text-sm mb-1">
-                    Created
+                    {t("Tasks.created")}
                   </Text>
                   <Text className="font-madimi text-white text-base mb-4">
                     {new Date(
@@ -1528,7 +1527,7 @@ export default function TaskListModal({
                   className="bg-purple-500 py-3 rounded-xl items-center border-2 border-purple-400/30"
                 >
                   <Text className="font-orbitron-bold text-white text-base">
-                    Close
+                    {t("Tasks.close")}
                   </Text>
                 </TouchableOpacity>
               </View>

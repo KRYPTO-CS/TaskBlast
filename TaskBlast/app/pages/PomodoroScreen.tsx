@@ -64,9 +64,9 @@ export default function PomodoroScreen() {
 
   const getSingleParam = (value: string | string[] | undefined) =>
     Array.isArray(value) ? value[0] : value;
-
+  const { t, i18n } = useTranslation();
   // Extract task parameters from route params
-  const taskName = getSingleParam(params.taskName) || "Work Session";
+  const taskName = getSingleParam(params.taskName) || t("Pomodoro.worksession");
   const workTime = Number.parseInt(getSingleParam(params.workTime) || "25", 10);
   const playTime = Number.parseInt(getSingleParam(params.playTime) || "5", 10);
   const cycles = Number.parseInt(getSingleParam(params.cycles) || "1", 10);
@@ -81,7 +81,7 @@ export default function PomodoroScreen() {
       : undefined;
   const allowMinimization = params.allowMinimization === "true" || false;
   const { start } = useCoachmark();
-  const { t, i18n } = useTranslation();
+  //const { t, i18n } = useTranslation();
   const onboardingTour = React.useMemo(
     () =>
       createTour("onboarding", [
@@ -742,7 +742,7 @@ export default function PomodoroScreen() {
               }}
             >
               <Text className="font-madimi text-white text-base">
-                {inFreeTimeMode ? "Free Time" : taskName}
+                {inFreeTimeMode ? t("Pomodoro.freeTime") : taskName}
               </Text>
             </View>
           )}
@@ -807,7 +807,7 @@ export default function PomodoroScreen() {
             <CoachmarkAnchor id="pause-button" shape="circle">
               {inFreeTimeMode ? (
                 <MainButton
-                  title="Start Task"
+                  title={t("Pomodoro.startTask")}
                   onPress={handleStartTask}
                   variant="warning"
                   testID="start-task-button"

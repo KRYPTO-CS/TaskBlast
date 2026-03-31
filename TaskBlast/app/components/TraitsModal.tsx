@@ -15,6 +15,9 @@ import {
 } from "../../server/userProfileUtils";
 import { auth } from "../../server/firebase";
 import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
+import { useTranslation } from "react-i18next";
+
+
 
 interface TraitsModalProps {
   visible: boolean;
@@ -55,6 +58,7 @@ export default function TraitsModal({
   // Child profile state
   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(null);
   const [childDocId, setChildDocId] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   // Check for active child profile
   useEffect(() => {
@@ -175,7 +179,7 @@ export default function TraitsModal({
                 textShadowRadius: 15,
               }}
             >
-              Select Traits
+              {t("Traits.selectTraits")}
             </Text>
             <TouchableOpacity
               onPress={handleCancel}
@@ -273,7 +277,7 @@ export default function TraitsModal({
               }}
             >
               <Text className="font-orbitron-semibold text-white text-base">
-                Cancel
+                {t("Tasks.cancel")}
               </Text>
             </TouchableOpacity>
 
@@ -297,7 +301,7 @@ export default function TraitsModal({
                 <ActivityIndicator size="small" color="white" />
               ) : (
                 <Text className="font-orbitron-semibold text-white text-base">
-                  Save Traits
+                  {t("Traits.saveTraits")}
                 </Text>
               )}
             </TouchableOpacity>

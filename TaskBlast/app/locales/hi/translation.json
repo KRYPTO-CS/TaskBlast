@@ -119,7 +119,14 @@
     "highContrast": "हाई कंट्रास्ट",
     "reduceMotion": "एनीमेशन कम करें",
     "tts": "टेक्स्ट टू स्पीच",
-    "done": "हो गया"
+    "ttsDesc": "स्क्रीन सामग्री को जोर से पढ़ें",
+    "done": "हो गया",
+    "logout": "लॉग आउट",
+    "switchProfile": "प्रोफ़ाइल बदलें",
+    "logoutText": "क्या आप वाकई लॉग आउट करना चाहते हैं?",
+    "parentAccount": "👤 माता-पिता खाता",
+    "noFilter": "कोई फ़िल्टर नहीं",
+    "customize": "अनुकूलित करने के लिए टैप करें"
   },
   "Tasks": {
     "title": "कार्य",
@@ -143,8 +150,47 @@
     "editTask": "कार्य संपादित करें",
     "save": "सहेजें",
     "coachMarkdesc": "यहां आप अपने कार्यों का प्रबंधन कर सकते हैं। विवरण देखने, एक फोकस सत्र शुरू करने या इसे संपादित करने के लिए किसी कार्य पर टैप करें। सक्रिय और संग्रहीत कार्यों के बीच स्विच करने के लिए टैब का उपयोग करें।",
-    "Done": "पूर्ण"
+    "Done": "पूर्ण",
+    "TaskName": "कार्य का नाम",
+    "description": "विवरण",
+    "reward2": "पुरस्कार",
+    "status": "स्थिति",
+    "complete": "पूर्ण",
+    "incomplete": "अपूर्ण",
+    "yes": "हाँ",
+    "no": "नहीं",
+    "workTime": "कार्य समय",
+    "playTime": "प्ले समय",
+    "Cycles": "साइकिलें",
+    "created": "बनाया गया",
+    "details": "कार्य की जानकारी",
+    "close": "बंद करें",
+    "managerAccess": "प्रबंधक पहुंच",
+    "managerAccessDesc": "उन्नत अनुमतियों के साथ संपादन मोड तक पहुंचने के लिए 4-अंकीय PIN दर्ज करें।",
+    "unlock": "अनलॉक करें"
   },
+
+  "Traits": {
+
+  "ADHD" : "ADHD",
+  "Aspergers": "Aspergers",
+  "Autism": "Autism",
+  "DevelopmentalLanguageDisorder": "Developmental Language Disorder",
+  "Disability Confident": "Disability Confident",
+  "Dyscalculia": "Dyscalculia",
+  "Dysgraphia": "Dysgraphia",
+  "Dyslexia": "Dyslexia",
+  "Dyspraxia": "Dyspraxia",
+  "Hyperlexia": "Hyperlexia",
+  "Irlen Syndrome": "Irlen Syndrome",
+  "OCD": "OCD",
+  "Synthesia": "Synthesia",
+  "Tourette's Syndrome": "Tourette's Syndrome",
+  "selectTraits": "ट्रेट्स चुनें",
+  "saveTraits"  : "ट्रेट्स सहेजें"
+
+  },
+
   "Profile": {
     "traits": "Traits",
     "editP": "प्रोफ़ाइल संपादित करें",
@@ -167,7 +213,9 @@
     "coachMarkAwardsTitle": "पुरस्कार देखें",
     "coachMarkAwards": "यहां आप अपने पुरस्कार और उपलब्धियां देख सकते हैं!",
     "coachMarkStatsTitle": "आंकड़े देखें",
-    "coachMarkStats": "यहां आप अपने आंकड़े देख सकते हैं और समय के साथ अपनी प्रगति को ट्रैक कर सकते हैं!"
+    "coachMarkStats": "यहां आप अपने आंकड़े देख सकते हैं और समय के साथ अपनी प्रगति को ट्रैक कर सकते हैं!",
+    "edit": "संपादित करें",
+    "advanced": "उन्नत"
   },
   "Pomodoro": {
     "time": "शेष समय",
@@ -179,7 +227,11 @@
     "coachMarkTime": "यह आपके वर्तमान सत्र में शेष समय है, अंत में आप अपने ग्रह पर वापस उतर सकते हैं या एक खेल खेल सकते हैं। ध्यान केंद्रित करें और इसे उलटी गिनती देखें!",
     "coachMarkwork": "यह दर्शाता है कि आप कार्य सत्र में हैं या ब्रेक में हैं। कार्य सत्र के दौरान ध्यान केंद्रित रहें और ब्रेक के दौरान आराम करें!",
     "coachMarkPause": "यदि आपको एक अनियोजित ब्रेक लेने की आवश्यकता है, तो अपने सत्र को रोकने के लिए यहां टैप करें।",
-    "coachMarkLand": "अपने सत्र को समाप्त करने और अपने ग्रह पर वापस उतरने के लिए यहां टैप करें। आपके फोकस समय पर शानदार काम!"
+    "coachMarkLand": "अपने सत्र को समाप्त करने और अपने ग्रह पर वापस उतरने के लिए यहां टैप करें। आपके फोकस समय पर शानदार काम!",
+    "worksession": "कार्य सत्र",
+    "freeTime": "फ्री टाइम",
+    "startTask": "कार्य शुरू करें",
+    "ChooseGame": "अपना खेल चुनें"
   },
   "Shop": {
     "title": "दुकान",
@@ -208,5 +260,24 @@
     "game2048Desc": "Merge tiles. Aim for 2048!",
     "sequentBlast": "Sequent Blast",
     "sequentBlastDesc": "Memorize and tap the hidden sequence."
+  },
+  "ChildAccount": {
+    "title": "बच्चे का खाता बनाएं",
+    "firstName": "पहला नाम दर्ज करें",
+    "lastName": "अंतिम नाम दर्ज करें",
+    "birthdate": "जन्मतिथि",
+    "username": "उपयोगकर्ता नाम",
+    "usernameDesc": "एक अद्वितीय उपयोगकर्ता नाम चुनें",
+    "create": "बच्चे का खाता बनाएं"
+  },
+  "ProfileSelection": {
+    "title": "TaskBlast का उपयोग कौन कर रहा है?",
+    "parentProfile": " माता-पिता खाता",
+    "childProfile": " बच्चा खाता",
+    "desc": "अभी तक कोई बच्चा खाता नहीं है।",
+    "desc2": "माता-पिता खाता से एक बनाएं",
+    "text": "या बच्चा चुनें",
+    "EnterPin": "के लिए PIN दर्ज करें"
   }
+
 }
