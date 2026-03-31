@@ -34,6 +34,7 @@ import { useAudio } from "../context/AudioContext";
 import { useTranslation } from "react-i18next";
 import { useNotifications } from "../context/NotificationContext";
 import { useColorPalette } from "../styles/colorBlindThemes";
+import { claimTaskReward } from "../services/economyService";
 import {
   CoachmarkAnchor,
   useCoachmark,
@@ -60,6 +61,11 @@ export default function PomodoroScreen() {
   const params = useLocalSearchParams();
   const { notifyTimerComplete } = useNotifications();
   const palette = useColorPalette();
+   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
+      null,
+    );
+    const [childDocId, setChildDocId] = useState<string | null>(null);
+  
 
   const getSingleParam = (value: string | string[] | undefined) =>
     Array.isArray(value) ? value[0] : value;
@@ -144,7 +150,29 @@ export default function PomodoroScreen() {
         if (!user) return;
 
         const db = getFirestore();
-        const taskRef = doc(db, "users", user.uid, "tasks", taskId);
+        const activeChild = await AsyncStorage.getItem("activeChildProfile");
+
+        let taskRef;
+        if (activeChild) {
+          // Check for active child's task
+          const childrenRef = collection(db, "users", user.uid, "children");
+          const childQuery = query(
+            childrenRef,
+            where("username", "==", activeChild),
+          );
+          const childSnapshot = await getDocs(childQuery);
+
+          if (!childSnapshot.empty) {
+            const childDoc = childSnapshot.docs[0];
+            taskRef = doc(db, "users", user.uid, "children", childDoc.id, "tasks", taskId);
+          } else {
+            console.warn("Child profile not found for task check, using parent");
+            taskRef = doc(db, "users", user.uid, "tasks", taskId);
+          }
+        } else {
+          taskRef = doc(db, "users", user.uid, "tasks", taskId);
+        }
+
         const taskDoc = await getDoc(taskRef);
 
         if (taskDoc.exists()) {
@@ -169,7 +197,28 @@ export default function PomodoroScreen() {
         if (!user) return;
 
         const db = getFirestore();
-        const userRef = doc(db, "users", user.uid);
+        const activeChild = await AsyncStorage.getItem("activeChildProfile");
+
+        let userRef;
+        if (activeChild) {
+          // Check for active child's profile
+          const childrenRef = collection(db, "users", user.uid, "children");
+          const childQuery = query(
+            childrenRef,
+            where("username", "==", activeChild),
+          );
+          const childSnapshot = await getDocs(childQuery);
+
+          if (!childSnapshot.empty) {
+            userRef = childSnapshot.docs[0].ref;
+          } else {
+            console.warn("Child profile not found for equipped items, using parent");
+            userRef = doc(db, "users", user.uid);
+          }
+        } else {
+          userRef = doc(db, "users", user.uid);
+        }
+
         const userDoc = await getDoc(userRef);
 
         if (userDoc.exists()) {
@@ -252,7 +301,28 @@ export default function PomodoroScreen() {
       if (!user) return;
 
       const db = getFirestore();
-      const taskRef = doc(db, "users", user.uid, "tasks", taskId);
+      const activeChild = await AsyncStorage.getItem("activeChildProfile");
+
+      let taskRef;
+      if (activeChild) {
+        // Check for active child's task
+        const childrenRef = collection(db, "users", user.uid, "children");
+        const childQuery = query(
+          childrenRef,
+          where("username", "==", activeChild),
+        );
+        const childSnapshot = await getDocs(childQuery);
+
+        if (!childSnapshot.empty) {
+          const childDoc = childSnapshot.docs[0];
+          taskRef = doc(db, "users", user.uid, "children", childDoc.id, "tasks", taskId);
+        } else {
+          console.warn("Child profile not found for task update, using parent");
+          taskRef = doc(db, "users", user.uid, "tasks", taskId);
+        }
+      } else {
+        taskRef = doc(db, "users", user.uid, "tasks", taskId);
+      }
 
       await updateDoc(taskRef, {
         completedCycles: increment(1),
@@ -276,6 +346,8 @@ export default function PomodoroScreen() {
             completed: true,
           });
           setIsTaskCompleted(true);
+
+
           console.log("Task marked as completed!");
         }
       }
@@ -516,6 +588,65 @@ export default function PomodoroScreen() {
     } catch (e) {
       console.warn("Audio player error on land:", e);
     }
+
+    // Award rocks from task reward if task exists
+    if (taskId) {
+      try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        if (!user) {
+          router.back();
+          return;
+        }
+
+        const db = getFirestore();
+        const activeChild = await AsyncStorage.getItem("activeChildProfile");
+
+        let taskRef;
+        let childDocIdForReward: string | null = null;
+
+        if (activeChild) {
+          // Check for active child's task
+          const childrenRef = collection(db, "users", user.uid, "children");
+          const childQuery = query(
+            childrenRef,
+            where("username", "==", activeChild),
+          );
+          const childSnapshot = await getDocs(childQuery);
+
+          if (!childSnapshot.empty) {
+            const childDoc = childSnapshot.docs[0];
+            childDocIdForReward = childDoc.id;
+            taskRef = doc(db, "users", user.uid, "children", childDoc.id, "tasks", taskId);
+          } else {
+            console.warn("Child profile not found for task reward, using parent");
+            taskRef = doc(db, "users", user.uid, "tasks", taskId);
+          }
+        } else {
+          taskRef = doc(db, "users", user.uid, "tasks", taskId);
+        }
+
+        const taskDoc = await getDoc(taskRef);
+
+        if (taskDoc.exists()) {
+          const taskData = taskDoc.data();
+          const taskReward = taskData.reward || 0;
+
+          if (taskReward > 0) {
+            // Claim the task reward
+            await claimTaskReward({
+              taskId,
+              reward: taskReward,
+              childDocId: childDocIdForReward,
+            });
+            console.log("Claimed task reward:", taskReward);
+          }
+        }
+      } catch (error) {
+        console.error("Error claiming task reward on land:", error);
+      }
+    }
+
     router.back();
   };
 

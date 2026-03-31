@@ -107,11 +107,16 @@ export default function ShopModal({
       try {
         const auth = getAuth();
         const user = auth.currentUser;
-        if (!user) return;
+        if (!user) {
+          console.log("[ShopModal] No user found");
+          return;
+        }
 
+        console.log("[ShopModal] Loading shop data for user:", user.uid);
         const db = getFirestore();
 
         const shopSnapshot = await getDocs(collection(db, "shopItems"));
+        console.log("[ShopModal] Fetched", shopSnapshot.docs.length, "shop items from database");
         const catalogFromDb = shopSnapshot.docs
           .map((docSnap) => {
             const data = docSnap.data() as {
@@ -167,8 +172,10 @@ export default function ShopModal({
 
         if (catalogFromDb.length > 0) {
           setShopItems(catalogFromDb);
+          console.log("[ShopModal] Loaded", catalogFromDb.length, "shop items from database");
         } else {
           setShopItems(fallbackShopItems);
+          console.log("[ShopModal] No shop items in database, using fallback catalog");
         }
 
         const userDocRef = doc(db, "users", user.uid);
@@ -179,10 +186,19 @@ export default function ShopModal({
 
           // Load rocks balance
           const rocksValue = userData.rocks || 0;
-          setRocks(isNaN(rocksValue) ? 0 : Math.max(0, Math.floor(rocksValue)));
+          const finalRocks = isNaN(rocksValue) ? 0 : Math.max(0, Math.floor(rocksValue));
+          setRocks(finalRocks);
+          console.log("[ShopModal] Loaded user rocks balance:", finalRocks);
 
           let needsUpdate = false;
           const updates: any = {};
+
+          // Check if rocks field exists, if not create it
+          if (userData.rocks === undefined) {
+            updates.rocks = 0;
+            needsUpdate = true;
+            console.log("[ShopModal] Database update needed: Creating rocks field");
+          }
 
           // Check if shopItems exist, if not create them
           if (!userData.shopItems) {
@@ -192,9 +208,10 @@ export default function ShopModal({
             };
             setUnlockedItems(updates.shopItems);
             needsUpdate = true;
-            console.log("Created shopItems for user");
+            console.log("[ShopModal] Database update needed: Creating shopItems");
           } else {
             setUnlockedItems(userData.shopItems);
+            console.log("[ShopModal] Loaded user shopItems");
           }
 
           // Check if equipped array exists, if not create it
@@ -202,14 +219,19 @@ export default function ShopModal({
             updates.equipped = [0, 1];
             setEquipped([0, 1]);
             needsUpdate = true;
-            console.log("Created equipped array for user");
+            console.log("[ShopModal] Database update needed: Creating equipped array");
           } else {
             setEquipped(userData.equipped);
+            console.log("[ShopModal] Loaded user equipped array:", userData.equipped);
           }
 
           // Update Firebase if needed
           if (needsUpdate) {
+            console.log("[ShopModal] Applying database updates:", Object.keys(updates));
             await updateDoc(userDocRef, updates);
+            console.log("[ShopModal] Database updates completed successfully");
+          } else {
+            console.log("[ShopModal] No database updates needed");
           }
         }
       } catch (error) {
@@ -283,18 +305,33 @@ export default function ShopModal({
       }
 
       const newUnlockedItems = purchaseResult.shopItems || { ...unlockedItems };
+      const newRocksAmount =
+        typeof purchaseResult.newRocks === "number"
+          ? purchaseResult.newRocks
+          : Math.max(0, rocks - item.price);
+
+      console.log("[ShopModal] Purchase confirmed for item:", item.id, "Price:", item.price);
+      console.log("[ShopModal] Rocks before:", rocks, "Rocks after:", newRocksAmount);
 
       // Update local state
       setUnlockedItems(newUnlockedItems);
-      setRocks(
-        typeof purchaseResult.newRocks === "number"
-          ? purchaseResult.newRocks
-          : Math.max(0, rocks - item.price),
-      );
+      setRocks(newRocksAmount);
+
+      // Update rocks in Firebase database
+      try {
+        const auth = getAuth();
+        const userRef = doc(getFirestore(), "users", auth.currentUser?.uid || "");
+        console.log("[ShopModal] Updating rocks in database to:", newRocksAmount);
+        await updateDoc(userRef, { rocks: newRocksAmount });
+        console.log("[ShopModal] Database update for rocks completed successfully");
+      } catch (error) {
+        console.error("[ShopModal] Error updating rocks in database:", error);
+      }
 
       // Notify parent component to refresh rocks
       if (onRocksChange) {
         onRocksChange();
+        console.log("[ShopModal] Notified parent component of rocks change");
       }
 
       // Close confirmation modal

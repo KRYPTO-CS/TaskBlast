@@ -690,4 +690,230 @@ describe("ShopModal – Color Blind Integration", () => {
       expect(deutNodes.length).toBe(0);
     });
   });
+
+  // ── Database Operations ────────────────────────────────────────────────────
+
+  describe("Database Operations", () => {
+    it("logs when loading shop data for a user", async () => {
+      const consoleSpy = jest.spyOn(console, "log");
+
+      render(<ShopModal {...defaultProps} />);
+      await waitFor(() => expect(getDoc).toHaveBeenCalled());
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringContaining("[ShopModal] Loading shop data for user:"),
+      );
+
+      consoleSpy.mockRestore();
+    });
+
+    it("logs when fetching shop items from database", async () => {
+      const consoleSpy = jest.spyOn(console, "log");
+
+      render(<ShopModal {...defaultProps} />);
+      await waitFor(() => expect(getDoc).toHaveBeenCalled());
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringContaining("[ShopModal] Fetched"),
+        expect.any(Number),
+        expect.stringContaining("shop items from database"),
+      );
+
+      consoleSpy.mockRestore();
+    });
+
+    it("logs when loading user rocks balance", async () => {
+      const consoleSpy = jest.spyOn(console, "log");
+
+      render(<ShopModal {...defaultProps} />);
+      await waitFor(() => expect(getDoc).toHaveBeenCalled());
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringContaining("[ShopModal] Loaded user rocks balance:"),
+        expect.any(Number),
+      );
+
+      consoleSpy.mockRestore();
+    });
+
+    it("logs database update when creating rocks field", async () => {
+      const consoleSpy = jest.spyOn(console, "log");
+
+      (getDoc as jest.Mock).mockResolvedValue({
+        exists: () => true,
+        data: () => ({
+          shopItems: {
+            body: [true, false, false, false],
+            wings: [false, true, false, false],
+          },
+          equipped: [0, 1],
+          // rocks field intentionally missing
+        }),
+      });
+
+      render(<ShopModal {...defaultProps} />);
+      await waitFor(() => expect(getDoc).toHaveBeenCalled());
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        "[ShopModal] Database update needed: Creating rocks field",
+      );
+
+      consoleSpy.mockRestore();
+    });
+
+    it("logs database update when creating shopItems", async () => {
+      const consoleSpy = jest.spyOn(console, "log");
+
+      (getDoc as jest.Mock).mockResolvedValue({
+        exists: () => true,
+        data: () => ({
+          rocks: 100,
+          equipped: [0, 1],
+          // shopItems field intentionally missing
+        }),
+      });
+
+      render(<ShopModal {...defaultProps} />);
+      await waitFor(() => expect(getDoc).toHaveBeenCalled());
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        "[ShopModal] Database update needed: Creating shopItems",
+      );
+
+      consoleSpy.mockRestore();
+    });
+
+    it("logs when applying database updates", async () => {
+      const consoleSpy = jest.spyOn(console, "log");
+
+      (getDoc as jest.Mock).mockResolvedValue({
+        exists: () => true,
+        data: () => ({
+          rocks: 100,
+          // shopItems and equipped fields intentionally missing
+        }),
+      });
+
+      render(<ShopModal {...defaultProps} />);
+      await waitFor(() => expect(getDoc).toHaveBeenCalled());
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        "[ShopModal] Applying database updates:",
+        expect.any(Array),
+      );
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        "[ShopModal] Database updates completed successfully",
+      );
+
+      consoleSpy.mockRestore();
+    });
+
+    it("logs when no database updates are needed", async () => {
+      const consoleSpy = jest.spyOn(console, "log");
+
+      render(<ShopModal {...defaultProps} />);
+      await waitFor(() => expect(getDoc).toHaveBeenCalled());
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        "[ShopModal] No database updates needed",
+      );
+
+      consoleSpy.mockRestore();
+    });
+
+    it("logs purchase confirmation with item price and rocks change", async () => {
+      const consoleSpy = jest.spyOn(console, "log");
+
+      const { getByText } = render(<ShopModal {...defaultProps} />);
+      await waitFor(() => expect(getDoc).toHaveBeenCalled());
+
+      fireEvent.press(getByText("Red Body"));
+      await waitFor(() => getByText("Confirm Purchase"));
+
+      fireEvent.press(getByText("Purchase"));
+
+      await waitFor(() => {
+        expect(consoleSpy).toHaveBeenCalledWith(
+          expect.stringContaining("[ShopModal] Purchase confirmed for item:"),
+          expect.any(String),
+          expect.stringContaining("Price:"),
+          expect.any(Number),
+        );
+      });
+
+      consoleSpy.mockRestore();
+    });
+
+    it("logs rocks balance change before and after purchase", async () => {
+      const consoleSpy = jest.spyOn(console, "log");
+
+      const { getByText } = render(<ShopModal {...defaultProps} />);
+      await waitFor(() => expect(getDoc).toHaveBeenCalled());
+
+      fireEvent.press(getByText("Red Body"));
+      await waitFor(() => getByText("Confirm Purchase"));
+
+      fireEvent.press(getByText("Purchase"));
+
+      await waitFor(() => {
+        expect(consoleSpy).toHaveBeenCalledWith(
+          expect.stringContaining("[ShopModal] Rocks before:"),
+          expect.any(Number),
+          expect.stringContaining("Rocks after:"),
+          expect.any(Number),
+        );
+      });
+
+      consoleSpy.mockRestore();
+    });
+
+    it("logs database update when saving new rocks balance", async () => {
+      const consoleSpy = jest.spyOn(console, "log");
+
+      const { getByText } = render(<ShopModal {...defaultProps} />);
+      await waitFor(() => expect(getDoc).toHaveBeenCalled());
+
+      fireEvent.press(getByText("Red Body"));
+      await waitFor(() => getByText("Confirm Purchase"));
+
+      fireEvent.press(getByText("Purchase"));
+
+      await waitFor(() => {
+        expect(consoleSpy).toHaveBeenCalledWith(
+          expect.stringContaining("[ShopModal] Updating rocks in database to:"),
+          expect.any(Number),
+        );
+
+        expect(consoleSpy).toHaveBeenCalledWith(
+          "[ShopModal] Database update for rocks completed successfully",
+        );
+      });
+
+      consoleSpy.mockRestore();
+    });
+
+    it("logs when parent component is notified of rocks change", async () => {
+      const consoleSpy = jest.spyOn(console, "log");
+      const onRocksChange = jest.fn();
+
+      const { getByText } = render(
+        <ShopModal {...defaultProps} onRocksChange={onRocksChange} />,
+      );
+      await waitFor(() => expect(getDoc).toHaveBeenCalled());
+
+      fireEvent.press(getByText("Red Body"));
+      await waitFor(() => getByText("Confirm Purchase"));
+
+      fireEvent.press(getByText("Purchase"));
+
+      await waitFor(() => {
+        expect(consoleSpy).toHaveBeenCalledWith(
+          "[ShopModal] Notified parent component of rocks change",
+        );
+      });
+
+      consoleSpy.mockRestore();
+    });
+  });
 });

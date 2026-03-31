@@ -23,6 +23,7 @@ export interface UserProfile {
  * @returns UserProfile object or null if not found
  */
 export const getUserProfile = async (userId: string): Promise<UserProfile | null> => {
+ 
   try {
     const userDocRef = doc(firestore, "users", userId);
     const userDoc = await getDoc(userDocRef);
