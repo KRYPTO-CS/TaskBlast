@@ -9,6 +9,15 @@ interface BaseResponse {
 export interface AwardGameRewardsResponse extends BaseResponse {
   awardedRocks?: number;
   newRocks?: number;
+  rewardDebug?: {
+    baseReward: number;
+    multiplier: number;
+    effectivePlanet: number;
+    requestedPlanet: number;
+    unlockedPlanet: number;
+    requestedPlanetRaw: number | null;
+    appliedReward: number;
+  };
 }
 
 export interface ClaimTaskRewardResponse extends BaseResponse {
@@ -49,6 +58,7 @@ export const awardGameRewards = async (payload: {
   score: number;
   highestTile: number;
   playTimeMinutes: number;
+  activePlanetId?: number;
 }): Promise<AwardGameRewardsResponse> => {
   const callable = httpsCallable<typeof payload, AwardGameRewardsResponse>(
     functions,

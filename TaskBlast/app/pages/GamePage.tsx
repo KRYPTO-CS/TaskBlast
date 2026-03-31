@@ -34,8 +34,95 @@ try {
   WebView = null;
 }
 
+type GodotSkinsPayload = {
+  type: "skins";
+  data1: string;
+  data2: string;
+  data3: string;
+  data4: string;
+  data5: string;
+  bodyId: number;
+  wingsId: number;
+  gameId: number;
+  planetId: number;
+  colorBlindMode: number;
+};
+
+const COLOR_BLIND_MODE_MAP: Record<string, number> = {
+  none: 0,
+  deuteranopia: 1,
+  protanopia: 2,
+  tritanopia: 3,
+};
+
+const normalizeInt = (
+  value: unknown,
+  fallback: number,
+  min?: number,
+  max?: number,
+): number => {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) {
+    return fallback;
+  }
+
+  let result = Math.floor(parsed);
+  if (typeof min === "number") {
+    result = Math.max(min, result);
+  }
+  if (typeof max === "number") {
+    result = Math.min(max, result);
+  }
+  return result;
+};
+
+const buildGodotSkinsPayload = ({
+  bodyId,
+  wingsId,
+  gameId,
+  planetId,
+  colorBlindMode,
+}: {
+  bodyId: number;
+  wingsId: number;
+  gameId: number;
+  planetId: number;
+  colorBlindMode: string;
+}): GodotSkinsPayload => {
+  const safeBodyId = normalizeInt(bodyId, 0, 0);
+  const safeWingsId = normalizeInt(wingsId, 1, 0);
+  const safeGameId = normalizeInt(gameId, 0, 0);
+  // SpaceShooter JSB multiplier mapping currently expects slots 1-9.
+  const safePlanetId = normalizeInt(planetId, 1, 1, 9);
+  const colorBlindModeValue = normalizeInt(
+    COLOR_BLIND_MODE_MAP[colorBlindMode] ?? 0,
+    0,
+    0,
+    3,
+  );
+
+  return {
+    type: "skins",
+    // Legacy positional contract used by JSB callback parsing.
+    data1: String(safeBodyId),
+    data2: String(safeWingsId),
+    data3: String(safeGameId),
+    data4: String(safePlanetId),
+    data5: String(colorBlindModeValue),
+    // Named aliases for future compatibility and diagnostics.
+    bodyId: safeBodyId,
+    wingsId: safeWingsId,
+    gameId: safeGameId,
+    planetId: safePlanetId,
+    colorBlindMode: colorBlindModeValue,
+  };
+};
+
 export default function GamePage() {
   const [loading, setLoading] = useState(true);
+  const [isWebViewLoaded, setIsWebViewLoaded] = useState(false);
+  const [isPlanetConfigLoaded, setIsPlanetConfigLoaded] = useState(false);
+  const [isEquippedConfigLoaded, setIsEquippedConfigLoaded] = useState(false);
   const webviewRef = useRef<any>(null);
   const router = useRouter();
   const params = useLocalSearchParams();
@@ -65,6 +152,13 @@ export default function GamePage() {
     null,
   );
   const skinSyncCountRef = useRef(0);
+  const pendingSendTimeoutsRef = useRef<Array<ReturnType<typeof setTimeout>>>(
+    [],
+  );
+  const sendMessageToGodotRef = useRef<(reason?: string) => void>(() => {});
+  const scheduleConfigSendRef = useRef<
+    (reason: string, delayMs: number) => void
+  >(() => {});
 
   useEffect(() => {
     const loadActivePlanetId = async () => {
@@ -72,12 +166,14 @@ export default function GamePage() {
         const storedActivePlanetId = await AsyncStorage.getItem(
           ACTIVE_PLANET_STORAGE_KEY,
         );
-        const parsed = Number(storedActivePlanetId);
-        if (Number.isFinite(parsed) && parsed >= 1) {
-          setActivePlanetId(Math.floor(parsed));
+        const parsed = normalizeInt(storedActivePlanetId, 1, 1, 9);
+        if (storedActivePlanetId !== null) {
+          setActivePlanetId(parsed);
         }
       } catch (err) {
         console.warn("Failed to load active planet id", err);
+      } finally {
+        setIsPlanetConfigLoaded(true);
       }
     };
 
@@ -104,6 +200,11 @@ export default function GamePage() {
         clearInterval(skinSyncIntervalRef.current);
         skinSyncIntervalRef.current = null;
       }
+
+      pendingSendTimeoutsRef.current.forEach((timeoutId) => {
+        clearTimeout(timeoutId);
+      });
+      pendingSendTimeoutsRef.current = [];
     };
   }, []);
 
@@ -114,8 +215,12 @@ export default function GamePage() {
         score,
         highestTile,
         playTimeMinutes: playTime,
+        activePlanetId,
       });
       console.log(`Game rewards applied: +${result.awardedRocks ?? 0} rocks`);
+      if (result.rewardDebug) {
+        console.log("Reward debug:", result.rewardDebug);
+      }
     } catch (err) {
       console.warn("Failed to save rocks to database", err);
     }
@@ -167,6 +272,8 @@ export default function GamePage() {
         }
       } catch (err) {
         console.warn("Failed to load equipped items", err);
+      } finally {
+        setIsEquippedConfigLoaded(true);
       }
     };
 
@@ -310,7 +417,7 @@ export default function GamePage() {
         } else if (payload.type === "testMessage") {
           console.log("Godot Initialized");
           godotReadyRef.current = true;
-          sendMessageToGodot("godot-handshake");
+          sendMessageToGodotRef.current("godot-handshake");
 
           if (isSpaceSwerve) {
             if (skinSyncIntervalRef.current) {
@@ -322,7 +429,9 @@ export default function GamePage() {
             // Keep syncing briefly while the game scene fully initializes.
             skinSyncIntervalRef.current = setInterval(() => {
               skinSyncCountRef.current += 1;
-              sendMessageToGodot(`godot-sync-${skinSyncCountRef.current}`);
+              sendMessageToGodotRef.current(
+                `godot-sync-${skinSyncCountRef.current}`,
+              );
               if (
                 skinSyncCountRef.current >= 8 &&
                 skinSyncIntervalRef.current
@@ -334,8 +443,8 @@ export default function GamePage() {
           }
 
           // Some game scenes apply skins only after entities spawn.
-          setTimeout(() => sendMessageToGodot("godot-handshake-retry-1"), 600);
-          setTimeout(() => sendMessageToGodot("godot-handshake-retry-2"), 1800);
+          scheduleConfigSendRef.current("godot-handshake-retry-1", 600);
+          scheduleConfigSendRef.current("godot-handshake-retry-2", 1800);
         } else if (payload.type === "ack") {
           console.log("Godot ack:", payload);
         } else if (payload.type === "ackInjected") {
@@ -349,67 +458,47 @@ export default function GamePage() {
         console.warn("Invalid message from WebView:", event.nativeEvent.data);
       }
     },
-    [equipped, gameId, colorBlindMode, activePlanetId, isSpaceSwerve],
+    [isSpaceSwerve],
   );
 
   const sendMessageToGodot = useCallback(
     (reason = "manual") => {
-      // Map colorBlindMode to numeric value: none=0, deuteranopia=1, protanopia=2, tritanopia=3
-      const colorBlindModeMap: Record<string, number> = {
-        none: 0,
-        deuteranopia: 1,
-        protanopia: 2,
-        tritanopia: 3,
-      };
-      const colorBlindModeValue = colorBlindModeMap[colorBlindMode] ?? 0;
+      const isBridgeReady =
+        isWebViewLoaded &&
+        isPlanetConfigLoaded &&
+        isEquippedConfigLoaded &&
+        godotReadyRef.current;
 
-      const bodyId = Number.isFinite(equipped[0]) ? Math.floor(equipped[0]) : 0;
-      const wingsId = Number.isFinite(equipped[1])
-        ? Math.floor(equipped[1])
-        : 1;
-      const safeGameId = Number.isFinite(gameId) ? Math.floor(gameId) : 0;
-      const safePlanetId = Number.isFinite(activePlanetId)
-        ? Math.floor(activePlanetId)
-        : 1;
+      if (!isBridgeReady || !webviewRef.current) {
+        console.log("Skipping skins send; bridge not ready yet.");
+        console.log("Send reason:", reason);
+        return;
+      }
+
+      const payload = buildGodotSkinsPayload({
+        bodyId: equipped[0],
+        wingsId: equipped[1],
+        gameId,
+        planetId: activePlanetId,
+        colorBlindMode,
+      });
 
       console.log("Sending skins message to Godot.");
       console.log("Send reason:", reason);
       console.log("Current equipped values:", equipped);
       console.log("Game ID:", gameId);
       console.log("Active planet ID:", activePlanetId);
-      console.log(
-        "Colorblind mode:",
-        colorBlindMode,
-        "->",
-        colorBlindModeValue,
-      );
+      console.log("Colorblind mode:", colorBlindMode, "->", payload.data5);
 
-      const sendPayload = (type: string) => {
-        const payload = {
-          type,
-          // Keep legacy positional fields as strings for strict Godot comparisons.
-          data1: String(bodyId),
-          data2: String(wingsId),
-          data3: String(safeGameId),
-          data4: String(safePlanetId),
-          data5: String(colorBlindModeValue),
-          // Named aliases for newer contracts.
-          bodyId,
-          wingsId,
-          gameId: safeGameId,
-          planetId: safePlanetId,
-          colorBlindMode: colorBlindModeValue,
-        };
+      const payloadString = JSON.stringify(payload);
 
-        const payloadString = JSON.stringify(payload);
+      // Path 1: standard RN WebView -> page message channel.
+      webviewRef.current.postMessage(payloadString);
 
-        // Path 1: standard RN WebView -> page message channel.
-        webviewRef.current?.postMessage(payloadString);
-
-        // Path 2: direct fallback for pages that do not receive message events consistently.
-        const escapedPayload = JSON.stringify(payloadString);
-        webviewRef.current?.injectJavaScript(
-          `(() => {
+      // Path 2: direct fallback for pages that do not receive message events consistently.
+      const escapedPayload = JSON.stringify(payloadString);
+      webviewRef.current.injectJavaScript(
+        `(() => {
           try {
             const raw = ${escapedPayload};
             const msg = JSON.parse(raw);
@@ -418,13 +507,7 @@ export default function GamePage() {
             }
             const enableCbCompatibility = ${isSpaceSwerve ? "true" : "false"};
             if (enableCbCompatibility && typeof window.cb === "function") {
-              // Compatibility calls for different callback signatures used by Godot scenes.
               window.cb(msg.type, msg.data1, msg.data2, msg.data3, msg.data4, msg.data5);
-              window.cb(msg.type, Number(msg.data1), Number(msg.data2), Number(msg.data3), Number(msg.data4), Number(msg.data5));
-              window.cb(msg.type, msg.data1, msg.data2);
-              window.cb(msg.type, Number(msg.data1), Number(msg.data2));
-              window.cb(msg.data1, msg.data2);
-              window.cb(Number(msg.data1), Number(msg.data2));
             }
             if (window.ReactNativeWebView) {
               window.ReactNativeWebView.postMessage(JSON.stringify({ type: "ackInjected", received: msg.type }));
@@ -435,14 +518,37 @@ export default function GamePage() {
             }
           }
         })(); true;`,
-        );
-      };
-
-      // Both Space Swerve and Asteroid Blaster use the same stable contract.
-      sendPayload("skins");
+      );
     },
-    [equipped, gameId, activePlanetId, colorBlindMode],
+    [
+      equipped,
+      gameId,
+      activePlanetId,
+      colorBlindMode,
+      isSpaceSwerve,
+      isWebViewLoaded,
+      isPlanetConfigLoaded,
+      isEquippedConfigLoaded,
+    ],
   );
+
+  const scheduleConfigSend = useCallback(
+    (reason: string, delayMs: number) => {
+      const timeoutId = setTimeout(() => {
+        sendMessageToGodot(reason);
+      }, delayMs);
+      pendingSendTimeoutsRef.current.push(timeoutId);
+    },
+    [sendMessageToGodot],
+  );
+
+  useEffect(() => {
+    sendMessageToGodotRef.current = sendMessageToGodot;
+  }, [sendMessageToGodot]);
+
+  useEffect(() => {
+    scheduleConfigSendRef.current = scheduleConfigSend;
+  }, [scheduleConfigSend]);
 
   useEffect(() => {
     if (!loading && godotReadyRef.current) {
@@ -450,6 +556,9 @@ export default function GamePage() {
     }
   }, [
     loading,
+    isWebViewLoaded,
+    isPlanetConfigLoaded,
+    isEquippedConfigLoaded,
     equipped,
     gameId,
     activePlanetId,
@@ -508,9 +617,10 @@ export default function GamePage() {
             testID="webview"
             style={styles.webview}
             onLoadEnd={() => {
+              setIsWebViewLoaded(true);
               setLoading(false);
               // Try once after the page is loaded in case handshake arrives late.
-              setTimeout(() => sendMessageToGodot("webview-load-end"), 250);
+              scheduleConfigSend("webview-load-end", 250);
             }}
             startInLoadingState
             allowsInlineMediaPlayback

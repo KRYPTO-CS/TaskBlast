@@ -15,6 +15,58 @@ import { render, fireEvent, waitFor, act } from "@testing-library/react-native";
 import GamePage from "../app/pages/GamePage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
+import { AccessibilityContext } from "../app/context/AccessibilityContext";
+import { getDoc } from "firebase/firestore";
+
+jest.mock("../TTS", () => ({
+  Text: ({ children, ...props }: any) => {
+    const { Text } = require("react-native");
+    return <Text {...props}>{children}</Text>;
+  },
+}));
+
+const getSkinsPayloads = () => {
+  const postMessageCalls = ((global as any).mockWebView?.postMessage?.mock
+    ?.calls ?? []) as string[][];
+  return postMessageCalls
+    .map((call) => {
+      try {
+        return JSON.parse(call[0]);
+      } catch {
+        return null;
+      }
+    })
+    .filter((payload) => payload?.type === "skins");
+};
+
+const renderWithColorBlindMode = (
+  colorBlindMode: "none" | "deuteranopia" | "protanopia" | "tritanopia",
+) => {
+  return render(
+    <AccessibilityContext.Provider
+      value={
+        {
+          language: "en",
+          colorBlindMode,
+          textSize: "medium",
+          highContrast: false,
+          reduceMotion: false,
+          ttsEnabled: false,
+          setLanguage: jest.fn(async () => undefined),
+          setColorBlindMode: jest.fn(async () => undefined),
+          setTextSize: jest.fn(async () => undefined),
+          setHighContrast: jest.fn(async () => undefined),
+          setReduceMotion: jest.fn(async () => undefined),
+          setTtsEnabled: jest.fn(async () => undefined),
+          textScale: 1,
+          isLoading: false,
+        } as any
+      }
+    >
+      <GamePage />
+    </AccessibilityContext.Provider>,
+  );
+};
 
 describe("Game Screen", () => {
   beforeEach(async () => {
@@ -187,6 +239,11 @@ describe("Game Screen", () => {
 
     it("should apply negative score deltas without going below zero", async () => {
       const { getByTestId } = render(<GamePage />);
+
+      await waitFor(() => {
+        expect(AsyncStorage.removeItem).toHaveBeenCalledWith("game_score");
+      });
+
       await AsyncStorage.setItem("game_score", "50");
       jest.clearAllMocks();
 
@@ -268,6 +325,109 @@ describe("Game Screen", () => {
 
       expect(consoleSpy).toHaveBeenCalled();
       consoleSpy.mockRestore();
+    });
+  });
+
+  describe("Bridge Contract", () => {
+    it("should send skins payload with legacy and named fields after handshake", async () => {
+      const mockGetDoc = getDoc as jest.Mock;
+      mockGetDoc.mockResolvedValue({
+        exists: () => true,
+        data: () => ({ equipped: [2, 3] }),
+      });
+
+      (AsyncStorage.getItem as jest.Mock).mockImplementation(async (key) => {
+        if (key === "active_planet_id") {
+          return "9";
+        }
+        return null;
+      });
+
+      const { getByTestId } = renderWithColorBlindMode("protanopia");
+      const webview = getByTestId("webview");
+
+      act(() => {
+        webview.props.onLoadEnd();
+      });
+
+      await waitFor(() => {
+        expect(mockGetDoc).toHaveBeenCalled();
+      });
+
+      await act(async () => {
+        webview.props.onMessage({
+          nativeEvent: {
+            data: JSON.stringify({ type: "testMessage", success: true }),
+          },
+        });
+      });
+
+      await waitFor(() => {
+        expect((global as any).mockWebView.postMessage).toHaveBeenCalled();
+      });
+
+      const payloads = getSkinsPayloads();
+      expect(payloads.length).toBeGreaterThan(0);
+
+      const latestPayload = payloads[payloads.length - 1];
+      expect(latestPayload).toMatchObject({
+        type: "skins",
+        data1: "2",
+        data2: "3",
+        data3: "0",
+        data4: "9",
+        data5: "2",
+        bodyId: 2,
+        wingsId: 3,
+        gameId: 0,
+        planetId: 9,
+        colorBlindMode: 2,
+      });
+
+      expect((global as any).mockWebView.injectJavaScript).toHaveBeenCalled();
+    });
+
+    it("should map tritanopia to colorblind code 3", async () => {
+      const mockGetDoc = getDoc as jest.Mock;
+      mockGetDoc.mockResolvedValue({
+        exists: () => true,
+        data: () => ({ equipped: [0, 1] }),
+      });
+
+      (AsyncStorage.getItem as jest.Mock).mockImplementation(async (key) => {
+        if (key === "active_planet_id") {
+          return "4";
+        }
+        return null;
+      });
+
+      const { getByTestId } = renderWithColorBlindMode("tritanopia");
+      const webview = getByTestId("webview");
+
+      act(() => {
+        webview.props.onLoadEnd();
+      });
+
+      await waitFor(() => {
+        expect(mockGetDoc).toHaveBeenCalled();
+      });
+
+      await act(async () => {
+        webview.props.onMessage({
+          nativeEvent: {
+            data: JSON.stringify({ type: "testMessage", success: true }),
+          },
+        });
+      });
+
+      await waitFor(() => {
+        expect((global as any).mockWebView.postMessage).toHaveBeenCalled();
+      });
+
+      const payloads = getSkinsPayloads();
+      expect(payloads.length).toBeGreaterThan(0);
+      expect(payloads[payloads.length - 1].data5).toBe("3");
+      expect(payloads[payloads.length - 1].colorBlindMode).toBe(3);
     });
   });
 

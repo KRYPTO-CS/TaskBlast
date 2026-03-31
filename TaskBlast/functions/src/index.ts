@@ -250,6 +250,22 @@ const MAX_BATTLE_PASS_LEVEL = 100;
 const getBattlePassReward = (level: number) =>
   250 + 50 * Math.floor(Math.max(0, level - 1) / 5);
 
+const getPlanetScoreMultiplier = (planetId: number) => {
+  const safePlanetId = Math.max(1, Math.min(9, Math.floor(Number(planetId) || 1)));
+  const multiplierByPlanet: Record<number, number> = {
+    1: 1.0,
+    2: 1.1,
+    3: 1.2,
+    4: 1.4,
+    5: 1.6,
+    6: 1.8,
+    7: 2.0,
+    8: 2.5,
+    9: 3.0,
+  };
+  return multiplierByPlanet[safePlanetId] ?? 1.0;
+};
+
 const getGameReward = (gameId: number, score: number, highestTile: number) => {
   const safeScore = Math.max(0, Math.floor(Number(score) || 0));
   const safeTile = Math.max(0, Math.floor(Number(highestTile) || 0));
@@ -323,11 +339,12 @@ export const awardGameRewards = onCall(
       throw new HttpsError("unauthenticated", "Authentication is required.");
     }
 
-    const { gameId, score, highestTile, playTimeMinutes } = request.data as {
+    const { gameId, score, highestTile, playTimeMinutes, activePlanetId } = request.data as {
       gameId?: number;
       score?: number;
       highestTile?: number;
       playTimeMinutes?: number;
+      activePlanetId?: number;
     };
 
     if (
@@ -340,8 +357,7 @@ export const awardGameRewards = onCall(
     }
 
     const uid = request.auth.uid;
-    const reward = getGameReward(gameId, score, highestTile);
-    const safeReward = Math.max(0, Math.min(5000, Math.floor(reward)));
+    const baseReward = getGameReward(gameId, score, highestTile);
     const safeMinutes = Math.max(0, Math.min(180, Math.floor(playTimeMinutes)));
     const userRef = db.collection("users").doc(uid);
 
@@ -355,6 +371,20 @@ export const awardGameRewards = onCall(
         const data = snap.data() || {};
         const currentRocks = Number(data.rocks || 0);
         const currentAllTimeRocks = Number(data.allTimeRocks || 0);
+        const currentPlanet = Math.max(
+          1,
+          Math.floor(Number(data.currPlanet || 1)),
+        );
+        const requestedPlanet = Number.isFinite(Number(activePlanetId))
+          ? Math.floor(Number(activePlanetId))
+          : currentPlanet;
+        // Reward scaling follows highest unlocked planet progression.
+        const effectivePlanet = currentPlanet;
+        const multiplier = getPlanetScoreMultiplier(effectivePlanet);
+        const safeReward = Math.max(
+          0,
+          Math.min(5000, Math.floor(baseReward * multiplier)),
+        );
         const allTimeArr = Array.isArray(data.allTimeRocksArr)
           ? [...data.allTimeRocksArr]
           : [];
@@ -379,15 +409,33 @@ export const awardGameRewards = onCall(
           { merge: true },
         );
 
-        return { newRocks };
+        return {
+          newRocks,
+          safeReward,
+          multiplier,
+          effectivePlanet,
+          currentPlanet,
+          requestedPlanet,
+          requestedPlanetRaw: activePlanetId ?? null,
+          baseReward,
+        };
       },
     );
 
     return {
       success: true,
-      awardedRocks: safeReward,
+      awardedRocks: result.safeReward,
       newRocks: result.newRocks,
-      message: "Game rewards applied.",
+      rewardDebug: {
+        baseReward: result.baseReward,
+        multiplier: result.multiplier,
+        effectivePlanet: result.effectivePlanet,
+        requestedPlanet: result.requestedPlanet,
+        unlockedPlanet: result.currentPlanet,
+        requestedPlanetRaw: result.requestedPlanetRaw,
+        appliedReward: result.safeReward,
+      },
+      message: `Game rewards applied (x${result.multiplier.toFixed(1)} from planet ${result.effectivePlanet}).`,
     };
   },
 );
