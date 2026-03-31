@@ -19,6 +19,11 @@ module.exports = {
     "^@/(.*)$": "<rootDir>/app/$1",
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
       "<rootDir>/__mocks__/fileMock.js",
+    "^firebase-admin$": "<rootDir>/__mocks__/firebase-admin-stub.js",
+    "^firebase-admin/(.*)$": "<rootDir>/__mocks__/firebase-admin-stub.js",
+    "^firebase-functions/v2/https$":
+      "<rootDir>/__mocks__/firebase-functions-v2-https-stub.js",
+    "^bcryptjs$": "<rootDir>/__mocks__/bcryptjs-stub.js",
   },
   testEnvironment: "node",
   globals: {
