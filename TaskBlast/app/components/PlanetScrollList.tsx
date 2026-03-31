@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
+  Animated,
   View,
   TextInput,
   TouchableOpacity,
@@ -76,20 +77,42 @@ interface PlanetScrollListProps {
 
 // actual planet component that will be rendered in the scroll list
 const Planet = ({planetID, islocked, onPress, isLast}: PlanetScrollListProps & { isLast?: boolean }) => {
+    const scale = useRef(new Animated.Value(1)).current;
+
+    // make the planets jiggle a little
+    useEffect(() => {
+        Animated.loop(
+        Animated.sequence([
+            Animated.timing(scale, {
+            toValue: 1.05,
+            duration: 1000,
+            useNativeDriver: true,
+            }),
+            Animated.timing(scale, {
+            toValue: 1,
+            duration: 1200,
+            useNativeDriver: true,
+            }),
+        ])
+        ).start();
+    }, []);
+    
+    
     return (
         <TouchableOpacity
             onPress={() => onPress(planetID)}
             activeOpacity={0.7}
             style={{ paddingRight: isLast ? 0 : ITEM_MARGIN }}
         >
-            <View style={{ width: IMG_SIDE, height: IMG_SIDE, justifyContent: 'center', alignItems: 'center' }}>
+            <Animated.View style={{ width: IMG_SIDE, height: IMG_SIDE, justifyContent: 'center', alignItems: 'center', transform: [{ scale }] }}>
                 <Image
                     // include islocked in the key so the image is recreated when lock state changes
                     key={`planet-${planetID}-${islocked}`}
                     testID={`planet-${planetID}-image`}
                     source={islocked ? PLANET_DARK_IMAGES[planetID] : PLANET_IMAGES[planetID]}
+                    
                 />
-            </View>
+            </Animated.View>
         </TouchableOpacity>
     );
 };

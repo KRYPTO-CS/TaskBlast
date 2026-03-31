@@ -85,7 +85,7 @@ const totalRocksChart = (
           tooltip: { titleFont:{family:'Orbitron', size:14, weight:'600'}, bodyFont:{family:'Orbitron', size:13} }
         },
         scales: {
-          y: { beginAtZero: true, ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: 'Rocks', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } },
+          y: { beginAtZero: true, ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: 'Crystals', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } },
           x: { ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:10}, maxRotation: 45, autoSkip: true, maxTicksLimit: 8 }, title: { display: true, text: 'Date', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } }
         }
       }
