@@ -13,11 +13,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Text } from "../../TTS";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, runTransaction } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AccessibilityContext } from "../context/AccessibilityContext";
 import {
   ACTIVE_PLANET_STORAGE_KEY,
@@ -220,6 +220,39 @@ export default function GamePage() {
       console.log(`Game rewards applied: +${result.awardedRocks ?? 0} rocks`);
       if (result.rewardDebug) {
         console.log("Reward debug:", result.rewardDebug);
+      }
+      // Write date metadata client-side (not protected fields, no cheat value)
+      if (result.success) {
+        try {
+          const user = getAuth().currentUser;
+          if (user) {
+            const nowDate = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" });
+            const db = getFirestore();
+            const activeChild = await AsyncStorage.getItem("activeChildProfile");
+            let profileRef;
+            if (activeChild) {
+              const { collection, query, where, getDocs } = await import("firebase/firestore");
+              const childrenRef = collection(db, "users", user.uid, "children");
+              const childSnap = await getDocs(query(childrenRef, where("username", "==", activeChild)));
+              if (!childSnap.empty) profileRef = childSnap.docs[0].ref;
+            } else {
+              profileRef = doc(db, "users", user.uid);
+            }
+            if (profileRef) {
+              await runTransaction(db, async (tx) => {
+                const snap = await tx.get(profileRef!);
+                const d = snap.exists() ? snap.data() : {};
+                const rocksDateArr = Array.isArray(d.allTimeRocksDateArr) ? [...d.allTimeRocksDateArr] : [];
+                const playDateArr = Array.isArray(d.playTimeDateArr) ? [...d.playTimeDateArr] : [];
+                rocksDateArr.push(nowDate);
+                playDateArr.push(nowDate);
+                tx.set(profileRef!, { allTimeRocksDateArr: rocksDateArr, playTimeDateArr: playDateArr }, { merge: true });
+              });
+            }
+          }
+        } catch (dateErr) {
+          console.warn("Failed to write date metadata", dateErr);
+        }
       }
     } catch (err) {
       console.warn("Failed to save rocks to database", err);

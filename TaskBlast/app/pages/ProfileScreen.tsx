@@ -226,7 +226,16 @@ export default function ProfileScreen() {
         const rocksArr: number[] = data.allTimeRocksArr || [];
         const wtArr: number[] = data.workTimeMinutesArr || [];
         const ptArr: number[] = data.playTimeMinutesArr || [];
+        const rocksDates: string[] = data.allTimeRocksDateArr || [];
+        const workDates: string[] = data.workTimeDateArr || [];
+        const playDates: string[] = data.playTimeDateArr || [];
         const totalAllTime = Number(data.allTimeRocks ?? 0);
+
+        const MAX_POINTS = 20;
+
+        const slicedRocks = rocksArr.slice(-MAX_POINTS);
+        const slicedWt = wtArr.slice(-MAX_POINTS);
+        const slicedPt = ptArr.slice(-MAX_POINTS);
 
         setTotalRocksAllTime(Number.isNaN(totalAllTime) ? 0 : Math.max(0, Math.floor(totalAllTime)));
         setrocksSpent(Number.isNaN(data.rocksSpent) ? 0 : Math.max(0, Math.floor(data.rocksSpent)));
@@ -235,12 +244,27 @@ export default function ProfileScreen() {
         setCurrentRocks(
           Number.isNaN(data.rocks) ? 0 : Math.max(0, Math.floor(data.rocks)),
         );
-        setStatsLabels(rocksArr.map((_, i) => `#${i + 1}`));
-        setWorkLabels(wtArr.map((_, i) => `#${i + 1}`));
-        setPlayLabels(ptArr.map((_, i) => `#${i + 1}`));
-        setStatsValues(rocksArr);
-        setWorkTimes(wtArr);
-        setPlayTimes(ptArr);
+        setStatsLabels(
+          slicedRocks.map((_, i) => {
+            const dateIdx = rocksDates.length - slicedRocks.length + i;
+            return dateIdx >= 0 ? (rocksDates[dateIdx] ?? `#${rocksArr.length - slicedRocks.length + i + 1}`) : `#${rocksArr.length - slicedRocks.length + i + 1}`;
+          }),
+        );
+        setWorkLabels(
+          slicedWt.map((_, i) => {
+            const dateIdx = workDates.length - slicedWt.length + i;
+            return dateIdx >= 0 ? (workDates[dateIdx] ?? `#${wtArr.length - slicedWt.length + i + 1}`) : `#${wtArr.length - slicedWt.length + i + 1}`;
+          }),
+        );
+        setPlayLabels(
+          slicedPt.map((_, i) => {
+            const dateIdx = playDates.length - slicedPt.length + i;
+            return dateIdx >= 0 ? (playDates[dateIdx] ?? `#${ptArr.length - slicedPt.length + i + 1}`) : `#${ptArr.length - slicedPt.length + i + 1}`;
+          }),
+        );
+        setStatsValues(slicedRocks);
+        setWorkTimes(slicedWt);
+        setPlayTimes(slicedPt);
       }
     } catch (e) {
       console.warn("Failed to load stats", e);

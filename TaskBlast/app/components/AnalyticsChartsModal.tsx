@@ -81,12 +81,12 @@ const totalRocksChart = (
         maintainAspectRatio: false,
         plugins: {
           legend: { display: false },
-          title: { display: true, text: 'Total Rocks Earned', color: '#fff', font: { family:'Orbitron', size: 22, weight: '700' } },
+          title: { display: true, text: 'Total Crystals Earned From Games', color: '#fff', font: { family:'Orbitron', size: 22, weight: '700' } },
           tooltip: { titleFont:{family:'Orbitron', size:14, weight:'600'}, bodyFont:{family:'Orbitron', size:13} }
         },
         scales: {
           y: { beginAtZero: true, ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: 'Rocks', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } },
-          x: { ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: 'Attempt #', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } }
+          x: { ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:10}, maxRotation: 45, autoSkip: true, maxTicksLimit: 8 }, title: { display: true, text: 'Date', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } }
         }
       }
     });
@@ -160,7 +160,7 @@ const cumulativeChart = (
         },
         scales: {
           y: { beginAtZero: true, ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: '${yLabel}', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } },
-          x: { ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: 'Cycle #', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } }
+          x: { ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:10}, maxRotation: 45, autoSkip: true, maxTicksLimit: 8 }, title: { display: true, text: 'Date', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } }
         }
       }
     });

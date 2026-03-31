@@ -393,7 +393,6 @@ export const awardGameRewards = onCall(
         const playArr = Array.isArray(data.playTimeMinutesArr)
           ? [...data.playTimeMinutesArr]
           : [];
-
         const newRocks = currentRocks + safeReward;
         const newAllTime = currentAllTimeRocks + safeReward;
         allTimeArr.push(newAllTime);
