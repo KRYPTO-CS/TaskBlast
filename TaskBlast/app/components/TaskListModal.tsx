@@ -54,6 +54,31 @@ interface Task {
   updatedAt: Timestamp;
 }
 
+const toSafeInt = (value: unknown, fallback = 0) => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? Math.floor(parsed) : fallback;
+};
+
+const getPlanetTaskMultiplier = (planetId: number) => {
+  const safePlanetId = Math.max(
+    1,
+    Math.min(9, Math.floor(Number(planetId) || 1)),
+  );
+  const multiplierByPlanet: Record<number, number> = {
+    1: 1.0,
+    2: 1.1,
+    3: 1.2,
+    4: 1.4,
+    5: 1.6,
+    6: 1.8,
+    7: 2.0,
+    8: 2.5,
+    9: 3.0,
+  };
+
+  return multiplierByPlanet[safePlanetId] ?? 1.0;
+};
+
 interface TaskListModalProps {
   visible: boolean;
   onClose: () => void;
@@ -309,13 +334,15 @@ export default function TaskListModal({
     try {
       const task = tasks.find((t) => t.id === taskId);
       if (task) {
+        const cyclesValue = toSafeInt(task.cycles, 1);
+        const completedCyclesValue = toSafeInt(task.completedCycles, 0);
         // Prevent marking as complete if cycles aren't fulfilled (only in normal mode)
         // Allow completion if cycles are infinite (-1) or cycles are met
         if (
           !isEditMode &&
           !task.completed &&
-          task.cycles !== -1 &&
-          task.completedCycles < task.cycles
+          cyclesValue !== -1 &&
+          completedCyclesValue < cyclesValue
         ) {
           return;
         }
@@ -338,9 +365,23 @@ export default function TaskListModal({
       const task = tasks.find((t) => t.id === taskId);
       if (!task) return;
 
+      const profileRef = childDocId
+        ? doc(db, "users", auth.currentUser.uid, "children", childDocId)
+        : doc(db, "users", auth.currentUser.uid);
+      const profileSnap = await getDoc(profileRef);
+      const unlockedPlanet = profileSnap.exists()
+        ? toSafeInt(profileSnap.data()?.currPlanet, 1)
+        : 1;
+      const multiplier = getPlanetTaskMultiplier(unlockedPlanet);
+      const baseReward = Math.max(0, toSafeInt(task.reward, 0));
+      const scaledReward = Math.max(
+        0,
+        Math.min(5000, Math.floor(baseReward * multiplier)),
+      );
+
       await claimTaskReward({
         taskId,
-        reward: task.reward,
+        reward: scaledReward,
         childDocId,
       });
 
@@ -601,7 +642,10 @@ export default function TaskListModal({
   const handleStartTask = (task: Task) => {
     // Check if planet is locked
     if (isSelectedPlanetLocked) {
-      Alert.alert("Planet Locked", "This planet is locked. Unlock it before playing tasks!");
+      Alert.alert(
+        "Planet Locked",
+        "This planet is locked. Unlock it before playing tasks!",
+      );
       return;
     }
     // Close the modal and navigate to Pomodoro screen with task data
@@ -766,7 +810,6 @@ export default function TaskListModal({
             <Text className="font-madimi text-white text-sm pb-4">
               {t("Tasks.planetDisclaimer")}
             </Text>
-
           </View>
 
           {/* Error Message */}
@@ -930,14 +973,16 @@ export default function TaskListModal({
                             onPress={() => handleCompleteTask(task.id)}
                             disabled={
                               !task.completed &&
-                              task.cycles !== -1 &&
-                              task.completedCycles < task.cycles
+                              toSafeInt(task.cycles, 1) !== -1 &&
+                              toSafeInt(task.completedCycles, 0) <
+                                toSafeInt(task.cycles, 1)
                             }
                             className={`w-10 h-10 rounded-full items-center justify-center mr-1 ${
                               task.completed
                                 ? "bg-green-500"
-                                : task.cycles === -1 ||
-                                    task.completedCycles >= task.cycles
+                                : toSafeInt(task.cycles, 1) === -1 ||
+                                    toSafeInt(task.completedCycles, 0) >=
+                                      toSafeInt(task.cycles, 1)
                                   ? "bg-green-500/30 border-2 border-green-400/30"
                                   : "bg-gray-500/20 border-2 border-gray-400/20"
                             }`}
@@ -951,8 +996,9 @@ export default function TaskListModal({
                               size={20}
                               color={
                                 !task.completed &&
-                                task.cycles !== -1 &&
-                                task.completedCycles < task.cycles
+                                toSafeInt(task.cycles, 1) !== -1 &&
+                                toSafeInt(task.completedCycles, 0) <
+                                  toSafeInt(task.cycles, 1)
                                   ? "#666"
                                   : "white"
                               }
@@ -1446,7 +1492,9 @@ export default function TaskListModal({
                             : "text-gray-300"
                         }`}
                       >
-                        {selectedTask.completed ? t("Tasks.complete") : t("Tasks.incomplete")}
+                        {selectedTask.completed
+                          ? t("Tasks.complete")
+                          : t("Tasks.incomplete")}
                       </Text>
                     </View>
                   </View>
@@ -1469,7 +1517,9 @@ export default function TaskListModal({
                             : "text-red-300"
                         }`}
                       >
-                        {selectedTask.allowMinimization ? t("Tasks.yes") : t("Tasks.no")}
+                        {selectedTask.allowMinimization
+                          ? t("Tasks.yes")
+                          : t("Tasks.no")}
                       </Text>
                     </View>
                   </View>
