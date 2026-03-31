@@ -18,7 +18,7 @@
     "empty": "Please fill out all fields"
   },
   "AccountType": {
-    "title": "Who will be using TaskBlast?",
+    "title": "Who's will be using TaskBlast?",
     "type": "Choose the account type that best describes the primary user of TaskBlast.",
     "managetitle": "Managed Account",
     "managedesc": "For depends. SOme features are restricted and controlled by a parent/guardian PIN.",
@@ -119,7 +119,14 @@
     "highContrast": "High Contrast",
     "reduceMotion": "Reduce Motion",
     "tts": "Text to Speech",
-    "done": "Done"
+    "ttsDesc": "Read screen content aloud",
+    "done": "Done",
+    "logout": "Logout",
+    "switchProfile": "Switch Profile",
+    "logoutText": "Are you sure you want to logout?",
+    "parentAccount": "👤 Parent Account",
+    "noFilter": "No filter",
+    "customize": "Tap to customize"
   },
   "Tasks": {
     "title": "Task List",
@@ -143,8 +150,47 @@
     "editTask": "Edit Task",
     "save": "Save",
     "coachMarkdesc": "This is where you can manage your tasks. Tap on a task to view details, start a focus session, or edit it. Use the tabs to switch between active and archived tasks.",
-    "Done": "Done"
+    "Done": "Done",
+    "TaskName": "Task Name",
+    "description": "Description",
+    "reward2": "Reward",
+    "status": "Status",
+    "complete": "Complete",
+    "incomplete": "Incomplete",
+    "yes": "Yes",
+    "no": "No",
+    "workTime": "Work Time",
+    "playTime": "Play Time",
+    "Cycles": "Cycles",
+    "created": "Created",
+    "details": "Task info",
+    "close": "Close",
+    "managerAccess": "Manager Access",
+    "managerAccessDesc": "Enter the 4-digit PIN to access edit mode wiht elevated permissions.",
+    "unlock": "Unlock"
   },
+
+  "Traits": {
+
+  "ADHD" : "ADHD",
+  "Aspergers": "Aspergers",
+  "Autism": "Autism",
+  "DevelopmentalLanguageDisorder": "Developmental Language Disorder",
+  "Disability Confident": "Disability Confident",
+  "Dyscalculia": "Dyscalculia",
+  "Dysgraphia": "Dysgraphia",
+  "Dyslexia": "Dyslexia",
+  "Dyspraxia": "Dyspraxia",
+  "Hyperlexia": "Hyperlexia",
+  "Irlen Syndrome": "Irlen Syndrome",
+  "OCD": "OCD",
+  "Synthesia": "Synthesia",
+  "Tourette's Syndrome": "Tourette's Syndrome",
+  "selectTraits": "Select Traits",
+  "saveTraits"  : "Save Traits"
+
+  },
+
   "Profile": {
     "traits": "Traits",
     "editP": "Edit Profile",
@@ -167,7 +213,9 @@
     "coachMarkAwardsTitle": "View Awards",
     "coachMarkAwards": "Here you can see your awards and accomplishments!",
     "coachMarkStatsTitle": "View Stats",
-    "coachMarkStats": "Here you can see your stats and track your progress over time!"
+    "coachMarkStats": "Here you can see your stats and track your progress over time!",
+    "edit": "Edit",
+    "advanced": "Advanced"
   },
   "Pomodoro": {
     "time": "Time Remaining",
@@ -179,7 +227,12 @@
     "coachMarkTime": "This is the time remaining in your current session at the end you will be able to land back on your planet or play a game. Focus and watch it count down!",
     "coachMarkwork": "This indicates whether you're in a work session or a break. Stay focused during work sessions and relax during breaks!",
     "coachMarkPause": "Tap here to pause your session if you need to take an unscheduled break.",
-    "coachMarkLand": "Tap here to end your session and land back on you planet. Great job on your focus time!"
+    "coachMarkLand": "Tap here to end your session and land back on you planet. Great job on your focus time!",
+    "worksession": "Work Session",
+    "freeTime": "Free Time",
+    "startTask": "Start Task",
+    "ChooseGame": "Choose Your Game"
+
   },
   "Shop": {
     "title": "Shop",
@@ -208,5 +261,24 @@
     "game2048Desc": "Merge tiles. Aim for 2048!",
     "sequentBlast": "Sequent Blast",
     "sequentBlastDesc": "Memorize and tap the hidden sequence."
+  },
+    "ChildAccount": {
+    "title": "Create Child Account",
+    "firstName": "Enter first name",
+    "lastName": "Enter last name",
+    "birthdate": "Birthdate",
+    "username": "Username",
+    "usernameDesc": "Choose a unique username",
+    "create": "Create Child Account"
+  },
+  "ProfileSelection": {
+    "title": "Who's using TaskBlast?",
+    "parentProfile": "Parent Account",
+    "childProfile": "Child Account",
+    "desc": "No child accounts yet.",
+    "desc2": "Create one from the parent account",
+    "text": "OR SELECT CHILD",
+    "EnterPin": "Enter PIN for"
   }
+
 }

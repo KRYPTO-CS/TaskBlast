@@ -3,6 +3,7 @@ import { View, Modal, TouchableOpacity, ScrollView, Image } from "react-native";
 import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import { GAME_DEFINITIONS } from "../services/gameRegistry";
+import { t } from "i18next";
 
 interface GameSelectionModalProps {
   visible: boolean;
@@ -57,7 +58,7 @@ export default function GameSelectionModal({
           {/* Header */}
           <View className="flex-row justify-between items-center mb-4">
             <Text className="font-orbitron-bold text-white text-2xl flex-1">
-              Choose Your Game
+              {t("Pomodoro.ChooseGame")}
             </Text>
             <TouchableOpacity
               onPress={onClose}

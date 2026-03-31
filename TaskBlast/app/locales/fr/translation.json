@@ -119,7 +119,14 @@
     "highContrast": "Contraste élevé",
     "reduceMotion": "Réduire l'animation",
     "tts": "Synthèse vocale",
-    "done": "Terminé"
+    "ttsDesc": "Lire le contenu de l'écran à haute voix",
+    "done": "Terminé",
+    "logout": "Se déconnecter",
+    "switchProfile": "Changer de profil",
+    "logoutText": "Êtes-vous sûr de vouloir vous déconnecter ?",
+    "parentAccount": "👤 Compte parent",
+    "noFilter": "Aucun filtre",
+    "customize": "Appuyez pour personnaliser"
   },
   "Tasks": {
     "title": "Mes tâches",
@@ -143,8 +150,47 @@
     "editTask": "Modifier la tâche",
     "save": "Sauvegarder",
     "coachMarkdesc": "C’est ici que vous pouvez gérer vos tâches. Appuyez sur une tâche pour voir les détails, démarrer une session de concentration ou la modifier. Utilisez les onglets pour basculer entre les tâches actives et archivées.",
-    "Done": "Terminé"
+    "Done": "Terminé",
+    "TaskName": "Nom de la tâche",
+    "description": "Description",
+    "reward2": "Récompense",
+    "status": "Statut",
+    "complete": "Terminé",
+    "incomplete": "Incomplet",
+    "yes": "Oui",
+    "no": "Non",
+    "workTime": "Temps de travail",
+    "playTime": "Temps de pause",
+    "Cycles": "Cycles",
+    "created": "Créé",
+    "details": "Informations sur la tâche",
+    "close": "Fermer",
+    "managerAccess": "Accès gestionnaire",
+    "managerAccessDesc": "Entrez le code PIN à 4 chiffres pour accéder au mode édition avec des permissions élevées.",
+    "unlock": "Débloquer"
   },
+
+"Traits": {
+
+  "ADHD" : "ADHD",
+  "Aspergers": "Aspergers",
+  "Autism": "Autism",
+  "DevelopmentalLanguageDisorder": "Developmental Language Disorder",
+  "Disability Confident": "Disability Confident",
+  "Dyscalculia": "Dyscalculia",
+  "Dysgraphia": "Dysgraphia",
+  "Dyslexia": "Dyslexia",
+  "Dyspraxia": "Dyspraxia",
+  "Hyperlexia": "Hyperlexia",
+  "Irlen Syndrome": "Irlen Syndrome",
+  "OCD": "OCD",
+  "Synthesia": "Synthesia",
+  "Tourette's Syndrome": "Tourette's Syndrome",
+  "selectTraits": "Sélectionner les Traits",
+  "saveTraits"  : "Enregistrer les Traits"
+
+  },
+  
   "Profile": {
     "traits": "Traits",
     "editP": "Editer Profil",
@@ -167,7 +213,9 @@
     "coachMarkAwardsTitle": "Voir les récompenses",
     "coachMarkAwards": "Ici, vous pouvez voir vos récompenses et réalisations !",
     "coachMarkStatsTitle": "Voir les statistiques",
-    "coachMarkStats": "Ici, vous pouvez voir vos statistiques et suivre votre progression au fil du temps !"
+    "coachMarkStats": "Ici, vous pouvez voir vos statistiques et suivre votre progression au fil du temps !",
+    "edit": "Editer",
+    "advanced": "Avancé"
   },
   "Pomodoro": {
     "time": "Temps restant",
@@ -180,7 +228,11 @@
     "coachMarkTime": "Ceci est le temps restant dans votre session actuelle, à la fin vous pourrez atterrir de nouveau sur votre planète ou jouer à un jeu. Concentrez-vous et regardez-le compter à rebours !",
     "coachMarkwork": "Cela indique si vous êtes dans une session de travail ou une pause. Restez concentré pendant les sessions de travail et détendez-vous pendant les pauses !",
     "coachMarkPause": "Appuyez ici pour mettre votre session en pause si vous devez prendre une pause imprévue.",
-    "coachMarkLand": "Appuyez ici pour terminer votre session et atterrir de nouveau sur votre planète. Bon travail sur votre temps de concentration !"
+    "coachMarkLand": "Appuyez ici pour terminer votre session et atterrir de nouveau sur votre planète. Bon travail sur votre temps de concentration !",
+    "worksession": "Session de travail",
+    "freeTime": "Temps libre",
+    "startTask": "Commencer la tâche",
+    "ChooseGame": "Choisir votre jeu"
   },
   "Shop": {
     "title": "Boutique",
@@ -209,5 +261,24 @@
     "game2048Desc": "Merge tiles. Aim for 2048!",
     "sequentBlast": "Sequent Blast",
     "sequentBlastDesc": "Memorize and tap the hidden sequence."
+  },
+  "ChildAccount": {
+    "title": "Créer un Compte d'Enfant",
+    "firstName": "Entrez le prénom",
+    "lastName": "Entrez le nom",
+    "birthdate": "Date de naissance",
+    "username": "Nom d'utilisateur",
+    "usernameDesc": "Choisissez un nom d'utilisateur unique",
+    "create": "Créer un Compte d'Enfant"
+  },
+  "ProfileSelection": {
+    "title": "Qui utilise TaskBlast ?",
+    "parentProfile": "Compte Parent",
+    "childProfile": "Compte Enfant",
+    "desc": "Aucun compte enfant pour le moment.",
+    "desc2": "Créez-en un à partir du compte parent",
+    "text": "OU SÉLECTIONNEZ UN ENFANT",
+    "EnterPin": "Entrez le PIN pour"
   }
+
 }

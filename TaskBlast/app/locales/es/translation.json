@@ -78,7 +78,7 @@
     "confirmPasswordPlaceholder": "Confirmar nueva contraseña",
     "submit": "Restablecer contraseña"
   },
-  "ManagedPIN": {
+  "ManagerPin": {
     "title": "Configurar PIN de tutor",
     "desc": "Crea un PIN de 4 dígitos que tu tutor utilizará para gestionar tu cuenta.",
     "pin": "Ingrese PIN de 4 dígitos",
@@ -119,7 +119,14 @@
     "highContrast": "Alto contraste",
     "reduceMotion": "Reducir movimiento",
     "tts": "Texto a voz",
-    "done": "Listo"
+    "ttsDesc": "Leer el contenido de la pantalla en voz alta",
+    "done": "Listo",
+    "logout": "Cerrar sesión",
+    "switchProfile": "Cambiar perfil",
+    "logoutText": "¿Estás seguro de que quieres cerrar sesión?",
+    "parentAccount": "👤 Cuenta de tutor",
+    "noFilter": "Sin filtro",
+    "customize": "Toca para personalizar"
   },
   "Tasks": {
     "title": "Tareas",
@@ -143,8 +150,47 @@
     "editTask": "Editar Tarea",
     "save": "Guardar",
     "coachMarkdesc": "Aquí puedes gestionar tus tareas. Toca una tarea para ver detalles, iniciar una sesión de enfoque o editarla. Usa las pestañas para cambiar entre tareas activas y archivadas.",
-    "Done": "Hecho"
+    "Done": "Hecho",
+    "TaskName": "Nombre de la Tarea",
+    "reward2": "Recompensa de la Tarea",
+    "description": "Descripción",
+    "status": "Estado",
+    "complete": "Completa",
+    "incomplete": "Incompleta",
+    "yes": "Sí",
+    "no": "No",
+    "workTime": "Tiempo de Trabajo",
+    "playTime": "Tiempo de Descanso",
+    "Cycles": "Ciclos",
+    "created": "Creada",
+    "details": "informacion",
+    "close" : "Cerrar",
+    "managerAccess": "Acceso de gestor",
+    "managerAccessDesc": "Ingresa el PIN de 4 dígitos para acceder al modo de edición con permisos elevados.",
+    "unlock": "Desbloquear"
   },
+
+  "Traits": {
+
+  "ADHD" : "ADHD",
+  "Aspergers": "Aspergers",
+  "Autism": "Autism",
+  "DevelopmentalLanguageDisorder": "Developmental Language Disorder",
+  "Disability Confident": "Disability Confident",
+  "Dyscalculia": "Dyscalculia",
+  "Dysgraphia": "Dysgraphia",
+  "Dyslexia": "Dyslexia",
+  "Dyspraxia": "Dyspraxia",
+  "Hyperlexia": "Hyperlexia",
+  "Irlen Syndrome": "Irlen Syndrome",
+  "OCD": "OCD",
+  "Synthesia": "Synthesia",
+  "Tourette's Syndrome": "Tourette's Syndrome",
+  "selectTraits": "Seleccionar Rasgos",
+  "saveTraits"  : "Guardar Rasgos"
+
+  },
+
   "Profile": {
     "traits": "Rasgos",
     "editP": "Editar Perfil",
@@ -167,7 +213,9 @@
     "coachMarkAwardsTitle": "Ver Recompensas",
     "coachMarkAwards": "¡Aquí puedes ver tus recompensas y logros!",
     "coachMarkStatsTitle": "Ver Estadísticas",
-    "coachMarkStats": "¡Aquí puedes ver tus estadísticas y seguir tu progreso a lo largo del tiempo!"
+    "coachMarkStats": "¡Aquí puedes ver tus estadísticas y seguir tu progreso a lo largo del tiempo!",
+    "edit": "Editar",
+    "advanced": "Avanzado"
   },
   "Pomodoro": {
     "time": "Tiempo Restante",
@@ -179,7 +227,11 @@
     "coachMarkTime": "Este es el tiempo restante en tu sesión actual al final podrás aterrizar de nuevo en tu planeta o jugar un juego. ¡Concéntrate y míralo contar regresivamente!",
     "coachMarkwork": "Esto indica si estás en una sesión de trabajo o un descanso. ¡Mantente enfocado durante las sesiones de trabajo y relájate durante los descansos!",
     "coachMarkPause": "Toca aquí para pausar tu sesión si necesitas tomar un descanso no programado.",
-    "coachMarkLand": "Toca aquí para finalizar tu sesión y aterrizar de nuevo en tu planeta. ¡Buen trabajo en tu tiempo de enfoque!"
+    "coachMarkLand": "Toca aquí para finalizar tu sesión y aterrizar de nuevo en tu planeta. ¡Buen trabajo en tu tiempo de enfoque!",
+    "worksession": "Sesión de Trabajo",
+    "freeTime": "Tiempo Libre",
+    "startTask": "Iniciar Tarea",
+    "ChooseGame": "Elegir Juego"
   },
   "Shop": {
     "title": "Tienda",
@@ -208,5 +260,25 @@
     "game2048Desc": "Merge tiles. Aim for 2048!",
     "sequentBlast": "Sequent Blast",
     "sequentBlastDesc": "Memorize and tap the hidden sequence."
+  },
+
+  "ChildAccount": {
+    "title": "Crear Cuenta de Niño",
+    "firstName": "Ingrese nombre",
+    "lastName": "Ingrese apellido",
+    "birthdate": "Fecha de nacimiento",
+    "username": "Nombre de usuario",
+    "usernameDesc": "Elige un nombre de usuario único",
+    "create": "Crear Cuenta de Niño"
+  },
+  "ProfileSelection": {
+    "title": "¿Quién está usando TaskBlast?",
+    "parentProfile": "Cuenta de tutor",
+    "childProfile": "Cuenta de niño",
+    "desc": "No hay cuentas de niño aún.",
+    "desc2": "Crea una desde la cuenta de tutor",
+    "text": "O SELECCIONA NIÑO",
+    "EnterPin": "Ingrese PIN para"
   }
+
 }

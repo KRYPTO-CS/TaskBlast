@@ -14,6 +14,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { auth, firestore } from "../../server/firebase";
 import { collection, doc, setDoc, query, where, getDocs, collectionGroup, serverTimestamp } from "firebase/firestore";
+import { useTranslation } from "react-i18next";
+
 
 export default function CreateChildAccount() {
   const router = useRouter();
@@ -26,6 +28,7 @@ export default function CreateChildAccount() {
   const [pin, setPin] = useState("");
   const [confirmPin, setConfirmPin] = useState("");
   const [loading, setLoading] = useState(false);
+  const [t, i18n] = useTranslation();
 
 const checkUsernameAvailable = async (username: string): Promise<boolean> => {
   try {
@@ -154,15 +157,15 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
               textShadowRadius: 20,
             }}
           >
-            Create Child Account
+            {t("ChildAccount.title")}
           </Text>
 
           {/* First Name */}
           <View className="mb-4">
-            <Text className="text-white font-orbitron-semibold mb-2">First Name</Text>
+            <Text className="text-white font-orbitron-semibold mb-2">{t("Name.firstName")}</Text>
             <TextInput
               className="bg-white/20 text-white font-orbitron p-4 rounded-xl"
-              placeholder="Enter first name"
+              placeholder={t("ChildAccount.firstName")}
               placeholderTextColor="rgba(255,255,255,0.5)"
               value={firstName}
               onChangeText={setFirstName}
@@ -171,10 +174,10 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
 
           {/* Last Name */}
           <View className="mb-4">
-            <Text className="text-white font-orbitron-semibold mb-2">Last Name</Text>
+            <Text className="text-white font-orbitron-semibold mb-2">{t("Name.lastName")}</Text>
             <TextInput
               className="bg-white/20 text-white font-orbitron p-4 rounded-xl"
-              placeholder="Enter last name"
+              placeholder={t("ChildAccount.lastName")}
               placeholderTextColor="rgba(255,255,255,0.5)"
               value={lastName}
               onChangeText={setLastName}
@@ -183,7 +186,7 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
 
           {/* Birthdate */}
           <View className="mb-4">
-            <Text className="text-white font-orbitron-semibold mb-2">Birthdate</Text>
+            <Text className="text-white font-orbitron-semibold mb-2">{t("ChildAccount.birthdate")}</Text>
             <TextInput
               className="bg-white/20 text-white font-orbitron p-4 rounded-xl"
               placeholder="MM/DD/YYYY"
@@ -195,10 +198,10 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
 
           {/* Username */}
           <View className="mb-4">
-            <Text className="text-white font-orbitron-semibold mb-2">Username</Text>
+            <Text className="text-white font-orbitron-semibold mb-2">{t("ChildAccount.username")}</Text>
             <TextInput
               className="bg-white/20 text-white font-orbitron p-4 rounded-xl"
-              placeholder="Choose a unique username"
+              placeholder={t("ChildAccount.usernameDesc")}
               placeholderTextColor="rgba(255,255,255,0.5)"
               value={username}
               onChangeText={(text) => setUsername(text.toLowerCase())}
@@ -208,7 +211,7 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
 
           {/* PIN */}
           <View className="mb-4">
-            <Text className="text-white font-orbitron-semibold mb-2">4-Digit PIN</Text>
+            <Text className="text-white font-orbitron-semibold mb-2">{t("ManagerPin.pin")}</Text>
             <TextInput
               className="bg-white/20 text-white font-orbitron p-4 rounded-xl text-center text-2xl"
               placeholder="****"
@@ -223,7 +226,7 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
 
           {/* Confirm PIN */}
           <View className="mb-8">
-            <Text className="text-white font-orbitron-semibold mb-2">Confirm PIN</Text>
+            <Text className="text-white font-orbitron-semibold mb-2">{t("ManagerPin.confirmPinPlaceholder")}</Text>
             <TextInput
               className="bg-white/20 text-white font-orbitron p-4 rounded-xl text-center text-2xl"
               placeholder="****"
@@ -250,7 +253,7 @@ const checkUsernameAvailable = async (username: string): Promise<boolean> => {
             }}
           >
             <Text className="text-white text-center font-orbitron-bold text-xl">
-              {loading ? "Creating..." : "Create Child Account"}
+              {loading ? "Creating..." : t("ChildAccount.create")}
             </Text>
           </TouchableOpacity>
         </ScrollView>
