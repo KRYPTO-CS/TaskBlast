@@ -14,6 +14,7 @@ import {
   Switch,
   Alert,
 } from "react-native";
+import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { Text } from '../../TTS';
 import * as Notifications from "expo-notifications";
 import { useNotifications } from "../context/NotificationContext";
@@ -23,6 +24,74 @@ interface NotificationPreferencesModalProps {
   visible: boolean;
   onClose: () => void;
 }
+
+// ─── Time Picker ────────────────────────────────────────────────────────────
+
+/** Parse a "HH:MM" 24h string into a Date object (date portion is today) */
+function timeStringToDate(time: string): Date {
+  const [hStr, mStr] = time.split(":");
+  const d = new Date();
+  d.setHours(parseInt(hStr, 10), parseInt(mStr, 10), 0, 0);
+  return d;
+}
+
+/** Convert a Date back to a "HH:MM" 24h string */
+function dateToTimeString(date: Date): string {
+  return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+}
+
+interface TimePickerProps {
+  value: string; // "HH:MM" 24h
+  onChange: (value: string) => void;
+  palette: ReturnType<typeof useColorPalette>;
+}
+
+function TimePicker({ value, onChange, palette }: TimePickerProps) {
+  const date = timeStringToDate(value);
+
+  const handleChange = (_event: DateTimePickerEvent, selected?: Date) => {
+    if (selected) onChange(dateToTimeString(selected));
+  };
+
+  return (
+    <View
+      style={{
+        borderRadius: 16,
+        overflow: "hidden",
+        borderWidth: 1,
+        borderColor: palette.rowBorderPrimary,
+        backgroundColor: palette.secondaryMed,
+        marginTop: 8,
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+      }}
+    >
+      <Text
+        style={{
+          color: "#94a3b8",
+          fontSize: 11,
+          fontFamily: "Orbitron-Regular",
+          letterSpacing: 1.5,
+          textTransform: "uppercase",
+          textAlign: "center",
+          marginBottom: 4,
+        }}
+      >
+        Reminder Time
+      </Text>
+      <DateTimePicker
+        value={date}
+        mode="time"
+        display="spinner"
+        onChange={handleChange}
+        themeVariant="dark"
+        style={{ alignSelf: "center" }}
+      />
+    </View>
+  );
+}
+
+// ─── Main Modal ──────────────────────────────────────────────────────────────
 
 export default function NotificationPreferencesModal({
   visible,
@@ -56,7 +125,8 @@ export default function NotificationPreferencesModal({
     const granted = await requestPermissions();
     if (granted) {
       Alert.alert("✅ Permissions Granted", "Notifications are now enabled!", [
-        { text: "OK", style: "default" },
+        { text:
+           "OK", style: "default" },
       ]);
     } else {
       Alert.alert(
@@ -67,29 +137,10 @@ export default function NotificationPreferencesModal({
     }
   };
 
-  const toggleEnabled = (enabled: boolean) => {
-    setLocalPrefs({ ...localPrefs, enabled });
-  };
-
-  const toggleSound = (soundEnabled: boolean) => {
-    setLocalPrefs({ ...localPrefs, soundEnabled });
-  };
-
-  const toggleVibration = (vibrationEnabled: boolean) => {
-    setLocalPrefs({ ...localPrefs, vibrationEnabled });
-  };
-
-  const toggleVisualOnly = (visualOnly: boolean) => {
-    setLocalPrefs({ ...localPrefs, visualOnly });
-  };
-
-  const toggleDailyDigest = (dailyDigestEnabled: boolean) => {
-    setLocalPrefs({ ...localPrefs, dailyDigestEnabled });
-  };
-
-  const setDailyDigestTime = (dailyDigestTime: string) => {
-    setLocalPrefs({ ...localPrefs, dailyDigestTime });
-  };
+  const toggleEnabled = (enabled: boolean) => setLocalPrefs({ ...localPrefs, enabled });
+  const toggleSound = (soundEnabled: boolean) => setLocalPrefs({ ...localPrefs, soundEnabled });
+  const toggleVibration = (vibrationEnabled: boolean) => setLocalPrefs({ ...localPrefs, vibrationEnabled });
+  const toggleDailyDigest = (dailyDigestEnabled: boolean) => setLocalPrefs({ ...localPrefs, dailyDigestEnabled });
 
   const handleTestDailyDigest = async () => {
     try {
@@ -102,18 +153,17 @@ export default function NotificationPreferencesModal({
         return;
       }
 
-      // Show a test notification immediately
       await Notifications.scheduleNotificationAsync({
         content: {
           title: "TaskBlast Reminder",
           body: "You have 3 tasks waiting! Ready to tackle them?",
-          sound: localPrefs.soundEnabled ? "default" : undefined,
+          sound: localPrefs.soundEnabled ? "default" : false,
           data: {
             type: "DAILY_DIGEST",
             isTest: true,
           },
         },
-        trigger: null, // Immediate notification
+        trigger: null,
       });
 
       Alert.alert(
@@ -196,9 +246,7 @@ export default function NotificationPreferencesModal({
               <TouchableOpacity
                 onPress={handleRequestPermissions}
                 className="p-3 rounded-lg items-center"
-                style={{
-                  backgroundColor: "rgba(234, 179, 8, 0.9)",
-                }}
+                style={{ backgroundColor: "rgba(234, 179, 8, 0.9)" }}
               >
                 <Text className="font-orbitron-bold text-black text-sm">
                   Enable Notifications
@@ -213,7 +261,6 @@ export default function NotificationPreferencesModal({
               <Text className="font-orbitron-semibold text-white text-base mb-3">
                 Main Settings
               </Text>
-
               <SettingRow
                 label="Enable Notifications"
                 description="Turn all notifications on or off"
@@ -230,14 +277,12 @@ export default function NotificationPreferencesModal({
               <Text className="font-orbitron text-gray-400 text-xs mb-3">
                 Control how notifications get your attention
               </Text>
-
               <SettingRow
                 label="Sound"
                 description="Play notification sound"
                 value={localPrefs.soundEnabled}
                 onToggle={toggleSound}
               />
-
               <SettingRow
                 label="Vibration"
                 description="Vibrate when notification arrives"
@@ -254,7 +299,6 @@ export default function NotificationPreferencesModal({
               <Text className="font-orbitron text-gray-400 text-xs mb-3">
                 Get a daily reminder about your incomplete tasks
               </Text>
-
               <SettingRow
                 label="Enable Daily Reminder"
                 description="Receive a daily notification with task count"
@@ -264,45 +308,12 @@ export default function NotificationPreferencesModal({
 
               {localPrefs.dailyDigestEnabled && (
                 <View className="mt-3">
-                  <Text className="font-orbitron text-gray-400 text-xs mb-2">
-                    Reminder Time
-                  </Text>
-                  <View className="flex-row flex-wrap gap-2">
-                    {[
-                      { label: "9 AM", value: "09:00" },
-                      { label: "12 PM", value: "12:00" },
-                      { label: "3 PM", value: "15:00" },
-                      { label: "6 PM", value: "18:00" },
-                      { label: "8 PM", value: "20:00" },
-                    ].map((time) => (
-                      <TouchableOpacity
-                        key={time.value}
-                        onPress={() => setDailyDigestTime(time.value)}
-                        className="py-2 px-4 rounded-lg"
-                        style={{
-                          backgroundColor:
-                            localPrefs.dailyDigestTime === time.value
-                              ? palette.accent
-                              : palette.secondaryMed,
-                          borderWidth: 1,
-                          borderColor:
-                            localPrefs.dailyDigestTime === time.value
-                              ? palette.accentActiveBorder
-                              : palette.rowBorderPrimary,
-                        }}
-                      >
-                        <Text
-                          className={`text-white text-sm ${
-                            localPrefs.dailyDigestTime === time.value
-                              ? "font-orbitron-bold"
-                              : "font-orbitron"
-                          }`}
-                        >
-                          {time.label}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
+                  {/* Scroll Wheel Time Picker */}
+                  <TimePicker
+                    value={localPrefs.dailyDigestTime}
+                    onChange={(time) => setLocalPrefs({ ...localPrefs, dailyDigestTime: time })}
+                    palette={palette}
+                  />
 
                   {/* Test Button */}
                   <TouchableOpacity
@@ -357,7 +368,8 @@ export default function NotificationPreferencesModal({
   );
 }
 
-// Helper component for setting rows
+// ─── Setting Row ─────────────────────────────────────────────────────────────
+
 interface SettingRowProps {
   label: string;
   description: string;

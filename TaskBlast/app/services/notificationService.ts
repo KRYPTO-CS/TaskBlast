@@ -221,7 +221,7 @@ export async function scheduleTaskReminder(
       content: {
         title: 'Task Reminder',
         body: message,
-        sound: preferences.soundEnabled ? 'default' : undefined,
+        sound: preferences.soundEnabled ? 'notification.wav' : false,
         data: {
           type: NotificationType.TASK_REMINDER,
           taskId,
