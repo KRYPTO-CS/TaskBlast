@@ -14,7 +14,7 @@ import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { auth, firestore } from "../../server/firebase";
 import { collection, getDocs } from "firebase/firestore";
-
+import { useTranslation } from "react-i18next";
 interface ChildProfile {
   id: string;
   username: string;
@@ -30,6 +30,7 @@ export default function ProfileSelection() {
   const [selectedChild, setSelectedChild] = useState<string | null>(null);
   const [pinInput, setPinInput] = useState("");
   const [loading, setLoading] = useState(true);
+  const [t, i18n] = useTranslation();
 
   useEffect(() => {
     loadChildren();
@@ -128,7 +129,7 @@ export default function ProfileSelection() {
             textShadowRadius: 20,
           }}
         >
-          Who's using TaskBlast?
+          {t("ProfileSelection.title")}
         </Text>
 
         {/* Parent Profile */}
@@ -147,7 +148,7 @@ export default function ProfileSelection() {
         >
           <Ionicons name="person-circle" size={48} color="white" />
           <View className="ml-4">
-            <Text className="text-white text-xl font-orbitron-bold">Parent Account</Text>
+            <Text className="text-white text-xl font-orbitron-bold">{t("ProfileSelection.parentProfile")}</Text>
             <Text className="text-white/70 text-sm font-orbitron">{auth.currentUser?.email}</Text>
           </View>
         </TouchableOpacity>
@@ -158,7 +159,7 @@ export default function ProfileSelection() {
             <View className="flex-row items-center my-4">
               <View className="flex-1 h-px bg-white/30" />
               <Text className="text-white/70 text-sm font-orbitron-semibold mx-3">
-                OR SELECT CHILD
+                {t("ProfileSelection.text")}
               </Text>
               <View className="flex-1 h-px bg-white/30" />
             </View>
@@ -197,7 +198,7 @@ export default function ProfileSelection() {
 
         {children.length === 0 && (
           <Text className="text-white/50 text-center py-8 font-orbitron">
-            No child accounts yet.{"\n"}Create one from the parent account.
+            {t("ProfileSelection.desc")},{"\n"}{t("ProfileSelection.desc2")}.
           </Text>
         )}
 
@@ -212,7 +213,7 @@ export default function ProfileSelection() {
             }}
           >
             <Text className="text-white text-lg font-orbitron-semibold mb-4 text-center">
-              Enter PIN for {selectedChild}
+              {t("ProfileSelection.EnterPin")} {selectedChild}
             </Text>
             <TextInput
               className="bg-white/20 text-white text-center text-2xl font-orbitron p-4 rounded-xl mb-4"
@@ -236,7 +237,7 @@ export default function ProfileSelection() {
               }}
             >
               <Text className="text-white text-center font-orbitron-bold text-lg">
-                Continue
+                {t("Name.continue")}
               </Text>
             </TouchableOpacity>
           </View>

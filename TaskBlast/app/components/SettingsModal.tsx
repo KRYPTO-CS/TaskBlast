@@ -106,17 +106,17 @@ export default function SettingsModal({
     const isChild = currentProfileType === "child";
 
     Alert.alert(
-      isChild ? "Switch Profile" : "Logout",
+      isChild ? t("Settings.switchProfile") : t("Settings.logout"),
       isChild
         ? "Return to profile selection?"
-        : "Are you sure you want to logout?",
+        : t("Settings.logoutText"),
       [
         {
-          text: "Cancel",
+          text: t("Tasks.cancel"),
           style: "cancel",
         },
         {
-          text: isChild ? "Switch" : "Logout",
+          text: isChild ? t("Settings.switchProfile") : t("Settings.logout"),
           style: "destructive",
           onPress: async () => {
             try {
@@ -275,7 +275,7 @@ export default function SettingsModal({
             >
               <Text className="font-orbitron-semibold text-white text-xs">
                 {currentProfileType === "parent"
-                  ? "👤 Parent Account"
+                  ? t("Settings.parentAccount")
                   : `👶 ${activeChildProfile}`}
               </Text>
             </View>
@@ -370,7 +370,7 @@ export default function SettingsModal({
                     {t("Settings.notifications")}
                   </Text>
                   <Text className="font-orbitron text-gray-400 text-xs mt-1">
-                    Tap to customize
+                    {t("Settings.customize")}
                   </Text>
                 </View>
               </View>
@@ -424,7 +424,7 @@ export default function SettingsModal({
                     numberOfLines={1}
                   >
                     {language.toUpperCase()} ·{" "}
-                    {colorBlindMode === "none" ? "No filter" : colorBlindMode}
+                    {colorBlindMode === "none" ? t("Settings.noFilter") : colorBlindMode}
                   </Text>
                 </View>
               </View>
@@ -645,7 +645,7 @@ export default function SettingsModal({
                 className="font-orbitron-bold text-base"
                 style={{ color: palette.errorIcon }}
               >
-                {currentProfileType === "child" ? "Switch Profile" : "Logout"}
+                {currentProfileType === "child" ? t("Settings.switchProfile") : t("Settings.logout")}
               </Text>
             </TouchableOpacity>
           </ScrollView>
@@ -734,7 +734,7 @@ export default function SettingsModal({
               style={{ backgroundColor: palette.tertiarySoft }}
             >
               <Text className="font-orbitron-semibold text-white text-center">
-                Cancel
+                {t("Tasks.cancel")}
               </Text>
             </TouchableOpacity>
           </View>

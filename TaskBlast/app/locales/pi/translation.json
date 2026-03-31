@@ -119,7 +119,14 @@
     "highContrast": "High Contrast",
     "reduceMotion": "Reduce Motion",
     "tts": "Text to Speech",
-    "done": "Done"
+    "ttsDesc": "Read screen content aloud",
+    "done": "Done",
+    "logout": "Abandon Ship",
+    "switchProfile": "Switch Sailor",
+    "logoutText": "Are you sure you want to abandon ship?",
+    "parentAccount": "👤 Parent Account",
+    "noFilter": "No filter",
+    "customize": "Tap to customize"
   },
   "Tasks": {
     "title": "Task Ledger",
@@ -143,8 +150,47 @@
     "editTask": "Edit Task",
     "save": "Save",
     "coachMarkdesc": "Manage yer tasks here. Start voyages or edit them as ye wish.",
-    "Done": "Done"
+    "Done": "Done",
+    "TaskName": "Task Name",
+    "description": "Description",
+    "reward2": "Reward",
+    "status": "Status",
+    "complete": "Complete",
+    "incomplete": "Incomplete",
+    "yes": "Yes",
+    "no": "No",
+    "workTime": "Work Time",
+    "playTime": "Play Time",
+    "Cycles": "Cycles",
+    "created": "Created",
+    "details": "Task info",
+    "close": "Close",
+    "managerAccess": "Manager Access",
+    "managerAccessDesc": "Enter the 4-digit PIN to access edit mode with elevated permissions.",
+    "unlock": "Unlock"
   },
+
+  "Traits": {
+
+  "ADHD" : "ADHD",
+  "Aspergers": "Aspergers",
+  "Autism": "Autism",
+  "DevelopmentalLanguageDisorder": "Developmental Language Disorder",
+  "Disability Confident": "Disability Confident",
+  "Dyscalculia": "Dyscalculia",
+  "Dysgraphia": "Dysgraphia",
+  "Dyslexia": "Dyslexia",
+  "Dyspraxia": "Dyspraxia",
+  "Hyperlexia": "Hyperlexia",
+  "Irlen Syndrome": "Irlen Syndrome",
+  "OCD": "OCD",
+  "Synthesia": "Synthesia",
+  "Tourette's Syndrome": "Tourette's Syndrome",
+  "selectTraits": "Select Traits",
+  "saveTraits"  : "Save Traits"
+
+  },
+
   "Profile": {
     "traits": "Traits",
     "editP": "Edit Profile",
@@ -167,7 +213,9 @@
     "coachMarkAwardsTitle": "View Awards",
     "coachMarkAwards": "See yer achievements!",
     "coachMarkStatsTitle": "View Stats",
-    "coachMarkStats": "Track yer progress over time!"
+    "coachMarkStats": "Track yer progress over time!",
+    "edit": "Edit",
+    "advanced": "Advanced"
   },
   "Pomodoro": {
     "time": "Time Remaining",
@@ -179,7 +227,11 @@
     "coachMarkTime": "Watch the time tick down, stay focused!",
     "coachMarkwork": "Work hard, rest well during breaks!",
     "coachMarkPause": "Pause yer voyage if needed.",
-    "coachMarkLand": "End yer voyage and dock. Well done!"
+    "coachMarkLand": "End yer voyage and dock. Well done!",
+    "worksession": "Work Voyage",
+    "freeTime": "Free Time",
+    "startTask": "Start Task",
+    "ChooseGame": "Choose Your Game"
   },
   "Shop": {
     "title": "Treasure Shop",
@@ -208,5 +260,24 @@
     "game2048Desc": "Merge tiles. Aim for 2048!",
     "sequentBlast": "Sequent Blast",
     "sequentBlastDesc": "Memorize and tap the hidden sequence."
+  },
+  "ChildAccount": {
+    "title": "Create Child Account",
+    "firstName": "Enter first name",
+    "lastName": "Enter last name",
+    "birthdate": "Birthdate",
+    "username": "Username",
+    "usernameDesc": "Choose a unique username",
+    "create": "Create Child Account"
+  },
+  "ProfileSelection": {
+    "title": "Who's using TaskBlast?",
+    "parentProfile": "Parent Account",
+    "childProfile": "Child Account",
+    "desc": "No child accounts yet.",
+    "desc2": "Create one from the parent account",
+    "text": "OR SELECT CHILD",
+    "EnterPin": "Enter PIN for"
   }
+
 }

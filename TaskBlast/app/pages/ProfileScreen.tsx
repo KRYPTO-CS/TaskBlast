@@ -401,7 +401,7 @@ export default function ProfileScreen() {
             >
               <Text className="font-orbitron-semibold text-white text-xs">
                 {currentProfileType === "parent"
-                  ? "👤 Parent Account"
+                  ? t("Settings.parentAccount")
                   : `👶 ${currentChildUsername}`}
               </Text>
             </View>
@@ -511,7 +511,7 @@ export default function ProfileScreen() {
                   style={{ marginRight: 4 }}
                 />
                 <Text className="font-orbitron-semibold text-white text-xs">
-                  Edit
+                  {t("Profile.edit")}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -624,7 +624,7 @@ export default function ProfileScreen() {
                   style={{ marginRight: 4 }}
                 />
                 <Text className="font-orbitron-semibold text-white text-xs">
-                  Advanced
+                  {t("Profile.advanced")}
                 </Text>
               </TouchableOpacity>
             </View>

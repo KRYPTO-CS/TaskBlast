@@ -211,7 +211,7 @@ export default function AccessibilityModal({
               icon="volume-medium"
               iconColor={palette.secondary}
               label={t("Settings.tts")}
-              description="Read screen content aloud"
+              description={t("Settings.ttsDesc")}
               value={ttsEnabled}
               onToggle={setTtsEnabled}
             />
