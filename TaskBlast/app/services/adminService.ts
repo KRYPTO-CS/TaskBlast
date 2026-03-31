@@ -55,9 +55,25 @@ export const checkAdminEligibility = async (email: string): Promise<boolean> => 
     return false;
   }
 
-  const adminDocRef = doc(firestore, "admins", normalizedEmail);
-  const adminDoc = await getDoc(adminDocRef);
-  return adminDoc.exists();
+  try {
+    const adminDocRef = doc(firestore, "admins", normalizedEmail);
+    const adminDoc = await getDoc(adminDocRef);
+    return adminDoc.exists();
+  } catch (error: any) {
+    const code = String(error?.code || "").toLowerCase();
+
+    // Non-admin users may not be allowed to read admin docs by rules.
+    // Treat this as "not eligible" instead of surfacing a login error.
+    if (
+      code.includes("permission-denied") ||
+      code.includes("permission_denied") ||
+      code.includes("not-found")
+    ) {
+      return false;
+    }
+
+    throw error;
+  }
 };
 
 export const verifyAdmin = async (

@@ -261,9 +261,8 @@ export default function GamePage() {
                 ? Math.max(0, Math.floor(Number(prevScoreStr) || 0))
                 : 0;
 
-              // Space Swerve sends absolute score snapshots; Space Shooter sends deltas.
+              // Accumulate score deltas from the game; only treat as absolute if explicitly marked.
               const isAbsoluteScoreUpdate =
-                isSpaceSwerve ||
                 payload.scoreMode === "absolute" ||
                 payload.isDelta === false;
               const nextScore = isAbsoluteScoreUpdate
@@ -440,17 +439,10 @@ export default function GamePage() {
         );
       };
 
-      if (isSpaceSwerve) {
-        // Space Swerve uses evolving contracts across builds.
-        ["skins", "setSkins", "applySkins", "playerConfig"].forEach(
-          sendPayload,
-        );
-      } else {
-        // Keep Space Shooter on the known-stable contract.
-        sendPayload("skins");
-      }
+      // Both Space Swerve and Asteroid Blaster use the same stable contract.
+      sendPayload("skins");
     },
-    [equipped, gameId, activePlanetId, colorBlindMode, isSpaceSwerve],
+    [equipped, gameId, activePlanetId, colorBlindMode],
   );
 
   useEffect(() => {

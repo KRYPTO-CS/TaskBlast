@@ -246,6 +246,10 @@ const getScoreBonusReward = (score: number) => {
   return Math.min(40, Math.floor(score / 100));
 };
 
+const MAX_BATTLE_PASS_LEVEL = 100;
+const getBattlePassReward = (level: number) =>
+  250 + 50 * Math.floor(Math.max(0, level - 1) / 5);
+
 const getGameReward = (gameId: number, score: number, highestTile: number) => {
   const safeScore = Math.max(0, Math.floor(Number(score) || 0));
   const safeTile = Math.max(0, Math.floor(Number(highestTile) || 0));
@@ -254,6 +258,11 @@ const getGameReward = (gameId: number, score: number, highestTile: number) => {
     const baseReward = getRewardFromHighestTile(safeTile);
     const scoreBonus = getScoreBonusReward(safeScore);
     return Math.min(120, baseReward + scoreBonus);
+  }
+
+  // MatchBlast awards 10% of the final score as rocks.
+  if (gameId === 4) {
+    return Math.floor(safeScore * 0.1);
   }
 
   return safeScore;
@@ -466,6 +475,229 @@ export const claimTaskReward = onCall(
       message: result.alreadyArchived
         ? "Task already archived."
         : "Task reward claimed.",
+    };
+  },
+);
+
+export const claimBattlePassReward = onCall(
+  { invoker: "public" },
+  async (request: CallableRequest<unknown>) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError("unauthenticated", "Authentication is required.");
+    }
+
+    const { level, childDocId } = request.data as {
+      level?: number;
+      childDocId?: string | null;
+    };
+
+    const safeLevel = Number.isFinite(Number(level))
+      ? Math.floor(Number(level))
+      : NaN;
+
+    if (
+      !Number.isFinite(safeLevel) ||
+      safeLevel < 1 ||
+      safeLevel > MAX_BATTLE_PASS_LEVEL
+    ) {
+      throw new HttpsError("invalid-argument", "Invalid battle pass level.");
+    }
+
+    const uid = request.auth.uid;
+    const profileRef = getUserProfileRef(uid, childDocId);
+    const isGalaxyReward = safeLevel % 5 === 0;
+    const rockReward = isGalaxyReward ? 0 : getBattlePassReward(safeLevel);
+    const crystalReward = isGalaxyReward ? 5 : 0;
+
+    const result = await db.runTransaction(
+      async (tx: admin.firestore.Transaction) => {
+        const snap = await tx.get(profileRef);
+        if (!snap.exists) {
+          throw new HttpsError("not-found", "Profile not found.");
+        }
+
+        const data = snap.data() || {};
+        const liveLevel = Number.isFinite(Number(data.currentLevel))
+          ? Math.max(1, Math.floor(Number(data.currentLevel)))
+          : 1;
+        const claimed = Array.isArray(data.claimedRewardLevels)
+          ? data.claimedRewardLevels
+              .map((v: unknown) => Number(v))
+              .filter((v: number) => Number.isFinite(v) && v >= 1)
+              .map((v: number) => Math.floor(v))
+          : [];
+
+        if (safeLevel > liveLevel) {
+          throw new HttpsError(
+            "failed-precondition",
+            "LEVEL_NOT_REACHED",
+          );
+        }
+
+        const currentRocks = Number(data.rocks || 0);
+        const currentGalaxyCrystals = Number(data.galaxyCrystals || 0);
+
+        if (claimed.includes(safeLevel)) {
+          return {
+            alreadyClaimed: true,
+            newRocks: currentRocks,
+            newGalaxyCrystals: currentGalaxyCrystals,
+            claimedRewardLevels: claimed,
+          };
+        }
+
+        const updatedClaimed = [...new Set([...claimed, safeLevel])].sort(
+          (a, b) => a - b,
+        );
+
+        const newRocks = currentRocks + rockReward;
+        const newGalaxyCrystals = currentGalaxyCrystals + crystalReward;
+
+        tx.set(
+          profileRef,
+          {
+            claimedRewardLevels: updatedClaimed,
+            rocks: newRocks,
+            galaxyCrystals: newGalaxyCrystals,
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          },
+          { merge: true },
+        );
+
+        return {
+          alreadyClaimed: false,
+          newRocks,
+          newGalaxyCrystals,
+          claimedRewardLevels: updatedClaimed,
+        };
+      },
+    );
+
+    return {
+      success: true,
+      level: safeLevel,
+      isGalaxyReward,
+      awardedRocks: result.alreadyClaimed ? 0 : rockReward,
+      awardedGalaxyCrystals: result.alreadyClaimed ? 0 : crystalReward,
+      alreadyClaimed: result.alreadyClaimed,
+      newRocks: result.newRocks,
+      newGalaxyCrystals: result.newGalaxyCrystals,
+      claimedRewardLevels: result.claimedRewardLevels,
+      message: result.alreadyClaimed
+        ? "Reward already claimed."
+        : "Battle pass reward claimed.",
+    };
+  },
+);
+
+export const unlockPlanet = onCall(
+  { invoker: "public" },
+  async (request: CallableRequest<unknown>) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError("unauthenticated", "Authentication is required.");
+    }
+
+    const { planetId } = request.data as { planetId?: number };
+    const safePlanetId = Number.isFinite(Number(planetId))
+      ? Math.floor(Number(planetId))
+      : NaN;
+
+    if (
+      !Number.isFinite(safePlanetId) ||
+      safePlanetId < 1 ||
+      safePlanetId > 9
+    ) {
+      throw new HttpsError("invalid-argument", "Invalid planetId.");
+    }
+
+    const uid = request.auth.uid;
+    const userRef = db.collection("users").doc(uid);
+    const planetRef = db.collection("planets").doc(String(safePlanetId));
+
+    const result = await db.runTransaction(
+      async (tx: admin.firestore.Transaction) => {
+        const userSnap = await tx.get(userRef);
+        if (!userSnap.exists) {
+          throw new HttpsError("not-found", "User profile not found.");
+        }
+
+        const planetSnap = await tx.get(planetRef);
+        if (!planetSnap.exists) {
+          throw new HttpsError("not-found", "Planet not found.");
+        }
+
+        const userData = userSnap.data() || {};
+        const planetData = planetSnap.data() || {};
+
+        const cost = Math.max(0, Math.floor(Number(planetData.cost || 0)));
+        const currentRocks = Math.max(
+          0,
+          Math.floor(Number(userData.rocks || 0)),
+        );
+        const currentPlanet = Math.max(
+          1,
+          Math.floor(Number(userData.currPlanet || 1)),
+        );
+
+        if (safePlanetId > currentPlanet + 1) {
+          throw new HttpsError(
+            "failed-precondition",
+            "Unlock previous planet first.",
+          );
+        }
+
+        if (safePlanetId <= currentPlanet) {
+          return {
+            alreadyUnlocked: true,
+            newRocks: currentRocks,
+            currPlanet: currentPlanet,
+            cost,
+          };
+        }
+
+        if (currentRocks < cost) {
+          throw new HttpsError(
+            "failed-precondition",
+            "Not enough rocks to unlock this planet.",
+          );
+        }
+
+        const newRocks = currentRocks - cost;
+        const currentSpent = Math.max(
+          0,
+          Math.floor(Number(userData.rocksSpent || 0)),
+        );
+        const newSpent = currentSpent + cost;
+
+        tx.set(
+          userRef,
+          {
+            currPlanet: safePlanetId,
+            rocks: newRocks,
+            rocksSpent: newSpent,
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          },
+          { merge: true },
+        );
+
+        return {
+          alreadyUnlocked: false,
+          newRocks,
+          currPlanet: safePlanetId,
+          cost,
+        };
+      },
+    );
+
+    return {
+      success: true,
+      alreadyUnlocked: result.alreadyUnlocked,
+      newRocks: result.newRocks,
+      currPlanet: result.currPlanet,
+      cost: result.cost,
+      message: result.alreadyUnlocked
+        ? "Planet already unlocked."
+        : "Planet unlocked successfully.",
     };
   },
 );

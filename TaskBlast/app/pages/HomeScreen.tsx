@@ -10,7 +10,7 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-import { Text } from '../../TTS';
+import { Text } from "../../TTS";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
@@ -20,16 +20,14 @@ import {
   doc,
   getDoc,
   updateDoc,
-  increment,
   collection,
   query,
   where,
   getDocs,
-  runTransaction,
 } from "firebase/firestore";
 import { useAudioPlayer } from "expo-audio";
 import MainButton from "../components/MainButton";
-import PlanetScrollList from "../components/PlanetScrollList";  
+import PlanetScrollList from "../components/PlanetScrollList";
 import TaskListModal from "../components/TaskListModal";
 import SettingsModal from "../components/SettingsModal";
 import ShopModal from "../components/ShopModal";
@@ -38,8 +36,13 @@ import { useAudio } from "../context/AudioContext";
 import { useTranslation } from "react-i18next";
 import PlanetModal from "../components/PlanetModal";
 import { useColorPalette } from "../styles/colorBlindThemes";
-import { CoachmarkAnchor, useCoachmark, createTour } from '@edwardloopez/react-native-coachmark';
+import {
+  CoachmarkAnchor,
+  useCoachmark,
+  createTour,
+} from "@edwardloopez/react-native-coachmark";
 import Svg, { Circle, G } from "react-native-svg";
+import { claimBattlePassReward } from "../services/economyService";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -81,43 +84,44 @@ export default function HomeScreen() {
     () => Array.from({ length: maxBattlePassLevel }, (_, i) => i + 1),
     [maxBattlePassLevel],
   );
-  const {t ,i18n} = useTranslation();
-  const {start} = useCoachmark();
- const onboardingTour = React.useMemo(() => createTour("onboarding", [
-  {
-    id: "task-button",
-    title: t("Home.coachMarktaskstitle"),
-    description: t("Home.coachMarktasks"),
-  },
-  {
-    id: "profile-button",
-    title: t("Home.coachMarkProfiletitle"),
-    description: t("Home.coachMarkProfile"),
-  },
-  {
-    id: "settings-button",
-    title: t("Settings.title"),
-    description: t("Home.coachMarksettings"),
-  },
-  {
-    id: "takeoff-button",
-    title: t("Home.takeoff"),
-    description: t("Home.coachMarktakeoff"),
-  },
-  {
-    id: "shop-section",
-    title: t("Shop.title"),
-    description: t("Home.coachMarkshop"),
-  },
-  {
-    id: "level-button",
-    title: t("Home.playerLevel"),
-    description: t("Home.coachMarklevel"),
-  }
-
-]),
-  [t]
- );
+  const { t, i18n } = useTranslation();
+  const { start } = useCoachmark();
+  const onboardingTour = React.useMemo(
+    () =>
+      createTour("onboarding", [
+        {
+          id: "task-button",
+          title: t("Home.coachMarktaskstitle"),
+          description: t("Home.coachMarktasks"),
+        },
+        {
+          id: "profile-button",
+          title: t("Home.coachMarkProfiletitle"),
+          description: t("Home.coachMarkProfile"),
+        },
+        {
+          id: "settings-button",
+          title: t("Settings.title"),
+          description: t("Home.coachMarksettings"),
+        },
+        {
+          id: "takeoff-button",
+          title: t("Home.takeoff"),
+          description: t("Home.coachMarktakeoff"),
+        },
+        {
+          id: "shop-section",
+          title: t("Shop.title"),
+          description: t("Home.coachMarkshop"),
+        },
+        {
+          id: "level-button",
+          title: t("Home.playerLevel"),
+          description: t("Home.coachMarklevel"),
+        },
+      ]),
+    [t],
+  );
 
   // Child profile state
   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
@@ -234,74 +238,54 @@ export default function HomeScreen() {
       const user = auth.currentUser;
       if (!user) return;
 
-      const db = getFirestore();
-      const activeChild = await AsyncStorage.getItem("activeChildProfile");
-
-      let profileRef = doc(db, "users", user.uid);
-      if (activeChild) {
-        const childrenRef = collection(db, "users", user.uid, "children");
-        const childQuery = query(
-          childrenRef,
-          where("username", "==", activeChild),
-        );
-        const childSnapshot = await getDocs(childQuery);
-        if (!childSnapshot.empty) {
-          profileRef = childSnapshot.docs[0].ref;
-        }
-      }
-
-      await runTransaction(db, async (tx) => {
-        const snap = await tx.get(profileRef);
-        const data = snap.exists() ? snap.data() : ({} as any);
-        const liveLevel = Number.isFinite(Number(data.currentLevel))
-          ? Math.max(1, Math.floor(Number(data.currentLevel)))
-          : 1;
-        const claimed = Array.isArray(data.claimedRewardLevels)
-          ? data.claimedRewardLevels
-              .map((v: unknown) => Number(v))
-              .filter((v: number) => Number.isFinite(v) && v >= 1)
-              .map((v: number) => Math.floor(v))
-          : [];
-
-        if (level > liveLevel) {
-          throw new Error("LEVEL_NOT_REACHED");
-        }
-        if (claimed.includes(level)) {
-          throw new Error("ALREADY_CLAIMED");
-        }
-
-        const updatedClaimed = [...new Set([...claimed, level])].sort(
-          (a, b) => a - b,
-        );
-
-        const rewardField = isGalaxyReward ? "galaxyCrystals" : "rocks";
-
-        tx.set(
-          profileRef,
-          {
-            claimedRewardLevels: updatedClaimed,
-            [rewardField]: increment(isGalaxyReward ? 5 : rewardAmount),
-          },
-          { merge: true },
-        );
+      const result = await claimBattlePassReward({
+        level,
+        childDocId,
       });
 
-      setClaimedRewardLevels((prev) =>
-        [...new Set([...prev, level])].sort((a, b) => a - b),
-      );
-      if (isGalaxyReward) {
+      if (!result.success) {
+        throw new Error(result.message || "FAILED_TO_CLAIM");
+      }
+
+      if (result.alreadyClaimed) {
+        throw new Error("ALREADY_CLAIMED");
+      }
+
+      setClaimedRewardLevels((prev) => {
+        if (Array.isArray(result.claimedRewardLevels)) {
+          return result.claimedRewardLevels;
+        }
+        return [...new Set([...prev, level])].sort((a, b) => a - b);
+      });
+
+      if (typeof result.newGalaxyCrystals === "number") {
+        setGalaxyCrystals(Math.max(0, Math.floor(result.newGalaxyCrystals)));
+      } else if (isGalaxyReward) {
         setGalaxyCrystals((prev) => prev + 5);
-      } else {
+      }
+
+      if (typeof result.newRocks === "number") {
+        setRocks(Math.max(0, Math.floor(result.newRocks)));
+      } else if (!isGalaxyReward) {
         setRocks((prev) => prev + rewardAmount);
       }
     } catch (error: any) {
-      if (error?.message === "LEVEL_NOT_REACHED") {
+      const errorCode = String(error?.code || "").toLowerCase();
+      const errorMessage = String(error?.message || "");
+
+      if (
+        errorMessage.includes("LEVEL_NOT_REACHED") ||
+        errorCode.includes("failed-precondition")
+      ) {
         Alert.alert("Level Rewards", "You need to reach this level first.");
-      } else if (error?.message === "ALREADY_CLAIMED") {
+      } else if (errorMessage.includes("ALREADY_CLAIMED")) {
         Alert.alert("Level Rewards", "This reward has already been claimed.");
       } else {
         console.warn("Failed to claim battle pass reward", error);
-        Alert.alert("Level Rewards", "Failed to claim reward. Please try again.");
+        Alert.alert(
+          "Level Rewards",
+          "Failed to claim reward. Please try again.",
+        );
       }
     } finally {
       setClaimingLevel(null);
@@ -396,40 +380,40 @@ export default function HomeScreen() {
     }, [loadScore, musicPlayer, musicEnabled]),
   );
 
-useFocusEffect(
-  useCallback(() => {
-    if (
-      isTaskModalVisible ||
-      isSettingsModalVisible ||
-      isShopModalVisible ||
-      isPlanetModalVisible
-    ) {
-      return;
-    }
-
-    let cancelled = false;
-    const timeout = setTimeout(async () => {
-      const alreadySeen = await AsyncStorage.getItem("onboardingSeen");
-
-      if (!alreadySeen && !cancelled) {
-        await AsyncStorage.setItem("onboardingSeen", "true");
-        start(onboardingTour);
+  useFocusEffect(
+    useCallback(() => {
+      if (
+        isTaskModalVisible ||
+        isSettingsModalVisible ||
+        isShopModalVisible ||
+        isPlanetModalVisible
+      ) {
+        return;
       }
-    }, 700);
 
-    return () => {
-      cancelled = true;
-      clearTimeout(timeout);
-    };
-  }, [
-    isTaskModalVisible,
-    isSettingsModalVisible,
-    isShopModalVisible,
-    isPlanetModalVisible,
-    onboardingTour,
-    start,
-  ])
-);
+      let cancelled = false;
+      const timeout = setTimeout(async () => {
+        const alreadySeen = await AsyncStorage.getItem("onboardingSeen");
+
+        if (!alreadySeen && !cancelled) {
+          await AsyncStorage.setItem("onboardingSeen", "true");
+          start(onboardingTour);
+        }
+      }, 700);
+
+      return () => {
+        cancelled = true;
+        clearTimeout(timeout);
+      };
+    }, [
+      isTaskModalVisible,
+      isSettingsModalVisible,
+      isShopModalVisible,
+      isPlanetModalVisible,
+      onboardingTour,
+      start,
+    ]),
+  );
   return (
     <View className="flex-1">
       {/* Animated stars background */}
@@ -441,54 +425,59 @@ useFocusEffect(
       {/* All UI elements above the background */}
       <View className="flex-1">
         {/* Top Center - Level Button */}
-        
+
         <View className="absolute top-14 self-center z-10 items-center">
           <CoachmarkAnchor id="level-button">
-          <TouchableOpacity
-            testID="level-button"
-            className="w-14 h-14 rounded-full items-center justify-center"
-            style={{
-              backgroundColor: "rgba(0, 0, 0, 0)",
-              shadowColor: "#f472b6",
-              shadowOpacity: 0.55,
-              shadowRadius: 10,
-              shadowOffset: { width: 0, height: 0 },
-            }}
-            onPress={() => setIsLevelModalVisible(true)}
+            <TouchableOpacity
+              testID="level-button"
+              className="w-14 h-14 rounded-full items-center justify-center"
+              style={{
+                backgroundColor: "rgba(0, 0, 0, 0)",
+                shadowColor: "#f472b6",
+                shadowOpacity: 0.55,
+                shadowRadius: 10,
+                shadowOffset: { width: 0, height: 0 },
+              }}
+              onPress={() => setIsLevelModalVisible(true)}
             >
-            <Svg
-              width={smallRingSize}
-              height={smallRingSize}
-              style={{ position: "absolute", top: 0, left: 0 }}
+              <Svg
+                width={smallRingSize}
+                height={smallRingSize}
+                style={{ position: "absolute", top: 0, left: 0 }}
               >
-              <G rotation="-90" origin={`${smallRingSize / 2}, ${smallRingSize / 2}`}>
-                <Circle
-                  cx={smallRingSize / 2}
-                  cy={smallRingSize / 2}
-                  r={smallRingRadius}
-                  stroke="rgba(244, 114, 182, 0.25)"
-                  strokeWidth={smallRingStroke}
-                  fill="transparent"
+                <G
+                  rotation="-90"
+                  origin={`${smallRingSize / 2}, ${smallRingSize / 2}`}
+                >
+                  <Circle
+                    cx={smallRingSize / 2}
+                    cy={smallRingSize / 2}
+                    r={smallRingRadius}
+                    stroke="rgba(244, 114, 182, 0.25)"
+                    strokeWidth={smallRingStroke}
+                    fill="transparent"
                   />
-                <Circle
-                  cx={smallRingSize / 2}
-                  cy={smallRingSize / 2}
-                  r={smallRingRadius}
-                  stroke="rgba(74, 222, 128, 0.98)"
-                  strokeWidth={smallRingStroke}
-                  fill="transparent"
-                  strokeLinecap="round"
-                  strokeDasharray={`${smallRingCircumference} ${smallRingCircumference}`}
-                  strokeDashoffset={smallRingOffset}
+                  <Circle
+                    cx={smallRingSize / 2}
+                    cy={smallRingSize / 2}
+                    r={smallRingRadius}
+                    stroke="rgba(74, 222, 128, 0.98)"
+                    strokeWidth={smallRingStroke}
+                    fill="transparent"
+                    strokeLinecap="round"
+                    strokeDasharray={`${smallRingCircumference} ${smallRingCircumference}`}
+                    strokeDashoffset={smallRingOffset}
                   />
-              </G>
-            </Svg>
-            <Text className="font-orbitron-bold text-pink-200 text-lg">
-              {currentLevel}
-            </Text>
-          </TouchableOpacity>
-            </CoachmarkAnchor>
-          <Text className="font-orbitron text-pink-100/90 text-xs mt-1">{t("Home.level")}</Text>
+                </G>
+              </Svg>
+              <Text className="font-orbitron-bold text-pink-200 text-lg">
+                {currentLevel}
+              </Text>
+            </TouchableOpacity>
+          </CoachmarkAnchor>
+          <Text className="font-orbitron text-pink-100/90 text-xs mt-1">
+            {t("Home.level")}
+          </Text>
         </View>
 
         {/* Top Right Section - Profile & Settings above Task Button */}
@@ -496,124 +485,123 @@ useFocusEffect(
           {/* Profile & Settings - Horizontal */}
           <View className="flex-row gap-1">
             <CoachmarkAnchor id="profile-button" shape="circle">
-
-            <TouchableOpacity
-              testID="profile-button"
-              className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full items-center justify-center shadow-lg shadow-white/40"
-              style={{ shadowOffset: { width: 0, height: 0 } }}
-              onPress={() => router.push("/pages/ProfileScreen")}
+              <TouchableOpacity
+                testID="profile-button"
+                className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full items-center justify-center shadow-lg shadow-white/40"
+                style={{ shadowOffset: { width: 0, height: 0 } }}
+                onPress={() => router.push("/pages/ProfileScreen")}
               >
-              <Image
-                source={require("../../assets/images/sprites/profile.png")}
-                className="w-7 h-7"
-                resizeMode="contain"
-                style={{ transform: [{ scale: 1.5 }] }}
+                <Image
+                  source={require("../../assets/images/sprites/profile.png")}
+                  className="w-7 h-7"
+                  resizeMode="contain"
+                  style={{ transform: [{ scale: 1.5 }] }}
                 />
-            </TouchableOpacity>
-                </CoachmarkAnchor>
-                <CoachmarkAnchor id="settings-button" shape="circle">
-
-            <TouchableOpacity
-              testID="settings-button"
-              className="w-14 h-14 bg-gradient-to-br from-indigo-600 to-blue-500 rounded-full items-center justify-center shadow-lg shadow-white/40"
-              style={{ shadowOffset: { width: 0, height: 0 } }}
-              onPress={() => setIsSettingsModalVisible(true)}
+              </TouchableOpacity>
+            </CoachmarkAnchor>
+            <CoachmarkAnchor id="settings-button" shape="circle">
+              <TouchableOpacity
+                testID="settings-button"
+                className="w-14 h-14 bg-gradient-to-br from-indigo-600 to-blue-500 rounded-full items-center justify-center shadow-lg shadow-white/40"
+                style={{ shadowOffset: { width: 0, height: 0 } }}
+                onPress={() => setIsSettingsModalVisible(true)}
               >
-              <Image
-                source={require("../../assets/images/sprites/gear.png")}
-                className="w-7 h-7"
-                resizeMode="contain"
-                style={{ transform: [{ scale: 1.5 }] }}
+                <Image
+                  source={require("../../assets/images/sprites/gear.png")}
+                  className="w-7 h-7"
+                  resizeMode="contain"
+                  style={{ transform: [{ scale: 1.5 }] }}
                 />
-            </TouchableOpacity>
-                </CoachmarkAnchor>
+              </TouchableOpacity>
+            </CoachmarkAnchor>
           </View>
-          
+
           {/* Task List Button */}
           <CoachmarkAnchor id="task-button" shape="circle">
-
-          <TouchableOpacity
-            testID="task-button"
-            onPress={() => setIsTaskModalVisible(true)}
-            className="-mt-4"
+            <TouchableOpacity
+              testID="task-button"
+              onPress={() => setIsTaskModalVisible(true)}
+              className="-mt-4"
             >
-            <Image
-              source={require("../../assets/images/sprites/task.png")}
-              resizeMode="contain"
-              style={{ transform: [{ scale: 0.75 }] }}
+              <Image
+                source={require("../../assets/images/sprites/task.png")}
+                resizeMode="contain"
+                style={{ transform: [{ scale: 0.75 }] }}
               />
-          </TouchableOpacity>
-              </CoachmarkAnchor>
+            </TouchableOpacity>
+          </CoachmarkAnchor>
         </View>
 
         {/* Top Left - Crystals & Galaxy Crystals */}
-        
+
         <View className="justify-start items-start gap-3 mt-11 ml-0">
           <CoachmarkAnchor id="shop-section" shape="circle">
-          
-          {/* Crystals */}
+            {/* Crystals */}
 
-          <TouchableOpacity
-            className="flex-row items-center bg-gradient-to-r from-pink-600 to-pink-400 px-5 py-2.5 rounded-full shadow-lg shadow-pink-500/70 border-2 border-pink-300/30"
-            style={{ shadowOffset: { width: 0, height: 0 }, width: 140 }}
-            onPress={() => setIsShopModalVisible(true)}
+            <TouchableOpacity
+              className="flex-row items-center bg-gradient-to-r from-pink-600 to-pink-400 px-5 py-2.5 rounded-full shadow-lg shadow-pink-500/70 border-2 border-pink-300/30"
+              style={{ shadowOffset: { width: 0, height: 0 }, width: 140 }}
+              onPress={() => setIsShopModalVisible(true)}
             >
-            <Image
-              source={require("../../assets/images/sprites/crystal.png")}
-              className="w-7 h-7 mr-1"
-              resizeMode="contain"
-              style={{ transform: [{ scale: 1.5 }] }}
+              <Image
+                source={require("../../assets/images/sprites/crystal.png")}
+                className="w-7 h-7 mr-1"
+                resizeMode="contain"
+                style={{ transform: [{ scale: 1.5 }] }}
               />
-            <Text className="font-orbitron-bold text-white text-md ml-2">
-              {String(rocks).padStart(4, "0")}
-            </Text>
-          </TouchableOpacity>
-
+              <Text className="font-orbitron-bold text-white text-md ml-2">
+                {String(rocks).padStart(4, "0")}
+              </Text>
+            </TouchableOpacity>
           </CoachmarkAnchor>
           {/* Galaxy Crystals */}
           <TouchableOpacity
             className="flex-row items-center bg-gradient-to-r from-indigo-900 to-indigo-700 px-5 py-2.5 rounded-full shadow-lg shadow-indigo-400/70 border-2 border-indigo-600/30"
             style={{ shadowOffset: { width: 0, height: 0 }, width: 140 }}
             onPress={() => setIsShopModalVisible(true)}
-            >
+          >
             <Image
               testID="fuel-icon"
               source={require("../../assets/images/sprites/galaxyCrystal.png")}
               className="w-7 h-7 mr-1"
               resizeMode="contain"
               style={{ transform: [{ scale: 1.5 }], marginBottom: 2 }}
-              />
+            />
             <Text className="font-orbitron-bold text-white text-md ml-2">
               {String(galaxyCrystals).padStart(4, "0")}
             </Text>
           </TouchableOpacity>
         </View>
 
-
-
         {/* Center - Planet Scroll List Component*/}
-        
-        <PlanetScrollList onRocksChange={loadScore} onActivePlanetChange={(isLocked) => setIsSelectedPlanetLocked(isLocked)} />
+
+        <PlanetScrollList
+          onRocksChange={loadScore}
+          onActivePlanetChange={(isLocked) =>
+            setIsSelectedPlanetLocked(isLocked)
+          }
+        />
 
         {/* Take Off Button - Bottom Center */}
         <CoachmarkAnchor id="takeoff-button" shape="circle">
-
-        <View className="items-center mb-24">
-          <MainButton
-
-           // send out an alert if the selected planet is locked; this value comes from the PlanetScrollList component via the onActivePlanetChange callback
-           // this will help the game crystal boost logic in the future
-            title={t("Home.takeoff")}
-            onPress={() => {
-              if (isSelectedPlanetLocked) {
-                Alert.alert("Planet Locked", "This planet is locked. Unlock it before taking off!");
-              } else {
-                router.push("/pages/PomodoroScreen");
-              }
-            }}
+          <View className="items-center mb-24">
+            <MainButton
+              // send out an alert if the selected planet is locked; this value comes from the PlanetScrollList component via the onActivePlanetChange callback
+              // this will help the game crystal boost logic in the future
+              title={t("Home.takeoff")}
+              onPress={() => {
+                if (isSelectedPlanetLocked) {
+                  Alert.alert(
+                    "Planet Locked",
+                    "This planet is locked. Unlock it before taking off!",
+                  );
+                } else {
+                  router.push("/pages/PomodoroScreen");
+                }
+              }}
             />
-        </View>
-            </CoachmarkAnchor>
+          </View>
+        </CoachmarkAnchor>
 
         {/* Task List Modal */}
         <TaskListModal
@@ -624,7 +612,7 @@ useFocusEffect(
         />
 
         {/* Planet Modal */}
-        
+
         <PlanetModal
           visible={isPlanetModalVisible}
           onClose={() => setIsPlanetModalVisible(false)}
@@ -687,7 +675,10 @@ useFocusEffect(
                     height={modalRingSize}
                     style={{ position: "absolute", top: 0, left: 0 }}
                   >
-                    <G rotation="-90" origin={`${modalRingSize / 2}, ${modalRingSize / 2}`}>
+                    <G
+                      rotation="-90"
+                      origin={`${modalRingSize / 2}, ${modalRingSize / 2}`}
+                    >
                       <Circle
                         cx={modalRingSize / 2}
                         cy={modalRingSize / 2}
@@ -795,7 +786,9 @@ useFocusEffect(
                         ) : (
                           <View
                             className="px-3 py-1 rounded-full"
-                            style={{ backgroundColor: "rgba(148,163,184,0.22)" }}
+                            style={{
+                              backgroundColor: "rgba(148,163,184,0.22)",
+                            }}
                           >
                             <Text className="font-orbitron-bold text-slate-300 text-xs">
                               {t("Home.Locked")}
