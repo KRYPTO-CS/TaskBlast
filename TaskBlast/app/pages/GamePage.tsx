@@ -263,8 +263,7 @@ export default function GamePage() {
 
               // Accumulate score deltas from the game; only treat as absolute if explicitly marked.
               const isAbsoluteScoreUpdate =
-                payload.scoreMode === "absolute" ||
-                payload.isDelta === false;
+                payload.scoreMode === "absolute" || payload.isDelta === false;
               const nextScore = isAbsoluteScoreUpdate
                 ? Math.max(0, safeIncomingScore)
                 : Math.max(0, prevScore + safeIncomingScore);
