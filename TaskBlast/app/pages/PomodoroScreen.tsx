@@ -334,7 +334,11 @@ export default function PomodoroScreen() {
         const currentArr = Array.isArray(data.workTimeMinutesArr)
           ? [...data.workTimeMinutesArr]
           : [];
+        const workTimeDateArr = Array.isArray(data.workTimeDateArr)
+          ? [...data.workTimeDateArr]
+          : [];
         currentArr.push(value);
+        workTimeDateArr.push(new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" }));
 
         const prevExp = Number.isFinite(Number(data.currentExp))
           ? Math.max(0, Math.floor(Number(data.currentExp)))
@@ -374,6 +378,7 @@ export default function PomodoroScreen() {
           profileRef,
           {
             workTimeMinutesArr: currentArr,
+            workTimeDateArr,
             currentExp: newExp,
             currentLevel: newLevel,
           },
