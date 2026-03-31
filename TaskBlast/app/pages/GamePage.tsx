@@ -361,26 +361,33 @@ export default function GamePage() {
 
           scorePersistQueueRef.current = scorePersistQueueRef.current
             .then(async () => {
-              const prevScoreStr = await AsyncStorage.getItem(
-                GAME_SCORE_STORAGE_KEY,
-              );
-              const prevScore = prevScoreStr
-                ? Math.max(0, Math.floor(Number(prevScoreStr) || 0))
-                : 0;
-
-              // Accumulate score deltas from the game; only treat as absolute if explicitly marked.
+              // For Asteroid Blaster and Space Swerve, always use the latest score as absolute value.
+              // For other games, accumulate score deltas unless explicitly marked as absolute.
+              const isSpaceShooterVariant = gameId === 0 || gameId === 1;
               const isAbsoluteScoreUpdate =
-                payload.scoreMode === "absolute" || payload.isDelta === false;
-              const nextScore = isAbsoluteScoreUpdate
-                ? Math.max(0, safeIncomingScore)
-                : Math.max(0, prevScore + safeIncomingScore);
+                isSpaceShooterVariant ||
+                payload.scoreMode === "absolute" ||
+                payload.isDelta === false;
+
+              let nextScore: number;
+              if (isAbsoluteScoreUpdate) {
+                nextScore = Math.max(0, safeIncomingScore);
+              } else {
+                const prevScoreStr = await AsyncStorage.getItem(
+                  GAME_SCORE_STORAGE_KEY,
+                );
+                const prevScore = prevScoreStr
+                  ? Math.max(0, Math.floor(Number(prevScoreStr) || 0))
+                  : 0;
+                nextScore = Math.max(0, prevScore + safeIncomingScore);
+              }
 
               await AsyncStorage.setItem(
                 GAME_SCORE_STORAGE_KEY,
                 String(nextScore),
               );
               console.log(
-                "Persisted cumulative score:",
+                "Persisted score:",
                 nextScore,
                 "(mode:",
                 isAbsoluteScoreUpdate ? "absolute" : "delta",

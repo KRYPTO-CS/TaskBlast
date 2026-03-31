@@ -379,8 +379,10 @@ export const awardGameRewards = onCall(
           ? Math.floor(Number(activePlanetId))
           : currentPlanet;
         // Reward scaling follows highest unlocked planet progression.
+        // For Asteroid Blaster (0) and Space Swerve (1), apply no planet multiplier.
         const effectivePlanet = currentPlanet;
-        const multiplier = getPlanetScoreMultiplier(effectivePlanet);
+        const isSpaceShooterVariant = gameId === 0 || gameId === 1;
+        const multiplier = isSpaceShooterVariant ? 1.0 : getPlanetScoreMultiplier(effectivePlanet);
         const safeReward = Math.max(
           0,
           Math.min(5000, Math.floor(baseReward * multiplier)),

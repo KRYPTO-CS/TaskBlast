@@ -21,6 +21,7 @@ export const GAME_DEFINITIONS: GameDefinition[] = [
     description: "Blast the asteroids!",
     url: "https://krypto-cs.github.io/SpaceShooter/",
     rewardStrategy: "raw-score",
+    rawScoreMultiplier: 1,
   },
   {
     id: 1,
@@ -28,6 +29,7 @@ export const GAME_DEFINITIONS: GameDefinition[] = [
     description: "Dodge the asteroids!",
     url: "https://krypto-cs.github.io/SpaceShooter/",
     rewardStrategy: "raw-score",
+    rawScoreMultiplier: 1,
   },
   {
     id: 2,
