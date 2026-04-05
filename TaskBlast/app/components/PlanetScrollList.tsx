@@ -141,22 +141,53 @@ export default function PlanetScrollList({ onRocksChange, onActivePlanetChange }
 
     useEffect(() => {
         if (!auth.currentUser) throw new Error("No authenticated user");
-        const user = doc(db, 'users', auth.currentUser?.uid);
-        // trigger a change in currentProgress when user's progress updates in Firestore using snapshot
+        
+        const setupProgressListener = async () => {
+          const activeChild = await AsyncStorage.getItem("activeChildProfile");
+          console.log("[PlanetScrollList] Active child profile:", activeChild);
 
-        const unsubscribe = onSnapshot(user, (snap) => {
+          let userDocRef;
+
+          if (activeChild) {
+            // Listen to child's progress
+            const childrenRef = collection(db, "users", auth.currentUser!.uid, "children");
+            const childQuery = query(childrenRef, where("username", "==", activeChild));
+            const childSnapshot = await getDocs(childQuery);
+
+            if (!childSnapshot.empty) {
+              const childDoc = childSnapshot.docs[0];
+              userDocRef = childDoc.ref;
+              console.log("[PlanetScrollList] Listening to child progress for:", activeChild);
+            } else {
+              console.warn("[PlanetScrollList] Child profile not found, using parent progress");
+              userDocRef = doc(db, "users", auth.currentUser!.uid);
+            }
+          } else {
+            userDocRef = doc(db, "users", auth.currentUser!.uid);
+          }
+
+          // Listen to progress updates
+          const unsubscribe = onSnapshot(userDocRef, (snap) => {
             if (snap.exists()) {
-                const data = snap.data();
-                if (data.currPlanet != null) {
-                    setCurrentProgress(data.currPlanet);
-                }
+              const data = snap.data();
+              if (data.currPlanet != null) {
+                setCurrentProgress(data.currPlanet);
+                console.log("[PlanetScrollList] Updated current progress:", data.currPlanet);
+              }
             }
-            else {
-                return;
-            }
-        });
-        return () => unsubscribe();
+          });
 
+          return unsubscribe;
+        };
+
+        let unsubscribe: (() => void) | null = null;
+        setupProgressListener().then((unsub) => {
+          unsubscribe = unsub;
+        });
+
+        return () => {
+          if (unsubscribe) unsubscribe();
+        };
     }, []);
 
     const handleScrollEnd = (e: any) => {
@@ -201,7 +232,7 @@ export default function PlanetScrollList({ onRocksChange, onActivePlanetChange }
                             onPress={handlePlanetPress} />
                         ))}
             </ScrollView>
-            <PlanetModal visible={modalVisible} onClose={() => setModalVisible(false)} planetId={selectedPlanet ?? undefined} isLocked={selectedPlanet != null && selectedPlanet > currentProgress} selectedPlanet={selectedPlanet} onRocksChange={onRocksChange ?? (() => {})} currentProgress={currentProgress} />
+            <PlanetModal visible={modalVisible} onClose={() => setModalVisible(false)} planetId={selectedPlanet ?? undefined} isLocked={selectedPlanet != null && selectedPlanet > currentProgress} selectedPlanet={selectedPlanet} onRocksChange={onRocksChange ?? (() => {})} currentProgress={currentProgress} onPlanetUnlock={(newProgress) => setCurrentProgress(newProgress)} />
         </SafeAreaView>
     );
 }

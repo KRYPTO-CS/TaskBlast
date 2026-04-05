@@ -17,9 +17,12 @@ import {
   updateDoc,
   getDoc,
   getDocs,
+  query,
+  where,
 } from "firebase/firestore";
 import { useColorPalette } from "../styles/colorBlindThemes";
 import { useTranslation } from "react-i18next";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { purchaseShopItem } from "../services/economyService";
 import {
   DEFAULT_SHOP_CATALOG,
@@ -38,6 +41,7 @@ type ShopPage = {
   name: string;
   nameKey: string;
   iconPath: any;
+
 };
 
 type ShopItem = {
@@ -89,7 +93,11 @@ export default function ShopModal({
     body: [true, false, false, false],
     wings: [false, true, false, false],
   });
+  const [unlockedPlanets, setUnlockedPlanets] = useState<boolean[]>([
+    true, false, false, false, false, false, false, false, false,
+  ]);
   const [equipped, setEquipped] = useState<number[]>([0, 1]);
+  const [childDocId, setChildDocId] = useState<string | null>(null);
   const [confirmPurchase, setConfirmPurchase] = useState<{
     item: ShopItem | null;
   }>({ item: null });
@@ -178,12 +186,42 @@ export default function ShopModal({
           console.log("[ShopModal] No shop items in database, using fallback catalog");
         }
 
-        const userDocRef = doc(db, "users", user.uid);
-        const userDoc = await getDoc(userDocRef);
+        // Check for active child account
+        const activeChild = await AsyncStorage.getItem("activeChildProfile");
+        console.log("[ShopModal] Active child profile:", activeChild);
 
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
+        let userDocRef: any;
+        let userData: any;
 
+        if (activeChild) {
+          // Query for the active child's profile
+          const childrenRef = collection(db, "users", user.uid, "children");
+          const childQuery = query(
+            childrenRef,
+            where("username", "==", activeChild),
+          );
+          const childSnapshot = await getDocs(childQuery);
+
+          if (!childSnapshot.empty) {
+            const childDoc = childSnapshot.docs[0];
+            userDocRef = childDoc.ref;
+            userData = childDoc.data();
+            setChildDocId(childDoc.id);
+            console.log("[ShopModal] Loaded child profile data for:", activeChild);
+          } else {
+            console.warn("[ShopModal] Child profile not found, using parent profile");
+            userDocRef = doc(db, "users", user.uid);
+            const parentDoc = await getDoc(userDocRef);
+            userData = parentDoc.exists() ? parentDoc.data() : {};
+          }
+        } else {
+          setChildDocId(null);
+          userDocRef = doc(db, "users", user.uid);
+          const userDoc = await getDoc(userDocRef);
+          userData = userDoc.exists() ? userDoc.data() : {};
+        }
+
+        if (userData) {
           // Load rocks balance
           const rocksValue = userData.rocks || 0;
           const finalRocks = isNaN(rocksValue) ? 0 : Math.max(0, Math.floor(rocksValue));
@@ -212,6 +250,19 @@ export default function ShopModal({
           } else {
             setUnlockedItems(userData.shopItems);
             console.log("[ShopModal] Loaded user shopItems");
+          }
+
+          // Check if unlockedPlanets exist, if not create them
+          if (!userData.unlockedPlanets) {
+            updates.unlockedPlanets = [
+              true, false, false, false, false, false, false, false, false,
+            ];
+            setUnlockedPlanets(updates.unlockedPlanets);
+            needsUpdate = true;
+            console.log("[ShopModal] Database update needed: Creating unlockedPlanets");
+          } else {
+            setUnlockedPlanets(userData.unlockedPlanets);
+            console.log("[ShopModal] Loaded user unlockedPlanets");
           }
 
           // Check if equipped array exists, if not create it
@@ -249,7 +300,27 @@ export default function ShopModal({
       if (!user) return;
 
       const db = getFirestore();
-      const userDocRef = doc(db, "users", user.uid);
+      const activeChild = await AsyncStorage.getItem("activeChildProfile");
+
+      let userDocRef;
+      if (activeChild) {
+        // Query for the active child's profile
+        const childrenRef = collection(db, "users", user.uid, "children");
+        const childQuery = query(
+          childrenRef,
+          where("username", "==", activeChild),
+        );
+        const childSnapshot = await getDocs(childQuery);
+
+        if (!childSnapshot.empty) {
+          userDocRef = childSnapshot.docs[0].ref;
+        } else {
+          console.warn("[ShopModal] Child profile not found for equip, using parent");
+          userDocRef = doc(db, "users", user.uid);
+        }
+      } else {
+        userDocRef = doc(db, "users", user.uid);
+      }
 
       const categoryIndex = item.category === "Body" ? 0 : 1;
       const newEquipped = [...equipped];
@@ -298,13 +369,15 @@ export default function ShopModal({
       const user = auth.currentUser;
       if (!user) return;
 
-      const purchaseResult = await purchaseShopItem({ itemId: item.id });
+      const purchaseResult = await purchaseShopItem({ itemId: item.id, childDocId });
 
       if (!purchaseResult.success) {
         throw new Error(purchaseResult.message || "Purchase failed");
       }
 
       const newUnlockedItems = purchaseResult.shopItems || { ...unlockedItems };
+      const newUnlockedPlanets =
+        purchaseResult.unlockedPlanets || [...unlockedPlanets];
       const newRocksAmount =
         typeof purchaseResult.newRocks === "number"
           ? purchaseResult.newRocks
@@ -315,12 +388,35 @@ export default function ShopModal({
 
       // Update local state
       setUnlockedItems(newUnlockedItems);
+      setUnlockedPlanets(newUnlockedPlanets);
       setRocks(newRocksAmount);
 
       // Update rocks in Firebase database
       try {
         const auth = getAuth();
-        const userRef = doc(getFirestore(), "users", auth.currentUser?.uid || "");
+        const db = getFirestore();
+        const activeChild = await AsyncStorage.getItem("activeChildProfile");
+
+        let userRef;
+        if (activeChild) {
+          // Query for the active child's profile
+          const childrenRef = collection(db, "users", auth.currentUser?.uid || "", "children");
+          const childQuery = query(
+            childrenRef,
+            where("username", "==", activeChild),
+          );
+          const childSnapshot = await getDocs(childQuery);
+
+          if (!childSnapshot.empty) {
+            userRef = childSnapshot.docs[0].ref;
+          } else {
+            console.warn("[ShopModal] Child profile not found for rocks update, using parent");
+            userRef = doc(db, "users", auth.currentUser?.uid || "");
+          }
+        } else {
+          userRef = doc(db, "users", auth.currentUser?.uid || "");
+        }
+
         console.log("[ShopModal] Updating rocks in database to:", newRocksAmount);
         await updateDoc(userRef, { rocks: newRocksAmount });
         console.log("[ShopModal] Database update for rocks completed successfully");

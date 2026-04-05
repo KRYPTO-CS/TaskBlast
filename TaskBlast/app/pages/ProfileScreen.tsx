@@ -804,14 +804,16 @@ export default function ProfileScreen() {
           </View>
 
           {/* Add Child Button - NEW */}
-          <View className="items-center mb-4">
-            <MainButton
-              title={t("Profile.AddChildAccount")}
-              variant="primary"
-              onPress={() => router.push("/pages/CreateChildAccount")}
-              customStyle={{ width: "80%" }}
-            />
-          </View>
+          {currentProfileType === "parent" && (
+            <View className="items-center mb-4">
+              <MainButton
+                title={t("Profile.AddChildAccount")}
+                variant="primary"
+                onPress={() => router.push("/pages/CreateChildAccount")}
+                customStyle={{ width: "80%" }}
+              />
+            </View>
+          )}
 
           {/* Switch Profile Button */}
           <View className="items-center mb-4">

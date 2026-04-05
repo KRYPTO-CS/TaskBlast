@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   TextInput,
@@ -12,6 +12,7 @@ import {
 import { Text } from '../../TTS';
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { auth, firestore } from "../../server/firebase";
 import { collection, doc, setDoc, query, where, getDocs, collectionGroup, serverTimestamp } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
@@ -29,6 +30,28 @@ export default function CreateChildAccount() {
   const [confirmPin, setConfirmPin] = useState("");
   const [loading, setLoading] = useState(false);
   const [t, i18n] = useTranslation();
+
+  // Prevent child profiles from creating new profiles
+  useEffect(() => {
+    const checkActiveChild = async () => {
+      const activeChild = await AsyncStorage.getItem("activeChildProfile");
+      if (activeChild) {
+        console.log("[CreateChildAccount] Child profile cannot create new profiles");
+        Alert.alert(
+          "Not Allowed",
+          "Child profiles cannot create new profiles",
+          [
+            {
+              text: "OK",
+              onPress: () => router.back(),
+            },
+          ]
+        );
+      }
+    };
+
+    checkActiveChild();
+  }, []);
 
 const checkUsernameAvailable = async (username: string): Promise<boolean> => {
   try {

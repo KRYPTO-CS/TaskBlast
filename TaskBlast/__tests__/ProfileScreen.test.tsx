@@ -266,6 +266,17 @@ describe("ProfileScreen", () => {
 
       expect(mockRouter.push).toHaveBeenCalledWith("/pages/CreateChildAccount");
     });
+
+    it("should NOT display Add Child Account button for child profiles", async () => {
+      // Mock AsyncStorage to return a child profile
+      (AsyncStorage.getItem as jest.Mock).mockResolvedValue("childUsername");
+
+      const { queryByText } = render(<ProfileScreen />);
+
+      await waitFor(() => {
+        expect(queryByText("Add Child Account")).toBeNull();
+      });
+    });
   });
 
   describe("Navigation", () => {

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
+  Animated,
   View,
   Modal,
   TouchableOpacity,
@@ -10,7 +11,8 @@ import {
 import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import MainButton from "./MainButton";
 import { unlockPlanet } from "../services/economyService";
 
@@ -48,6 +50,7 @@ interface PlanetModalProps {
   selectedPlanet?: number | null;
   currentProgress?: number;
   onRocksChange: () => void;
+  onPlanetUnlock?: (newProgress: number) => void;
 }
 
 interface PlanetData {
@@ -65,6 +68,7 @@ export default function PlanetModal({
   selectedPlanet,
   currentProgress,
   onRocksChange,
+  onPlanetUnlock,
 }: PlanetModalProps) {
   const auth = getAuth();
   const db = getFirestore();
@@ -74,9 +78,39 @@ export default function PlanetModal({
   const [error, setError] = useState<string | null>(null);
   const [rocks, setRocks] = useState<number>(0);
   const [confirmUnlock, setConfirmUnlock] = useState(false);
+  const [justUnlocked, setJustUnlocked] = useState(false);
+  const [newRocksAfterUnlock, setNewRocksAfterUnlock] = useState<number>(0);
+
+  // Animation values
+  const scaleAnim = useRef(new Animated.Value(0)).current;
+  const glowAnim = useRef(new Animated.Value(0)).current;
+
+  const triggerUnlockAnimation = () => {
+    scaleAnim.setValue(0);
+    glowAnim.setValue(0);
+    Animated.parallel([
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        friction: 5,
+        tension: 80,
+        useNativeDriver: true,
+      }),
+      Animated.sequence([
+        Animated.timing(glowAnim, {
+          toValue: 1,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+        Animated.timing(glowAnim, {
+          toValue: 0.6,
+          duration: 600,
+          useNativeDriver: true,
+        }),
+      ]),
+    ]).start();
+  };
 
   const getPlanetDocRef = (id: number) => {
-    // Planets are stored as top-level documents under `planets/{id}`
     return doc(db, "planets", id.toString());
   };
 
@@ -88,7 +122,20 @@ export default function PlanetModal({
       return;
     }
 
-    const userDocRef = doc(db, "users", user.uid);
+    // Resolve child or parent doc
+    let userDocRef = doc(db, "users", user.uid);
+    let childDocId: string | null = null;
+    const activeChild = await AsyncStorage.getItem("activeChildProfile");
+    if (activeChild) {
+      const childrenRef = collection(db, "users", user.uid, "children");
+      const childQuery = query(childrenRef, where("username", "==", activeChild));
+      const childSnapshot = await getDocs(childQuery);
+      if (!childSnapshot.empty) {
+        childDocId = childSnapshot.docs[0].id;
+        userDocRef = childSnapshot.docs[0].ref;
+      }
+    }
+
     const userSnap = await getDoc(userDocRef);
 
     // compute fresh rocks value synchronously for checks
@@ -121,22 +168,29 @@ export default function PlanetModal({
         return;
       }
 
-      const result = await unlockPlanet({ planetId: nextPlanetId });
+      const result = await unlockPlanet({ planetId: nextPlanetId, childDocId });
       if (!result.success) {
         throw new Error(result.message || "Failed to unlock planet");
       }
 
       // update local rocks immediately so UI reflects change
-      if (typeof result.newRocks === "number") {
-        setRocks(Math.max(0, Math.floor(result.newRocks)));
-      } else {
-        setRocks(currentRocks - (planet?.cost ?? 0));
+      const updatedRocks =
+        typeof result.newRocks === "number"
+          ? Math.max(0, Math.floor(result.newRocks))
+          : Math.max(0, currentRocks - (planet?.cost ?? 0));
+
+      setRocks(updatedRocks);
+      setNewRocksAfterUnlock(updatedRocks);
+      setJustUnlocked(true);
+      triggerUnlockAnimation();
+
+      // update planet scroll list immediately with the new progress
+      if (result.currPlanet != null) {
+        onPlanetUnlock?.(result.currPlanet);
       }
 
       // update main page rocks/gems
-      if (onRocksChange) {
-        onRocksChange();
-      }
+      onRocksChange();
 
       console.log("Planet ", nextPlanetId, "unlock result for user", user.uid);
     } catch (err: any) {
@@ -162,6 +216,7 @@ export default function PlanetModal({
 
   const handleClose = () => {
     setConfirmUnlock(false);
+    setJustUnlocked(false);
     onClose();
   };
 
@@ -180,6 +235,7 @@ export default function PlanetModal({
       if (planetId == null) return;
       setLoading(true);
       setError(null);
+      setJustUnlocked(false);
       try {
         const planetRef = getPlanetDocRef(planetId);
         const snap = await getDoc(planetRef);
@@ -218,7 +274,9 @@ export default function PlanetModal({
           style={{
             backgroundColor: "rgba(15, 23, 42, 0.95)",
             borderWidth: 2,
-            borderColor: "rgba(139, 92, 246, 0.5)",
+            borderColor: justUnlocked
+              ? "rgba(139, 246, 167, 0.7)"
+              : "rgba(139, 92, 246, 0.5)",
           }}
         >
           {/* Header with close button */}
@@ -226,16 +284,20 @@ export default function PlanetModal({
             <Text
               className="font-orbitron-semibold text-white text-2xl"
               style={{
-                textShadowColor: "rgba(139, 92, 246, 0.8)",
+                textShadowColor: justUnlocked
+                  ? "rgba(74, 222, 128, 0.9)"
+                  : "rgba(139, 92, 246, 0.8)",
                 textShadowOffset: { width: 0, height: 0 },
                 textShadowRadius: 15,
               }}
             >
-              {isLocked
-                ? "Planet Not Unlocked"
-                : loading
-                  ? "Loading..."
-                  : (planet?.name ?? "")}
+              {justUnlocked
+                ? "Planet Unlocked!"
+                : isLocked
+                  ? "Planet Not Unlocked"
+                  : loading
+                    ? "Loading..."
+                    : (planet?.name ?? "")}
             </Text>
 
             <TouchableOpacity
@@ -252,7 +314,7 @@ export default function PlanetModal({
             </TouchableOpacity>
           </View>
 
-          {/* Option to buy locked planet ?? Planet Image and Description */}
+          {/* Option to buy locked planet / Planet Image and Description */}
           <View style={{ minHeight: 120 }}>
             {loading && (
               <View className="items-center justify-center">
@@ -264,13 +326,43 @@ export default function PlanetModal({
                 {error}
               </Text>
             )}
-            {isLocked && planet ? (
+
+            {/* Success state after unlock */}
+            {justUnlocked && planet ? (
+              <View className="items-center justify-center" style={{ gap: 12 }}>
+                <Animated.View
+                  style={{
+                    transform: [{ scale: scaleAnim }],
+                    opacity: glowAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0.5, 1],
+                    }),
+                  }}
+                >
+                  <Image source={getPlanetImage(planetId ?? 1)} />
+                </Animated.View>
+                <Text className="text-green-300 text-base font-orbitron-bold text-center">
+                  {planet.name} is now available!
+                </Text>
+                <View className="flex-row items-center bg-purple-600/50 px-4 py-2 rounded-full">
+                  <Image
+                    source={require("../../assets/images/sprites/crystal.png")}
+                    style={{ width: 20, height: 20 }}
+                    resizeMode="contain"
+                  />
+                  <Text className="font-orbitron-bold text-white text-base ml-2">
+                    {String(newRocksAfterUnlock).padStart(4, "0")} remaining
+                  </Text>
+                </View>
+                <MainButton title="Continue" onPress={handleClose} />
+              </View>
+            ) : isLocked && planet ? (
               <View className="items-center justify-center">
                 <Image source={PLANET_DARK_IMAGES[planetId ?? 1]} />
                 <Text className="text-white text-base mt-2 font-orbitron-semibold">
                   {planet.description}
                 </Text>
-                <View className=" flex-row space-x-4 items-center">
+                <View className="flex-row space-x-4 items-center">
                   <View className="flex-row items-center bg-purple-600/50 px-4 py-2 rounded-full max-h-10">
                     <Image
                       source={require("../../assets/images/sprites/crystal.png")}

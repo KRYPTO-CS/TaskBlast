@@ -646,7 +646,7 @@ export const unlockPlanet = onCall(
       throw new HttpsError("unauthenticated", "Authentication is required.");
     }
 
-    const { planetId } = request.data as { planetId?: number };
+    const { planetId, childDocId } = request.data as { planetId?: number; childDocId?: string | null };
     const safePlanetId = Number.isFinite(Number(planetId))
       ? Math.floor(Number(planetId))
       : NaN;
@@ -660,7 +660,7 @@ export const unlockPlanet = onCall(
     }
 
     const uid = request.auth.uid;
-    const userRef = db.collection("users").doc(uid);
+    const userRef = getUserProfileRef(uid, childDocId);
     const planetRef = db.collection("planets").doc(String(safePlanetId));
 
     const result = await db.runTransaction(
@@ -758,14 +758,14 @@ export const purchaseShopItem = onCall(
       throw new HttpsError("unauthenticated", "Authentication is required.");
     }
 
-    const { itemId } = request.data as { itemId?: string };
+    const { itemId, childDocId } = request.data as { itemId?: string; childDocId?: string | null };
     if (!itemId) {
       throw new HttpsError("invalid-argument", "Unknown shop item.");
     }
 
     const uid = request.auth.uid;
     const itemRef = db.collection("shopItems").doc(itemId);
-    const userRef = db.collection("users").doc(uid);
+    const userRef = getUserProfileRef(uid, childDocId);
 
     const result = await db.runTransaction(
       async (tx: admin.firestore.Transaction) => {
