@@ -776,9 +776,10 @@ export const purchaseShopItem = onCall(
         const rawCategory = String(
           itemData.category ?? seededFallback?.category ?? "",
         );
-        const category = rawCategory === "Body" || rawCategory === "Wings"
-          ? rawCategory
-          : null;
+        const category =
+          rawCategory === "Body" || rawCategory === "Wings" || rawCategory === "Topper"
+            ? rawCategory
+            : null;
         const index = Number(itemData.index ?? seededFallback?.index ?? -1);
         const price = Number(itemData.price ?? itemData.cost ?? seededFallback?.price ?? NaN);
         const isActive =
@@ -808,9 +809,10 @@ export const purchaseShopItem = onCall(
         const shopItems = userData.shopItems || {
           body: [true, false, false, false],
           wings: [false, true, false, false],
+          toppers: [true, false],
         };
 
-        const key = category === "Body" ? "body" : "wings";
+        const key = category === "Body" ? "body" : category === "Wings" ? "wings" : "toppers";
         const categoryArr = Array.isArray(shopItems[key]) ? [...shopItems[key]] : [];
 
         while (categoryArr.length <= index) {
