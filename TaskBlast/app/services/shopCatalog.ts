@@ -66,6 +66,15 @@ export const DEFAULT_SHOP_CATALOG: ShopCatalogItem[] = [
     active: true,
   },
   {
+    id: "topper-2",
+    category: "Topper",
+    index: 2,
+    nameKey: "Shop.aTopper",
+    iconKey: "ship-topper-artemis",
+    price: 15000,
+    active: true,
+  },
+  {
     id: "wing-0",
     category: "Wings",
     index: 0,
@@ -125,6 +134,8 @@ export const getShopIconSource = (iconKey: string) => {
       return require("../../assets/images/shop_icons/ShipTopperIconDefault.png");
     case "ship-topper-blue_fire":
       return require("../../assets/images/shop_icons/ShipTopperIconBlue.png");
+    case "ship-topper-artemis":
+      return require("../../assets/images/shop_icons/ShipTopperIconArtemis.png");
     default:
       return require("../../assets/images/shop_icons/ShipBodyIconBlue.png");
   }

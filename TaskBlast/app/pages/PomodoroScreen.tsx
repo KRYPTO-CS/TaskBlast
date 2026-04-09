@@ -59,6 +59,7 @@ const WING_IMAGES: { [key: number]: any } = {
 const DETAILS_IMAGES: { [key: number]: any } = {
   0: require("../../assets/images/ship_components/shipDetails.gif"),
   1: require("../../assets/images/ship_components/ShipBlueFlame.gif"),
+  2: require("../../assets/images/ship_components/ShipArtemisLaunch.gif"),
 };
 
 export default function PomodoroScreen() {
@@ -602,6 +603,7 @@ export default function PomodoroScreen() {
   const GifHeights: Record<number, number> = {
     0: 288,
     1: 376,
+    2: 480,
   };
 
   // Calculate progress percentage (starts at 100% and decreases to 0%)
