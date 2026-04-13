@@ -80,6 +80,9 @@ function InteractiveConsumer() {
       <Text testID="set-none" onPress={() => ctx.setColorBlindMode("none")}>
         set-none
       </Text>
+      <Text testID="set-language-pt" onPress={() => ctx.setLanguage("pt")}>
+        set-language-pt
+      </Text>
       <Text
         testID="set-high-contrast"
         onPress={() => ctx.setHighContrast(true)}
@@ -244,6 +247,35 @@ describe("AccessibilityContext – persistence (full provider render)", () => {
     expect(getByTestId("contrast-output").props.children).toBe("false");
   });
 
+  it("restores saved language by calling i18n.changeLanguage when language differs", async () => {
+    (AsyncStorage.getItem as jest.Mock).mockResolvedValue(
+      JSON.stringify({ language: "es" }),
+    );
+
+    const i18nModule = require("../app/i18next");
+    i18nModule.language = "en";
+
+    render(<Consumer />, { wrapper: Wrapper });
+
+    await waitFor(() =>
+      expect(i18nModule.changeLanguage).toHaveBeenCalledWith("es"),
+    );
+  });
+
+  it("does not call i18n.changeLanguage when saved language matches current", async () => {
+    (AsyncStorage.getItem as jest.Mock).mockResolvedValue(
+      JSON.stringify({ language: "en" }),
+    );
+
+    const i18nModule = require("../app/i18next");
+    i18nModule.language = "en";
+
+    render(<Consumer />, { wrapper: Wrapper });
+
+    await waitFor(() => expect(AsyncStorage.getItem).toHaveBeenCalled());
+    expect(i18nModule.changeLanguage).not.toHaveBeenCalledWith("en");
+  });
+
   it("partial stored object merges with defaults – reduceMotion stays false", async () => {
     (AsyncStorage.getItem as jest.Mock).mockResolvedValue(
       JSON.stringify({ colorBlindMode: "deuteranopia" }),
@@ -406,5 +438,25 @@ describe("AccessibilityContext – persistence (full provider render)", () => {
         expect.stringContaining('"colorBlindMode":"none"'),
       ),
     );
+  });
+
+  it("setLanguage persists language and calls i18n.changeLanguage", async () => {
+    const i18nModule = require("../app/i18next");
+
+    const { getByTestId } = render(<InteractiveConsumer />, {
+      wrapper: Wrapper,
+    });
+
+    await act(async () => {
+      fireEvent.press(getByTestId("set-language-pt"));
+    });
+
+    await waitFor(() => {
+      expect(i18nModule.changeLanguage).toHaveBeenCalledWith("pt");
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+        STORAGE_KEY,
+        expect.stringContaining('"language":"pt"'),
+      );
+    });
   });
 });

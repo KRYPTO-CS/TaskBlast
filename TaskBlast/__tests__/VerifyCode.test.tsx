@@ -346,6 +346,26 @@ describe("VerifyCode", () => {
         });
       }).not.toThrow();
     });
+
+    it("should ignore non-backspace key presses", () => {
+      const { UNSAFE_getAllByType } = render(
+        <VerifyCode
+          email="test@example.com"
+          onSubmit={mockOnSubmit}
+          onBack={mockOnBack}
+        />,
+      );
+      const { TextInput } = require("react-native");
+
+      const inputs = UNSAFE_getAllByType(TextInput);
+      fireEvent.changeText(inputs[0], "7");
+
+      fireEvent(inputs[0], "onKeyPress", {
+        nativeEvent: { key: "Enter" },
+      });
+
+      expect(inputs[0].props.value).toBe("7");
+    });
   });
 
   describe("Code Submission", () => {
