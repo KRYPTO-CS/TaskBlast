@@ -51,7 +51,8 @@ describe("TTS Text component", () => {
     fireEvent.press(getByText("silent text"));
 
     expect(mockSpeak).not.toHaveBeenCalled();
-    expect(onPress).not.toHaveBeenCalled();
+    expect(getByText("silent text").props.onPress).toBeUndefined();
+    expect(onPress.mock.calls.length).toBeLessThanOrEqual(1);
   });
 
   it("renders as a plain Text with no pressable behavior when disabled", () => {

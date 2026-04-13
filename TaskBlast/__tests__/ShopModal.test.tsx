@@ -15,7 +15,7 @@ import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { Alert } from "react-native";
 import ShopModal from "../app/components/ShopModal";
 import { getAuth } from "firebase/auth";
-import { getDoc, updateDoc } from "firebase/firestore";
+import { getDoc, getDocs, updateDoc } from "firebase/firestore";
 
 // ─── Palette fixtures ─────────────────────────────────────────────────────────
 
@@ -202,6 +202,31 @@ const defaultUserData = {
 beforeEach(() => {
   jest.clearAllMocks();
   mockUseColorPalette.mockReturnValue(PALETTES.none);
+
+  (getDocs as jest.Mock).mockResolvedValue({
+    forEach: (callback: any) => {
+      [
+        {
+          id: "body_0",
+          data: () => ({ type: "body", image: "body0", cost: 0 }),
+        },
+        {
+          id: "body_1",
+          data: () => ({ type: "body", image: "body1", cost: 100 }),
+        },
+        {
+          id: "wings_0",
+          data: () => ({ type: "wings", image: "wing0", cost: 0 }),
+        },
+        {
+          id: "wings_1",
+          data: () => ({ type: "wings", image: "wing1", cost: 100 }),
+        },
+      ].forEach(callback);
+    },
+    docs: [],
+    empty: false,
+  });
 
   (getAuth as jest.Mock).mockReturnValue({
     currentUser: { uid: "test-uid", email: "test@example.com" },

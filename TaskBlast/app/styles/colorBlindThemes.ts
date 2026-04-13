@@ -429,7 +429,20 @@ function applyHighContrast(base: ColorPalette): ColorPalette {
  * `highContrast` from `AccessibilityContext`.
  */
 export function useColorPalette(): ColorPalette {
-  const { colorBlindMode, highContrast } = useAccessibility();
+  // Some isolated renders (notably tests) mount UI components without the
+  // AccessibilityProvider. In that case, fall back to the default palette.
+  let colorBlindMode: "none" | "deuteranopia" | "protanopia" | "tritanopia" =
+    "none";
+  let highContrast = false;
+
+  try {
+    const accessibility = useAccessibility();
+    colorBlindMode = accessibility.colorBlindMode;
+    highContrast = accessibility.highContrast;
+  } catch {
+    // Fallback to default palette when provider is unavailable.
+  }
+
   const base = palettes[colorBlindMode] ?? palettes.none;
   return highContrast ? applyHighContrast(base) : base;
 }

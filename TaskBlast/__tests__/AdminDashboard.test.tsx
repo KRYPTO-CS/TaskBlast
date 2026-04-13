@@ -46,9 +46,7 @@ jest.mock("../app/services/adminService", () => ({
 jest.mock("firebase/firestore", () => ({
   getFirestore: jest.fn(() => ({})),
   collection: jest.fn(),
-  getDocs: jest.fn(() =>
-    Promise.resolve({ docs: [] }),
-  ),
+  getDocs: jest.fn(() => Promise.resolve({ docs: [] })),
   doc: jest.fn(),
 }));
 
@@ -243,7 +241,7 @@ describe("AdminDashboard", () => {
       const { getByText, getByPlaceholderText } = render(<AdminDashboard />);
       // Open picker and select the first catalog item (Shop.bBody / body-0)
       fireEvent.press(getByText("Select shop item"));
-      fireEvent.press(getByText("Shop.bBody (body-0) - default 0"));
+      fireEvent.press(getByText(/body-0\) - default 0/i));
       // Clear the auto-filled cost so the "Missing fields" guard triggers
       fireEvent.changeText(getByPlaceholderText("New cost"), "");
       fireEvent.press(getByText("Save Shop Cost"));

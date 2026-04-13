@@ -16,6 +16,25 @@ import PomodoroScreen from "../app/pages/PomodoroScreen";
 import { AppState } from "react-native";
 import { router } from "expo-router";
 
+jest.mock("../app/context/AccessibilityContext", () => ({
+  useAccessibility: () => ({
+    language: "en",
+    colorBlindMode: "none",
+    textSize: "medium",
+    highContrast: false,
+    reduceMotion: false,
+    ttsEnabled: false,
+    textScale: 1,
+    isLoading: false,
+    setLanguage: jest.fn(),
+    setColorBlindMode: jest.fn(),
+    setTextSize: jest.fn(),
+    setHighContrast: jest.fn(),
+    setReduceMotion: jest.fn(),
+    setTtsEnabled: jest.fn(),
+  }),
+}));
+
 // Use global audio mocks from jest.setup.js
 const mockPlay = (global as any).mockAudioPlayer.play;
 const mockPause = (global as any).mockAudioPlayer.pause;
@@ -599,24 +618,29 @@ describe("Pomodoro Screen", () => {
     });
 
     it("should navigate to GamePage with parameters", async () => {
-      const { queryByTestId } = render(<PomodoroScreen />);
+      (router.push as jest.Mock).mockImplementation(() => {});
+
+      const { getByTestId } = render(<PomodoroScreen />);
 
       act(() => {
         jest.advanceTimersByTime(60000);
       });
 
-      await waitFor(() => {
-        const playGameButton = queryByTestId("play-game-button");
-        if (playGameButton) {
-          fireEvent.press(playGameButton);
+      const playGameButton = await waitFor(() =>
+        getByTestId("play-game-button"),
+      );
+      fireEvent.press(playGameButton);
 
-          // Should navigate with playTime and taskId params
-          expect(router.push).toHaveBeenCalledWith(
-            expect.objectContaining({
-              pathname: "/pages/GamePage",
-            }),
-          );
-        }
+      const gameOption = await waitFor(() => getByTestId("game-option-0"));
+      fireEvent.press(gameOption);
+
+      await waitFor(() => {
+        // Should navigate with playTime and taskId params
+        expect(router.push).toHaveBeenCalledWith(
+          expect.objectContaining({
+            pathname: "/pages/GamePage",
+          }),
+        );
       });
     });
   });

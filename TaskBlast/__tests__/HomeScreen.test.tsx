@@ -19,6 +19,25 @@ import { router } from "expo-router";
 import { getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
+jest.mock("../app/context/AccessibilityContext", () => ({
+  useAccessibility: () => ({
+    language: "en",
+    colorBlindMode: "none",
+    textSize: "medium",
+    highContrast: false,
+    reduceMotion: false,
+    ttsEnabled: false,
+    textScale: 1,
+    isLoading: false,
+    setLanguage: jest.fn(),
+    setColorBlindMode: jest.fn(),
+    setTextSize: jest.fn(),
+    setHighContrast: jest.fn(),
+    setReduceMotion: jest.fn(),
+    setTtsEnabled: jest.fn(),
+  }),
+}));
+
 // Use global audio mocks from jest.setup.js
 const mockPlay = (global as any).mockAudioPlayer.play;
 const mockPause = (global as any).mockAudioPlayer.pause;

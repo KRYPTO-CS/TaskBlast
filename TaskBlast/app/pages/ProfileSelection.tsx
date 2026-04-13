@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   ImageBackground,
 } from "react-native";
-import { Text } from '../../TTS';
+import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -92,7 +92,9 @@ export default function ProfileSelection() {
     return (
       <View className="flex-1 items-center justify-center bg-gray-900">
         <ActivityIndicator size="large" color="#a855f7" />
-        <Text className="text-white text-lg font-orbitron mt-4">Loading profiles...</Text>
+        <Text className="text-white text-lg font-orbitron mt-4">
+          Loading profiles...
+        </Text>
       </View>
     );
   }
@@ -135,6 +137,7 @@ export default function ProfileSelection() {
         {/* Parent Profile */}
         <TouchableOpacity
           onPress={handleParentSelect}
+          testID="parent-profile-button"
           className="p-6 rounded-2xl mb-4 flex-row items-center"
           style={{
             backgroundColor: "rgba(59, 130, 246, 0.3)",
@@ -148,8 +151,12 @@ export default function ProfileSelection() {
         >
           <Ionicons name="person-circle" size={48} color="white" />
           <View className="ml-4">
-            <Text className="text-white text-xl font-orbitron-bold">{t("ProfileSelection.parentProfile")}</Text>
-            <Text className="text-white/70 text-sm font-orbitron">{auth.currentUser?.email}</Text>
+            <Text className="text-white text-xl font-orbitron-bold">
+              {t("ProfileSelection.parentProfile")}
+            </Text>
+            <Text className="text-white/70 text-sm font-orbitron">
+              {auth.currentUser?.email}
+            </Text>
           </View>
         </TouchableOpacity>
 
@@ -172,6 +179,7 @@ export default function ProfileSelection() {
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() => handleChildSelect(item.username)}
+                  testID={`child-profile-${item.username}`}
                   className="p-6 rounded-2xl mb-4 flex-row items-center"
                   style={{
                     backgroundColor: "rgba(168, 85, 247, 0.3)",
@@ -198,7 +206,8 @@ export default function ProfileSelection() {
 
         {children.length === 0 && (
           <Text className="text-white/50 text-center py-8 font-orbitron">
-            {t("ProfileSelection.desc")},{"\n"}{t("ProfileSelection.desc2")}.
+            {t("ProfileSelection.desc")},{"\n"}
+            {t("ProfileSelection.desc2")}.
           </Text>
         )}
 
@@ -228,6 +237,7 @@ export default function ProfileSelection() {
             />
             <TouchableOpacity
               onPress={handlePinSubmit}
+              testID="pin-continue-button"
               className="bg-green-600 p-4 rounded-xl"
               style={{
                 shadowColor: "#16a34a",

@@ -4,27 +4,25 @@ import {
   TouchableOpacity,
   ImageBackground,
   Image,
-  ScrollView
+  ScrollView,
 } from "react-native";
-import { Text } from '../../TTS';
+import { Text } from "../../TTS";
 import MainButton from "../components/MainButton";
 import { useTranslation } from "react-i18next";
 
-
-
 const Lang_Map = {
-    English: "en",
-    Spanish: "es",
-    Portuguese: "pt",
-    French: "fr",
-    German: "de",
-    Russian: "ru",
-    Arabic: "ar",
-    Bengali: "bn",
-    Chinese: "zh",
-    Hindi: "hi",
-    Pirate: "pi",
-  } as const;
+  English: "en",
+  Spanish: "es",
+  Portuguese: "pt",
+  French: "fr",
+  German: "de",
+  Russian: "ru",
+  Arabic: "ar",
+  Bengali: "bn",
+  Chinese: "zh",
+  Hindi: "hi",
+  Pirate: "pi",
+} as const;
 
 type language = keyof typeof Lang_Map;
 
@@ -37,9 +35,7 @@ export default function SignUpAccountType({
   onSubmit,
   onBack,
 }: SignUpAccountTypeProps) {
-  const [selected, setSelected] = useState<language | null>(
-    null
-  );
+  const [selected, setSelected] = useState<language | null>(null);
   const [error, setError] = useState("");
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
@@ -54,8 +50,7 @@ export default function SignUpAccountType({
   const China = require("../../assets/images/china.png");
   const India = require("../../assets/images/india.png");
   const Pirate = require("../../assets/images/pirate-flag.png");
-  const {t ,i18n} = useTranslation();
-  
+  const { t, i18n } = useTranslation();
 
   const handleContinue = () => {
     setError("");
@@ -63,7 +58,6 @@ export default function SignUpAccountType({
       setError(t("language.selectLanguage"));
       return;
     }
-
 
     i18n.changeLanguage(Lang_Map[selected]);
     onSubmit(selected);
@@ -74,24 +68,38 @@ export default function SignUpAccountType({
     image,
     title,
   }: {
-    value: "English" | "Spanish" | "Portuguese" | "French" | "German" | "Russian" | "Arabic" | "Bengali" | "Chinese" | "Hindi" | "Pirate";
+    value:
+      | "English"
+      | "Spanish"
+      | "Portuguese"
+      | "French"
+      | "German"
+      | "Russian"
+      | "Arabic"
+      | "Bengali"
+      | "Chinese"
+      | "Hindi"
+      | "Pirate";
     image?: any;
     title: string;
   }) => {
     const active = selected === value;
     return (
       <TouchableOpacity
-  activeOpacity={0.8}
-  onPress={() => {
-    setSelected(value);
-  }}
-  className={`w-full p-4 rounded-2xl border-2 flex-row items-center ${
-    active
-      ? "border-yellow-300 bg-yellow-300/20"
-      : "border-white/40 bg-white/10"
-  }`}
-  style={{ marginBottom: 12, gap: 12 }}
->
+        testID={`language-option-${value.toLowerCase()}`}
+        activeOpacity={0.8}
+        onPress={() => {
+          setSelected(value);
+          setError("");
+          i18n.changeLanguage(Lang_Map[value]);
+        }}
+        className={`w-full p-4 rounded-2xl border-2 flex-row items-center ${
+          active
+            ? "border-yellow-300 bg-yellow-300/20"
+            : "border-white/40 bg-white/10"
+        }`}
+        style={{ marginBottom: 12, gap: 12 }}
+      >
         <Image source={image} className="w-10 h-10 mb-3" />
         <Text className="font-madimi text-base font-semibold text-white mb-1 drop-shadow-md">
           {title}
@@ -113,73 +121,29 @@ export default function SignUpAccountType({
       <View className="flex-1 items-center justify-center p-5">
         <ScrollView className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
           <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
-           {t("language.selectLanguage")}
+            {t("language.selectLanguage")}
           </Text>
 
-          <Option
-            value="English"
-            image={USA}
-            title="English"
-          />
+          <Option value="English" image={USA} title="English" />
 
-          <Option
-            value="Spanish"
-            image={Mexico}
-            title="Español"
-          />
+          <Option value="Spanish" image={Mexico} title="Español" />
 
-          <Option
-            value="Portuguese"
-            image={Brazil}
-            title="Português"
-          />
+          <Option value="Portuguese" image={Brazil} title="Português" />
 
-          <Option
-            value="French"
-            image={France}
-            title="Français"
-          />
+          <Option value="French" image={France} title="Français" />
 
-          <Option
-            value="German"
-            image={Germany}
-            title="Deutsch"
-          />
+          <Option value="German" image={Germany} title="Deutsch" />
 
-          <Option
-            value="Russian"
-            image={Russia}
-            title="Русский"
-          />
+          <Option value="Russian" image={Russia} title="Русский" />
 
-          <Option
-            value="Arabic"
-            image={Arabic}
-            title="العربية"
-          />
+          <Option value="Arabic" image={Arabic} title="العربية" />
 
-          <Option
-            value="Bengali"
-            image={Bengali}
-            title="বাংলা"
-          />
+          <Option value="Bengali" image={Bengali} title="বাংলা" />
 
-          <Option
-            value="Chinese"
-            image={China}
-            title="中文"
-          />
+          <Option value="Chinese" image={China} title="中文" />
 
-          <Option
-            value="Hindi"
-            image={India}
-            title="हिन्दी"
-          />
-          <Option
-            value="Pirate"
-            image={Pirate}
-            title="Pirate English"
-          />
+          <Option value="Hindi" image={India} title="हिन्दी" />
+          <Option value="Pirate" image={Pirate} title="Pirate English" />
 
           {error ? (
             <Text className="font-madimi text-sm text-red-300 mb-4 text-left drop-shadow-md">
@@ -188,6 +152,7 @@ export default function SignUpAccountType({
           ) : null}
 
           <MainButton
+            testID="language-continue-button"
             title={t("language.continue")}
             variant="primary"
             size="medium"
@@ -206,7 +171,8 @@ export default function SignUpAccountType({
             >
               {t("language.backTo")}
               <Text className="font-semibold text-yellow-300">
-                {" "}{t("language.Login")}
+                {" "}
+                {t("language.Login")}
               </Text>
             </Text>
           </View>
