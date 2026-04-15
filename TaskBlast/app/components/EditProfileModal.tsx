@@ -18,7 +18,7 @@ import {
   type UserProfile,
 } from "../../server/userProfileUtils";
 import { auth } from "../../server/firebase";
-import { getFirestore, doc, updateDoc } from "firebase/firestore";
+import { updateDoc } from "firebase/firestore";
 import { useActiveProfile } from "../context/ActiveProfileContext";
 
 interface EditProfileModalProps {
@@ -34,10 +34,10 @@ export default function EditProfileModal({
   userProfile,
   onProfileUpdate,
 }: EditProfileModalProps) {
-  const [firstName, setFirstName] = useState(userProfile.firstName);
-  const [lastName, setLastName] = useState(userProfile.lastName);
-  const [displayName, setDisplayName] = useState(userProfile.displayName);
-  const [email, setEmail] = useState(userProfile.email);
+  const [firstName, setFirstName] = useState(userProfile.firstName || "");
+  const [lastName, setLastName] = useState(userProfile.lastName || "");
+  const [displayName, setDisplayName] = useState(userProfile.displayName || "");
+  const [email, setEmail] = useState(userProfile.email || "");
   const [birthdate, setBirthdate] = useState(userProfile.birthdate || "");
   const [profilePicture, setProfilePicture] = useState(
     userProfile.profilePicture
@@ -47,15 +47,17 @@ export default function EditProfileModal({
   const [error, setError] = useState("");
   const { getChildDocRef, profileType } = useActiveProfile();
 
-  // Update local state when userProfile prop changes
+  // Reset form fields when modal opens
   useEffect(() => {
-    setFirstName(userProfile.firstName);
-    setLastName(userProfile.lastName);
-    setDisplayName(userProfile.displayName);
-    setEmail(userProfile.email);
-    setBirthdate(userProfile.birthdate || "");
-    setProfilePicture(userProfile.profilePicture);
-  }, [userProfile]);
+    if (visible) {
+      setFirstName(userProfile.firstName || "");
+      setLastName(userProfile.lastName || "");
+      setDisplayName(userProfile.displayName || "");
+      setEmail(userProfile.email || "");
+      setBirthdate(userProfile.birthdate || "");
+      setProfilePicture(userProfile.profilePicture);
+    }
+  }, [visible]);
 
   const handleProfilePicturePress = async () => {
     if (isUploadingImage) return;

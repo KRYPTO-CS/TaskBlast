@@ -354,12 +354,13 @@ export const awardGameRewards = onCall(
       throw new HttpsError("unauthenticated", "Authentication is required.");
     }
 
-    const { gameId, score, highestTile, playTimeMinutes, activePlanetId } = request.data as {
+    const { gameId, score, highestTile, playTimeMinutes, activePlanetId, childDocId } = request.data as {
       gameId?: number;
       score?: number;
       highestTile?: number;
       playTimeMinutes?: number;
       activePlanetId?: number;
+      childDocId?: string | null;
     };
 
     if (
@@ -374,7 +375,7 @@ export const awardGameRewards = onCall(
     const uid = request.auth.uid;
     const baseReward = getGameReward(gameId, score, highestTile);
     const safeMinutes = Math.max(0, Math.min(180, Math.floor(playTimeMinutes)));
-    const userRef = db.collection("users").doc(uid);
+    const userRef = getUserProfileRef(uid, childDocId);
 
     const result = await db.runTransaction(
       async (tx: admin.firestore.Transaction) => {
