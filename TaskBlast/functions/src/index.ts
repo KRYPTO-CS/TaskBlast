@@ -292,6 +292,21 @@ const getUserProfileRef = (uid: string, childDocId?: string | null) => {
   return db.collection("users").doc(uid);
 };
 
+const deleteDocumentTree = async (
+  docRef: admin.firestore.DocumentReference,
+): Promise<void> => {
+  const subcollections = await docRef.listCollections();
+
+  for (const subcollection of subcollections) {
+    const snapshot = await subcollection.get();
+    for (const childDoc of snapshot.docs) {
+      await deleteDocumentTree(childDoc.ref);
+    }
+  }
+
+  await docRef.delete();
+};
+
 export const debugAuthIdentity = onCall(
   { invoker: "public" },
   async (request: CallableRequest<unknown>) => {
@@ -864,6 +879,39 @@ export const purchaseShopItem = onCall(
       newRocks: result.newRocks,
       shopItems: result.updatedShopItems,
       message: result.alreadyOwned ? "Item already owned." : "Purchase complete.",
+    };
+  },
+);
+
+export const deleteChildAccount = onCall(
+  { invoker: "public" },
+  async (request: CallableRequest<unknown>) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError("unauthenticated", "Authentication is required.");
+    }
+
+    const { childDocId } = request.data as { childDocId?: string };
+    if (!childDocId || typeof childDocId !== "string") {
+      throw new HttpsError("invalid-argument", "A child account is required.");
+    }
+
+    const childRef = db
+      .collection("users")
+      .doc(request.auth.uid)
+      .collection("children")
+      .doc(childDocId);
+
+    const childSnap = await childRef.get();
+    if (!childSnap.exists) {
+      throw new HttpsError("not-found", "Child account not found.");
+    }
+
+    await deleteDocumentTree(childRef);
+
+    return {
+      success: true,
+      childDocId,
+      message: "Child account deleted successfully.",
     };
   },
 );

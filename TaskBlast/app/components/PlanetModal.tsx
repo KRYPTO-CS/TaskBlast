@@ -11,10 +11,10 @@ import {
 import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 import MainButton from "./MainButton";
 import { unlockPlanet } from "../services/economyService";
+import { useActiveProfile } from "../context/ActiveProfileContext";
 
 // TODO: move this to the DB eventually
 const PLANET_IMAGES: { [key: number]: any } = {
@@ -72,6 +72,8 @@ export default function PlanetModal({
 }: PlanetModalProps) {
   const auth = getAuth();
   const db = getFirestore();
+  const { childDocId, getProfileDocRef, isLoading: isProfileLoading, profileType } =
+    useActiveProfile();
 
   const [planet, setPlanet] = useState<PlanetData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -121,20 +123,12 @@ export default function PlanetModal({
       console.log("No such user");
       return;
     }
-
-    // Resolve child or parent doc
-    let userDocRef = doc(db, "users", user.uid);
-    let childDocId: string | null = null;
-    const activeChild = await AsyncStorage.getItem("activeChildProfile");
-    if (activeChild) {
-      const childrenRef = collection(db, "users", user.uid, "children");
-      const childQuery = query(childrenRef, where("username", "==", activeChild));
-      const childSnapshot = await getDocs(childQuery);
-      if (!childSnapshot.empty) {
-        childDocId = childSnapshot.docs[0].id;
-        userDocRef = childSnapshot.docs[0].ref;
-      }
+    if (isProfileLoading || (profileType === "child" && !childDocId)) {
+      Alert.alert("Profile Loading", "Please wait a moment and try again.");
+      return;
     }
+
+    const userDocRef = getProfileDocRef();
 
     const userSnap = await getDoc(userDocRef);
 

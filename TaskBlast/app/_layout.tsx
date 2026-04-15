@@ -18,6 +18,7 @@ import { AudioProvider } from "./context/AudioContext";
 import { NotificationProvider } from "./context/NotificationContext";
 import { AccessibilityProvider } from "./context/AccessibilityContext";
 import { AdminProvider } from "./context/AdminContext";
+import { ActiveProfileProvider } from "./context/ActiveProfileContext";
 import {
   CoachmarkProvider,
   CoachmarkOverlay,
@@ -52,27 +53,29 @@ export default function RootLayout() {
         <TTSProvider>
           <NotificationProvider>
             <AdminProvider>
-              <CoachmarkProvider
-                theme={{
-                  tooltip: {
-                    maxWidth: 300,
-                    radius: 15,
-                    bg: "#rgba(15, 23, 42, 0.95)",
-                    fg: "#eeee",
-                    arrowSize: 10,
-                    padding: 16,
-                    buttonPrimaryBg: "#rgba(139, 92, 246, 0.5)",
-                    buttonSecondaryBg: "#8E8E93",
-                  },
-                }}
-              >
-                <Stack
-                  screenOptions={{
-                    headerShown: false,
+              <ActiveProfileProvider>
+                <CoachmarkProvider
+                  theme={{
+                    tooltip: {
+                      maxWidth: 300,
+                      radius: 15,
+                      bg: "#rgba(15, 23, 42, 0.95)",
+                      fg: "#eeee",
+                      arrowSize: 10,
+                      padding: 16,
+                      buttonPrimaryBg: "#rgba(139, 92, 246, 0.5)",
+                      buttonSecondaryBg: "#8E8E93",
+                    },
                   }}
-                />
-                <CoachmarkOverlay />
-              </CoachmarkProvider>
+                >
+                  <Stack
+                    screenOptions={{
+                      headerShown: false,
+                    }}
+                  />
+                  <CoachmarkOverlay />
+                </CoachmarkProvider>
+              </ActiveProfileProvider>
             </AdminProvider>
           </NotificationProvider>
         </TTSProvider>

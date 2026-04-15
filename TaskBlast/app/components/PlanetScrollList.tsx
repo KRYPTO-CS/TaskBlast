@@ -25,6 +25,7 @@ import { getFirestore, collection, query, where, getDocs, doc, updateDoc, onSnap
 import { getAuth } from "firebase/auth";
 import PlanetModal from "./PlanetModal";
 import { ACTIVE_PLANET_STORAGE_KEY } from "../services/gameRegistry";
+import { useActiveProfile } from "../context/ActiveProfileContext";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -120,9 +121,9 @@ const Planet = ({planetID, islocked, onPress, isLast}: PlanetScrollListProps & {
 // Main component that renders the horizontal scroll list of planets
 export default function PlanetScrollList({ onRocksChange, onActivePlanetChange }: { onRocksChange?: () => void; onActivePlanetChange?: (isLocked: boolean) => void }) {
     const [planets] = useState<number[]>([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    const { getProfileDocRef, isLoading: isProfileLoading } = useActiveProfile();
 
     const auth = getAuth();
-    const db = getFirestore();
 
     // create test state
     // TODO: add DB logic to determine which planets are locked/unlocked based on user progress
@@ -143,28 +144,11 @@ export default function PlanetScrollList({ onRocksChange, onActivePlanetChange }
         if (!auth.currentUser) throw new Error("No authenticated user");
         
         const setupProgressListener = async () => {
-          const activeChild = await AsyncStorage.getItem("activeChildProfile");
-          console.log("[PlanetScrollList] Active child profile:", activeChild);
-
-          let userDocRef;
-
-          if (activeChild) {
-            // Listen to child's progress
-            const childrenRef = collection(db, "users", auth.currentUser!.uid, "children");
-            const childQuery = query(childrenRef, where("username", "==", activeChild));
-            const childSnapshot = await getDocs(childQuery);
-
-            if (!childSnapshot.empty) {
-              const childDoc = childSnapshot.docs[0];
-              userDocRef = childDoc.ref;
-              console.log("[PlanetScrollList] Listening to child progress for:", activeChild);
-            } else {
-              console.warn("[PlanetScrollList] Child profile not found, using parent progress");
-              userDocRef = doc(db, "users", auth.currentUser!.uid);
-            }
-          } else {
-            userDocRef = doc(db, "users", auth.currentUser!.uid);
+          if (isProfileLoading) {
+            return () => {};
           }
+
+          const userDocRef = getProfileDocRef();
 
           // Listen to progress updates
           const unsubscribe = onSnapshot(userDocRef, (snap) => {
@@ -188,7 +172,7 @@ export default function PlanetScrollList({ onRocksChange, onActivePlanetChange }
         return () => {
           if (unsubscribe) unsubscribe();
         };
-    }, []);
+    }, [auth.currentUser, getProfileDocRef, isProfileLoading]);
 
     const handleScrollEnd = (e: any) => {
         const x = e.nativeEvent.contentOffset.x;

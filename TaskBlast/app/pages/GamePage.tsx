@@ -19,6 +19,7 @@ import { getAuth } from "firebase/auth";
 import { getFirestore, doc, getDoc, runTransaction } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AccessibilityContext } from "../context/AccessibilityContext";
+import { useActiveProfile } from "../context/ActiveProfileContext";
 import {
   ACTIVE_PLANET_STORAGE_KEY,
   GAME_HIGHEST_TILE_STORAGE_KEY,
@@ -128,6 +129,7 @@ export default function GamePage() {
   const params = useLocalSearchParams();
   const accessibilityContext = useContext(AccessibilityContext);
   const colorBlindMode = accessibilityContext?.colorBlindMode || "none";
+  const { getProfileDocRef, isLoading: isProfileLoading } = useActiveProfile();
 
   const playTime = params.playTime ? parseInt(params.playTime as string) : 5;
   const taskId = params.taskId as string;
@@ -227,17 +229,11 @@ export default function GamePage() {
           const user = getAuth().currentUser;
           if (user) {
             const nowDate = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" });
-            const db = getFirestore();
-            const activeChild = await AsyncStorage.getItem("activeChildProfile");
-            let profileRef;
-            if (activeChild) {
-              const { collection, query, where, getDocs } = await import("firebase/firestore");
-              const childrenRef = collection(db, "users", user.uid, "children");
-              const childSnap = await getDocs(query(childrenRef, where("username", "==", activeChild)));
-              if (!childSnap.empty) profileRef = childSnap.docs[0].ref;
-            } else {
-              profileRef = doc(db, "users", user.uid);
+            if (isProfileLoading) {
+              return;
             }
+            const db = getFirestore();
+            const profileRef = getProfileDocRef();
             if (profileRef) {
               await runTransaction(db, async (tx) => {
                 const snap = await tx.get(profileRef!);
@@ -281,7 +277,7 @@ export default function GamePage() {
 
     await AsyncStorage.removeItem(GAME_SCORE_STORAGE_KEY);
     await AsyncStorage.removeItem(GAME_HIGHEST_TILE_STORAGE_KEY);
-  }, [gameId]);
+  }, [gameId, getProfileDocRef, isProfileLoading]);
 
   // Load equipped items from Firebase
   useEffect(() => {
@@ -291,8 +287,8 @@ export default function GamePage() {
         const user = auth.currentUser;
         if (!user) return;
 
-        const db = getFirestore();
-        const userRef = doc(db, "users", user.uid);
+        if (isProfileLoading) return;
+        const userRef = getProfileDocRef();
         const userDoc = await getDoc(userRef);
 
         if (userDoc.exists()) {
@@ -311,7 +307,7 @@ export default function GamePage() {
     };
 
     loadEquippedItems();
-  }, []);
+  }, [getProfileDocRef, isProfileLoading]);
 
   const handleBackPress = async () => {
     // Save score before going back

@@ -18,15 +18,10 @@ import { useAudioPlayer } from "expo-audio";
 import { getAuth } from "firebase/auth";
 import {
   getFirestore,
-  doc,
   updateDoc,
   increment,
   getDoc,
   setDoc,
-  collection,
-  query,
-  where,
-  getDocs,
   runTransaction,
 } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -41,6 +36,7 @@ import {
   createTour,
 } from "@edwardloopez/react-native-coachmark";
 import { getGameDefinition } from "../services/gameRegistry";
+import { useActiveProfile } from "../context/ActiveProfileContext";
 // Ship component image mappings
 const BODY_IMAGES: { [key: number]: any } = {
   0: require("../../assets/images/ship_components/body/0.png"),
@@ -61,10 +57,8 @@ export default function PomodoroScreen() {
   const params = useLocalSearchParams();
   const { notifyTimerComplete } = useNotifications();
   const palette = useColorPalette();
-   const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
-      null,
-    );
-    const [childDocId, setChildDocId] = useState<string | null>(null);
+  const { childDocId, getProfileDocRef, isLoading: isProfileLoading } =
+    useActiveProfile();
   
 
   const getSingleParam = (value: string | string[] | undefined) =>
@@ -148,30 +142,9 @@ export default function PomodoroScreen() {
         const auth = getAuth();
         const user = auth.currentUser;
         if (!user) return;
+        if (isProfileLoading) return;
 
-        const db = getFirestore();
-        const activeChild = await AsyncStorage.getItem("activeChildProfile");
-
-        let taskRef;
-        if (activeChild) {
-          // Check for active child's task
-          const childrenRef = collection(db, "users", user.uid, "children");
-          const childQuery = query(
-            childrenRef,
-            where("username", "==", activeChild),
-          );
-          const childSnapshot = await getDocs(childQuery);
-
-          if (!childSnapshot.empty) {
-            const childDoc = childSnapshot.docs[0];
-            taskRef = doc(db, "users", user.uid, "children", childDoc.id, "tasks", taskId);
-          } else {
-            console.warn("Child profile not found for task check, using parent");
-            taskRef = doc(db, "users", user.uid, "tasks", taskId);
-          }
-        } else {
-          taskRef = doc(db, "users", user.uid, "tasks", taskId);
-        }
+        const taskRef = getProfileDocRef("tasks", taskId);
 
         const taskDoc = await getDoc(taskRef);
 
@@ -186,7 +159,7 @@ export default function PomodoroScreen() {
     };
 
     checkTaskCompletion();
-  }, [taskId]);
+  }, [taskId, getProfileDocRef, isProfileLoading]);
 
   // Load equipped items from Firebase
   useEffect(() => {
@@ -195,29 +168,9 @@ export default function PomodoroScreen() {
         const auth = getAuth();
         const user = auth.currentUser;
         if (!user) return;
+        if (isProfileLoading) return;
 
-        const db = getFirestore();
-        const activeChild = await AsyncStorage.getItem("activeChildProfile");
-
-        let userRef;
-        if (activeChild) {
-          // Check for active child's profile
-          const childrenRef = collection(db, "users", user.uid, "children");
-          const childQuery = query(
-            childrenRef,
-            where("username", "==", activeChild),
-          );
-          const childSnapshot = await getDocs(childQuery);
-
-          if (!childSnapshot.empty) {
-            userRef = childSnapshot.docs[0].ref;
-          } else {
-            console.warn("Child profile not found for equipped items, using parent");
-            userRef = doc(db, "users", user.uid);
-          }
-        } else {
-          userRef = doc(db, "users", user.uid);
-        }
+        const userRef = getProfileDocRef();
 
         const userDoc = await getDoc(userRef);
 
@@ -233,7 +186,7 @@ export default function PomodoroScreen() {
     };
 
     loadEquippedItems();
-  }, []);
+  }, [getProfileDocRef, isProfileLoading]);
 
   // Interpolate translateY from 0 -> windowHeight
   const translateY = scrollAnim.interpolate({
@@ -300,29 +253,9 @@ export default function PomodoroScreen() {
       const user = auth.currentUser;
       if (!user) return;
 
-      const db = getFirestore();
-      const activeChild = await AsyncStorage.getItem("activeChildProfile");
+      if (isProfileLoading) return;
 
-      let taskRef;
-      if (activeChild) {
-        // Check for active child's task
-        const childrenRef = collection(db, "users", user.uid, "children");
-        const childQuery = query(
-          childrenRef,
-          where("username", "==", activeChild),
-        );
-        const childSnapshot = await getDocs(childQuery);
-
-        if (!childSnapshot.empty) {
-          const childDoc = childSnapshot.docs[0];
-          taskRef = doc(db, "users", user.uid, "children", childDoc.id, "tasks", taskId);
-        } else {
-          console.warn("Child profile not found for task update, using parent");
-          taskRef = doc(db, "users", user.uid, "tasks", taskId);
-        }
-      } else {
-        taskRef = doc(db, "users", user.uid, "tasks", taskId);
-      }
+      const taskRef = getProfileDocRef("tasks", taskId);
 
       await updateDoc(taskRef, {
         completedCycles: increment(1),
@@ -353,22 +286,11 @@ export default function PomodoroScreen() {
           try {
             const taskReward = taskData.reward || 0;
             if (taskReward > 0) {
-              // Get child doc ID if active child
-              let childDocIdForReward: string | null = null;
-              if (activeChild) {
-                const childrenRef = collection(getFirestore(), "users", auth.currentUser?.uid || "", "children");
-                const childQuery = query(childrenRef, where("username", "==", activeChild));
-                const childSnapshot = await getDocs(childQuery);
-                if (!childSnapshot.empty) {
-                  childDocIdForReward = childSnapshot.docs[0].id;
-                }
-              }
-
               // Claim the task reward
               await claimTaskReward({
                 taskId,
                 reward: taskReward,
-                childDocId: childDocIdForReward,
+                childDocId,
               });
               console.log("Claimed task reward on completion:", taskReward);
             }
@@ -394,26 +316,9 @@ export default function PomodoroScreen() {
       const getNeededExpForLevel = (level: number) =>
         30 + 5 * Math.floor(Math.max(0, level - 1) / 5);
 
-      const activeChild = await AsyncStorage.getItem("activeChildProfile");
+      if (isProfileLoading) return;
 
-      let profileRef;
-      if (activeChild) {
-        const childrenRef = collection(db, "users", user.uid, "children");
-        const childQuery = query(
-          childrenRef,
-          where("username", "==", activeChild),
-        );
-        const childSnapshot = await getDocs(childQuery);
-
-        if (!childSnapshot.empty) {
-          profileRef = childSnapshot.docs[0].ref;
-        } else {
-          console.warn("Child profile not found for EXP update, using parent");
-          profileRef = doc(db, "users", user.uid);
-        }
-      } else {
-        profileRef = doc(db, "users", user.uid);
-      }
+      const profileRef = getProfileDocRef();
 
       await runTransaction(db, async (tx) => {
         const snap = await tx.get(profileRef);

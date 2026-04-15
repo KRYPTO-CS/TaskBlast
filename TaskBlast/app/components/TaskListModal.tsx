@@ -13,22 +13,16 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { getAuth } from "firebase/auth";
 import {
-  getFirestore,
   collection,
   addDoc,
   updateDoc,
   deleteDoc,
-  doc,
   onSnapshot,
   serverTimestamp,
   Timestamp,
   getDoc,
-  getDocs,
-  where,
-  query,
 } from "firebase/firestore";
 import { useNotifications } from "../context/NotificationContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
 import { useColorPalette } from "../styles/colorBlindThemes";
 import {
@@ -37,6 +31,7 @@ import {
   createTour,
 } from "@edwardloopez/react-native-coachmark";
 import { claimTaskReward } from "../services/economyService";
+import { useActiveProfile } from "../context/ActiveProfileContext";
 
 interface Task {
   id: string;
@@ -109,9 +104,16 @@ export default function TaskListModal({
   const [pinError, setPinError] = useState("");
   const pinRefs = useRef<Array<TextInput | null>>([null, null, null, null]);
   const auth = getAuth();
-  const db = getFirestore();
   const { t, i18n } = useTranslation();
   const { start } = useCoachmark();
+  const {
+    activeChildUsername,
+    childDocId,
+    getParentDocRef,
+    getProfileCollectionRef,
+    getProfileDocRef,
+    isLoading: isProfileLoading,
+  } = useActiveProfile();
 
   const onboardingTour = createTour("onboarding", [
     {
@@ -121,49 +123,14 @@ export default function TaskListModal({
     },
   ]);
 
-  // Child profile state
-  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
-    null,
-  );
-  const [childDocId, setChildDocId] = useState<string | null>(null);
-
   // Helper to get the correct tasks collection reference
   const getTasksCollectionRef = () => {
-    if (!auth.currentUser) throw new Error("No authenticated user");
-
-    if (childDocId) {
-      // Child tasks: users/{parentId}/children/{childId}/tasks
-      return collection(
-        db,
-        "users",
-        auth.currentUser.uid,
-        "children",
-        childDocId,
-        "tasks",
-      );
-    } else {
-      // Parent tasks: users/{parentId}/tasks
-      return collection(db, "users", auth.currentUser.uid, "tasks");
-    }
+    return getProfileCollectionRef("tasks");
   };
 
   // Helper to get task document reference
   const getTaskDocRef = (taskId: string) => {
-    if (!auth.currentUser) throw new Error("No authenticated user");
-
-    if (childDocId) {
-      return doc(
-        db,
-        "users",
-        auth.currentUser.uid,
-        "children",
-        childDocId,
-        "tasks",
-        taskId,
-      );
-    } else {
-      return doc(db, "users", auth.currentUser.uid, "tasks", taskId);
-    }
+    return getProfileDocRef("tasks", taskId);
   };
 
   // Reset to normal mode when modal becomes visible
@@ -176,9 +143,9 @@ export default function TaskListModal({
     }
   }, [visible]);
 
-  // Load profile and fetch child doc ID if needed
+  // Load parent account metadata used for managed-account protections
   useEffect(() => {
-    const loadProfileAndTasks = async () => {
+    const loadProfileMetadata = async () => {
       if (!auth.currentUser) {
         setError("Please log in to view tasks");
         setLoading(false);
@@ -186,37 +153,11 @@ export default function TaskListModal({
       }
 
       try {
-        // Check if a child profile is active
-        const activeChild = await AsyncStorage.getItem("activeChildProfile");
-        setActiveChildProfile(activeChild);
-
-        // If child is active, find their document ID
-        if (activeChild) {
-          const childrenRef = collection(
-            db,
-            "users",
-            auth.currentUser.uid,
-            "children",
-          );
-          const childrenQuery = query(
-            childrenRef,
-            where("username", "==", activeChild),
-          );
-          const childrenSnapshot = await getDocs(childrenQuery);
-
-          if (!childrenSnapshot.empty) {
-            const childDoc = childrenSnapshot.docs[0];
-            setChildDocId(childDoc.id);
-          } else {
-            setChildDocId(null);
-          }
-        } else {
-          setChildDocId(null);
+        if (isProfileLoading) {
+          return;
         }
 
-        // Fetch user data to get accountType and managerialPin
-        const userDocRef = doc(db, "users", auth.currentUser.uid);
-        const userDoc = await getDoc(userDocRef);
+        const userDoc = await getDoc(getParentDocRef());
         if (userDoc.exists()) {
           const userData = userDoc.data();
           setAccountType(userData.accountType || "");
@@ -229,14 +170,13 @@ export default function TaskListModal({
       }
     };
 
-    loadProfileAndTasks();
-  }, [auth.currentUser]);
+    loadProfileMetadata();
+  }, [auth.currentUser, getParentDocRef, isProfileLoading]);
 
   // Separate useEffect for tasks listener (runs after childDocId is set)
   useEffect(() => {
     if (!auth.currentUser) return;
-    if (activeChildProfile !== null && childDocId === null) {
-      // Still loading child doc ID
+    if (isProfileLoading) {
       return;
     }
 
@@ -284,7 +224,7 @@ export default function TaskListModal({
       setError("Failed to initialize task system");
       setLoading(false);
     }
-  }, [auth.currentUser, childDocId, activeChildProfile]);
+  }, [auth.currentUser, childDocId, activeChildUsername, getProfileCollectionRef, isProfileLoading]);
 
   // Schedule daily digest when tasks or preferences change
   useEffect(() => {
@@ -365,9 +305,8 @@ export default function TaskListModal({
       const task = tasks.find((t) => t.id === taskId);
       if (!task) return;
 
-      const profileRef = childDocId
-        ? doc(db, "users", auth.currentUser.uid, "children", childDocId)
-        : doc(db, "users", auth.currentUser.uid);
+      //database for correct account type
+      const profileRef = getProfileDocRef();
       const profileSnap = await getDoc(profileRef);
       const unlockedPlanet = profileSnap.exists()
         ? toSafeInt(profileSnap.data()?.currPlanet, 1)
