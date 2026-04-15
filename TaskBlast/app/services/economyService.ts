@@ -32,6 +32,7 @@ export interface PurchaseShopItemResponse extends BaseResponse {
   shopItems?: {
     body: boolean[];
     wings: boolean[];
+    toppers: boolean[];
   };
   unlockedPlanets?: boolean[];
 }

@@ -101,7 +101,6 @@ export default function ShopModal({
   const [unlockedPlanets, setUnlockedPlanets] = useState<boolean[]>([
     true, false, false, false, false, false, false, false, false,
   ]);
-  const [equipped, setEquipped] = useState<number[]>([0, 1]);
   const [equipped, setEquipped] = useState<number[]>([0, 1, 0]);
   const [confirmPurchase, setConfirmPurchase] = useState<{
     item: ShopItem | null;
@@ -386,17 +385,6 @@ export default function ShopModal({
       setUnlockedItems(newUnlockedItems);
       setUnlockedPlanets(newUnlockedPlanets);
       setRocks(newRocksAmount);
-
-      // Update rocks in Firebase database
-      try {
-        const userRef = getProfileDocRef();
-
-        console.log("[ShopModal] Updating rocks in database to:", newRocksAmount);
-        await updateDoc(userRef, { rocks: newRocksAmount });
-        console.log("[ShopModal] Database update for rocks completed successfully");
-      } catch (error) {
-        console.error("[ShopModal] Error updating rocks in database:", error);
-      }
 
       try {
         const refreshedSnap = await getDoc(getProfileDocRef());
