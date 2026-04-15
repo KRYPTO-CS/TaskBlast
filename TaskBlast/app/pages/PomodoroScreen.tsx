@@ -37,6 +37,7 @@ import {
 } from "@edwardloopez/react-native-coachmark";
 import { getGameDefinition } from "../services/gameRegistry";
 import { useActiveProfile } from "../context/ActiveProfileContext";
+import src from "@react-native-community/datetimepicker";
 // Ship component image mappings
 const BODY_IMAGES: { [key: number]: any } = {
   0: require("../../assets/images/ship_components/body/0.png"),
@@ -50,6 +51,12 @@ const WING_IMAGES: { [key: number]: any } = {
   1: require("../../assets/images/ship_components/wing/1.png"),
   2: require("../../assets/images/ship_components/wing/2.png"),
   3: require("../../assets/images/ship_components/wing/3.png"),
+};
+
+const DETAILS_IMAGES: { [key: number]: any } = {
+  0: require("../../assets/images/ship_components/shipDetails.gif"),
+  1: require("../../assets/images/ship_components/ShipBlueFlame.gif"),
+  2: require("../../assets/images/ship_components/ShipArtemisLaunch.gif"),
 };
 
 export default function PomodoroScreen() {
@@ -597,6 +604,12 @@ export default function PomodoroScreen() {
     }
   };
 
+  const GifHeights: Record<number, number> = {
+    0: 288,
+    1: 376,
+    2: 480,
+  };
+
   // Calculate progress percentage (starts at 100% and decreases to 0%)
   const progressPercentage = (timeLeft / totalTime) * 100;
 
@@ -771,8 +784,9 @@ export default function PomodoroScreen() {
                 resizeMode="contain"
               />
               <Image
-                source={require("../../assets/images/ship_components/shipDetails.gif")}
-                className="w-72 h-72 absolute"
+                source={DETAILS_IMAGES[equipped[2]] || DETAILS_IMAGES[0]}
+                className={`w-72 absolute top-0`}
+                style={{ height: GifHeights[equipped[2]] ?? GifHeights[0] }}
                 resizeMode="contain"
               />
             </Animated.View>

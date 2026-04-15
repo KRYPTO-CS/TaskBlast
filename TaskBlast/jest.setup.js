@@ -26,6 +26,11 @@ jest.mock("expo-router", () => {
       replace: mockReplace,
       back: mockBack,
     }),
+    useFocusEffect: jest.fn((effect) => {
+      if (typeof effect === "function") {
+        effect();
+      }
+    }),
     useLocalSearchParams: mockUseLocalSearchParams,
     Link: "Link",
     router: {
@@ -94,6 +99,36 @@ jest.mock("./app/context/NotificationContext", () => ({
     cancelTaskNotifications: jest.fn().mockResolvedValue(undefined),
     cancelAllNotifications: jest.fn().mockResolvedValue(undefined),
     cancelDailyDigest: jest.fn(),
+  })),
+}));
+
+// Mock TTSContext
+jest.mock("./app/context/TTSContext", () => ({
+  TTSProvider: ({ children }) => children,
+  useTTS: jest.fn(() => ({
+    ttsEnabled: true,
+    settings: { rate: 1, pitch: 1, language: "en-US" },
+    setSettings: jest.fn(),
+    speak: jest.fn(),
+    stop: jest.fn(),
+    isSpeaking: false,
+  })),
+}));
+
+// Mock AdminContext
+jest.mock("./app/context/AdminContext", () => ({
+  AdminProvider: ({ children }) => children,
+  useAdmin: jest.fn(() => ({
+    adminEmail: null,
+    role: null,
+    isAdminEligible: false,
+    isAdminVerified: false,
+    sessionExpiresAt: null,
+    isLoading: false,
+    error: null,
+    checkEligibility: jest.fn().mockResolvedValue(false),
+    verifyAdminPin: jest.fn().mockResolvedValue(true),
+    clearAdminSession: jest.fn().mockResolvedValue(undefined),
   })),
 }));
 
@@ -313,6 +348,15 @@ jest.mock("react-i18next", () => ({
       "ManagedPIN.pin": "Enter PIN",
       "ManagedPIN.confirmPinPlaceholder": "Confirm PIN",
       "ManagedPIN.continue": "Continue",
+      "ManagerPin.pin": "Enter PIN",
+      "ManagerPin.confirmPinPlaceholder": "Confirm PIN",
+      "ChildAccount.title": "Create Child Account",
+      "ChildAccount.firstName": "Enter first name",
+      "ChildAccount.lastName": "Enter last name",
+      "ChildAccount.birthdate": "Birthdate",
+      "ChildAccount.username": "Username",
+      "ChildAccount.usernameDesc": "Choose a unique username",
+      "ChildAccount.create": "Create Child Account",
       "Password.desc": "Choose a strong password for your account",
       "birthdate.title": "What's Your Birthdate",
       "birthdate.previousStep": "Previous Step",
@@ -335,6 +379,55 @@ jest.mock("react-i18next", () => ({
       "AccountType.error": "Please choose an account type",
       "language.backTo": "Back to",
       "language.Login": "Login",
+      "Tasks.normal": "Normal",
+      "Tasks.archive": "Archive",
+      "Tasks.edit": "Edit",
+      "Tasks.title": "Task List",
+      "Tasks.button": "Add New Task",
+      "Tasks.new": "New Task",
+      "Tasks.managerAccess": "Manager Access",
+      "Tasks.managerAccessDesc": "Enter the 4-digit PIN to access edit mode",
+      "Tasks.cancel": "Cancel",
+      "Tasks.unlock": "Unlock",
+      "Tasks.noTasks": "No tasks yet. Add your first task!",
+      "Tasks.empty": "No tasks yet. Add your first task!",
+      "Tasks.archivedempty": "No archived tasks.",
+      "Tasks.archivedTask": "Archived task",
+      "Settings.parentAccount": "Parent Account",
+      "Shop.title": "Shop",
+      "Shop.body": "Body",
+      "Shop.wings": "Wings",
+      "Shop.toppers": "Topper",
+      "Shop.equipped": "Equipped",
+      "Shop.owned": "Owned",
+      "Shop.bBody": "Blue Body",
+      "Shop.rBody": "Red Body",
+      "Shop.gBody": "Green Body",
+      "Shop.yBody": "Yellow Body",
+      "Shop.bWings": "Blue Wings",
+      "Shop.rWings": "Red Wings",
+      "Shop.gWings": "Green Wings",
+      "Shop.yWings": "Yellow Wings",
+      "Shop.dTopper": "Default Topper",
+      "Shop.bTopper": "Blue Fire Topper",
+      "Shop.aTopper": "Artemis Topper",
+      "Profile.editP": "Edit Profile",
+      "Profile.traits": "Traits",
+      "Profile.awards": "Awards",
+      "Profile.YourStats": "Your Stats",
+      "Profile.switchProfile": "Switch Profile",
+      "Profile.addChildAccount": "Add Child Account",
+      "Profile.SwitchProfile": "Switch Profile",
+      "Profile.AddChildAccount": "Add Child Account",
+      "Profile.Logout": "Logout",
+      "Settings.logout": "Logout",
+      "Pomodoro.time": "Time Remaining",
+      "Pomodoro.pause": "Pause",
+      "Pomodoro.worksession": "Work Session",
+      "Pomodoro.Pause": "Pause",
+      "Pomodoro.Resume": "Resume",
+      "Pomodoro.Play": "Play",
+      "Pomodoro.Land": "Land",
     };
 
     const tFunction = (key) => translations[key] || key;
@@ -381,6 +474,28 @@ jest.mock("react-native-webview", () => {
 
       return React.createElement(View, { testID: "webview", ...props });
     }),
+  };
+});
+
+// Mock coachmark library for tests that render screens without provider wiring
+jest.mock("@edwardloopez/react-native-coachmark", () => {
+  const React = require("react");
+
+  return {
+    CoachmarkProvider: ({ children }) => children,
+    CoachmarkOverlay: ({ children }) => children,
+    CoachmarkAnchor: ({ children }) => children,
+    useCoachmark: () => ({
+      start: jest.fn(),
+      stop: jest.fn(),
+      reset: jest.fn(),
+      isRunning: false,
+    }),
+    createTour: jest.fn(() => ({
+      start: jest.fn(),
+      stop: jest.fn(),
+      reset: jest.fn(),
+    })),
   };
 });
 

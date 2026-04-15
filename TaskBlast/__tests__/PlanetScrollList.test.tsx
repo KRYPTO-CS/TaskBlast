@@ -10,7 +10,12 @@
  */
 
 import React from "react";
-import { render, fireEvent, waitFor, screen } from "@testing-library/react-native";
+import {
+  render,
+  fireEvent,
+  waitFor,
+  screen,
+} from "@testing-library/react-native";
 import PlanetScrollList from "../app/components/PlanetScrollList";
 
 jest.mock("firebase/auth", () => ({
@@ -26,15 +31,22 @@ jest.mock("firebase/firestore", () => ({
   increment: jest.fn(),
 }));
 
+jest.mock("../app/services/economyService", () => ({
+  unlockPlanet: jest.fn(),
+}));
+
 import { getAuth } from "firebase/auth";
 import { onSnapshot, getDoc } from "firebase/firestore";
+import { unlockPlanet } from "../app/services/economyService";
 import { ScrollView } from "react-native";
 
 describe("PlanetScrollList", () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    (getAuth as jest.Mock).mockReturnValue({ currentUser: { uid: "test-user" } });
+    (getAuth as jest.Mock).mockReturnValue({
+      currentUser: { uid: "test-user" },
+    });
 
     // onSnapshot should immediately call back with a user snapshot having currPlanet = 2
     (onSnapshot as jest.Mock).mockImplementation((_, cb) => {
@@ -43,7 +55,14 @@ describe("PlanetScrollList", () => {
     });
 
     // Default getDoc resolves to a planet document
-    (getDoc as jest.Mock).mockResolvedValue({ exists: () => true, data: () => ({ name: "Test Planet", description: "A planet" }) });
+    (getDoc as jest.Mock).mockResolvedValue({
+      exists: () => true,
+      data: () => ({ name: "Test Planet", description: "A planet" }),
+    });
+    (unlockPlanet as jest.Mock).mockResolvedValue({
+      success: true,
+      newRocks: 49,
+    });
   });
 
   it("renders planet images", async () => {
@@ -60,7 +79,9 @@ describe("PlanetScrollList", () => {
     render(<PlanetScrollList />);
 
     // ensure images rendered
-    await waitFor(() => expect(screen.getByTestId("planet-2-image")).toBeTruthy());
+    await waitFor(() =>
+      expect(screen.getByTestId("planet-2-image")).toBeTruthy(),
+    );
 
     // Press planet 2
     fireEvent.press(screen.getByTestId("planet-2-image"));
@@ -83,17 +104,27 @@ describe("PlanetScrollList", () => {
     });
 
     // planet doc then user doc
-    (getDoc as jest.Mock).mockResolvedValueOnce({ exists: () => true, data: () => ({ name: "Unlocked", description: "desc", cost: 1 }) });
-    (getDoc as jest.Mock).mockResolvedValueOnce({ exists: () => true, data: () => ({ rocks: 50 }) });
+    (getDoc as jest.Mock).mockResolvedValueOnce({
+      exists: () => true,
+      data: () => ({ name: "Unlocked", description: "desc", cost: 1 }),
+    });
+    (getDoc as jest.Mock).mockResolvedValueOnce({
+      exists: () => true,
+      data: () => ({ rocks: 50 }),
+    });
 
     // mock setDoc so unlock succeeds
     const firestore = require("firebase/firestore");
     (firestore.setDoc as jest.Mock).mockResolvedValue(undefined);
 
-    const { getByTestId } = render(<PlanetScrollList onRocksChange={onRocksChange} />);
+    const { getByTestId } = render(
+      <PlanetScrollList onRocksChange={onRocksChange} />,
+    );
 
     // wait for images
-    await waitFor(() => expect(screen.getByTestId("planet-2-image")).toBeTruthy());
+    await waitFor(() =>
+      expect(screen.getByTestId("planet-2-image")).toBeTruthy(),
+    );
 
     // Press planet 2 to open modal
     fireEvent.press(screen.getByTestId("planet-2-image"));
@@ -102,9 +133,11 @@ describe("PlanetScrollList", () => {
     await waitFor(() => expect(screen.getByText("desc")).toBeTruthy());
 
     // Press Unlock then Confirm Unlock
-    fireEvent.press(screen.getByText("Unlock Planet"));
-    await waitFor(() => expect(screen.getByText("Confirm Unlock")).toBeTruthy());
-    fireEvent.press(screen.getByText("Confirm Unlock"));
+    fireEvent.press(screen.getByTestId("unlock-planet-button"));
+    await waitFor(() =>
+      expect(screen.getByText("Confirm Unlock")).toBeTruthy(),
+    );
+    fireEvent.press(screen.getByTestId("confirm-unlock-button"));
 
     // onRocksChange should be called by PlanetModal unlock flow
     await waitFor(() => expect(onRocksChange).toHaveBeenCalled());
@@ -119,7 +152,9 @@ describe("PlanetScrollList", () => {
 
     render(<PlanetScrollList />);
 
-    await waitFor(() => expect(screen.getByTestId("planet-2-image")).toBeTruthy());
+    await waitFor(() =>
+      expect(screen.getByTestId("planet-2-image")).toBeTruthy(),
+    );
 
     // Instead of comparing image source (module mocked), validate lock behavior
     // by opening the modal for planet 2 and confirming header shows locked state

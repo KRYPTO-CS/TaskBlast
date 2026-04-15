@@ -63,6 +63,12 @@ const shopPages: ShopPage[] = [
     nameKey: "Shop.wings",
     iconPath: require("../../assets/images/shop_icons/ShipWingIconRed.png"),
   },
+  {
+    id: 2,
+    name: "Topper",
+    nameKey: "Shop.toppers",
+    iconPath: require("../../assets/images/shop_icons/ShipTopperIconDefault.png"),
+  },
 ];
 
 const fallbackShopItems: ShopItem[] = DEFAULT_SHOP_CATALOG.map((item) => ({
@@ -86,14 +92,17 @@ export default function ShopModal({
   const [unlockedItems, setUnlockedItems] = useState<{
     body: boolean[];
     wings: boolean[];
+    toppers: boolean[];
   }>({
     body: [true, false, false, false],
     wings: [false, true, false, false],
+    toppers: [true, false],
   });
   const [unlockedPlanets, setUnlockedPlanets] = useState<boolean[]>([
     true, false, false, false, false, false, false, false, false,
   ]);
   const [equipped, setEquipped] = useState<number[]>([0, 1]);
+  const [equipped, setEquipped] = useState<number[]>([0, 1, 0]);
   const [confirmPurchase, setConfirmPurchase] = useState<{
     item: ShopItem | null;
   }>({ item: null });
@@ -141,8 +150,8 @@ export default function ShopModal({
             };
 
             const category =
-              data.category === "Body" || data.category === "Wings"
-                ? data.category
+              data.category === "Body" || data.category === "Wings" || data.category === "Topper"
+                ? (data.category as ShopCategory)
                 : null;
             const index = Number(data.index);
             const price = Number(
@@ -174,8 +183,9 @@ export default function ShopModal({
           })
           .filter((item): item is ShopItem => Boolean(item))
           .sort((a, b) => {
+            const order: Record<ShopCategory, number> = { Body: 0, Wings: 1, Topper: 2 };
             if (a.category !== b.category) {
-              return a.category === "Body" ? -1 : 1;
+              return order[a.category] - order[b.category];
             }
             return a.index - b.index;
           });
@@ -214,12 +224,14 @@ export default function ShopModal({
           }
 
           // Check if shopItems exist, if not create them
+          const defaultShopItems = {
+            body: [true, false, false, false],
+            wings: [false, true, false, false],
+            toppers: [true, false],
+          };
           if (!userData.shopItems) {
-            updates.shopItems = {
-              body: [true, false, false, false],
-              wings: [false, true, false, false],
-            };
-            setUnlockedItems(updates.shopItems);
+            updates.shopItems = defaultShopItems;
+            setUnlockedItems(defaultShopItems);
             needsUpdate = true;
             console.log("[ShopModal] Database update needed: Creating shopItems");
           } else {
@@ -238,17 +250,39 @@ export default function ShopModal({
           } else {
             setUnlockedPlanets(userData.unlockedPlanets);
             console.log("[ShopModal] Loaded user unlockedPlanets");
+            // Merge to ensure newly-added categories (e.g. toppers) are always present
+            const merged = {
+              ...defaultShopItems,
+              ...userData.shopItems,
+            };
+            if (!userData.shopItems.toppers) {
+              updates.shopItems = merged;
+              needsUpdate = true;
+            }
+            setUnlockedItems(merged);
           }
 
           // Check if equipped array exists, if not create it
+          const defaultEquipped = [0, 1, 0];
           if (!userData.equipped) {
-            updates.equipped = [0, 1];
-            setEquipped([0, 1]);
+            updates.equipped = defaultEquipped;
+            setEquipped(defaultEquipped);
             needsUpdate = true;
             console.log("[ShopModal] Database update needed: Creating equipped array");
           } else {
             setEquipped(userData.equipped);
             console.log("[ShopModal] Loaded user equipped array:", userData.equipped);
+            // Ensure the equipped array has a slot for every category
+            const equippedPadded = [
+              userData.equipped[0] ?? 0,
+              userData.equipped[1] ?? 1,
+              userData.equipped[2] ?? 0,
+            ];
+            if (userData.equipped.length < 3) {
+              updates.equipped = equippedPadded;
+              needsUpdate = true;
+            }
+            setEquipped(equippedPadded);
           }
 
           // Update Firebase if needed
@@ -280,7 +314,7 @@ export default function ShopModal({
 
       const userDocRef = getProfileDocRef();
 
-      const categoryIndex = item.category === "Body" ? 0 : 1;
+      const categoryIndex = item.category === "Body" ? 0 : item.category === "Wings" ? 1 : 2;
       const newEquipped = [...equipped];
       newEquipped[categoryIndex] = item.index;
 
@@ -297,7 +331,7 @@ export default function ShopModal({
   };
 
   const handlePurchase = async (item: ShopItem) => {
-    const categoryKey = item.category.toLowerCase() as "body" | "wings";
+    const categoryKey = (item.category === "Topper" ? "toppers" : item.category.toLowerCase()) as "body" | "wings" | "toppers";
     const isUnlocked = unlockedItems[categoryKey][item.index];
 
     if (isUnlocked) {
@@ -479,11 +513,12 @@ export default function ShopModal({
           <ScrollView className="flex-1 p-5">
             <View className="flex-row flex-wrap justify-between">
               {filteredItems.map((item) => {
-                const categoryKey = currentCategory.toLowerCase() as
+                const categoryKey = (currentCategory === "Topper" ? "toppers" : currentCategory.toLowerCase()) as
                   | "body"
-                  | "wings";
+                  | "wings"
+                  | "toppers";
                 const isUnlocked = unlockedItems[categoryKey][item.index];
-                const categoryIndex = item.category === "Body" ? 0 : 1;
+                const categoryIndex = item.category === "Body" ? 0 : item.category === "Wings" ? 1 : 2;
                 const isEquipped = equipped[categoryIndex] === item.index;
 
                 return (

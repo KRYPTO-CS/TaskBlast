@@ -19,6 +19,25 @@ import { getAuth } from "firebase/auth";
 import { getDoc, getDocs, collection, query, where } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+jest.mock("../app/context/AccessibilityContext", () => ({
+  useAccessibility: () => ({
+    language: "en",
+    colorBlindMode: "none",
+    textSize: "medium",
+    highContrast: false,
+    reduceMotion: false,
+    ttsEnabled: false,
+    textScale: 1,
+    isLoading: false,
+    setLanguage: jest.fn(),
+    setColorBlindMode: jest.fn(),
+    setTextSize: jest.fn(),
+    setHighContrast: jest.fn(),
+    setReduceMotion: jest.fn(),
+    setTtsEnabled: jest.fn(),
+  }),
+}));
+
 describe("ProfileScreen", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -369,7 +388,7 @@ describe("ProfileScreen", () => {
         .spyOn(console, "error")
         .mockImplementation(() => {});
       (AsyncStorage.getItem as jest.Mock).mockRejectedValueOnce(
-        new Error("AsyncStorage error")
+        new Error("AsyncStorage error"),
       );
 
       const { getByText } = render(<ProfileScreen />);

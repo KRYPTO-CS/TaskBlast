@@ -1,7 +1,7 @@
 
 # TaskBlast
 
-An app to help those with ADHD and other users with attention deficits to stay on task in a fun and engaging way.
+An app to help neurodivergent children (and adults) stay on task in a fun and engaging way.
 
 ## Table of Contents
 - [Features](#features)

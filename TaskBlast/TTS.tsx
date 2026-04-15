@@ -1,10 +1,11 @@
-import { Text as RNText, TextProps,  GestureResponderEvent  } from 'react-native';
-import { useTTS } from './app/context/TTSContext';
+import { Text as RNText, TextProps, GestureResponderEvent } from "react-native";
+import { useTTS } from "./app/context/TTSContext";
 
 export function Text({ children, onPress, ...props }: TextProps) {
   const { ttsEnabled, speak } = useTTS();
+  const hasPressHandler = typeof onPress === "function";
 
-  // Only attach a press handler when TTS is active. When disabled 
+  // Only attach a press handler when TTS is active. When disabled
   // the text to behave exactly like a normal <Text> with no touchable
   // behavior, even if a consumer passed an onPress prop (those are typically
   // only used for speaking). This matches the new requirement that turning
@@ -16,7 +17,7 @@ export function Text({ children, onPress, ...props }: TextProps) {
     }
 
     try {
-      const text = typeof children === 'string' ? children : '';
+      const text = typeof children === "string" ? children : "";
       speak(text);
     } catch (e) {
       // TTS failed, silently fall through
@@ -26,7 +27,10 @@ export function Text({ children, onPress, ...props }: TextProps) {
   };
 
   return (
-    <RNText onPress={ttsEnabled ? handlePress : undefined} {...props}>
+    <RNText
+      onPress={hasPressHandler && ttsEnabled ? handlePress : undefined}
+      {...props}
+    >
       {children}
     </RNText>
   );

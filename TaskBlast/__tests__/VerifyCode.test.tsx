@@ -17,6 +17,10 @@ import * as RN from "react-native";
 // Mock i18next
 jest.mock("react-i18next", () => ({
   useTranslation: jest.fn(),
+  initReactI18next: {
+    type: "3rdParty",
+    init: jest.fn(),
+  },
 }));
 
 // Mock Keyboard
@@ -57,7 +61,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
 
       expect(screen.getByText("Verify Your Email")).toBeTruthy();
@@ -72,7 +76,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 
@@ -86,7 +90,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
 
       expect(screen.getByText("Submit")).toBeTruthy();
@@ -98,7 +102,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
 
       // Text is nested
@@ -112,7 +116,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
 
       // Text is nested, so search for combined content
@@ -127,7 +131,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 
@@ -146,7 +150,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 
@@ -163,7 +167,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 
@@ -178,7 +182,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 
@@ -195,7 +199,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 
@@ -215,7 +219,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 
@@ -234,7 +238,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 
@@ -255,7 +259,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 
@@ -279,7 +283,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 
@@ -304,7 +308,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 
@@ -329,7 +333,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 
@@ -342,6 +346,26 @@ describe("VerifyCode", () => {
         });
       }).not.toThrow();
     });
+
+    it("should ignore non-backspace key presses", () => {
+      const { UNSAFE_getAllByType } = render(
+        <VerifyCode
+          email="test@example.com"
+          onSubmit={mockOnSubmit}
+          onBack={mockOnBack}
+        />,
+      );
+      const { TextInput } = require("react-native");
+
+      const inputs = UNSAFE_getAllByType(TextInput);
+      fireEvent.changeText(inputs[0], "7");
+
+      fireEvent(inputs[0], "onKeyPress", {
+        nativeEvent: { key: "Enter" },
+      });
+
+      expect(inputs[0].props.value).toBe("7");
+    });
   });
 
   describe("Code Submission", () => {
@@ -351,7 +375,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 
@@ -365,7 +389,7 @@ describe("VerifyCode", () => {
       fireEvent.changeText(inputs[4], "5");
 
       // Press submit
-      const submitButton = screen.getByText("Submit");
+      const submitButton = screen.getByTestId("verify-code-submit-button");
       fireEvent.press(submitButton);
 
       expect(mockOnSubmit).toHaveBeenCalledWith("12345");
@@ -377,7 +401,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 
@@ -389,7 +413,7 @@ describe("VerifyCode", () => {
       fireEvent.changeText(inputs[2], "3");
 
       // Press submit
-      const submitButton = screen.getByText("Submit");
+      const submitButton = screen.getByTestId("verify-code-submit-button");
       fireEvent.press(submitButton);
 
       expect(mockOnSubmit).not.toHaveBeenCalled();
@@ -401,7 +425,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 
@@ -418,7 +442,7 @@ describe("VerifyCode", () => {
       fireEvent.changeText(inputs[2], "9");
 
       // Submit
-      const submitButton = screen.getByText("Submit");
+      const submitButton = screen.getByTestId("verify-code-submit-button");
       fireEvent.press(submitButton);
 
       expect(mockOnSubmit).toHaveBeenCalledWith("12945");
@@ -432,7 +456,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
 
       // Text is nested, so get the combined text
@@ -450,7 +474,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TouchableWithoutFeedback } = require("react-native");
 
@@ -466,7 +490,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 
@@ -485,7 +509,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
 
       expect(mockT).toHaveBeenCalledWith("VerifyCode.title");
@@ -505,7 +529,7 @@ describe("VerifyCode", () => {
           email="user@domain.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
 
       expect(screen.getByText(/user@domain\.com/)).toBeTruthy();
@@ -517,7 +541,7 @@ describe("VerifyCode", () => {
           email="old@email.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
 
       expect(screen.getByText(/old@email\.com/)).toBeTruthy();
@@ -527,7 +551,7 @@ describe("VerifyCode", () => {
           email="new@email.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
 
       expect(screen.getByText(/new@email\.com/)).toBeTruthy();
@@ -541,7 +565,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 
@@ -566,7 +590,7 @@ describe("VerifyCode", () => {
           email="test@example.com"
           onSubmit={mockOnSubmit}
           onBack={mockOnBack}
-        />
+        />,
       );
       const { TextInput } = require("react-native");
 

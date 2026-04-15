@@ -42,8 +42,10 @@ type GodotSkinsPayload = {
   data3: string;
   data4: string;
   data5: string;
+  data6: string;
   bodyId: number;
   wingsId: number;
+  topperId: number;
   gameId: number;
   planetId: number;
   colorBlindMode: number;
@@ -83,15 +85,18 @@ const buildGodotSkinsPayload = ({
   gameId,
   planetId,
   colorBlindMode,
+  topperId,
 }: {
   bodyId: number;
   wingsId: number;
   gameId: number;
   planetId: number;
   colorBlindMode: string;
+  topperId: number;
 }): GodotSkinsPayload => {
   const safeBodyId = normalizeInt(bodyId, 0, 0);
   const safeWingsId = normalizeInt(wingsId, 1, 0);
+  const safeTopperId = normalizeInt(topperId, 0, 0);
   const safeGameId = normalizeInt(gameId, 0, 0);
   // SpaceShooter JSB multiplier mapping currently expects slots 1-9.
   const safePlanetId = normalizeInt(planetId, 1, 1, 9);
@@ -110,9 +115,11 @@ const buildGodotSkinsPayload = ({
     data3: String(safeGameId),
     data4: String(safePlanetId),
     data5: String(colorBlindModeValue),
+    data6: String(safeTopperId),
     // Named aliases for future compatibility and diagnostics.
     bodyId: safeBodyId,
     wingsId: safeWingsId,
+    topperId: safeTopperId,
     gameId: safeGameId,
     planetId: safePlanetId,
     colorBlindMode: colorBlindModeValue,
@@ -143,7 +150,7 @@ export default function GamePage() {
   const isSpaceSwerve = gameId === 1;
 
   const [timeLeft, setTimeLeft] = useState(playTime * 60); // Convert minutes to seconds
-  const [equipped, setEquipped] = useState<number[]>([0, 1]);
+  const [equipped, setEquipped] = useState<number[]>([0, 1, 0]);
   const [activePlanetId, setActivePlanetId] = useState<number>(1);
   const tapCount = useRef(0);
   const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -294,9 +301,15 @@ export default function GamePage() {
         if (userDoc.exists()) {
           const userData = userDoc.data();
           if (userData.equipped && Array.isArray(userData.equipped)) {
-            setEquipped(userData.equipped);
-            console.log("Equipped body ID:", String(userData.equipped[0]));
-            console.log("Equipped wings ID:", String(userData.equipped[1]));
+            const equippedPadded = [
+              userData.equipped[0] ?? 0,
+              userData.equipped[1] ?? 1,
+              userData.equipped[2] ?? 0,
+            ];
+            setEquipped(equippedPadded);
+            console.log("Equipped body ID:", String(equippedPadded[0]));
+            console.log("Equipped wings ID:", String(equippedPadded[1]));
+            console.log("Equipped topper ID:", String(equippedPadded[2]));
           }
         }
       } catch (err) {
@@ -517,6 +530,7 @@ export default function GamePage() {
         gameId,
         planetId: activePlanetId,
         colorBlindMode,
+        topperId: equipped[2] ?? "1",
       });
 
       console.log("Sending skins message to Godot.");
@@ -539,11 +553,11 @@ export default function GamePage() {
             const raw = ${escapedPayload};
             const msg = JSON.parse(raw);
             if (typeof window.sendToGodot === "function") {
-              window.sendToGodot(msg.type, msg.data1, msg.data2, msg.data3, msg.data4, msg.data5);
+              window.sendToGodot(msg.type, msg.data1, msg.data2, msg.data3, msg.data4, msg.data5, msg.data6);
             }
             const enableCbCompatibility = ${isSpaceSwerve ? "true" : "false"};
             if (enableCbCompatibility && typeof window.cb === "function") {
-              window.cb(msg.type, msg.data1, msg.data2, msg.data3, msg.data4, msg.data5);
+              window.cb(msg.type, msg.data1, msg.data2, msg.data3, msg.data4, msg.data5, msg.data6);
             }
             if (window.ReactNativeWebView) {
               window.ReactNativeWebView.postMessage(JSON.stringify({ type: "ackInjected", received: msg.type }));

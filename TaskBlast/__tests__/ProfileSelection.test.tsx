@@ -69,7 +69,7 @@ describe("ProfileSelection", () => {
       const { getByText } = render(<ProfileSelection />);
 
       await waitFor(() => {
-        expect(getByText(/Parent Account/i)).toBeTruthy();
+        expect(getByText("ProfileSelection.parentProfile")).toBeTruthy();
       });
     });
 
@@ -83,7 +83,7 @@ describe("ProfileSelection", () => {
       const { getByText } = render(<ProfileSelection />);
 
       await waitFor(() => {
-        expect(getByText(/Parent Account/i)).toBeTruthy();
+        expect(getByText("ProfileSelection.parentProfile")).toBeTruthy();
       });
     });
 
@@ -100,32 +100,32 @@ describe("ProfileSelection", () => {
   describe("Parent Profile Selection", () => {
     it("should navigate to HomeScreen when parent profile is selected", async () => {
       const mockRouter = require("expo-router").useRouter();
-      const { getByText } = render(<ProfileSelection />);
+      const { getByText, getByTestId } = render(<ProfileSelection />);
 
       await waitFor(() => {
-        const parentButton = getByText(/Parent Account/i);
+        const parentButton = getByTestId("parent-profile-button");
         fireEvent.press(parentButton);
       });
 
       await waitFor(() => {
         expect(AsyncStorage.removeItem).toHaveBeenCalledWith(
-          "activeChildProfile"
+          "activeChildProfile",
         );
         expect(mockRouter.push).toHaveBeenCalledWith("/pages/HomeScreen");
       });
     });
 
     it("should clear active child profile when parent is selected", async () => {
-      const { getByText } = render(<ProfileSelection />);
+      const { getByText, getByTestId } = render(<ProfileSelection />);
 
       await waitFor(() => {
-        const parentButton = getByText(/Parent Account/i);
+        const parentButton = getByTestId("parent-profile-button");
         fireEvent.press(parentButton);
       });
 
       await waitFor(() => {
         expect(AsyncStorage.removeItem).toHaveBeenCalledWith(
-          "activeChildProfile"
+          "activeChildProfile",
         );
       });
     });
@@ -133,24 +133,26 @@ describe("ProfileSelection", () => {
 
   describe("Child Profile Selection", () => {
     it("should show PIN input when child profile is selected", async () => {
-      const { getByText } = render(<ProfileSelection />);
+      const { getByText, getByTestId } = render(<ProfileSelection />);
 
       await waitFor(() => {
-        const childButton = getByText("Alice");
+        const childButton = getByTestId("child-profile-Child1");
         fireEvent.press(childButton);
       });
 
       await waitFor(() => {
-        expect(getByText(/Enter PIN/i)).toBeTruthy();
+        expect(getByText(/ProfileSelection\.EnterPin/i)).toBeTruthy();
       });
     });
 
     it("should navigate to HomeScreen with correct PIN", async () => {
       const mockRouter = require("expo-router").useRouter();
-      const { getByText, getByPlaceholderText } = render(<ProfileSelection />);
+      const { getByText, getByPlaceholderText, getByTestId } = render(
+        <ProfileSelection />,
+      );
 
       await waitFor(() => {
-        const childButton = getByText("Alice");
+        const childButton = getByTestId("child-profile-Child1");
         fireEvent.press(childButton);
       });
 
@@ -159,23 +161,25 @@ describe("ProfileSelection", () => {
         fireEvent.changeText(pinInput, "1234");
       });
 
-      const continueButton = getByText("Continue");
+      const continueButton = getByTestId("pin-continue-button");
       fireEvent.press(continueButton);
 
       await waitFor(() => {
         expect(AsyncStorage.setItem).toHaveBeenCalledWith(
           "activeChildProfile",
-          "Child1"
+          "Child1",
         );
         expect(mockRouter.push).toHaveBeenCalledWith("/pages/HomeScreen");
       });
     });
 
     it("should show error alert with incorrect PIN", async () => {
-      const { getByText, getByPlaceholderText } = render(<ProfileSelection />);
+      const { getByText, getByPlaceholderText, getByTestId } = render(
+        <ProfileSelection />,
+      );
 
       await waitFor(() => {
-        const childButton = getByText("Alice");
+        const childButton = getByTestId("child-profile-Child1");
         fireEvent.press(childButton);
       });
 
@@ -184,7 +188,7 @@ describe("ProfileSelection", () => {
         fireEvent.changeText(pinInput, "0000");
       });
 
-      const continueButton = getByText("Continue");
+      const continueButton = getByTestId("pin-continue-button");
 
       // Press button and wait for async handler to complete
       fireEvent.press(continueButton);
@@ -194,18 +198,20 @@ describe("ProfileSelection", () => {
         () => {
           expect(Alert.alert).toHaveBeenCalledWith(
             "Incorrect PIN",
-            "Please try again."
+            "Please try again.",
           );
         },
-        { timeout: 5000 }
+        { timeout: 5000 },
       );
     });
 
     it("should clear PIN input after incorrect PIN", async () => {
-      const { getByText, getByPlaceholderText } = render(<ProfileSelection />);
+      const { getByText, getByPlaceholderText, getByTestId } = render(
+        <ProfileSelection />,
+      );
 
       await waitFor(() => {
-        const childButton = getByText("Alice");
+        const childButton = getByTestId("child-profile-Child1");
         fireEvent.press(childButton);
       });
 
@@ -214,7 +220,7 @@ describe("ProfileSelection", () => {
         fireEvent.changeText(pinInput, "0000");
       });
 
-      const continueButton = getByText("Continue");
+      const continueButton = getByTestId("pin-continue-button");
       fireEvent.press(continueButton);
 
       await waitFor(() => {
@@ -224,10 +230,12 @@ describe("ProfileSelection", () => {
     });
 
     it("should save active child profile to AsyncStorage", async () => {
-      const { getByText, getByPlaceholderText } = render(<ProfileSelection />);
+      const { getByText, getByPlaceholderText, getByTestId } = render(
+        <ProfileSelection />,
+      );
 
       await waitFor(() => {
-        const childButton = getByText("Bob");
+        const childButton = getByTestId("child-profile-Child2");
         fireEvent.press(childButton);
       });
 
@@ -236,13 +244,13 @@ describe("ProfileSelection", () => {
         fireEvent.changeText(pinInput, "5678");
       });
 
-      const continueButton = getByText("Continue");
+      const continueButton = getByTestId("pin-continue-button");
       fireEvent.press(continueButton);
 
       await waitFor(() => {
         expect(AsyncStorage.setItem).toHaveBeenCalledWith(
           "activeChildProfile",
-          "Child2"
+          "Child2",
         );
       });
     });
@@ -267,7 +275,7 @@ describe("ProfileSelection", () => {
       const { getAllByText } = render(<ProfileSelection />);
 
       await waitFor(() => {
-        const matches = getAllByText(/Parent Account/i);
+        const matches = getAllByText("ProfileSelection.parentProfile");
         expect(matches.length).toBeGreaterThan(0);
       });
     });
@@ -298,7 +306,7 @@ describe("ProfileSelection", () => {
 
       await waitFor(() => {
         // Should still render the screen
-        const matches = getAllByText(/Parent Account/i);
+        const matches = getAllByText("ProfileSelection.parentProfile");
         expect(matches.length).toBeGreaterThan(0);
       });
     });
@@ -308,10 +316,12 @@ describe("ProfileSelection", () => {
       // we'll test that the function is at least called, even if it would fail
       // This is a limitation of the current component implementation
 
-      const { getByText, getByPlaceholderText } = render(<ProfileSelection />);
+      const { getByText, getByPlaceholderText, getByTestId } = render(
+        <ProfileSelection />,
+      );
 
       await waitFor(() => {
-        const childButton = getByText("Alice");
+        const childButton = getByTestId("child-profile-Child1");
         fireEvent.press(childButton);
       });
 
@@ -320,7 +330,7 @@ describe("ProfileSelection", () => {
         fireEvent.changeText(pinInput, "1234");
       });
 
-      const continueButton = getByText("Continue");
+      const continueButton = getByTestId("pin-continue-button");
       fireEvent.press(continueButton);
 
       // Verify AsyncStorage.setItem is called when PIN is correct
@@ -328,10 +338,10 @@ describe("ProfileSelection", () => {
         () => {
           expect(AsyncStorage.setItem).toHaveBeenCalledWith(
             "activeChildProfile",
-            "Child1" // Username, not firstName
+            "Child1", // Username, not firstName
           );
         },
-        { timeout: 3000 }
+        { timeout: 3000 },
       );
     });
   });

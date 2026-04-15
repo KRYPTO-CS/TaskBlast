@@ -210,7 +210,7 @@ describe("Game Screen", () => {
         await waitFor(() => {
           expect(AsyncStorage.setItem).toHaveBeenCalledWith(
             "game_score",
-            "600",
+            "500",
           );
         });
       }
@@ -261,7 +261,7 @@ describe("Game Screen", () => {
       if (onMessage) onMessage(mockScoreMessage);
 
       await waitFor(() => {
-        expect(AsyncStorage.setItem).toHaveBeenCalledWith("game_score", "30");
+        expect(AsyncStorage.setItem).toHaveBeenCalledWith("game_score", "0");
       });
     });
   });

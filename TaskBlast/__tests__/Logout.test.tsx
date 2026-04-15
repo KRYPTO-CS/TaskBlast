@@ -16,6 +16,25 @@ import { signOut, getAuth } from "firebase/auth";
 import { getDoc } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+jest.mock("../app/context/AccessibilityContext", () => ({
+  useAccessibility: () => ({
+    language: "en",
+    colorBlindMode: "none",
+    textSize: "medium",
+    highContrast: false,
+    reduceMotion: false,
+    ttsEnabled: false,
+    textScale: 1,
+    isLoading: false,
+    setLanguage: jest.fn(),
+    setColorBlindMode: jest.fn(),
+    setTextSize: jest.fn(),
+    setHighContrast: jest.fn(),
+    setReduceMotion: jest.fn(),
+    setTtsEnabled: jest.fn(),
+  }),
+}));
+
 describe("Logout Process", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -44,10 +63,10 @@ describe("Logout Process", () => {
   const renderSettingsModal = (
     visible = true,
     onClose = jest.fn(),
-    onLogout = jest.fn()
+    onLogout = jest.fn(),
   ) => {
     return render(
-      <SettingsModal visible={visible} onClose={onClose} onLogout={onLogout} />
+      <SettingsModal visible={visible} onClose={onClose} onLogout={onLogout} />,
     );
   };
 

@@ -1,4 +1,4 @@
-export type ShopCategory = "Body" | "Wings";
+export type ShopCategory = "Body" | "Wings" | "Topper";
 
 export interface ShopCatalogItem {
   id: string;
@@ -45,6 +45,33 @@ export const DEFAULT_SHOP_CATALOG: ShopCatalogItem[] = [
     nameKey: "Shop.yBody",
     iconKey: "ship-body-yellow",
     price: 750,
+    active: true,
+  },
+  {
+    id: "topper-0",
+    category: "Topper",
+    index: 0,
+    nameKey: "Shop.dTopper",
+    iconKey: "ship-topper-default",
+    price: 0,
+    active: true,
+  },
+  {
+    id: "topper-1",
+    category: "Topper",
+    index: 1,
+    nameKey: "Shop.bTopper",
+    iconKey: "ship-topper-blue_fire",
+    price: 2000,
+    active: true,
+  },
+  {
+    id: "topper-2",
+    category: "Topper",
+    index: 2,
+    nameKey: "Shop.aTopper",
+    iconKey: "ship-topper-artemis",
+    price: 15000,
     active: true,
   },
   {
@@ -103,6 +130,12 @@ export const getShopIconSource = (iconKey: string) => {
       return require("../../assets/images/shop_icons/ShipWingIconGreen.png");
     case "ship-wing-yellow":
       return require("../../assets/images/shop_icons/ShipWingIconYellow.png");
+    case "ship-topper-default":
+      return require("../../assets/images/shop_icons/ShipTopperIconDefault.png");
+    case "ship-topper-blue_fire":
+      return require("../../assets/images/shop_icons/ShipTopperIconBlue.png");
+    case "ship-topper-artemis":
+      return require("../../assets/images/shop_icons/ShipTopperIconArtemis.png");
     default:
       return require("../../assets/images/shop_icons/ShipBodyIconBlue.png");
   }

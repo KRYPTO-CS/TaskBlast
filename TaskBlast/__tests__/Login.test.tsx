@@ -16,7 +16,7 @@ jest.mock("../app/pages/HomeScreen", () => {
   return jest.fn(() =>
     React.createElement(View, { testID: "home-screen" }, [
       React.createElement(Text, { key: "home-text" }, "Home Screen"),
-    ])
+    ]),
   );
 });
 
@@ -34,7 +34,7 @@ describe("Login Process", () => {
   describe("UI Rendering", () => {
     it("should render login screen with all required fields", () => {
       const { getByPlaceholderText, getByText, getAllByText } = render(
-        <Login />
+        <Login />,
       );
 
       expect(getByPlaceholderText("Email or Username")).toBeTruthy();
@@ -80,7 +80,7 @@ describe("Login Process", () => {
         expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
           expect.anything(),
           "test@example.com",
-          "password123"
+          "password123",
         );
       });
     });
@@ -111,7 +111,7 @@ describe("Login Process", () => {
         expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
           expect.anything(),
           "test@example.com",
-          "password123"
+          "password123",
         );
       });
     });
@@ -140,7 +140,7 @@ describe("Login Process", () => {
         expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
           expect.anything(),
           "test@example.com",
-          "password123"
+          "password123",
         );
       });
     });
@@ -148,8 +148,16 @@ describe("Login Process", () => {
 
   describe("Bypass Login", () => {
     it("should allow bypass login with admin/taskblaster credentials", async () => {
+      (signInWithEmailAndPassword as jest.Mock).mockResolvedValueOnce({
+        user: {
+          uid: "admin-uid",
+          email: "admin@example.com",
+          emailVerified: true,
+        },
+      });
+
       const { getByPlaceholderText, getAllByText, queryByText } = render(
-        <Login />
+        <Login />,
       );
 
       const usernameInput = getByPlaceholderText("Email or Username");
@@ -161,13 +169,23 @@ describe("Login Process", () => {
       fireEvent.press(submitButton);
 
       await waitFor(() => {
-        // Should navigate to home screen without Firebase call
-        expect(signInWithEmailAndPassword).not.toHaveBeenCalled();
-        expect(queryByText("Login")).toBeFalsy();
+        expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
+          expect.anything(),
+          "admin",
+          "taskblaster",
+        );
       });
     });
 
     it("should handle bypass login case-insensitively", async () => {
+      (signInWithEmailAndPassword as jest.Mock).mockResolvedValueOnce({
+        user: {
+          uid: "admin-uid",
+          email: "admin@example.com",
+          emailVerified: true,
+        },
+      });
+
       const { getByPlaceholderText, getAllByText } = render(<Login />);
 
       const usernameInput = getByPlaceholderText("Email or Username");
@@ -179,11 +197,23 @@ describe("Login Process", () => {
       fireEvent.press(submitButton);
 
       await waitFor(() => {
-        expect(signInWithEmailAndPassword).not.toHaveBeenCalled();
+        expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
+          expect.anything(),
+          "ADMIN",
+          "taskblaster",
+        );
       });
     });
 
     it("should handle bypass login with whitespace", async () => {
+      (signInWithEmailAndPassword as jest.Mock).mockResolvedValueOnce({
+        user: {
+          uid: "admin-uid",
+          email: "admin@example.com",
+          emailVerified: true,
+        },
+      });
+
       const { getByPlaceholderText, getAllByText } = render(<Login />);
 
       const usernameInput = getByPlaceholderText("Email or Username");
@@ -195,7 +225,11 @@ describe("Login Process", () => {
       fireEvent.press(submitButton);
 
       await waitFor(() => {
-        expect(signInWithEmailAndPassword).not.toHaveBeenCalled();
+        expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
+          expect.anything(),
+          "admin",
+          "taskblaster",
+        );
       });
     });
   });
@@ -232,7 +266,7 @@ describe("Login Process", () => {
       };
 
       (signInWithEmailAndPassword as jest.Mock).mockRejectedValueOnce(
-        mockError
+        mockError,
       );
 
       const { getByPlaceholderText, getAllByText } = render(<Login />);
@@ -257,7 +291,7 @@ describe("Login Process", () => {
       };
 
       (signInWithEmailAndPassword as jest.Mock).mockRejectedValueOnce(
-        mockError
+        mockError,
       );
 
       const { getByPlaceholderText, getAllByText } = render(<Login />);

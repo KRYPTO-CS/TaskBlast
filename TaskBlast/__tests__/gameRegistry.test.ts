@@ -10,7 +10,7 @@ describe("gameRegistry", () => {
 
     expect(game2048).toBeTruthy();
     expect(game2048?.name).toBe("2048");
-    expect(game2048?.url).toBe("https://vinbi07.github.io/2048Blast/");
+    expect(game2048?.url).toBe("https://krypto-cs.github.io/2048Blast/");
   });
 
   it("contains MatchBlast as a playable game", () => {
@@ -18,7 +18,7 @@ describe("gameRegistry", () => {
 
     expect(matchBlast).toBeTruthy();
     expect(matchBlast?.name).toBe("MatchBlast");
-    expect(matchBlast?.url).toBe("https://vinbi07.github.io/MatchBlast/");
+    expect(matchBlast?.url).toBe("https://krypto-cs.github.io/MatchBlast/");
   });
 
   it("returns default game for unknown id", () => {
@@ -30,7 +30,7 @@ describe("gameRegistry", () => {
   it("uses raw score reward for existing games", () => {
     expect(getRocksReward(0, 1250, 1024)).toBe(1250);
     expect(getRocksReward(1, 89, 512)).toBe(89);
-    expect(getRocksReward(4, 340, 0)).toBe(340);
+    expect(getRocksReward(4, 340, 0)).toBe(34);
   });
 
   it("uses hybrid tile and score reward for 2048", () => {

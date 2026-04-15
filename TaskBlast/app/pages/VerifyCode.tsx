@@ -6,7 +6,7 @@ import {
   Keyboard,
   ImageBackground,
 } from "react-native";
-import { Text } from '../../TTS';
+import { Text } from "../../TTS";
 import MainButton from "../components/MainButton";
 import { useTranslation } from "react-i18next";
 
@@ -117,10 +117,13 @@ export default function VerifyCode({
 
             <Text className="font-madimi text-xs text-white/80 text-left mb-4">
               {t("VerifyCode.notreceived")}{" "}
-              <Text className="font-semibold text-yellow-300">{t("VerifyCode.resend")}</Text>
+              <Text className="font-semibold text-yellow-300">
+                {t("VerifyCode.resend")}
+              </Text>
             </Text>
 
             <MainButton
+              testID="verify-code-submit-button"
               title={t("VerifyCode.submit")}
               variant="primary"
               size="medium"
@@ -141,7 +144,8 @@ export default function VerifyCode({
             >
               {t("language.backTo")}
               <Text className="font-semibold text-yellow-300">
-                {" "}{t("birthdate.previousStep")}
+                {" "}
+                {t("birthdate.previousStep")}
               </Text>
             </Text>
           </View>

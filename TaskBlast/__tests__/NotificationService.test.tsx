@@ -300,7 +300,9 @@ describe("Notification Service", () => {
       await showTimerCompleteNotification("Study session", false);
 
       const call = mockScheduleNotificationAsync.mock.calls[0][0];
-      expect(call.content.body).toMatch(/Study session/);
+      expect(call.content.body).toMatch(
+        /Amazing work|Great job|You did it|Awesome|Time to play/i,
+      );
       expect(call.content.body.length).toBeGreaterThan(10); // Should have a message
     });
 

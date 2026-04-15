@@ -369,6 +369,7 @@ export default function PlanetModal({
                   </View>
                   {confirmUnlock ? (
                     <MainButton
+                      testID="confirm-unlock-button"
                       title="Confirm Unlock"
                       className="py-5"
                       customStyle={{ backgroundColor: "#ffee00" }}
@@ -376,6 +377,7 @@ export default function PlanetModal({
                     />
                   ) : (
                     <MainButton
+                      testID="unlock-planet-button"
                       title="Unlock Planet"
                       className="py-5"
                       onPress={() => handleConfirmUnlock()}

@@ -33,6 +33,25 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { Alert } from "react-native";
 
+jest.mock("../app/context/AccessibilityContext", () => ({
+  useAccessibility: () => ({
+    language: "en",
+    colorBlindMode: "none",
+    textSize: "medium",
+    highContrast: false,
+    reduceMotion: false,
+    ttsEnabled: false,
+    textScale: 1,
+    isLoading: false,
+    setLanguage: jest.fn(),
+    setColorBlindMode: jest.fn(),
+    setTextSize: jest.fn(),
+    setHighContrast: jest.fn(),
+    setReduceMotion: jest.fn(),
+    setTtsEnabled: jest.fn(),
+  }),
+}));
+
 // Mock firebase collections
 const mockTasksCollection = jest.fn();
 const mockUnsubscribe = jest.fn();
@@ -71,7 +90,7 @@ describe("TaskListModal", () => {
   describe("UI Rendering", () => {
     it("should render task modal when visible", () => {
       const { getByTestId, getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       expect(getByTestId("task-modal")).toBeTruthy();
@@ -80,7 +99,7 @@ describe("TaskListModal", () => {
 
     it("should not render when not visible", () => {
       const { queryByTestId } = render(
-        <TaskListModal visible={false} onClose={mockOnClose} />
+        <TaskListModal visible={false} onClose={mockOnClose} />,
       );
 
       expect(queryByTestId("task-modal")).toBeFalsy();
@@ -88,7 +107,7 @@ describe("TaskListModal", () => {
 
     it("should render close button", () => {
       const { getByTestId } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       expect(getByTestId("close-task-modal")).toBeTruthy();
@@ -96,7 +115,7 @@ describe("TaskListModal", () => {
 
     it("should render mode toggle buttons", () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       expect(getByText("Normal")).toBeTruthy();
@@ -106,20 +125,18 @@ describe("TaskListModal", () => {
 
     it("should show loading state initially", async () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       // Modal starts loading tasks
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalledWith(
-          "activeChildProfile"
-        );
+        expect(AsyncStorage.getItem).toHaveBeenCalledWith("activeChildProfile");
       });
     });
 
     it("should close modal when close button pressed", () => {
       const { getByTestId } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       const closeButton = getByTestId("close-task-modal");
@@ -132,7 +149,7 @@ describe("TaskListModal", () => {
   describe("Mode Switching", () => {
     it("should start in normal mode", () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       // Normal mode button should be active (has bg-purple-500 class)
@@ -142,7 +159,7 @@ describe("TaskListModal", () => {
 
     it("should switch to archive mode when archive button pressed", async () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       const archiveButton = getByText("Archive");
@@ -156,7 +173,7 @@ describe("TaskListModal", () => {
 
     it("should switch back to normal mode from edit mode", async () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       const normalButton = getByText("Normal");
@@ -169,7 +186,7 @@ describe("TaskListModal", () => {
 
     it("should reset to normal mode when modal becomes visible", async () => {
       const { rerender } = render(
-        <TaskListModal visible={false} onClose={mockOnClose} />
+        <TaskListModal visible={false} onClose={mockOnClose} />,
       );
 
       rerender(<TaskListModal visible={true} onClose={mockOnClose} />);
@@ -195,13 +212,13 @@ describe("TaskListModal", () => {
               }),
             },
           ],
-        })
+        }),
       );
     });
 
     it("should switch to edit mode without PIN for independent account", async () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -219,7 +236,7 @@ describe("TaskListModal", () => {
 
     it("should show Add New Task button in edit mode", async () => {
       const { getByText, queryByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -267,7 +284,7 @@ describe("TaskListModal", () => {
 
     it("should show PIN modal when switching to edit mode for managed account", async () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -280,14 +297,14 @@ describe("TaskListModal", () => {
       await waitFor(() => {
         expect(getByText("Manager Access")).toBeTruthy();
         expect(
-          getByText(/Enter the 4-digit PIN to access edit mode/)
+          getByText(/Enter the 4-digit PIN to access edit mode/),
         ).toBeTruthy();
       });
     });
 
     it("should show error on incorrect PIN", async () => {
       const { getByText, queryByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -306,7 +323,7 @@ describe("TaskListModal", () => {
 
     it("should cancel PIN entry", async () => {
       const { getByText, queryByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -320,7 +337,7 @@ describe("TaskListModal", () => {
         expect(getByText("Manager Access")).toBeTruthy();
       });
 
-      const cancelButton = getByText("Cancel");
+      const cancelButton = getByText(/\(?\s*Cancel\s*\)?/i);
       fireEvent.press(cancelButton);
 
       await waitFor(() => {
@@ -332,19 +349,17 @@ describe("TaskListModal", () => {
   describe("Empty State", () => {
     it("should show empty message when no tasks in normal mode", async () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
-        expect(
-          getByText("No tasks yet. Add your first task!")
-        ).toBeTruthy();
+        expect(getByText("No tasks yet. Add your first task!")).toBeTruthy();
       });
     });
 
     it("should show empty message when no archived tasks", async () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -391,7 +406,7 @@ describe("TaskListModal", () => {
 
     it("should display task name and reward", async () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -402,7 +417,7 @@ describe("TaskListModal", () => {
 
     it("should display cycle progress", async () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -435,7 +450,7 @@ describe("TaskListModal", () => {
       });
 
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -472,7 +487,7 @@ describe("TaskListModal", () => {
 
     it("should navigate to pomodoro screen when start button pressed", async () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -485,7 +500,7 @@ describe("TaskListModal", () => {
 
     it("should show info modal when info button pressed", async () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -500,7 +515,7 @@ describe("TaskListModal", () => {
       (updateDoc as jest.Mock).mockResolvedValue(undefined);
 
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -552,7 +567,7 @@ describe("TaskListModal", () => {
       });
 
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -569,7 +584,7 @@ describe("TaskListModal", () => {
           visible={true}
           onClose={mockOnClose}
           onRocksChange={mockOnRocksChange}
-        />
+        />,
       );
 
       await waitFor(() => {
@@ -604,13 +619,11 @@ describe("TaskListModal", () => {
 
     it("should load child profile when activeChildProfile is set", async () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalledWith(
-          "activeChildProfile"
-        );
+        expect(AsyncStorage.getItem).toHaveBeenCalledWith("activeChildProfile");
       });
 
       await waitFor(() => {
@@ -620,13 +633,11 @@ describe("TaskListModal", () => {
 
     it("should use child tasks collection when child is active", async () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalledWith(
-          "activeChildProfile"
-        );
+        expect(AsyncStorage.getItem).toHaveBeenCalledWith("activeChildProfile");
       });
 
       // Collection path tested through Firestore calls
@@ -660,13 +671,11 @@ describe("TaskListModal", () => {
       });
 
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalledWith(
-          "activeChildProfile"
-        );
+        expect(AsyncStorage.getItem).toHaveBeenCalledWith("activeChildProfile");
       });
 
       // Child rocks increment tested through setDoc calls
@@ -688,7 +697,7 @@ describe("TaskListModal", () => {
               }),
             },
           ],
-        })
+        }),
       );
 
       (onSnapshot as jest.Mock).mockImplementation((ref, callback) => {
@@ -717,7 +726,7 @@ describe("TaskListModal", () => {
 
     it("should show PIN modal when unarchiving for managed account", async () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -769,7 +778,7 @@ describe("TaskListModal", () => {
       const consoleLogSpy = jest.spyOn(console, "log");
 
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -785,13 +794,15 @@ describe("TaskListModal", () => {
 
   describe("Error Handling", () => {
     it("should show error when failing to load tasks", async () => {
-      (onSnapshot as jest.Mock).mockImplementation((ref, callback, errorCallback) => {
-        errorCallback(new Error("Failed to load tasks"));
-        return mockUnsubscribe;
-      });
+      (onSnapshot as jest.Mock).mockImplementation(
+        (ref, callback, errorCallback) => {
+          errorCallback(new Error("Failed to load tasks"));
+          return mockUnsubscribe;
+        },
+      );
 
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -805,7 +816,7 @@ describe("TaskListModal", () => {
       });
 
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -818,7 +829,7 @@ describe("TaskListModal", () => {
       (addDoc as jest.Mock).mockRejectedValue(new Error("Add failed"));
 
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -834,7 +845,7 @@ describe("TaskListModal", () => {
       (deleteDoc as jest.Mock).mockRejectedValue(new Error("Delete failed"));
 
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -859,7 +870,7 @@ describe("TaskListModal", () => {
 
     it("should open task form when Add New Task is pressed", async () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -884,7 +895,7 @@ describe("TaskListModal", () => {
 
     it("should close task form when cancel is pressed", async () => {
       const { getByText, queryByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
@@ -944,7 +955,7 @@ describe("TaskListModal", () => {
 
     it("should display task details in info modal", async () => {
       const { getByText } = render(
-        <TaskListModal visible={true} onClose={mockOnClose} />
+        <TaskListModal visible={true} onClose={mockOnClose} />,
       );
 
       await waitFor(() => {
