@@ -23,6 +23,8 @@ import { useColorPalette } from "../styles/colorBlindThemes";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useAdmin } from "../context/AdminContext";
+import { useActiveProfile } from "../context/ActiveProfileContext";
+import { deleteChildAccount } from "../services/accountService";
 
 interface SettingsModalProps {
   visible: boolean;
@@ -45,6 +47,15 @@ export default function SettingsModal({
     clearAdminSession,
     error: adminError,
   } = useAdmin();
+  const {
+    activeChildUsername,
+    childDocId,
+    clearActiveChildProfile,
+    profileType,
+    refreshProfile,
+  } = useActiveProfile();
+  const activeChildProfile = activeChildUsername;
+  const currentProfileType = profileType;
 
   // Get audio context for global audio control
   const { soundEnabled, musicEnabled, setSoundEnabled, setMusicEnabled } =
@@ -64,31 +75,22 @@ export default function SettingsModal({
   const [adminPinInput, setAdminPinInput] = useState("");
   const [isVerifyingAdmin, setIsVerifyingAdmin] = useState(false);
   const [isDisablingAdmin, setIsDisablingAdmin] = useState(false);
-
-  // Child profile state
-  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
-    null,
-  );
-  const [currentProfileType, setCurrentProfileType] = useState<
-    "parent" | "child"
-  >("parent");
+  const [isDeletingChild, setIsDeletingChild] = useState(false);
 
   // Check for active child profile when modal opens
   useEffect(() => {
     const checkActiveProfile = async () => {
       if (visible) {
-        const activeChild = await AsyncStorage.getItem("activeChildProfile");
-        setActiveChildProfile(activeChild);
-        setCurrentProfileType(activeChild ? "child" : "parent");
+        await refreshProfile();
 
-        if (!activeChild && auth.currentUser?.email) {
+        if (profileType === "parent" && auth.currentUser?.email) {
           await checkEligibility(auth.currentUser.email);
         }
       }
     };
 
     checkActiveProfile();
-  }, [visible]);
+  }, [visible, profileType, refreshProfile, checkEligibility]);
 
   const handleSoundToggle = async (value: boolean) => {
     await setSoundEnabled(value);
@@ -103,7 +105,7 @@ export default function SettingsModal({
   };
 
   const handleLogout = () => {
-    const isChild = currentProfileType === "child";
+    const isChild = profileType === "child";
 
     Alert.alert(
       isChild ? t("Settings.switchProfile") : t("Settings.logout"),
@@ -122,7 +124,7 @@ export default function SettingsModal({
             try {
               if (isChild) {
                 // Child "logout" - just clear active child profile
-                await AsyncStorage.removeItem("activeChildProfile");
+                await clearActiveChildProfile();
                 await clearAdminSession();
                 onClose();
                 router.push("/pages/ProfileSelection");
@@ -210,6 +212,53 @@ export default function SettingsModal({
     );
   };
 
+  const handleDeleteChildAccount = () => {
+    if (!childDocId || !activeChildProfile) {
+      Alert.alert(
+        "Child Profile Unavailable",
+        "We couldn't find the active child profile to delete.",
+      );
+      return;
+    }
+
+    Alert.alert(
+      "Delete Child Account",
+      `Delete ${activeChildProfile}'s account? This cannot be undone.`,
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              setIsDeletingChild(true);
+              const result = await deleteChildAccount({ childDocId });
+
+              if (!result.success) {
+                throw new Error(
+                  result.message || "Failed to delete child account",
+                );
+              }
+
+              await clearActiveChildProfile();
+              onClose();
+              router.replace("/pages/ProfileSelection");
+              Alert.alert("Deleted", "Child account deleted successfully.");
+            } catch (error) {
+              console.error("Error deleting child account:", error);
+              Alert.alert(
+                "Delete Failed",
+                "Could not delete the child account. Please try again.",
+              );
+            } finally {
+              setIsDeletingChild(false);
+            }
+          },
+        },
+      ],
+    );
+  };
+
   return (
     <Modal
       animationType={reduceMotion ? "fade" : "slide"}
@@ -263,18 +312,18 @@ export default function SettingsModal({
               className="px-4 py-2 rounded-full"
               style={{
                 backgroundColor:
-                  currentProfileType === "parent"
+                  profileType === "parent"
                     ? palette.secondaryMed
                     : palette.accentSoft,
                 borderWidth: 1,
                 borderColor:
-                  currentProfileType === "parent"
+                  profileType === "parent"
                     ? palette.secondarySoftBorder
                     : palette.accentSoftBorder,
               }}
             >
               <Text className="font-orbitron-semibold text-white text-xs">
-                {currentProfileType === "parent"
+                {profileType === "parent"
                   ? t("Settings.parentAccount")
                   : `👶 ${activeChildProfile}`}
               </Text>
@@ -560,6 +609,40 @@ export default function SettingsModal({
                 )}
                 <Text className="font-orbitron-semibold text-white text-base flex-1">
                   Disable Admin Access
+                </Text>
+              </TouchableOpacity>
+            )}
+
+            {currentProfileType === "child" && (
+              <TouchableOpacity
+                className="flex-row items-center p-4 rounded-xl mb-3"
+                style={{
+                  backgroundColor: palette.errorSoft,
+                  borderWidth: 1,
+                  borderColor: palette.errorSoftBorder,
+                  opacity: isDeletingChild ? 0.7 : 1,
+                }}
+                onPress={handleDeleteChildAccount}
+                disabled={isDeletingChild || !childDocId}
+              >
+                {isDeletingChild ? (
+                  <ActivityIndicator
+                    color={palette.errorIcon}
+                    style={{ marginRight: 12 }}
+                  />
+                ) : (
+                  <Ionicons
+                    name="trash-outline"
+                    size={24}
+                    color={palette.errorIcon}
+                    style={{ marginRight: 12 }}
+                  />
+                )}
+                <Text
+                  className="font-orbitron-semibold text-base flex-1"
+                  style={{ color: palette.errorIcon }}
+                >
+                  {isDeletingChild ? "Deleting Child Account..." : "Delete Child Account"}
                 </Text>
               </TouchableOpacity>
             )}

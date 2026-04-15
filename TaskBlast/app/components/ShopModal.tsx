@@ -13,7 +13,6 @@ import { getAuth } from "firebase/auth";
 import {
   collection,
   getFirestore,
-  doc,
   updateDoc,
   getDoc,
   getDocs,
@@ -26,6 +25,7 @@ import {
   getShopIconSource,
   ShopCategory,
 } from "../services/shopCatalog";
+import { useActiveProfile } from "../context/ActiveProfileContext";
 
 interface ShopModalProps {
   visible: boolean;
@@ -38,6 +38,7 @@ type ShopPage = {
   name: string;
   nameKey: string;
   iconPath: any;
+
 };
 
 type ShopItem = {
@@ -97,10 +98,20 @@ export default function ShopModal({
     wings: [false, true, false, false],
     toppers: [true, false],
   });
+  const [unlockedPlanets, setUnlockedPlanets] = useState<boolean[]>([
+    true, false, false, false, false, false, false, false, false,
+  ]);
+  const [equipped, setEquipped] = useState<number[]>([0, 1]);
   const [equipped, setEquipped] = useState<number[]>([0, 1, 0]);
   const [confirmPurchase, setConfirmPurchase] = useState<{
     item: ShopItem | null;
   }>({ item: null });
+  const {
+    childDocId,
+    getProfileDocRef,
+    isLoading: isProfileLoading,
+    profileType,
+  } = useActiveProfile();
 
   const currentCategory = shopPages[selectedPage].name as ShopCategory;
   const filteredItems = shopItems.filter(
@@ -115,11 +126,16 @@ export default function ShopModal({
       try {
         const auth = getAuth();
         const user = auth.currentUser;
-        if (!user) return;
+        if (!user) {
+          console.log("[ShopModal] No user found");
+          return;
+        }
 
+        console.log("[ShopModal] Loading shop data for user:", user.uid);
         const db = getFirestore();
 
         const shopSnapshot = await getDocs(collection(db, "shopItems"));
+        console.log("[ShopModal] Fetched", shopSnapshot.docs.length, "shop items from database");
         const catalogFromDb = shopSnapshot.docs
           .map((docSnap) => {
             const data = docSnap.data() as {
@@ -174,31 +190,38 @@ export default function ShopModal({
             return a.index - b.index;
           });
 
-        // Merge: DB items take priority, but fill in any catalog entries
-        // missing from Firestore (e.g. toppers added after initial population)
-        const dbIds = new Set(catalogFromDb.map((i) => i.id));
-        const mergedItems = [
-          ...catalogFromDb,
-          ...fallbackShopItems.filter((i) => !dbIds.has(i.id)),
-        ].sort((a, b) => {
-          const order: Record<ShopCategory, number> = { Body: 0, Wings: 1, Topper: 2 };
-          if (a.category !== b.category) return order[a.category] - order[b.category];
-          return a.index - b.index;
-        });
-        setShopItems(mergedItems.length > 0 ? mergedItems : fallbackShopItems);
+        if (catalogFromDb.length > 0) {
+          setShopItems(catalogFromDb);
+          console.log("[ShopModal] Loaded", catalogFromDb.length, "shop items from database");
+        } else {
+          setShopItems(fallbackShopItems);
+          console.log("[ShopModal] No shop items in database, using fallback catalog");
+        }
 
-        const userDocRef = doc(db, "users", user.uid);
+        if (isProfileLoading) {
+          return;
+        }
+
+        const userDocRef = getProfileDocRef();
         const userDoc = await getDoc(userDocRef);
+        const userData = userDoc.exists() ? userDoc.data() : {};
 
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-
+        if (userData) {
           // Load rocks balance
           const rocksValue = userData.rocks || 0;
-          setRocks(isNaN(rocksValue) ? 0 : Math.max(0, Math.floor(rocksValue)));
+          const finalRocks = isNaN(rocksValue) ? 0 : Math.max(0, Math.floor(rocksValue));
+          setRocks(finalRocks);
+          console.log("[ShopModal] Loaded user rocks balance:", finalRocks);
 
           let needsUpdate = false;
           const updates: any = {};
+
+          // Check if rocks field exists, if not create it
+          if (userData.rocks === undefined) {
+            updates.rocks = 0;
+            needsUpdate = true;
+            console.log("[ShopModal] Database update needed: Creating rocks field");
+          }
 
           // Check if shopItems exist, if not create them
           const defaultShopItems = {
@@ -210,8 +233,23 @@ export default function ShopModal({
             updates.shopItems = defaultShopItems;
             setUnlockedItems(defaultShopItems);
             needsUpdate = true;
-            console.log("Created shopItems for user");
+            console.log("[ShopModal] Database update needed: Creating shopItems");
           } else {
+            setUnlockedItems(userData.shopItems);
+            console.log("[ShopModal] Loaded user shopItems");
+          }
+
+          // Check if unlockedPlanets exist, if not create them
+          if (!userData.unlockedPlanets) {
+            updates.unlockedPlanets = [
+              true, false, false, false, false, false, false, false, false,
+            ];
+            setUnlockedPlanets(updates.unlockedPlanets);
+            needsUpdate = true;
+            console.log("[ShopModal] Database update needed: Creating unlockedPlanets");
+          } else {
+            setUnlockedPlanets(userData.unlockedPlanets);
+            console.log("[ShopModal] Loaded user unlockedPlanets");
             // Merge to ensure newly-added categories (e.g. toppers) are always present
             const merged = {
               ...defaultShopItems,
@@ -230,8 +268,10 @@ export default function ShopModal({
             updates.equipped = defaultEquipped;
             setEquipped(defaultEquipped);
             needsUpdate = true;
-            console.log("Created equipped array for user");
+            console.log("[ShopModal] Database update needed: Creating equipped array");
           } else {
+            setEquipped(userData.equipped);
+            console.log("[ShopModal] Loaded user equipped array:", userData.equipped);
             // Ensure the equipped array has a slot for every category
             const equippedPadded = [
               userData.equipped[0] ?? 0,
@@ -247,7 +287,11 @@ export default function ShopModal({
 
           // Update Firebase if needed
           if (needsUpdate) {
+            console.log("[ShopModal] Applying database updates:", Object.keys(updates));
             await updateDoc(userDocRef, updates);
+            console.log("[ShopModal] Database updates completed successfully");
+          } else {
+            console.log("[ShopModal] No database updates needed");
           }
         }
       } catch (error) {
@@ -256,16 +300,19 @@ export default function ShopModal({
     };
 
     checkAndCreateShopItems();
-  }, [visible]);
+  }, [visible, getProfileDocRef, isProfileLoading]);
 
   const handleEquip = async (item: ShopItem) => {
     try {
       const auth = getAuth();
       const user = auth.currentUser;
       if (!user) return;
+      if (isProfileLoading || (profileType === "child" && !childDocId)) {
+        Alert.alert("Profile Loading", "Please wait a moment and try again.");
+        return;
+      }
 
-      const db = getFirestore();
-      const userDocRef = doc(db, "users", user.uid);
+      const userDocRef = getProfileDocRef();
 
       const categoryIndex = item.category === "Body" ? 0 : item.category === "Wings" ? 1 : 2;
       const newEquipped = [...equipped];
@@ -313,26 +360,66 @@ export default function ShopModal({
       const auth = getAuth();
       const user = auth.currentUser;
       if (!user) return;
+      if (isProfileLoading || (profileType === "child" && !childDocId)) {
+        Alert.alert("Profile Loading", "Please wait a moment and try again.");
+        return;
+      }
 
-      const purchaseResult = await purchaseShopItem({ itemId: item.id });
+      const purchaseResult = await purchaseShopItem({ itemId: item.id, childDocId });
 
       if (!purchaseResult.success) {
         throw new Error(purchaseResult.message || "Purchase failed");
       }
 
       const newUnlockedItems = purchaseResult.shopItems || { ...unlockedItems };
+      const newUnlockedPlanets =
+        purchaseResult.unlockedPlanets || [...unlockedPlanets];
+      const newRocksAmount =
+        typeof purchaseResult.newRocks === "number"
+          ? purchaseResult.newRocks
+          : Math.max(0, rocks - item.price);
+
+      console.log("[ShopModal] Purchase confirmed for item:", item.id, "Price:", item.price);
+      console.log("[ShopModal] Rocks before:", rocks, "Rocks after:", newRocksAmount);
 
       // Update local state
       setUnlockedItems(newUnlockedItems);
-      setRocks(
-        typeof purchaseResult.newRocks === "number"
-          ? purchaseResult.newRocks
-          : Math.max(0, rocks - item.price),
-      );
+      setUnlockedPlanets(newUnlockedPlanets);
+      setRocks(newRocksAmount);
+
+      // Update rocks in Firebase database
+      try {
+        const userRef = getProfileDocRef();
+
+        console.log("[ShopModal] Updating rocks in database to:", newRocksAmount);
+        await updateDoc(userRef, { rocks: newRocksAmount });
+        console.log("[ShopModal] Database update for rocks completed successfully");
+      } catch (error) {
+        console.error("[ShopModal] Error updating rocks in database:", error);
+      }
+
+      try {
+        const refreshedSnap = await getDoc(getProfileDocRef());
+        if (refreshedSnap.exists()) {
+          const refreshedData = refreshedSnap.data();
+          const refreshedRocks = Number(refreshedData.rocks || 0);
+          setRocks(
+            Number.isFinite(refreshedRocks)
+              ? Math.max(0, Math.floor(refreshedRocks))
+              : newRocksAmount,
+          );
+          if (refreshedData.shopItems) {
+            setUnlockedItems(refreshedData.shopItems);
+          }
+        }
+      } catch (refreshError) {
+        console.error("[ShopModal] Error refreshing profile after purchase:", refreshError);
+      }
 
       // Notify parent component to refresh rocks
       if (onRocksChange) {
         onRocksChange();
+        console.log("[ShopModal] Notified parent component of rocks change");
       }
 
       // Close confirmation modal

@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
   FlatList,
   TextInput,
   Alert,
@@ -11,15 +15,14 @@ import {
 import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { auth, firestore } from "../../server/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
+import { useActiveProfile } from "../context/ActiveProfileContext";
 interface ChildProfile {
   id: string;
   username: string;
   firstName: string;
-  pin: string;
 }
 
 export default function ProfileSelection() {
@@ -27,10 +30,13 @@ export default function ProfileSelection() {
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
   const [children, setChildren] = useState<ChildProfile[]>([]);
-  const [selectedChild, setSelectedChild] = useState<string | null>(null);
+  const [managerialPin, setManagerialPin] = useState<string | null>(null);
+  // "parent" | childUsername | null
+  const [pendingSelection, setPendingSelection] = useState<string | null>(null);
   const [pinInput, setPinInput] = useState("");
   const [loading, setLoading] = useState(true);
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
+  const { clearActiveChildProfile, setActiveChildProfile } = useActiveProfile();
 
   useEffect(() => {
     loadChildren();
@@ -44,18 +50,18 @@ export default function ProfileSelection() {
         return;
       }
 
-      const childrenRef = collection(firestore, `users/${user.uid}/children`);
-      const snapshot = await getDocs(childrenRef);
+      const [childrenSnapshot, parentDoc] = await Promise.all([
+        getDocs(collection(firestore, `users/${user.uid}/children`)),
+        getDoc(doc(firestore, "users", user.uid)),
+      ]);
 
       const childList: ChildProfile[] = [];
-      snapshot.forEach((doc) => {
-        childList.push({
-          id: doc.id,
-          ...doc.data(),
-        } as ChildProfile);
+      childrenSnapshot.forEach((d) => {
+        childList.push({ id: d.id, ...d.data() } as ChildProfile);
       });
 
       setChildren(childList);
+      setManagerialPin(parentDoc.data()?.managerialPin ?? null);
     } catch (error) {
       console.error("Error loading children:", error);
     } finally {
@@ -63,28 +69,31 @@ export default function ProfileSelection() {
     }
   };
 
-  const handleParentSelect = async () => {
-    await AsyncStorage.removeItem("activeChildProfile");
-    router.push("/pages/HomeScreen");
+  const handleParentSelect = () => {
+    setPendingSelection("parent");
+    setPinInput("");
   };
 
   const handleChildSelect = (childUsername: string) => {
-    setSelectedChild(childUsername);
+    setPendingSelection(childUsername);
     setPinInput("");
   };
 
   const handlePinSubmit = async () => {
-    if (!selectedChild) return;
+    if (!pendingSelection) return;
 
-    const child = children.find((c) => c.username === selectedChild);
-    if (!child) return;
-
-    if (pinInput === child.pin) {
-      await AsyncStorage.setItem("activeChildProfile", selectedChild);
-      router.push("/pages/HomeScreen");
-    } else {
+    if (managerialPin && pinInput !== managerialPin) {
       Alert.alert("Incorrect PIN", "Please try again.");
       setPinInput("");
+      return;
+    }
+
+    if (pendingSelection === "parent") {
+      await clearActiveChildProfile();
+      router.push("/pages/HomeScreen");
+    } else {
+      await setActiveChildProfile(pendingSelection);
+      router.push("/pages/HomeScreen");
     }
   };
 
@@ -108,7 +117,11 @@ export default function ProfileSelection() {
         resizeMode="cover"
       />
 
-      <View className="flex-1 p-6">
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        className="flex-1 p-6"
+      >
         {/* Back Button */}
         <TouchableOpacity
           onPress={() => router.back()}
@@ -183,9 +196,9 @@ export default function ProfileSelection() {
                   className="p-6 rounded-2xl mb-4 flex-row items-center"
                   style={{
                     backgroundColor: "rgba(168, 85, 247, 0.3)",
-                    borderWidth: selectedChild === item.username ? 4 : 2,
+                    borderWidth: pendingSelection === item.username ? 4 : 2,
                     borderColor:
-                      selectedChild === item.username
+                      pendingSelection === item.username
                         ? "#fbbf24"
                         : "rgba(192, 132, 252, 0.5)",
                     shadowColor: "#a855f7",
@@ -212,7 +225,7 @@ export default function ProfileSelection() {
         )}
 
         {/* PIN Entry for Selected Child */}
-        {selectedChild && (
+        {pendingSelection && (
           <View
             className="mt-4 p-6 rounded-2xl"
             style={{
@@ -222,7 +235,7 @@ export default function ProfileSelection() {
             }}
           >
             <Text className="text-white text-lg font-orbitron-semibold mb-4 text-center">
-              {t("ProfileSelection.EnterPin")} {selectedChild}
+              {t("ProfileSelection.EnterPin")} {pendingSelection}
             </Text>
             <TextInput
               className="bg-white/20 text-white text-center text-2xl font-orbitron p-4 rounded-xl mb-4"
@@ -252,7 +265,8 @@ export default function ProfileSelection() {
             </TouchableOpacity>
           </View>
         )}
-      </View>
+      </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </View>
   );
 }

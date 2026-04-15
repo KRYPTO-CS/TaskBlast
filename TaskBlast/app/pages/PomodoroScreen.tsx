@@ -18,15 +18,10 @@ import { useAudioPlayer } from "expo-audio";
 import { getAuth } from "firebase/auth";
 import {
   getFirestore,
-  doc,
   updateDoc,
   increment,
   getDoc,
   setDoc,
-  collection,
-  query,
-  where,
-  getDocs,
   runTransaction,
 } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -34,12 +29,14 @@ import { useAudio } from "../context/AudioContext";
 import { useTranslation } from "react-i18next";
 import { useNotifications } from "../context/NotificationContext";
 import { useColorPalette } from "../styles/colorBlindThemes";
+import { claimTaskReward } from "../services/economyService";
 import {
   CoachmarkAnchor,
   useCoachmark,
   createTour,
 } from "@edwardloopez/react-native-coachmark";
 import { getGameDefinition } from "../services/gameRegistry";
+import { useActiveProfile } from "../context/ActiveProfileContext";
 import src from "@react-native-community/datetimepicker";
 // Ship component image mappings
 const BODY_IMAGES: { [key: number]: any } = {
@@ -67,6 +64,9 @@ export default function PomodoroScreen() {
   const params = useLocalSearchParams();
   const { notifyTimerComplete } = useNotifications();
   const palette = useColorPalette();
+  const { childDocId, getProfileDocRef, isLoading: isProfileLoading } =
+    useActiveProfile();
+  
 
   const getSingleParam = (value: string | string[] | undefined) =>
     Array.isArray(value) ? value[0] : value;
@@ -149,9 +149,10 @@ export default function PomodoroScreen() {
         const auth = getAuth();
         const user = auth.currentUser;
         if (!user) return;
+        if (isProfileLoading) return;
 
-        const db = getFirestore();
-        const taskRef = doc(db, "users", user.uid, "tasks", taskId);
+        const taskRef = getProfileDocRef("tasks", taskId);
+
         const taskDoc = await getDoc(taskRef);
 
         if (taskDoc.exists()) {
@@ -165,7 +166,7 @@ export default function PomodoroScreen() {
     };
 
     checkTaskCompletion();
-  }, [taskId]);
+  }, [taskId, getProfileDocRef, isProfileLoading]);
 
   // Load equipped items from Firebase
   useEffect(() => {
@@ -174,9 +175,10 @@ export default function PomodoroScreen() {
         const auth = getAuth();
         const user = auth.currentUser;
         if (!user) return;
+        if (isProfileLoading) return;
 
-        const db = getFirestore();
-        const userRef = doc(db, "users", user.uid);
+        const userRef = getProfileDocRef();
+
         const userDoc = await getDoc(userRef);
 
         if (userDoc.exists()) {
@@ -191,7 +193,7 @@ export default function PomodoroScreen() {
     };
 
     loadEquippedItems();
-  }, []);
+  }, [getProfileDocRef, isProfileLoading]);
 
   // Interpolate translateY from 0 -> windowHeight
   const translateY = scrollAnim.interpolate({
@@ -258,8 +260,9 @@ export default function PomodoroScreen() {
       const user = auth.currentUser;
       if (!user) return;
 
-      const db = getFirestore();
-      const taskRef = doc(db, "users", user.uid, "tasks", taskId);
+      if (isProfileLoading) return;
+
+      const taskRef = getProfileDocRef("tasks", taskId);
 
       await updateDoc(taskRef, {
         completedCycles: increment(1),
@@ -283,7 +286,24 @@ export default function PomodoroScreen() {
             completed: true,
           });
           setIsTaskCompleted(true);
+
           console.log("Task marked as completed!");
+
+          // Award rocks from task reward when task is completed
+          try {
+            const taskReward = taskData.reward || 0;
+            if (taskReward > 0) {
+              // Claim the task reward
+              await claimTaskReward({
+                taskId,
+                reward: taskReward,
+                childDocId,
+              });
+              console.log("Claimed task reward on completion:", taskReward);
+            }
+          } catch (error) {
+            console.error("Error claiming task reward on completion:", error);
+          }
         }
       }
     } catch (err) {
@@ -303,26 +323,9 @@ export default function PomodoroScreen() {
       const getNeededExpForLevel = (level: number) =>
         30 + 5 * Math.floor(Math.max(0, level - 1) / 5);
 
-      const activeChild = await AsyncStorage.getItem("activeChildProfile");
+      if (isProfileLoading) return;
 
-      let profileRef;
-      if (activeChild) {
-        const childrenRef = collection(db, "users", user.uid, "children");
-        const childQuery = query(
-          childrenRef,
-          where("username", "==", activeChild),
-        );
-        const childSnapshot = await getDocs(childQuery);
-
-        if (!childSnapshot.empty) {
-          profileRef = childSnapshot.docs[0].ref;
-        } else {
-          console.warn("Child profile not found for EXP update, using parent");
-          profileRef = doc(db, "users", user.uid);
-        }
-      } else {
-        profileRef = doc(db, "users", user.uid);
-      }
+      const profileRef = getProfileDocRef();
 
       await runTransaction(db, async (tx) => {
         const snap = await tx.get(profileRef);
@@ -523,6 +526,7 @@ export default function PomodoroScreen() {
     } catch (e) {
       console.warn("Audio player error on land:", e);
     }
+
     router.back();
   };
 

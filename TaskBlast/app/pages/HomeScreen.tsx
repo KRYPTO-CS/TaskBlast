@@ -16,14 +16,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
 import {
-  getFirestore,
-  doc,
   getDoc,
   updateDoc,
-  collection,
-  query,
-  where,
-  getDocs,
 } from "firebase/firestore";
 import { useAudioPlayer } from "expo-audio";
 import MainButton from "../components/MainButton";
@@ -43,11 +37,18 @@ import {
 } from "@edwardloopez/react-native-coachmark";
 import Svg, { Circle, G } from "react-native-svg";
 import { claimBattlePassReward } from "../services/economyService";
+import { useActiveProfile } from "../context/ActiveProfileContext";
 
 export default function HomeScreen() {
   const router = useRouter();
   const palette = useColorPalette();
   const { musicEnabled } = useAudio();
+  const {
+    activeChildUsername,
+    childDocId,
+    getProfileDocRef,
+    isLoading: isProfileLoading,
+  } = useActiveProfile();
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
   const [isPlanetModalVisible, setIsPlanetModalVisible] = useState(false);
@@ -123,12 +124,6 @@ export default function HomeScreen() {
     [t],
   );
 
-  // Child profile state
-  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(
-    null,
-  );
-  const [childDocId, setChildDocId] = useState<string | null>(null);
-
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
   // Background music player
@@ -148,40 +143,22 @@ export default function HomeScreen() {
         return;
       }
 
-      const db = getFirestore();
-
-      // Check if a child profile is active
-      const activeChild = await AsyncStorage.getItem("activeChildProfile");
-      setActiveChildProfile(activeChild);
+      if (isProfileLoading) {
+        return;
+      }
 
       let userDoc;
 
-      if (activeChild) {
-        // Child is active - find child's document
-        const childrenRef = collection(db, "users", user.uid, "children");
-        const childQuery = query(
-          childrenRef,
-          where("username", "==", activeChild),
-        );
-        const childSnapshot = await getDocs(childQuery);
-
-        if (!childSnapshot.empty) {
-          const childDocData = childSnapshot.docs[0];
-          setChildDocId(childDocData.id);
-          userDoc = childDocData;
-        } else {
-          console.warn("Child profile not found");
-          setRocks(0);
-          setGalaxyCrystals(0);
-          setCurrentExp(0);
-          setCurrentLevel(1);
-          setClaimedRewardLevels([]);
-          return;
-        }
-      } else {
-        // Parent is active - load from parent's document
-        setChildDocId(null);
-        userDoc = await getDoc(doc(db, "users", user.uid));
+      try {
+        userDoc = await getDoc(getProfileDocRef());
+      } catch (error) {
+        console.warn("Failed to resolve active profile document", error);
+        setRocks(0);
+        setGalaxyCrystals(0);
+        setCurrentExp(0);
+        setCurrentLevel(1);
+        setClaimedRewardLevels([]);
+        return;
       }
 
       if (userDoc && userDoc.exists()) {
@@ -224,7 +201,7 @@ export default function HomeScreen() {
       setCurrentLevel(1);
       setClaimedRewardLevels([]);
     }
-  }, []);
+  }, [getProfileDocRef, isProfileLoading]);
 
   const handleClaimBattlePassReward = async (level: number) => {
     if (level < 1 || level > maxBattlePassLevel) return;

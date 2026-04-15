@@ -8,14 +8,14 @@ import {
 } from "react-native";
 import { Text } from '../../TTS';
 import { Ionicons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   updateUserProfile,
   type UserProfile,
 } from "../../server/userProfileUtils";
 import { auth } from "../../server/firebase";
-import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
+import { updateDoc } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
+import { useActiveProfile } from "../context/ActiveProfileContext";
 
 
 
@@ -54,37 +54,8 @@ export default function TraitsModal({
   );
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState("");
-  
-  // Child profile state
-  const [activeChildProfile, setActiveChildProfile] = useState<string | null>(null);
-  const [childDocId, setChildDocId] = useState<string | null>(null);
   const { t } = useTranslation();
-
-  // Check for active child profile
-  useEffect(() => {
-    const checkActiveProfile = async () => {
-      const activeChild = await AsyncStorage.getItem("activeChildProfile");
-      setActiveChildProfile(activeChild);
-      
-      if (activeChild && auth.currentUser) {
-        // Find child's document ID
-        const db = getFirestore();
-        const childrenRef = collection(db, "users", auth.currentUser.uid, "children");
-        const childQuery = query(childrenRef, where("username", "==", activeChild));
-        const childSnapshot = await getDocs(childQuery);
-        
-        if (!childSnapshot.empty) {
-          setChildDocId(childSnapshot.docs[0].id);
-        }
-      } else {
-        setChildDocId(null);
-      }
-    };
-    
-    if (visible) {
-      checkActiveProfile();
-    }
-  }, [visible]);
+  const { getChildDocRef, profileType } = useActiveProfile();
 
   // Update local state when userProfile prop changes
   useEffect(() => {
@@ -113,11 +84,15 @@ export default function TraitsModal({
         return;
       }
 
-      if (childDocId && activeChildProfile) {
+      if (profileType === "child") {
         // Update child profile
-        const db = getFirestore();
-        const childRef = doc(db, "users", currentUser.uid, "children", childDocId);
-        
+        const childRef = getChildDocRef();
+        if (!childRef) {
+          setError("Active child profile was not found");
+          setIsSaving(false);
+          return;
+        }
+
         await updateDoc(childRef, {
           traits: selectedTraits,
         });

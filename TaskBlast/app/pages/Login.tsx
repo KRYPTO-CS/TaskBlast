@@ -37,6 +37,7 @@ import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAdmin } from "../context/AdminContext";
 import { normalizeAdminEmail } from "../services/adminService";
+import { useActiveProfile } from "../context/ActiveProfileContext";
 
 type Screen =
   | "login"
@@ -61,6 +62,7 @@ export default function Login() {
   const [verificationCode, setVerificationCode] = useState("");
   const [t, i18n] = useTranslation();
   const { checkEligibility, clearAdminSession } = useAdmin();
+  const { activeChildUsername, refreshProfile } = useActiveProfile();
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -87,15 +89,13 @@ export default function Login() {
             await clearAdminSession();
           }
 
-          // Check if there's an active child profile
-          const activeChildProfile =
-            await AsyncStorage.getItem("activeChildProfile");
+          await refreshProfile();
 
-          if (activeChildProfile) {
+          if (activeChildUsername) {
             // Child profile is active - load child view
             console.log(
               "Auto-login: Child profile active:",
-              activeChildProfile,
+              activeChildUsername,
             );
             // TODO: Navigate to child home screen with activeChildProfile
             setCurrentScreen("homeScreen"); // For now - we'll make this child-specific later
@@ -110,7 +110,7 @@ export default function Login() {
     };
 
     checkAuthAndProfile();
-  }, []);
+  }, [activeChildUsername, checkEligibility, clearAdminSession, refreshProfile]);
 
   const handleLogin = () => {
     // Normalize inputs to make bypass resilient to whitespace/casing
@@ -508,7 +508,7 @@ export default function Login() {
           </View>
 
           <MainButton
-            title={t("Login.signUp")}
+            title={t("Login.loginButton")}
             variant="primary"
             size="medium"
             customStyle={{ width: "60%", alignSelf: "center", marginTop: -15 }}

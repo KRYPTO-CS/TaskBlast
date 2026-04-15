@@ -33,6 +33,7 @@ export interface PurchaseShopItemResponse extends BaseResponse {
     body: boolean[];
     wings: boolean[];
   };
+  unlockedPlanets?: boolean[];
 }
 
 export interface ClaimBattlePassRewardResponse extends BaseResponse {
@@ -85,6 +86,7 @@ export const claimTaskReward = async (payload: {
 
 export const purchaseShopItem = async (payload: {
   itemId: string;
+  childDocId?: string | null;
 }): Promise<PurchaseShopItemResponse> => {
   const callable = httpsCallable<typeof payload, PurchaseShopItemResponse>(
     functions,
@@ -110,6 +112,7 @@ export const claimBattlePassReward = async (payload: {
 
 export const unlockPlanet = async (payload: {
   planetId: number;
+  childDocId?: string | null;
 }): Promise<UnlockPlanetResponse> => {
   const callable = httpsCallable<typeof payload, UnlockPlanetResponse>(
     functions,

@@ -6,6 +6,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Image,
+  Alert
 } from "react-native";
 import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
@@ -17,15 +18,7 @@ import MainButton from "../components/MainButton";
 import { WebView } from "react-native-webview";
 import { useFocusEffect } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  collection,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
+import { getDoc, updateDoc } from "firebase/firestore";
 import EditProfileModal from "../components/EditProfileModal";
 import TraitsModal from "../components/TraitsModal";
 import AnalyticsChartsModal from "../components/AnalyticsChartsModal";
@@ -42,18 +35,55 @@ import {
   useCoachmark,
   createTour,
 } from "@edwardloopez/react-native-coachmark";
+import { useActiveProfile } from "../context/ActiveProfileContext";
+import { deleteChildAccount } from "../services/accountService";
 
 export default function ProfileScreen() {
   const router = useRouter();
   const palette = useColorPalette();
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
-
+  /*const {
+    activeChildUsername,
+    clearActiveChildProfile,
+    getProfileDocRef,
+    isLoading: isProfileLoading,
+    profileType,
+  } = useActiveProfile();
+/*
   const [currentProfileType, setCurrentProfileType] = useState<
     "parent" | "child"
   >("parent");
   const [currentChildUsername, setCurrentChildUsername] = useState<
     string | null
   >(null);
+  useEffect(() => {
+    setCurrentProfileType(profileType);
+    setCurrentChildUsername(activeChildUsername);
+  }, [activeChildUsername, profileType]);
+*/
+  const {
+    activeChildUsername,
+    childDocId,
+    clearActiveChildProfile,
+    profileType,
+    getProfileDocRef,
+    refreshProfile,
+     isLoading: isProfileLoading,
+  } = useActiveProfile();
+  //const activeChildProfile = activeChildUsername;
+  //const currentProfileType = profileType;
+  
+
+    const [currentProfileType, setCurrentProfileType] = useState<
+    "parent" | "child"
+  >("parent");
+  const [currentChildUsername, setCurrentChildUsername] = useState<
+    string | null
+  >(null);
+  useEffect(() => {
+    setCurrentProfileType(profileType);
+    setCurrentChildUsername(activeChildUsername);
+  }, [activeChildUsername, profileType]);
 
   // User data state
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -62,7 +92,7 @@ export default function ProfileScreen() {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isTraitsModalVisible, setIsTraitsModalVisible] = useState(false);
   const [isAnalyticsModalVisible, setIsAnalyticsModalVisible] = useState(false);
-
+  const [isDeletingChild, setIsDeletingChild] = useState(false);
   // Stats state
   const [statsValues, setStatsValues] = useState<number[]>([]);
   const [statsLabels, setStatsLabels] = useState<string[]>([]);
@@ -112,37 +142,19 @@ export default function ProfileScreen() {
         const currentUser = auth.currentUser;
         if (!currentUser) return;
 
-        const db = getFirestore();
-
-        // Check if a child profile is active
-        const activeChild = await AsyncStorage.getItem("activeChildProfile");
+        if (isProfileLoading) return;
 
         let profileData = null;
 
-        if (activeChild) {
-          // Child is active - load from child's document
-          const childrenRef = collection(
-            db,
-            "users",
-            currentUser.uid,
-            "children",
-          );
-          const childQuery = query(
-            childrenRef,
-            where("username", "==", activeChild),
-          );
-          const childSnapshot = await getDocs(childQuery);
-
-          if (!childSnapshot.empty) {
-            const childDoc = childSnapshot.docs[0];
+        if (profileType === "child") {
+          const childDoc = await getDoc(getProfileDocRef());
+          if (childDoc.exists()) {
             const childData = childDoc.data();
-
-            // Map child data to UserProfile format
             profileData = {
               uid: currentUser.uid,
               firstName: childData.firstName || "",
               lastName: childData.lastName || "",
-              displayName: childData.firstName || "Child", // Use firstName as display name for children
+              displayName: childData.firstName || "Child",
               email: currentUser.email || "",
               birthdate: childData.birthdate || "",
               profilePicture: childData.profilePicture,
@@ -151,7 +163,6 @@ export default function ProfileScreen() {
             };
           }
         } else {
-          // Parent is active - load from parent's document
           profileData = await getUserProfile(currentUser.uid);
         }
 
@@ -183,46 +194,31 @@ export default function ProfileScreen() {
 
     loadUserProfile();
     loadAllTimeStats();
-  }, []);
+  }, [getProfileDocRef, isProfileLoading, loadAllTimeStats, profileType]);
 
-  const loadAllTimeStats = useCallback(async () => {
+  async function loadAllTimeStats() {
     try {
       const auth = getAuth();
       const user = auth.currentUser;
       if (!user) return;
 
-      const db = getFirestore();
-
-      // Check if a child profile is active
-      const activeChild = await AsyncStorage.getItem("activeChildProfile");
+      if (isProfileLoading) return;
 
       let userDoc;
 
-      if (activeChild) {
-        // Child is active - load from child's document
-        const { collection, query, where, getDocs } =
-          await import("firebase/firestore");
-        const childrenRef = collection(db, "users", user.uid, "children");
-        const childQuery = query(
-          childrenRef,
-          where("username", "==", activeChild),
-        );
-        const childSnapshot = await getDocs(childQuery);
-
-        if (!childSnapshot.empty) {
-          const childDocData = childSnapshot.docs[0];
-          userDoc = childDocData;
-        } else {
-          console.warn("Child profile not found");
-          return;
-        }
+      if (profileType === "child") {
+        userDoc = await getDoc(getProfileDocRef());
       } else {
-        // Parent is active - load from parent's document
-        userDoc = await getDoc(doc(db, "users", user.uid));
+        const profileData = await getUserProfile(user.uid);
+        if (!profileData) return;
+        userDoc = {
+          exists: () => true,
+          data: () => profileData,
+        };
       }
 
       if (userDoc && userDoc.exists()) {
-        const data = userDoc.data();
+        const data: any = userDoc.data();
         const rocksArr: number[] = data.allTimeRocksArr || [];
         const wtArr: number[] = data.workTimeMinutesArr || [];
         const ptArr: number[] = data.playTimeMinutesArr || [];
@@ -269,35 +265,64 @@ export default function ProfileScreen() {
     } catch (e) {
       console.warn("Failed to load stats", e);
     }
-  }, []);
-
-  // Load current profile on mount
-  useEffect(() => {
-    loadCurrentProfile();
-  }, []);
-
-  const loadCurrentProfile = async () => {
-    const activeChild = await AsyncStorage.getItem("activeChildProfile");
-    if (activeChild) {
-      setCurrentProfileType("child");
-      setCurrentChildUsername(activeChild);
-    } else {
-      setCurrentProfileType("parent");
-      setCurrentChildUsername(null);
-    }
-  };
+  }
 
   const handleSwitchProfile = () => {
     router.push("/pages/ProfileSelection");
   };
 
+
+    const handleDeleteChildAccount = () => {
+      if (!childDocId || !activeChildUsername) {
+        Alert.alert(
+          "Child Profile Unavailable",
+          "We couldn't find the active child profile to delete.",
+        );
+        return;
+      }
+  
+      Alert.alert(
+        "Delete Child Account",
+        `Delete ${activeChildUsername}'s account? This cannot be undone.`,
+        [
+          { text: "Cancel", style: "cancel" },
+          {
+            text: "Delete",
+            style: "destructive",
+            onPress: async () => {
+              try {
+                setIsDeletingChild(true);
+                const result = await deleteChildAccount({ childDocId });
+  
+                if (!result.success) {
+                  throw new Error(
+                    result.message || "Failed to delete child account",
+                  );
+                }
+  
+                await clearActiveChildProfile();
+                //onClose();
+                router.replace("/pages/ProfileSelection");
+                Alert.alert("Deleted", "Child account deleted successfully.");
+              } catch (error) {
+                console.error("Error deleting child account:", error);
+                Alert.alert(
+                  "Delete Failed",
+                  "Could not delete the child account. Please try again.",
+                );
+              } finally {
+                setIsDeletingChild(false);
+              }
+            },
+          },
+        ],
+      );
+    };
+
   const handleLogout = async () => {
     try {
-      // Clear active profile
-      await AsyncStorage.removeItem("activeChildProfile");
-      // Sign out from Firebase
+      await clearActiveChildProfile();
       await signOut(auth);
-      // Navigate to login
       router.push("/pages/Login");
     } catch (error) {
       console.error("Logout error:", error);
@@ -320,8 +345,13 @@ export default function ProfileScreen() {
       );
 
       if (newImageUrl) {
-        // Save to Firestore
-        await updateUserProfilePicture(currentUser.uid, newImageUrl);
+        if (profileType === "child") {
+          await updateDoc(getProfileDocRef(), {
+            profilePicture: newImageUrl,
+          });
+        } else {
+          await updateUserProfilePicture(currentUser.uid, newImageUrl);
+        }
 
         // Update local state
         setUserProfile({
@@ -804,26 +834,38 @@ export default function ProfileScreen() {
           </View>
 
           {/* Add Child Button - NEW */}
-          <View className="items-center mb-4">
-            <MainButton
-              title={t("Profile.AddChildAccount")}
-              variant="primary"
-              onPress={() => router.push("/pages/CreateChildAccount")}
-              customStyle={{ width: "80%" }}
-            />
-          </View>
+          {currentProfileType === "parent" && (
+            <View className="items-center mb-4">
+              <MainButton
+                title={t("Profile.AddChildAccount")}
+                variant="primary"
+                onPress={() => router.push("/pages/CreateChildAccount")}
+                customStyle={{ width: "80%" }}
+              />
+            </View>
+          )}
 
           {/* Switch Profile Button */}
-          <View className="items-center mb-4">
+          <View
+            className="items-center mb-4"
+            style={{
+              shadowColor: "#a855f7",
+              shadowOffset: { width: 0, height: 0 },
+              shadowOpacity: 0.9,
+              shadowRadius: 16,
+              elevation: 10,
+            }}
+          >
             <MainButton
               title={t("Profile.SwitchProfile")}
               variant="secondary"
               onPress={handleSwitchProfile}
-              customStyle={{ width: "80%" }}
+              customStyle={{ width: "80%", backgroundColor: "#7c3aed" }}
             />
           </View>
 
           {/* Logout Button */}
+          {currentProfileType === "parent" && (
           <View className="items-center mb-8">
             <MainButton
               title={t("Profile.Logout")}
@@ -832,6 +874,27 @@ export default function ProfileScreen() {
               customStyle={{ width: "80%" }}
             />
           </View>
+          )}
+          {currentProfileType === "child" && (
+            <View
+              className="items-center mb-8"
+              style={{
+                shadowColor: "#ff3333",
+                shadowOffset: { width: 0, height: 0 },
+                shadowOpacity: 0.8,
+                shadowRadius: 16,
+                elevation: 10,
+              }}
+            >
+              <MainButton
+                title={isDeletingChild ? "Deleting Account..." : "Delete Account"}
+                variant="error"
+                onPress={handleDeleteChildAccount}
+                disabled={isDeletingChild || !childDocId}
+                customStyle={{ width: "80%", opacity: isDeletingChild ? 0.7 : 1 }}
+              />
+            </View>
+          )}
         </View>
       </ScrollView>
 

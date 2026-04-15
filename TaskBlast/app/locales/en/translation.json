@@ -216,7 +216,8 @@
     "coachMarkStatsTitle": "View Stats",
     "coachMarkStats": "Here you can see your stats and track your progress over time!",
     "edit": "Edit",
-    "advanced": "Advanced"
+    "advanced": "Advanced",
+    "deleteAccount": "Delete Account"
   },
   "Pomodoro": {
     "time": "Time Remaining",
