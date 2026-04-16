@@ -25,6 +25,11 @@ import { useTranslation } from "react-i18next";
 import { useAdmin } from "../context/AdminContext";
 import { useActiveProfile } from "../context/ActiveProfileContext";
 import { deleteChildAccount } from "../services/accountService";
+import {
+  CoachmarkAnchor,
+  useCoachmark,
+  createTour,
+} from "@edwardloopez/react-native-coachmark";
 
 interface SettingsModalProps {
   visible: boolean;
@@ -76,6 +81,7 @@ export default function SettingsModal({
   const [isVerifyingAdmin, setIsVerifyingAdmin] = useState(false);
   const [isDisablingAdmin, setIsDisablingAdmin] = useState(false);
   const [isDeletingChild, setIsDeletingChild] = useState(false);
+  const { start } = useCoachmark();
 
   // Check for active child profile when modal opens
   useEffect(() => {
@@ -483,6 +489,48 @@ export default function SettingsModal({
                 color={palette.secondary}
               />
             </TouchableOpacity>
+            <View
+              className="flex-row justify-between items-center p-4 rounded-xl mb-3"
+              style={{
+                backgroundColor: palette.secondaryMed,
+                borderWidth: 1,
+                borderColor: palette.rowBorderPrimary,
+              }}
+            >
+              <TouchableOpacity   onPress={async () => {
+    try {
+  
+      await AsyncStorage.removeItem("onboardingSeen");
+      await AsyncStorage.removeItem("profileOnboardingSeen"); 
+      await AsyncStorage.removeItem("pomodoroOnboardingSeen");
+
+      
+
+      onClose();
+
+
+      setTimeout(() => {
+        start(createTour("onboarding", [])); 
+      }, 300);
+    } catch (e) {
+      console.warn("Failed to restart tutorial", e);
+    }
+  }}>
+
+              <View className="flex-row items-center flex-1">
+                <Ionicons
+                  name="help-circle"
+                  size={24}
+                  color={palette.secondary}
+                  style={{ marginRight: 12 }}
+                  />
+                <Text className="font-orbitron-medium text-white text-base">
+                  {t("Replay Tutorial")}
+                </Text>
+              </View>
+                  </TouchableOpacity>
+         
+            </View>
 
             {/* Divider */}
             <View
