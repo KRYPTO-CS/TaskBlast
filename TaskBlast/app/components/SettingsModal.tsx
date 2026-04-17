@@ -31,6 +31,8 @@ import {
   createTour,
 } from "@edwardloopez/react-native-coachmark";
 
+const ACTIVE_CHILD_PROFILE_KEY = "activeChildProfile";
+
 interface SettingsModalProps {
   visible: boolean;
   onClose: () => void;
@@ -115,9 +117,7 @@ export default function SettingsModal({
 
     Alert.alert(
       isChild ? t("Settings.switchProfile") : t("Settings.logout"),
-      isChild
-        ? "Return to profile selection?"
-        : t("Settings.logoutText"),
+      isChild ? "Return to profile selection?" : t("Settings.logoutText"),
       [
         {
           text: t("Tasks.cancel"),
@@ -137,12 +137,13 @@ export default function SettingsModal({
               } else {
                 // Parent logout - full logout
                 await clearAdminSession();
-                await AsyncStorage.clear();
+                await AsyncStorage.removeItem(ACTIVE_CHILD_PROFILE_KEY);
                 await signOut(auth);
                 if (onLogout) {
                   onLogout();
                 }
                 onClose();
+                router.replace("/pages/Login");
               }
             } catch (error) {
               console.error("Logout error:", error);
@@ -479,7 +480,9 @@ export default function SettingsModal({
                     numberOfLines={1}
                   >
                     {language.toUpperCase()} ·{" "}
-                    {colorBlindMode === "none" ? t("Settings.noFilter") : colorBlindMode}
+                    {colorBlindMode === "none"
+                      ? t("Settings.noFilter")
+                      : colorBlindMode}
                   </Text>
                 </View>
               </View>
@@ -497,39 +500,35 @@ export default function SettingsModal({
                 borderColor: palette.rowBorderPrimary,
               }}
             >
-              <TouchableOpacity   onPress={async () => {
-    try {
-  
-      await AsyncStorage.removeItem("onboardingSeen");
-      await AsyncStorage.removeItem("profileOnboardingSeen"); 
-      await AsyncStorage.removeItem("pomodoroOnboardingSeen");
+              <TouchableOpacity
+                onPress={async () => {
+                  try {
+                    await AsyncStorage.removeItem("onboardingSeen");
+                    await AsyncStorage.removeItem("profileOnboardingSeen");
+                    await AsyncStorage.removeItem("pomodoroOnboardingSeen");
 
-      
+                    onClose();
 
-      onClose();
-
-
-      setTimeout(() => {
-        start(createTour("onboarding", [])); 
-      }, 300);
-    } catch (e) {
-      console.warn("Failed to restart tutorial", e);
-    }
-  }}>
-
-              <View className="flex-row items-center flex-1">
-                <Ionicons
-                  name="help-circle"
-                  size={24}
-                  color={palette.secondary}
-                  style={{ marginRight: 12 }}
+                    setTimeout(() => {
+                      start(createTour("onboarding", []));
+                    }, 300);
+                  } catch (e) {
+                    console.warn("Failed to restart tutorial", e);
+                  }
+                }}
+              >
+                <View className="flex-row items-center flex-1">
+                  <Ionicons
+                    name="help-circle"
+                    size={24}
+                    color={palette.secondary}
+                    style={{ marginRight: 12 }}
                   />
-                <Text className="font-orbitron-medium text-white text-base">
-                  {t("Replay Tutorial")}
-                </Text>
-              </View>
-                  </TouchableOpacity>
-         
+                  <Text className="font-orbitron-medium text-white text-base">
+                    {t("Replay Tutorial")}
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
 
             {/* Divider */}
@@ -690,7 +689,9 @@ export default function SettingsModal({
                   className="font-orbitron-semibold text-base flex-1"
                   style={{ color: palette.errorIcon }}
                 >
-                  {isDeletingChild ? "Deleting Child Account..." : "Delete Child Account"}
+                  {isDeletingChild
+                    ? "Deleting Child Account..."
+                    : "Delete Child Account"}
                 </Text>
               </TouchableOpacity>
             )}
@@ -778,7 +779,9 @@ export default function SettingsModal({
                 className="font-orbitron-bold text-base"
                 style={{ color: palette.errorIcon }}
               >
-                {currentProfileType === "child" ? t("Settings.switchProfile") : t("Settings.logout")}
+                {currentProfileType === "child"
+                  ? t("Settings.switchProfile")
+                  : t("Settings.logout")}
               </Text>
             </TouchableOpacity>
           </ScrollView>

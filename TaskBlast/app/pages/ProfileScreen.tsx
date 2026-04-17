@@ -6,7 +6,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Image,
-  Alert
+  Alert,
 } from "react-native";
 import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
@@ -38,6 +38,8 @@ import {
 import { useActiveProfile } from "../context/ActiveProfileContext";
 import { deleteChildAccount } from "../services/accountService";
 
+const ACTIVE_CHILD_PROFILE_KEY = "activeChildProfile";
+
 export default function ProfileScreen() {
   const router = useRouter();
   const palette = useColorPalette();
@@ -68,13 +70,12 @@ export default function ProfileScreen() {
     profileType,
     getProfileDocRef,
     refreshProfile,
-     isLoading: isProfileLoading,
+    isLoading: isProfileLoading,
   } = useActiveProfile();
   //const activeChildProfile = activeChildUsername;
   //const currentProfileType = profileType;
-  
 
-    const [currentProfileType, setCurrentProfileType] = useState<
+  const [currentProfileType, setCurrentProfileType] = useState<
     "parent" | "child"
   >("parent");
   const [currentChildUsername, setCurrentChildUsername] = useState<
@@ -233,29 +234,54 @@ export default function ProfileScreen() {
         const slicedWt = wtArr.slice(-MAX_POINTS);
         const slicedPt = ptArr.slice(-MAX_POINTS);
 
-        setTotalRocksAllTime(Number.isNaN(totalAllTime) ? 0 : Math.max(0, Math.floor(totalAllTime)));
-        setrocksSpent(Number.isNaN(data.rocksSpent) ? 0 : Math.max(0, Math.floor(data.rocksSpent)));
-        setLevel(Number.isNaN(data.level) ? 0 : Math.max(0, Math.floor(data.currentLevel)));
-        setPlanets(Number.isNaN(data.planets) ? 0 : Math.max(0, Math.floor(data.currPlanet)));
+        setTotalRocksAllTime(
+          Number.isNaN(totalAllTime)
+            ? 0
+            : Math.max(0, Math.floor(totalAllTime)),
+        );
+        setrocksSpent(
+          Number.isNaN(data.rocksSpent)
+            ? 0
+            : Math.max(0, Math.floor(data.rocksSpent)),
+        );
+        setLevel(
+          Number.isNaN(data.level)
+            ? 0
+            : Math.max(0, Math.floor(data.currentLevel)),
+        );
+        setPlanets(
+          Number.isNaN(data.planets)
+            ? 0
+            : Math.max(0, Math.floor(data.currPlanet)),
+        );
         setCurrentRocks(
           Number.isNaN(data.rocks) ? 0 : Math.max(0, Math.floor(data.rocks)),
         );
         setStatsLabels(
           slicedRocks.map((_, i) => {
             const dateIdx = rocksDates.length - slicedRocks.length + i;
-            return dateIdx >= 0 ? (rocksDates[dateIdx] ?? `#${rocksArr.length - slicedRocks.length + i + 1}`) : `#${rocksArr.length - slicedRocks.length + i + 1}`;
+            return dateIdx >= 0
+              ? (rocksDates[dateIdx] ??
+                  `#${rocksArr.length - slicedRocks.length + i + 1}`)
+              : `#${rocksArr.length - slicedRocks.length + i + 1}`;
           }),
         );
         setWorkLabels(
           slicedWt.map((_, i) => {
             const dateIdx = workDates.length - slicedWt.length + i;
-            return dateIdx >= 0 ? (workDates[dateIdx] ?? `#${wtArr.length - slicedWt.length + i + 1}`) : `#${wtArr.length - slicedWt.length + i + 1}`;
+            return dateIdx >= 0
+              ? (workDates[dateIdx] ??
+                  `#${wtArr.length - slicedWt.length + i + 1}`)
+              : `#${wtArr.length - slicedWt.length + i + 1}`;
           }),
         );
         setPlayLabels(
           slicedPt.map((_, i) => {
             const dateIdx = playDates.length - slicedPt.length + i;
-            return dateIdx >= 0 ? (playDates[dateIdx] ?? `#${ptArr.length - slicedPt.length + i + 1}`) : `#${ptArr.length - slicedPt.length + i + 1}`;
+            return dateIdx >= 0
+              ? (playDates[dateIdx] ??
+                  `#${ptArr.length - slicedPt.length + i + 1}`)
+              : `#${ptArr.length - slicedPt.length + i + 1}`;
           }),
         );
         setStatsValues(slicedRocks);
@@ -271,59 +297,58 @@ export default function ProfileScreen() {
     router.push("/pages/ProfileSelection");
   };
 
-
-    const handleDeleteChildAccount = () => {
-      if (!childDocId || !activeChildUsername) {
-        Alert.alert(
-          "Child Profile Unavailable",
-          "We couldn't find the active child profile to delete.",
-        );
-        return;
-      }
-  
+  const handleDeleteChildAccount = () => {
+    if (!childDocId || !activeChildUsername) {
       Alert.alert(
-        "Delete Child Account",
-        `Delete ${activeChildUsername}'s account? This cannot be undone.`,
-        [
-          { text: "Cancel", style: "cancel" },
-          {
-            text: "Delete",
-            style: "destructive",
-            onPress: async () => {
-              try {
-                setIsDeletingChild(true);
-                const result = await deleteChildAccount({ childDocId });
-  
-                if (!result.success) {
-                  throw new Error(
-                    result.message || "Failed to delete child account",
-                  );
-                }
-  
-                await clearActiveChildProfile();
-                //onClose();
-                router.replace("/pages/ProfileSelection");
-                Alert.alert("Deleted", "Child account deleted successfully.");
-              } catch (error) {
-                console.error("Error deleting child account:", error);
-                Alert.alert(
-                  "Delete Failed",
-                  "Could not delete the child account. Please try again.",
-                );
-              } finally {
-                setIsDeletingChild(false);
-              }
-            },
-          },
-        ],
+        "Child Profile Unavailable",
+        "We couldn't find the active child profile to delete.",
       );
-    };
+      return;
+    }
+
+    Alert.alert(
+      "Delete Child Account",
+      `Delete ${activeChildUsername}'s account? This cannot be undone.`,
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              setIsDeletingChild(true);
+              const result = await deleteChildAccount({ childDocId });
+
+              if (!result.success) {
+                throw new Error(
+                  result.message || "Failed to delete child account",
+                );
+              }
+
+              await clearActiveChildProfile();
+              //onClose();
+              router.replace("/pages/ProfileSelection");
+              Alert.alert("Deleted", "Child account deleted successfully.");
+            } catch (error) {
+              console.error("Error deleting child account:", error);
+              Alert.alert(
+                "Delete Failed",
+                "Could not delete the child account. Please try again.",
+              );
+            } finally {
+              setIsDeletingChild(false);
+            }
+          },
+        },
+      ],
+    );
+  };
 
   const handleLogout = async () => {
     try {
-      await clearActiveChildProfile();
+      await AsyncStorage.removeItem(ACTIVE_CHILD_PROFILE_KEY);
       await signOut(auth);
-      router.push("/pages/Login");
+      router.replace("/pages/Login");
     } catch (error) {
       console.error("Logout error:", error);
     }
@@ -866,14 +891,14 @@ export default function ProfileScreen() {
 
           {/* Logout Button */}
           {currentProfileType === "parent" && (
-          <View className="items-center mb-8">
-            <MainButton
-              title={t("Profile.Logout")}
-              variant="error"
-              onPress={handleLogout}
-              customStyle={{ width: "80%" }}
-            />
-          </View>
+            <View className="items-center mb-8">
+              <MainButton
+                title={t("Profile.Logout")}
+                variant="error"
+                onPress={handleLogout}
+                customStyle={{ width: "80%" }}
+              />
+            </View>
           )}
           {currentProfileType === "child" && (
             <View
@@ -887,11 +912,16 @@ export default function ProfileScreen() {
               }}
             >
               <MainButton
-                title={isDeletingChild ? "Deleting Account..." : "Delete Account"}
+                title={
+                  isDeletingChild ? "Deleting Account..." : "Delete Account"
+                }
                 variant="error"
                 onPress={handleDeleteChildAccount}
                 disabled={isDeletingChild || !childDocId}
-                customStyle={{ width: "80%", opacity: isDeletingChild ? 0.7 : 1 }}
+                customStyle={{
+                  width: "80%",
+                  opacity: isDeletingChild ? 0.7 : 1,
+                }}
               />
             </View>
           )}

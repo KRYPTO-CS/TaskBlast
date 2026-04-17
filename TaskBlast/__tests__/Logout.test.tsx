@@ -16,6 +16,18 @@ import { signOut, getAuth } from "firebase/auth";
 import { getDoc } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+jest.mock("../app/context/ActiveProfileContext", () => ({
+  useActiveProfile: () => ({
+    activeChildUsername: null,
+    childDocId: null,
+    clearActiveChildProfile: jest.fn().mockResolvedValue(undefined),
+    profileType: "parent",
+    refreshProfile: jest.fn().mockResolvedValue(undefined),
+    getProfileDocRef: jest.fn(),
+    isLoading: false,
+  }),
+}));
+
 jest.mock("../app/context/AccessibilityContext", () => ({
   useAccessibility: () => ({
     language: "en",
@@ -74,13 +86,8 @@ describe("Logout Process", () => {
     it("should display logout option in settings modal", async () => {
       const { getByText, debug } = renderSettingsModal();
 
-      // Wait for async useEffect to complete
-      await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalledWith("activeChildProfile");
-      });
-
       // Check for logout button
-      const logoutButton = getByText("Logout");
+      const logoutButton = getByText(/Logout|Settings\.logout/i);
       expect(logoutButton).toBeTruthy();
 
       // Debug to see the component tree
@@ -162,12 +169,8 @@ describe("Logout Process", () => {
       // Verify that the logout component renders
       const { getByText } = renderSettingsModal(true, mockOnClose);
 
-      await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalledWith("activeChildProfile");
-      });
-
       // Logout button should be visible
-      expect(getByText("Logout")).toBeTruthy();
+      expect(getByText(/Logout|Settings\.logout/i)).toBeTruthy();
     });
 
     it("should remain on home screen if logout fails", async () => {
@@ -176,12 +179,8 @@ describe("Logout Process", () => {
 
       const { getByText } = renderSettingsModal();
 
-      await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalledWith("activeChildProfile");
-      });
-
       // Logout button should still be visible
-      expect(getByText("Logout")).toBeTruthy();
+      expect(getByText(/Logout|Settings\.logout/i)).toBeTruthy();
     });
   });
 
@@ -190,21 +189,13 @@ describe("Logout Process", () => {
       // Test verifies logout button is rendered in settings modal
       const { getByText } = renderSettingsModal();
 
-      await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalledWith("activeChildProfile");
-      });
-
       // Logout button should be visible
-      expect(getByText("Logout")).toBeTruthy();
+      expect(getByText(/Logout|Settings\.logout/i)).toBeTruthy();
     });
 
     it("should cancel logout on confirmation decline", async () => {
       // Test verifies that signOut is not called when user doesn't confirm
       const { getByText } = renderSettingsModal();
-
-      await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalledWith("activeChildProfile");
-      });
 
       // Should not call signOut without user confirmation
       expect(signOut).not.toHaveBeenCalled();

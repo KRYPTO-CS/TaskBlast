@@ -18,6 +18,17 @@ import {
 } from "@testing-library/react-native";
 import PlanetScrollList from "../app/components/PlanetScrollList";
 
+const mockGetProfileDocRef = jest.fn(() => ({ id: "mock-profile-doc" }));
+
+jest.mock("../app/context/ActiveProfileContext", () => ({
+  useActiveProfile: () => ({
+    activeChildUsername: null,
+    childDocId: null,
+    getProfileDocRef: mockGetProfileDocRef,
+    isLoading: false,
+  }),
+}));
+
 jest.mock("firebase/auth", () => ({
   getAuth: jest.fn(),
 }));
@@ -98,7 +109,7 @@ describe("PlanetScrollList", () => {
     const onRocksChange = jest.fn();
 
     // Ensure currentProgress is low so planet 2 is locked
-    (onSnapshot as jest.Mock).mockImplementationOnce((_, cb) => {
+    (onSnapshot as jest.Mock).mockImplementation((_, cb) => {
       cb({ exists: () => true, data: () => ({ currPlanet: 1 }) });
       return jest.fn();
     });
@@ -129,8 +140,10 @@ describe("PlanetScrollList", () => {
     // Press planet 2 to open modal
     fireEvent.press(screen.getByTestId("planet-2-image"));
 
-    // Wait for modal content to appear
-    await waitFor(() => expect(screen.getByText("desc")).toBeTruthy());
+    // Wait for locked-planet actions to appear
+    await waitFor(() =>
+      expect(screen.getByTestId("unlock-planet-button")).toBeTruthy(),
+    );
 
     // Press Unlock then Confirm Unlock
     fireEvent.press(screen.getByTestId("unlock-planet-button"));
@@ -145,7 +158,7 @@ describe("PlanetScrollList", () => {
 
   it("uses dark images for locked planets and light for unlocked", async () => {
     // set current progress to 1 so planets >1 are locked
-    (onSnapshot as jest.Mock).mockImplementationOnce((_, cb) => {
+    (onSnapshot as jest.Mock).mockImplementation((_, cb) => {
       cb({ exists: () => true, data: () => ({ currPlanet: 1 }) });
       return jest.fn();
     });
@@ -157,12 +170,12 @@ describe("PlanetScrollList", () => {
     );
 
     // Instead of comparing image source (module mocked), validate lock behavior
-    // by opening the modal for planet 2 and confirming header shows locked state
+    // by checking the unlock action appears for a locked planet.
     fireEvent.press(screen.getByTestId("planet-2-image"));
 
     await waitFor(() => {
       expect(screen.getByTestId("planet-modal")).toBeTruthy();
-      expect(screen.getByText("Planet Not Unlocked")).toBeTruthy();
+      expect(screen.getByTestId("unlock-planet-button")).toBeTruthy();
     });
   });
 
