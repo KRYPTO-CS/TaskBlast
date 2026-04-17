@@ -16,6 +16,18 @@ import { Alert } from "react-native";
 import ShopModal from "../app/components/ShopModal";
 import { getAuth } from "firebase/auth";
 import { getDoc, getDocs, updateDoc } from "firebase/firestore";
+import { purchaseShopItem } from "../app/services/economyService";
+
+const mockActiveProfile = {
+  childDocId: null as string | null,
+  getProfileDocRef: jest.fn(() => ({ id: "mock-profile-doc" })),
+  isLoading: false,
+  profileType: "parent",
+};
+
+jest.mock("../app/context/ActiveProfileContext", () => ({
+  useActiveProfile: () => mockActiveProfile,
+}));
 
 // ─── Palette fixtures ─────────────────────────────────────────────────────────
 
@@ -161,6 +173,10 @@ jest.mock("../TTS", () => {
   return { Text: (props: any) => React.createElement(Text, props) };
 });
 
+jest.mock("../app/services/economyService", () => ({
+  purchaseShopItem: jest.fn(),
+}));
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function flattenStyle(style: any): Record<string, any> {
@@ -195,8 +211,20 @@ const defaultUserData = {
   shopItems: {
     body: [true, false, false, false],
     wings: [false, true, false, false],
+    toppers: [true, false],
   },
-  equipped: [0, 1],
+  unlockedPlanets: [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ],
+  equipped: [0, 1, 0],
 };
 
 beforeEach(() => {
@@ -238,6 +266,26 @@ beforeEach(() => {
   });
 
   (updateDoc as jest.Mock).mockResolvedValue(undefined);
+  (purchaseShopItem as jest.Mock).mockResolvedValue({
+    success: true,
+    newRocks: 500,
+    shopItems: {
+      body: [true, true, false, false],
+      wings: [false, true, false, false],
+      toppers: [true, false],
+    },
+    unlockedPlanets: [
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+    ],
+  });
 });
 
 // ─── Tests ────────────────────────────────────────────────────────────────────
@@ -727,6 +775,7 @@ describe("ShopModal – Color Blind Integration", () => {
 
       expect(consoleSpy).toHaveBeenCalledWith(
         expect.stringContaining("[ShopModal] Loading shop data for user:"),
+        expect.any(String),
       );
 
       consoleSpy.mockRestore();
@@ -837,6 +886,30 @@ describe("ShopModal – Color Blind Integration", () => {
     it("logs when no database updates are needed", async () => {
       const consoleSpy = jest.spyOn(console, "log");
 
+      (getDoc as jest.Mock).mockResolvedValue({
+        exists: () => true,
+        data: () => ({
+          rocks: 100,
+          shopItems: {
+            body: [true, false, false, false],
+            wings: [false, true, false, false],
+            toppers: [true, false],
+          },
+          unlockedPlanets: [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+          ],
+          equipped: [0, 1, 0],
+        }),
+      });
+
       render(<ShopModal {...defaultProps} />);
       await waitFor(() => expect(getDoc).toHaveBeenCalled());
 
@@ -906,12 +979,10 @@ describe("ShopModal – Color Blind Integration", () => {
 
       await waitFor(() => {
         expect(consoleSpy).toHaveBeenCalledWith(
-          expect.stringContaining("[ShopModal] Updating rocks in database to:"),
+          expect.stringContaining("[ShopModal] Purchase confirmed for item:"),
+          expect.any(String),
+          expect.stringContaining("Price:"),
           expect.any(Number),
-        );
-
-        expect(consoleSpy).toHaveBeenCalledWith(
-          "[ShopModal] Database update for rocks completed successfully",
         );
       });
 

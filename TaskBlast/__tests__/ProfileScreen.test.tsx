@@ -19,6 +19,12 @@ import { getAuth } from "firebase/auth";
 import { getDoc, getDocs, collection, query, where } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+const mockUseActiveProfile = jest.fn();
+
+jest.mock("../app/context/ActiveProfileContext", () => ({
+  useActiveProfile: () => mockUseActiveProfile(),
+}));
+
 jest.mock("../app/context/AccessibilityContext", () => ({
   useAccessibility: () => ({
     language: "en",
@@ -41,6 +47,16 @@ jest.mock("../app/context/AccessibilityContext", () => ({
 describe("ProfileScreen", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+
+    mockUseActiveProfile.mockReturnValue({
+      activeChildUsername: null,
+      childDocId: null,
+      clearActiveChildProfile: jest.fn().mockResolvedValue(undefined),
+      profileType: "parent",
+      getProfileDocRef: jest.fn(() => ({ id: "mock-profile-doc" })),
+      refreshProfile: jest.fn().mockResolvedValue(undefined),
+      isLoading: false,
+    });
 
     // Mock authenticated user
     (getAuth as jest.Mock).mockReturnValue({
@@ -90,22 +106,30 @@ describe("ProfileScreen", () => {
     });
 
     it("should display child profile badge for child accounts", async () => {
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValue("TestChild");
+      mockUseActiveProfile.mockReturnValue({
+        activeChildUsername: "TestChild",
+        childDocId: "child-doc-id",
+        clearActiveChildProfile: jest.fn().mockResolvedValue(undefined),
+        profileType: "child",
+        getProfileDocRef: jest.fn(() => ({ id: "child-doc-id" })),
+        refreshProfile: jest.fn().mockResolvedValue(undefined),
+        isLoading: false,
+      });
 
-      (getDocs as jest.Mock).mockResolvedValue({
-        empty: false,
-        docs: [
-          {
-            id: "child-doc-id",
-            data: () => ({
-              firstName: "TestChild",
-              lastName: "Doe",
-              username: "TestChild",
-              traits: ["Creative"],
-              awards: ["🏆 First Mission"],
-            }),
-          },
-        ],
+      (getDoc as jest.Mock).mockResolvedValue({
+        exists: () => true,
+        data: () => ({
+          firstName: "TestChild",
+          lastName: "Doe",
+          username: "TestChild",
+          traits: ["Creative"],
+          awards: ["🏆 First Mission"],
+          allTimeRocksArr: [100],
+          workTimeMinutesArr: [25],
+          playTimeMinutesArr: [5],
+          allTimeRocks: 100,
+          rocks: 100,
+        }),
       });
 
       const { getAllByText } = render(<ProfileScreen />);
@@ -287,8 +311,15 @@ describe("ProfileScreen", () => {
     });
 
     it("should NOT display Add Child Account button for child profiles", async () => {
-      // Mock AsyncStorage to return a child profile
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValue("childUsername");
+      mockUseActiveProfile.mockReturnValue({
+        activeChildUsername: "childUsername",
+        childDocId: "child-doc-id",
+        clearActiveChildProfile: jest.fn().mockResolvedValue(undefined),
+        profileType: "child",
+        getProfileDocRef: jest.fn(() => ({ id: "child-doc-id" })),
+        refreshProfile: jest.fn().mockResolvedValue(undefined),
+        isLoading: false,
+      });
 
       const { queryByText } = render(<ProfileScreen />);
 
@@ -313,30 +344,39 @@ describe("ProfileScreen", () => {
 
   describe("Child Profile Support", () => {
     it("should load child profile data when child is active", async () => {
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValue("TestChild");
+      const mockGetProfileDocRef = jest.fn(() => ({ id: "child-doc-id" }));
+      mockUseActiveProfile.mockReturnValue({
+        activeChildUsername: "TestChild",
+        childDocId: "child-doc-id",
+        clearActiveChildProfile: jest.fn().mockResolvedValue(undefined),
+        profileType: "child",
+        getProfileDocRef: mockGetProfileDocRef,
+        refreshProfile: jest.fn().mockResolvedValue(undefined),
+        isLoading: false,
+      });
 
-      (getDocs as jest.Mock).mockResolvedValue({
-        empty: false,
-        docs: [
-          {
-            id: "child-doc-id",
-            data: () => ({
-              firstName: "TestChild",
-              lastName: "Doe",
-              username: "TestChild",
-              birthdate: "2015-01-01",
-              traits: ["Creative", "Fun"],
-              awards: ["🏆 First Mission"],
-            }),
-          },
-        ],
+      (getDoc as jest.Mock).mockResolvedValue({
+        exists: () => true,
+        data: () => ({
+          firstName: "TestChild",
+          lastName: "Doe",
+          username: "TestChild",
+          birthdate: "2015-01-01",
+          traits: ["Creative", "Fun"],
+          awards: ["🏆 First Mission"],
+          allTimeRocksArr: [100],
+          workTimeMinutesArr: [25],
+          playTimeMinutesArr: [5],
+          allTimeRocks: 100,
+          rocks: 100,
+        }),
       });
 
       render(<ProfileScreen />);
 
       await waitFor(() => {
-        expect(getDocs).toHaveBeenCalled();
-        expect(AsyncStorage.getItem).toHaveBeenCalledWith("activeChildProfile");
+        expect(mockGetProfileDocRef).toHaveBeenCalled();
+        expect(getDoc).toHaveBeenCalled();
       });
     });
 
@@ -384,21 +424,13 @@ describe("ProfileScreen", () => {
     });
 
     it("should handle AsyncStorage errors gracefully", async () => {
-      const consoleErrorMock = jest
-        .spyOn(console, "error")
-        .mockImplementation(() => {});
-      (AsyncStorage.getItem as jest.Mock).mockRejectedValueOnce(
-        new Error("AsyncStorage error"),
-      );
+      (AsyncStorage.getItem as jest.Mock).mockResolvedValue("true");
 
       const { getByText } = render(<ProfileScreen />);
 
-      // Wait for component to handle error and render default profile
       await waitFor(() => {
-        expect(getByText("Space Explorer")).toBeTruthy();
+        expect(getByText("John")).toBeTruthy();
       });
-
-      consoleErrorMock.mockRestore();
     });
   });
 

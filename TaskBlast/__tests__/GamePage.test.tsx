@@ -18,6 +18,16 @@ import { router } from "expo-router";
 import { AccessibilityContext } from "../app/context/AccessibilityContext";
 import { getDoc } from "firebase/firestore";
 
+const mockProfileDocRef = { id: "mock-profile-doc" };
+const mockActiveProfile = {
+  getProfileDocRef: jest.fn(() => mockProfileDocRef),
+  isLoading: false,
+};
+
+jest.mock("../app/context/ActiveProfileContext", () => ({
+  useActiveProfile: () => mockActiveProfile,
+}));
+
 jest.mock("../TTS", () => ({
   Text: ({ children, ...props }: any) => {
     const { Text } = require("react-native");

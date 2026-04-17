@@ -19,6 +19,21 @@ import { router } from "expo-router";
 import { getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
+const mockProfileDocRef = { id: "mock-profile-doc" };
+const mockActiveProfile = {
+  activeChildUsername: null as string | null,
+  childDocId: null as string | null,
+  getProfileDocRef: jest.fn(() => mockProfileDocRef),
+  clearActiveChildProfile: jest.fn().mockResolvedValue(undefined),
+  profileType: "parent",
+  refreshProfile: jest.fn().mockResolvedValue(undefined),
+  isLoading: false,
+};
+
+jest.mock("../app/context/ActiveProfileContext", () => ({
+  useActiveProfile: () => mockActiveProfile,
+}));
+
 jest.mock("../app/context/AccessibilityContext", () => ({
   useAccessibility: () => ({
     language: "en",
@@ -41,6 +56,12 @@ jest.mock("../app/context/AccessibilityContext", () => ({
 // Use global audio mocks from jest.setup.js
 const mockPlay = (global as any).mockAudioPlayer.play;
 const mockPause = (global as any).mockAudioPlayer.pause;
+const mockAuthInstance = {
+  currentUser: {
+    uid: "test-uid",
+    email: "test@example.com",
+  },
+};
 
 describe("HomeScreen", () => {
   beforeEach(() => {
@@ -55,12 +76,7 @@ describe("HomeScreen", () => {
     });
 
     // Mock getAuth to return a user
-    (getAuth as jest.Mock).mockReturnValue({
-      currentUser: {
-        uid: "test-uid",
-        email: "test@example.com",
-      },
-    });
+    (getAuth as jest.Mock).mockReturnValue(mockAuthInstance);
   });
 
   describe("UI Rendering", () => {

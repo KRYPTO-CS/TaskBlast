@@ -18,6 +18,17 @@ import {
 } from "@testing-library/react-native";
 import PlanetModal from "../app/components/PlanetModal";
 
+const mockActiveProfile = {
+  childDocId: null as string | null,
+  getProfileDocRef: jest.fn(() => ({ id: "mock-profile-doc" })),
+  isLoading: false,
+  profileType: "parent",
+};
+
+jest.mock("../app/context/ActiveProfileContext", () => ({
+  useActiveProfile: () => mockActiveProfile,
+}));
+
 jest.mock("firebase/auth", () => ({
   getAuth: jest.fn(),
 }));

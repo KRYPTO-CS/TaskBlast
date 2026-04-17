@@ -298,6 +298,44 @@ jest.mock("./app/context/AudioContext", () => ({
   })),
 }));
 
+const mockRefreshProfile = jest.fn().mockResolvedValue(undefined);
+const mockSetActiveChildProfile = jest.fn().mockResolvedValue(undefined);
+const mockClearActiveChildProfile = jest.fn().mockResolvedValue(undefined);
+const mockGetProfilePathSegments = jest.fn((...segments) => [
+  "users",
+  "test-uid",
+  ...segments,
+]);
+const mockGetProfileDocRef = jest.fn(() => ({ id: "mock-profile-doc" }));
+const mockGetProfileCollectionRef = jest.fn(() => ({
+  id: "mock-profile-collection",
+}));
+const mockGetParentDocRef = jest.fn(() => ({ id: "mock-parent-doc" }));
+const mockGetChildDocRef = jest.fn(() => ({ id: "mock-child-doc" }));
+
+const defaultActiveProfileMock = {
+  isLoading: false,
+  profileType: "parent",
+  activeChildUsername: null,
+  childDocId: null,
+  childAccountType: null,
+  parentAccountType: null,
+  parentMangerialPinSet: false,
+  refreshProfile: mockRefreshProfile,
+  setActiveChildProfile: mockSetActiveChildProfile,
+  clearActiveChildProfile: mockClearActiveChildProfile,
+  getProfilePathSegments: mockGetProfilePathSegments,
+  getProfileDocRef: mockGetProfileDocRef,
+  getProfileCollectionRef: mockGetProfileCollectionRef,
+  getParentDocRef: mockGetParentDocRef,
+  getChildDocRef: mockGetChildDocRef,
+};
+
+jest.mock("./app/context/ActiveProfileContext", () => ({
+  ActiveProfileProvider: ({ children }) => children,
+  useActiveProfile: jest.fn(() => defaultActiveProfileMock),
+}));
+
 // Mock react-i18next
 jest.mock("react-i18next", () => ({
   useTranslation: () => {

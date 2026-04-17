@@ -33,6 +33,19 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { Alert } from "react-native";
 
+const mockActiveProfile = {
+  activeChildUsername: null as string | null,
+  childDocId: null as string | null,
+  getParentDocRef: () => ({ id: "mock-parent-doc" }),
+  getProfileCollectionRef: () => ({ id: "mock-tasks-collection" }),
+  getProfileDocRef: () => ({ id: "mock-profile-doc" }),
+  isLoading: false,
+};
+
+jest.mock("../app/context/ActiveProfileContext", () => ({
+  useActiveProfile: () => mockActiveProfile,
+}));
+
 jest.mock("../app/context/AccessibilityContext", () => ({
   useAccessibility: () => ({
     language: "en",
@@ -63,6 +76,10 @@ describe("TaskListModal", () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
+    mockActiveProfile.activeChildUsername = null;
+    mockActiveProfile.childDocId = null;
+    mockActiveProfile.isLoading = false;
+
     // Setup auth mock
     (getAuth as jest.Mock).mockReturnValue({
       currentUser: { uid: "test-uid", email: "test@example.com" },
@@ -75,6 +92,15 @@ describe("TaskListModal", () => {
         forEach: (fn: any) => {},
       });
       return mockUnsubscribe;
+    });
+
+    const { getDoc } = require("firebase/firestore");
+    (getDoc as jest.Mock).mockResolvedValue({
+      exists: () => true,
+      data: () => ({
+        accountType: "independent",
+        managerialPin: null,
+      }),
     });
 
     // Default: no child profile active
@@ -130,7 +156,7 @@ describe("TaskListModal", () => {
 
       // Modal starts loading tasks
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalledWith("activeChildProfile");
+        expect(onSnapshot).toHaveBeenCalled();
       });
     });
 
@@ -192,7 +218,7 @@ describe("TaskListModal", () => {
       rerender(<TaskListModal visible={true} onClose={mockOnClose} />);
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalled();
+        expect(onSnapshot).toHaveBeenCalled();
       });
     });
   });
@@ -222,7 +248,7 @@ describe("TaskListModal", () => {
       );
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalled();
+        expect(onSnapshot).toHaveBeenCalled();
       });
 
       const editButton = getByText("Edit");
@@ -240,7 +266,7 @@ describe("TaskListModal", () => {
       );
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalled();
+        expect(onSnapshot).toHaveBeenCalled();
       });
 
       const editButton = getByText("Edit");
@@ -288,7 +314,7 @@ describe("TaskListModal", () => {
       );
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalled();
+        expect(onSnapshot).toHaveBeenCalled();
       });
 
       const editButton = getByText("Edit");
@@ -308,7 +334,7 @@ describe("TaskListModal", () => {
       );
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalled();
+        expect(onSnapshot).toHaveBeenCalled();
       });
 
       const editButton = getByText("Edit");
@@ -327,7 +353,7 @@ describe("TaskListModal", () => {
       );
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalled();
+        expect(onSnapshot).toHaveBeenCalled();
       });
 
       const editButton = getByText("Edit");
@@ -363,7 +389,7 @@ describe("TaskListModal", () => {
       );
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalled();
+        expect(onSnapshot).toHaveBeenCalled();
       });
 
       const archiveButton = getByText("Archive");
@@ -623,11 +649,11 @@ describe("TaskListModal", () => {
       );
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalledWith("activeChildProfile");
+        expect(onSnapshot).toHaveBeenCalled();
       });
 
       await waitFor(() => {
-        expect(getDocs).toHaveBeenCalled();
+        expect(onSnapshot).toHaveBeenCalled();
       });
     });
 
@@ -637,7 +663,7 @@ describe("TaskListModal", () => {
       );
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalledWith("activeChildProfile");
+        expect(onSnapshot).toHaveBeenCalled();
       });
 
       // Collection path tested through Firestore calls
@@ -675,7 +701,7 @@ describe("TaskListModal", () => {
       );
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalledWith("activeChildProfile");
+        expect(onSnapshot).toHaveBeenCalled();
       });
 
       // Child rocks increment tested through setDoc calls
@@ -730,7 +756,7 @@ describe("TaskListModal", () => {
       );
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalled();
+        expect(onSnapshot).toHaveBeenCalled();
       });
 
       // Switch to archive mode
@@ -833,7 +859,7 @@ describe("TaskListModal", () => {
       );
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalled();
+        expect(onSnapshot).toHaveBeenCalled();
       });
 
       // Error handling tested through Alert.alert calls
@@ -849,7 +875,7 @@ describe("TaskListModal", () => {
       );
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalled();
+        expect(onSnapshot).toHaveBeenCalled();
       });
 
       alertSpy.mockRestore();
@@ -874,7 +900,7 @@ describe("TaskListModal", () => {
       );
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalled();
+        expect(onSnapshot).toHaveBeenCalled();
       });
 
       // Switch to edit mode
@@ -899,7 +925,7 @@ describe("TaskListModal", () => {
       );
 
       await waitFor(() => {
-        expect(AsyncStorage.getItem).toHaveBeenCalled();
+        expect(onSnapshot).toHaveBeenCalled();
       });
 
       const editButton = getByText("Edit");

@@ -66,11 +66,11 @@ describe("Login Process", () => {
         user: mockUser,
       });
 
-      const { getByPlaceholderText, getAllByText } = render(<Login />);
+      const { getByPlaceholderText, getByText } = render(<Login />);
 
       const usernameInput = getByPlaceholderText("Email or Username");
       const passwordInput = getByPlaceholderText("Password");
-      const submitButton = getAllByText("Sign Up")[0];
+      const submitButton = getByText("Submit");
 
       fireEvent.changeText(usernameInput, "test@example.com");
       fireEvent.changeText(passwordInput, "password123");
@@ -95,12 +95,12 @@ describe("Login Process", () => {
         user: mockUser,
       });
 
-      const { getByPlaceholderText, getAllByText, queryByPlaceholderText } =
+      const { getByPlaceholderText, getByText, queryByPlaceholderText } =
         render(<Login />);
 
       const usernameInput = getByPlaceholderText("Email or Username");
       const passwordInput = getByPlaceholderText("Password");
-      const submitButton = getAllByText("Sign Up")[0];
+      const submitButton = getByText("Submit");
 
       fireEvent.changeText(usernameInput, "test@example.com");
       fireEvent.changeText(passwordInput, "password123");
@@ -126,11 +126,11 @@ describe("Login Process", () => {
         user: mockUser,
       });
 
-      const { getByPlaceholderText, getAllByText } = render(<Login />);
+      const { getByPlaceholderText, getByText } = render(<Login />);
 
       const usernameInput = getByPlaceholderText("Email or Username");
       const passwordInput = getByPlaceholderText("Password");
-      const submitButton = getAllByText("Sign Up")[0];
+      const submitButton = getByText("Submit");
 
       fireEvent.changeText(usernameInput, "  test@example.com  ");
       fireEvent.changeText(passwordInput, "  password123  ");
@@ -156,13 +156,13 @@ describe("Login Process", () => {
         },
       });
 
-      const { getByPlaceholderText, getAllByText, queryByText } = render(
+      const { getByPlaceholderText, getByText, queryByText } = render(
         <Login />,
       );
 
       const usernameInput = getByPlaceholderText("Email or Username");
       const passwordInput = getByPlaceholderText("Password");
-      const submitButton = getAllByText("Sign Up")[0];
+      const submitButton = getByText("Submit");
 
       fireEvent.changeText(usernameInput, "admin");
       fireEvent.changeText(passwordInput, "taskblaster");
@@ -186,11 +186,11 @@ describe("Login Process", () => {
         },
       });
 
-      const { getByPlaceholderText, getAllByText } = render(<Login />);
+      const { getByPlaceholderText, getByText } = render(<Login />);
 
       const usernameInput = getByPlaceholderText("Email or Username");
       const passwordInput = getByPlaceholderText("Password");
-      const submitButton = getAllByText("Sign Up")[0];
+      const submitButton = getByText("Submit");
 
       fireEvent.changeText(usernameInput, "ADMIN");
       fireEvent.changeText(passwordInput, "taskblaster");
@@ -214,11 +214,11 @@ describe("Login Process", () => {
         },
       });
 
-      const { getByPlaceholderText, getAllByText } = render(<Login />);
+      const { getByPlaceholderText, getByText } = render(<Login />);
 
       const usernameInput = getByPlaceholderText("Email or Username");
       const passwordInput = getByPlaceholderText("Password");
-      const submitButton = getAllByText("Sign Up")[0];
+      const submitButton = getByText("Submit");
 
       fireEvent.changeText(usernameInput, "  admin  ");
       fireEvent.changeText(passwordInput, "  taskblaster  ");
@@ -236,10 +236,10 @@ describe("Login Process", () => {
 
   describe("Invalid Login", () => {
     it("should not proceed with empty username", () => {
-      const { getByPlaceholderText, getAllByText } = render(<Login />);
+      const { getByPlaceholderText, getByText } = render(<Login />);
 
       const passwordInput = getByPlaceholderText("Password");
-      const submitButton = getAllByText("Sign Up")[0];
+      const submitButton = getByText("Submit");
 
       fireEvent.changeText(passwordInput, "password123");
       fireEvent.press(submitButton);
@@ -248,10 +248,10 @@ describe("Login Process", () => {
     });
 
     it("should not proceed with empty password", () => {
-      const { getByPlaceholderText, getAllByText } = render(<Login />);
+      const { getByPlaceholderText, getByText } = render(<Login />);
 
       const usernameInput = getByPlaceholderText("Email or Username");
-      const submitButton = getAllByText("Sign Up")[0];
+      const submitButton = getByText("Submit");
 
       fireEvent.changeText(usernameInput, "test@example.com");
       fireEvent.press(submitButton);
@@ -269,11 +269,11 @@ describe("Login Process", () => {
         mockError,
       );
 
-      const { getByPlaceholderText, getAllByText } = render(<Login />);
+      const { getByPlaceholderText, getByText } = render(<Login />);
 
       const usernameInput = getByPlaceholderText("Email or Username");
       const passwordInput = getByPlaceholderText("Password");
-      const submitButton = getAllByText("Sign Up")[0];
+      const submitButton = getByText("Submit");
 
       fireEvent.changeText(usernameInput, "invalid@example.com");
       fireEvent.changeText(passwordInput, "wrongpassword");
@@ -294,11 +294,11 @@ describe("Login Process", () => {
         mockError,
       );
 
-      const { getByPlaceholderText, getAllByText } = render(<Login />);
+      const { getByPlaceholderText, getByText } = render(<Login />);
 
       const usernameInput = getByPlaceholderText("Email or Username");
       const passwordInput = getByPlaceholderText("Password");
-      const submitButton = getAllByText("Sign Up")[0];
+      const submitButton = getByText("Submit");
 
       fireEvent.changeText(usernameInput, "nonexistent@example.com");
       fireEvent.changeText(passwordInput, "password123");
@@ -323,7 +323,7 @@ describe("Login Process", () => {
     it("should navigate to Sign Up flow", () => {
       const { getAllByText, getByText } = render(<Login />);
 
-      const signUpLink = getAllByText("Sign Up")[1];
+      const signUpLink = getByText("Sign Up");
       fireEvent.press(signUpLink);
 
       // Should navigate to SignUpLanguage screen (first step in signup flow)
