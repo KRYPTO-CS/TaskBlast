@@ -30,24 +30,9 @@
   "Name": {
     "title": "¿Cómo te llamas?",
     "desc": "Como quieres que te llamen en TaskBlast",
-  "Aspergers": "Síndrome de Asperger",
-  "Autism": "Autismo",
-  "DevelopmentalLanguageDisorder": "Trastorno del desarrollo del lenguaje",
-  "Disability Confident": "Confianza en la discapacidad",
-  "Dyscalculia": "Discalculia",
-  "Dysgraphia": "Disgrafía",
-  "Dyslexia": "Dislexia",
-  "Dyspraxia": "Dispraxia",
-  "Hyperlexia": "Hiperlexia",
-  "Irlen Syndrome": "Síndrome de Irlen",
-  "OCD": "TOC",
-  "Synthesia": "Sinestesia",
-  "Tourette's Syndrome": "Síndrome de Tourette",
-    "passwordPlaceholder": "Contraseña",
-    "ConfirmPasswordPlaceholder": "Confirmar contraseña",
-    "submit": "Crear cuenta",
-    "match": "Las contraseñas no coinciden",
-    "length": "La contraseña debe tener al menos 8 caracteres"
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "continue": "Continuar"
   },
   "Login": {
     "title": "Iniciar sesión",

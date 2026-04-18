@@ -30,20 +30,18 @@
   "Name": {
     "title": "Quel est votre nom ?",
     "desc": "Dites-nous comment vous appeler lors de l’utilisation de TaskBlast",
-    "Aspergers": "Syndrome d'Asperger",
-    "Autism": "Autisme",
-    "DevelopmentalLanguageDisorder": "Trouble développemental du langage",
-    "Disability Confident": "Confiance en situation de handicap",
-    "Dyscalculia": "Dyscalculie",
-    "Dysgraphia": "Dysgraphie",
-    "Dyslexia": "Dyslexie",
-    "Dyspraxia": "Dyspraxie",
-    "Hyperlexia": "Hyperlexie",
-    "Irlen Syndrome": "Syndrome d'Irlen",
-    "OCD": "TOC",
-    "Synthesia": "Synesthésie",
-    "Tourette's Syndrome": "Syndrome de Tourette",
-    "passwordPlaceholder": "Mot de passe",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "continue": "Continuer"
+  },  "Email": {
+    "title": "Quel est votre e-mail ?",
+    "desc": "Nous vous enverrons un code de vérification pour confirmer votre adresse e-mail",
+    "emailPlaceholder": "Adresse e-mail",
+    "send": "Envoyer le lien"
+  },
+  "Password": {
+    "title": "Créer un mot de passe",
+    "desc": "Choisissez un mot de passe fort pour protéger votre compte",    "passwordPlaceholder": "Mot de passe",
     "ConfirmPasswordPlaceholder": "Confirmer le mot de passe",
     "submit": "Créer un compte",
     "match": "Les mots de passe ne correspondent pas",

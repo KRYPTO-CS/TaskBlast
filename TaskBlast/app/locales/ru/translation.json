@@ -30,24 +30,9 @@
   "Name": {
     "title": "Как вас зовут?",
     "desc": "Сообщите нам, как к вам обращаться при использовании TaskBlast",
-  "Aspergers": "Синдром Аспергера",
-  "Autism": "Аутизм",
-  "DevelopmentalLanguageDisorder": "Расстройство развития речи",
-  "Disability Confident": "Уверенность при инвалидности",
-  "Dyscalculia": "Дискалькулия",
-  "Dysgraphia": "Дисграфия",
-  "Dyslexia": "Дислексия",
-  "Dyspraxia": "Диспраксия",
-  "Hyperlexia": "Гиперлексия",
-  "Irlen Syndrome": "Синдром Ирлен",
-  "OCD": "ОКР",
-  "Synthesia": "Синестезия",
-  "Tourette's Syndrome": "Синдром Туретта",
-    "passwordPlaceholder": "Пароль",
-    "ConfirmPasswordPlaceholder": "Подтвердите пароль",
-    "submit": "Создать учетную запись",
-    "match": "Пароли не совпадают",
-    "length": "Пароль должен содержать не менее 8 символов"
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "continue": "Продолжить"
   },
   "Login": {
     "title": "Вход",

@@ -30,19 +30,19 @@
   "Name": {
     "title": "आपका नाम क्या है?",
     "desc": "TaskBlast का उपयोग करते समय हम आपको किस नाम से बुलाएँ, बताएं",
-  "Aspergers": "एस्पर्जर सिंड्रोम",
-  "Autism": "ऑटिज़्म",
-  "DevelopmentalLanguageDisorder": "विकासात्मक भाषा विकार",
-  "Disability Confident": "विकलांगता आत्मविश्वास",
-  "Dyscalculia": "डिस्कैल्कुलिया",
-  "Dysgraphia": "डिसग्राफिया",
-  "Dyslexia": "डिस्लेक्सिया",
-  "Dyspraxia": "डिस्प्रैक्सिया",
-  "Hyperlexia": "हाइपरलेक्सिया",
-  "Irlen Syndrome": "इरलेन सिंड्रोम",
-  "OCD": "ओसीडी",
-  "Synthesia": "सिनेस्थेसिया",
-  "Tourette's Syndrome": "टॉरेट सिंड्रोम",
+    "firstName": "पहला नाम",
+    "lastName": "अंतिम नाम",
+    "continue": "जारी रखें"
+  },
+  "Email": {
+    "title": "आपका ईमेल क्या है?",
+    "desc": "हम आपके ईमेल पते की पुष्टि करने के लिए एक सत्यापन कोड भेजेंगे",
+    "emailPlaceholder": "ईमेल पता",
+    "send": "लिंक भेजें"
+  },
+  "Password": {
+    "title": "पासवर्ड बनाएं",
+    "desc": "अपने खाते की सुरक्षा के लिए एक मजबूत पासवर्ड चुनें",
     "passwordPlaceholder": "पासवर्ड",
     "ConfirmPasswordPlaceholder": "पासवर्ड की पुष्टि करें",
     "submit": "खाता बनाएं",

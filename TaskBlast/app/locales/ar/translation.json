@@ -30,24 +30,9 @@
   "Name": {
     "title": "ما اسمك؟",
     "desc": "أخبرنا بالاسم الذي تحب أن نناديك به أثناء استخدام TaskBlast",
-  "Aspergers": "متلازمة أسبرجر",
-  "Autism": "التوحد",
-  "DevelopmentalLanguageDisorder": "اضطراب تطور اللغة",
-  "Disability Confident": "الثقة مع الإعاقة",
-  "Dyscalculia": "عسر الحساب",
-  "Dysgraphia": "عسر الكتابة",
-  "Dyslexia": "عسر القراءة",
-  "Dyspraxia": "تعذر الأداء",
-  "Hyperlexia": "فرط القراءة",
-  "Irlen Syndrome": "متلازمة إيرلن",
-  "OCD": "الوسواس القهري",
-  "Synthesia": "الحس المرافق",
-  "Tourette's Syndrome": "متلازمة توريت",
-    "passwordPlaceholder": "كلمة المرور",
-    "ConfirmPasswordPlaceholder": "تأكيد كلمة المرور",
-    "submit": "إنشاء الحساب",
-    "match": "كلمتا المرور غير متطابقتين",
-    "length": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل"
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "continue": "متابعة"
   },
   "Login": {
     "title": "تسجيل الدخول",

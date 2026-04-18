@@ -30,23 +30,23 @@
   "Name": {
     "title": "您的姓名是？",
     "desc": "告诉我们在使用 TaskBlast 时如何称呼您",
-  "Aspergers": "阿斯伯格综合征",
-  "Autism": "自闭症",
-  "DevelopmentalLanguageDisorder": "发展性语言障碍",
-  "Disability Confident": "残障自信",
-  "Dyscalculia": "计算障碍",
-  "Dysgraphia": "书写障碍",
-  "Dyslexia": "阅读障碍",
-  "Dyspraxia": "动作协调障碍",
-  "Hyperlexia": "超读症",
-  "Irlen Syndrome": "艾尔伦综合征",
-  "OCD": "强迫症",
-  "Synthesia": "联觉",
-  "Tourette's Syndrome": "图雷特综合征",
+    "firstName": "名字",
+    "lastName": "姓氏",
+    "continue": "继续"
+  },
+  "Email": {
+    "title": "您的电子邮件是什么？",
+    "desc": "我们将向您发送验证码以确认您的电子邮件地址",
+    "emailPlaceholder": "电子邮件地址",
+    "send": "发送链接"
+  },
+  "Password": {
+    "title": "创建密码",
+    "desc": "选择强密码来保护您的帐户",
     "passwordPlaceholder": "密码",
     "ConfirmPasswordPlaceholder": "确认密码",
     "submit": "创建账户",
-    "match": "两次输入的密码不一致",
+    "match": "密码不匹配",
     "length": "密码长度必须至少为 8 个字符"
   },
   "Login": {
