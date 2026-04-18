@@ -133,6 +133,49 @@
     "customize": "Tap to customize",
     "replayTutorial": "Replay Tutorial"
   },
+  "PrivacyScreen": {
+    "lastUpdated": "Last updated: March 30, 2026",
+    "intro": "At TaskBlast, yer privacy matters to us. This Privacy Policy explains what information we collect, how we use it, and the choices ye have. Please read it carefully.",
+    "backToSettings": "Back",
+    "sections": {
+      "informationCollect": {
+        "title": "Information We Collect",
+        "body": "We collect information ye provide when creating an account, such as yer name, email address, and date of birth. Fer child accounts, a parent or guardian must authorize the account. We also collect usage data such as tasks completed, time spent in focus sessions, and in-app purchases to improve yer experience."
+      },
+      "howUse": {
+        "title": "How We Use Yer Information",
+        "body": "Yer information be used to provide and improve the TaskBlast service, personalize yer experience, send notifications ye opted into, and maintain account security. We do not sell yer personal data to third parties."
+      },
+      "sharing": {
+        "title": "Information Sharing",
+        "body": "We do not share yer personal information with third parties except as required by law or to provide core app functionality (e.g., Firebase authentication and cloud storage). Any third-party services we use be bound by their own privacy policies."
+      },
+      "security": {
+        "title": "Data Security",
+        "body": "We use industry-standard encryption and Firebase security rules to protect yer data. Access to personal information be restricted to authorized crew only. However, no method of transmission over the internet be 100% secure."
+      },
+      "children": {
+        "title": "Children's Privacy",
+        "body": "TaskBlast be designed fer users of all ages. Accounts fer users under 13 be managed by a parent or guardian through the managed account feature. We do not knowingly collect personal information from children under 13 without verified parental consent."
+      },
+      "notifications": {
+        "title": "Notifications",
+        "body": "We may send push notifications related to task reminders and app updates. Ye can manage yer notification preferences at any time in the Settings menu."
+      },
+      "rights": {
+        "title": "Yer Rights",
+        "body": "Ye may request access to, correction of, or deletion of yer personal data at any time by contacting us. Ye may also delete yer account directly from the app, which will remove all associated data from our systems."
+      },
+      "changes": {
+        "title": "Changes to This Policy",
+        "body": "We may update this Privacy Policy from time to time. We will notify ye of any significant changes via email or an in-app notification. Continued use of TaskBlast after changes take effect constitutes yer acceptance of the revised policy."
+      },
+      "contact": {
+        "title": "Contact Us",
+        "body": "If ye have any questions about this Privacy Policy, please contact us at kryptocapstone@gmail.com. We aim to respond to all inquiries within 5 business days."
+      }
+    }
+  },
   "Tasks": {
     "title": "Task Ledger",
     "normal": "Active",

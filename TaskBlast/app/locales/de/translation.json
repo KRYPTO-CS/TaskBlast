@@ -133,6 +133,49 @@
     "customize": "Tippen Sie zum Anpassen",
     "replayTutorial": "Tutorial erneut abspielen"
   },
+  "PrivacyScreen": {
+    "lastUpdated": "Zuletzt aktualisiert: 30. Marz 2026",
+    "intro": "Bei TaskBlast ist uns Ihre Privatsphare wichtig. Diese Datenschutzrichtlinie erklart, welche Informationen wir erfassen, wie wir sie verwenden und welche Wahlmoglichkeiten Sie haben. Bitte lesen Sie sie sorgfaltig.",
+    "backToSettings": "Zuruck",
+    "sections": {
+      "informationCollect": {
+        "title": "Welche Informationen wir erfassen",
+        "body": "Wir erfassen Informationen, die Sie beim Erstellen eines Kontos angeben, wie Name, E-Mail-Adresse und Geburtsdatum. Bei Kinderkonten muss ein Elternteil oder Erziehungsberechtigter das Konto autorisieren. Wir erfassen auch Nutzungsdaten wie erledigte Aufgaben, Zeit in Fokus-Sitzungen und In-App-Kaufe, um Ihre Erfahrung zu verbessern."
+      },
+      "howUse": {
+        "title": "Wie wir Ihre Informationen verwenden",
+        "body": "Ihre Informationen werden verwendet, um den TaskBlast-Dienst bereitzustellen und zu verbessern, Ihre Erfahrung zu personalisieren, von Ihnen aktivierte Benachrichtigungen zu senden und die Kontosicherheit zu gewahrleisten. Wir verkaufen Ihre personenbezogenen Daten nicht an Dritte."
+      },
+      "sharing": {
+        "title": "Weitergabe von Informationen",
+        "body": "Wir geben Ihre personenbezogenen Daten nicht an Dritte weiter, es sei denn, dies ist gesetzlich erforderlich oder zur Bereitstellung zentraler App-Funktionen notwendig (z. B. Firebase-Authentifizierung und Cloud-Speicher). Von uns genutzte Drittanbieterdienste unterliegen ihren eigenen Datenschutzrichtlinien."
+      },
+      "security": {
+        "title": "Datensicherheit",
+        "body": "Wir verwenden branchenubliche Verschlusselung und Firebase-Sicherheitsregeln zum Schutz Ihrer Daten. Der Zugriff auf personenbezogene Informationen ist auf autorisiertes Personal beschrankt. Dennoch ist keine Ubertragungsmethode im Internet zu 100 % sicher."
+      },
+      "children": {
+        "title": "Datenschutz von Kindern",
+        "body": "TaskBlast ist fur Nutzer aller Altersgruppen ausgelegt. Konten fur Nutzer unter 13 Jahren werden uber die Funktion fur verwaltete Konten von einem Elternteil oder Erziehungsberechtigten verwaltet. Wir erfassen nicht wissentlich personenbezogene Daten von Kindern unter 13 Jahren ohne verifizierte elterliche Zustimmung."
+      },
+      "notifications": {
+        "title": "Benachrichtigungen",
+        "body": "Wir konnen Push-Benachrichtigungen zu Aufgaben-Erinnerungen und App-Updates senden. Sie konnen Ihre Benachrichtigungseinstellungen jederzeit im Einstellungsmenü verwalten."
+      },
+      "rights": {
+        "title": "Ihre Rechte",
+        "body": "Sie konnen jederzeit Zugang zu Ihren personenbezogenen Daten, deren Berichtigung oder Loschung anfordern, indem Sie uns kontaktieren. Sie konnen Ihr Konto auch direkt in der App loschen, wodurch alle zugehorigen Daten aus unseren Systemen entfernt werden."
+      },
+      "changes": {
+        "title": "Anderungen dieser Richtlinie",
+        "body": "Wir konnen diese Datenschutzrichtlinie von Zeit zu Zeit aktualisieren. Uber wesentliche Anderungen informieren wir Sie per E-Mail oder In-App-Benachrichtigung. Die fortgesetzte Nutzung von TaskBlast nach Inkrafttreten der Anderungen gilt als Zustimmung zur uberarbeiteten Richtlinie."
+      },
+      "contact": {
+        "title": "Kontakt",
+        "body": "Wenn Sie Fragen zu dieser Datenschutzrichtlinie haben, kontaktieren Sie uns bitte unter kryptocapstone@gmail.com. Wir bemuhen uns, alle Anfragen innerhalb von 5 Werktagen zu beantworten."
+      }
+    }
+  },
   "Tasks": {
     "title": "Aufgabenliste",
     "normal": "Normal",

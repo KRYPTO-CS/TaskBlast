@@ -14,64 +14,55 @@ import { useColorPalette } from "../styles/colorBlindThemes";
 
 interface PolicySection {
   icon: keyof typeof Ionicons.glyphMap;
-  title: string;
-  body: string;
+  titleKey: string;
+  bodyKey: string;
 }
 
 const POLICY_SECTIONS: PolicySection[] = [
   {
     icon: "information-circle-outline",
-    title: "Information We Collect",
-    body:
-      "We collect information you provide when creating an account, such as your name, email address, and date of birth. For child accounts, a parent or guardian must authorize the account. We also collect usage data such as tasks completed, time spent in focus sessions, and in-app purchases to improve your experience.",
+    titleKey: "PrivacyScreen.sections.informationCollect.title",
+    bodyKey: "PrivacyScreen.sections.informationCollect.body",
   },
   {
     icon: "analytics-outline",
-    title: "How We Use Your Information",
-    body:
-      "Your information is used to provide and improve the TaskBlast service, personalize your experience, send notifications you have opted into, and maintain account security. We do not sell your personal data to third parties.",
+    titleKey: "PrivacyScreen.sections.howUse.title",
+    bodyKey: "PrivacyScreen.sections.howUse.body",
   },
   {
     icon: "share-social-outline",
-    title: "Information Sharing",
-    body:
-      "We do not share your personal information with third parties except as required by law or to provide core app functionality (e.g., Firebase authentication and cloud storage). Any third-party services we use are bound by their own privacy policies.",
+    titleKey: "PrivacyScreen.sections.sharing.title",
+    bodyKey: "PrivacyScreen.sections.sharing.body",
   },
   {
     icon: "lock-closed-outline",
-    title: "Data Security",
-    body:
-      "We use industry-standard encryption and Firebase security rules to protect your data. Access to personal information is restricted to authorized personnel only. However, no method of transmission over the internet is 100% secure.",
+    titleKey: "PrivacyScreen.sections.security.title",
+    bodyKey: "PrivacyScreen.sections.security.body",
   },
   {
     icon: "people-outline",
-    title: "Children's Privacy",
-    body:
-      "TaskBlast is designed for users of all ages. Accounts for users under 13 are managed by a parent or guardian through the managed account feature. We do not knowingly collect personal information from children under 13 without verified parental consent.",
+    titleKey: "PrivacyScreen.sections.children.title",
+    bodyKey: "PrivacyScreen.sections.children.body",
   },
   {
     icon: "notifications-outline",
-    title: "Notifications",
-    body:
-      "We may send push notifications related to task reminders and app updates. You can manage your notification preferences at any time in the Settings menu.",
+    titleKey: "PrivacyScreen.sections.notifications.title",
+    bodyKey: "PrivacyScreen.sections.notifications.body",
   },
   {
     icon: "create-outline",
-    title: "Your Rights",
-    body:
-      "You may request access to, correction of, or deletion of your personal data at any time by contacting us. You may also delete your account directly from the app, which will remove all associated data from our systems.",
+    titleKey: "PrivacyScreen.sections.rights.title",
+    bodyKey: "PrivacyScreen.sections.rights.body",
   },
   {
     icon: "refresh-outline",
-    title: "Changes to This Policy",
-    body:
-      "We may update this Privacy Policy from time to time. We will notify you of any significant changes via email or an in-app notification. Continued use of TaskBlast after changes take effect constitutes your acceptance of the revised policy.",
+    titleKey: "PrivacyScreen.sections.changes.title",
+    bodyKey: "PrivacyScreen.sections.changes.body",
   },
   {
     icon: "mail-outline",
-    title: "Contact Us",
-    body:
-      "If you have any questions about this Privacy Policy, please contact us at {Email TBD}. We aim to respond to all inquiries within 5 business days.",
+    titleKey: "PrivacyScreen.sections.contact.title",
+    bodyKey: "PrivacyScreen.sections.contact.body",
   },
 ];
 
@@ -139,7 +130,7 @@ export default function PrivacyScreen() {
             style={{ marginRight: 10 }}
           />
           <Text className="font-madimi text-white/80 text-sm">
-            Last updated: March 30, 2026
+            {t("PrivacyScreen.lastUpdated")}
           </Text>
         </View>
 
@@ -153,9 +144,7 @@ export default function PrivacyScreen() {
           }}
         >
           <Text className="font-madimi text-white/90 text-sm leading-6">
-            At TaskBlast, your privacy matters to us. This Privacy Policy
-            explains what information we collect, how we use it, and the choices
-            you have. Please read it carefully.
+            {t("PrivacyScreen.intro")}
           </Text>
         </View>
 
@@ -187,7 +176,7 @@ export default function PrivacyScreen() {
                 />
               </View>
               <Text className="font-orbitron-semibold text-white text-sm flex-1">
-                {section.title}
+                {t(section.titleKey)}
               </Text>
             </View>
 
@@ -199,7 +188,7 @@ export default function PrivacyScreen() {
 
             {/* Body */}
             <Text className="font-madimi text-white/80 text-sm leading-6">
-              {section.body}
+              {t(section.bodyKey)}
             </Text>
           </View>
         ))}
@@ -207,7 +196,7 @@ export default function PrivacyScreen() {
         {/* Back button */}
         <View className="mt-4">
           <MainButton
-            title="Back to Settings"
+            title={t("PrivacyScreen.backToSettings")}
             variant="primary"
             onPress={() => router.back()}
           />

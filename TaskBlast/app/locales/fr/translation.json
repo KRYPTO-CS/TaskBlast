@@ -133,6 +133,49 @@
     "customize": "Appuyez pour personnaliser",
     "replayTutorial": "Rejouer le tutoriel"
   },
+  "PrivacyScreen": {
+    "lastUpdated": "Dernière mise à jour : 30 mars 2026",
+    "intro": "Chez TaskBlast, votre vie privée est importante pour nous. Cette Politique de confidentialité explique quelles informations nous collectons, comment nous les utilisons et quels choix vous avez. Veuillez la lire attentivement.",
+    "backToSettings": "Retour",
+    "sections": {
+      "informationCollect": {
+        "title": "Informations que nous collectons",
+        "body": "Nous collectons les informations que vous fournissez lors de la création d'un compte, comme votre nom, votre adresse e-mail et votre date de naissance. Pour les comptes enfants, un parent ou tuteur doit autoriser le compte. Nous collectons également des données d'usage telles que les tâches terminées, le temps passé en sessions de concentration et les achats intégrés afin d'améliorer votre expérience."
+      },
+      "howUse": {
+        "title": "Comment nous utilisons vos informations",
+        "body": "Vos informations sont utilisées pour fournir et améliorer le service TaskBlast, personnaliser votre expérience, envoyer les notifications auxquelles vous avez consenti et maintenir la sécurité du compte. Nous ne vendons pas vos données personnelles à des tiers."
+      },
+      "sharing": {
+        "title": "Partage des informations",
+        "body": "Nous ne partageons pas vos informations personnelles avec des tiers, sauf si la loi l'exige ou pour fournir les fonctionnalités essentielles de l'application (par exemple, l'authentification Firebase et le stockage cloud). Les services tiers que nous utilisons sont soumis à leurs propres politiques de confidentialité."
+      },
+      "security": {
+        "title": "Sécurité des données",
+        "body": "Nous utilisons un chiffrement standard du secteur et les règles de sécurité Firebase pour protéger vos données. L'accès aux informations personnelles est limité au personnel autorisé uniquement. Cependant, aucune méthode de transmission sur Internet n'est sûre à 100 %."
+      },
+      "children": {
+        "title": "Confidentialité des enfants",
+        "body": "TaskBlast est conçu pour des utilisateurs de tous âges. Les comptes des utilisateurs de moins de 13 ans sont gérés par un parent ou tuteur via la fonctionnalité de compte géré. Nous ne collectons pas sciemment d'informations personnelles auprès d'enfants de moins de 13 ans sans consentement parental vérifié."
+      },
+      "notifications": {
+        "title": "Notifications",
+        "body": "Nous pouvons envoyer des notifications push liées aux rappels de tâches et aux mises à jour de l'application. Vous pouvez gérer vos préférences de notification à tout moment dans le menu Paramètres."
+      },
+      "rights": {
+        "title": "Vos droits",
+        "body": "Vous pouvez demander l'accès, la correction ou la suppression de vos données personnelles à tout moment en nous contactant. Vous pouvez également supprimer votre compte directement depuis l'application, ce qui supprimera toutes les données associées de nos systèmes."
+      },
+      "changes": {
+        "title": "Modifications de cette politique",
+        "body": "Nous pouvons mettre à jour cette Politique de confidentialité de temps à autre. Nous vous informerons de tout changement important par e-mail ou via une notification dans l'application. L'utilisation continue de TaskBlast après l'entrée en vigueur des changements constitue votre acceptation de la politique révisée."
+      },
+      "contact": {
+        "title": "Nous contacter",
+        "body": "Si vous avez des questions concernant cette Politique de confidentialité, veuillez nous contacter à kryptocapstone@gmail.com. Nous visons à répondre à toutes les demandes dans un délai de 5 jours ouvrables."
+      }
+    }
+  },
   "Tasks": {
     "title": "Mes tâches",
     "normal": "Normal",

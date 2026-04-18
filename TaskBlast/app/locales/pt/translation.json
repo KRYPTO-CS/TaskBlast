@@ -134,6 +134,49 @@
     "customize": "Toque para personalizar",
     "replayTutorial": "Repetir tutorial"
   },
+  "PrivacyScreen": {
+    "lastUpdated": "Ultima atualizacao: 30 de marco de 2026",
+    "intro": "Na TaskBlast, sua privacidade e importante para nos. Esta Politica de Privacidade explica quais informacoes coletamos, como as usamos e quais escolhas voce tem. Leia com atencao.",
+    "backToSettings": "Voltar",
+    "sections": {
+      "informationCollect": {
+        "title": "Informacoes que coletamos",
+        "body": "Coletamos informacoes fornecidas ao criar uma conta, como nome, e-mail e data de nascimento. Para contas infantis, um pai, mae ou responsavel deve autorizar a conta. Tambem coletamos dados de uso, como tarefas concluidas, tempo em sessoes de foco e compras no app, para melhorar sua experiencia."
+      },
+      "howUse": {
+        "title": "Como usamos suas informacoes",
+        "body": "Suas informacoes sao usadas para fornecer e melhorar o servico TaskBlast, personalizar sua experiencia, enviar notificacoes autorizadas por voce e manter a seguranca da conta. Nao vendemos seus dados pessoais a terceiros."
+      },
+      "sharing": {
+        "title": "Compartilhamento de informacoes",
+        "body": "Nao compartilhamos suas informacoes pessoais com terceiros, exceto quando exigido por lei ou para fornecer funcionalidades essenciais do app (por exemplo, autenticacao Firebase e armazenamento em nuvem). Quaisquer servicos de terceiros utilizados seguem suas proprias politicas de privacidade."
+      },
+      "security": {
+        "title": "Seguranca dos dados",
+        "body": "Usamos criptografia padrao do setor e regras de seguranca do Firebase para proteger seus dados. O acesso a informacoes pessoais e restrito apenas a pessoal autorizado. No entanto, nenhum metodo de transmissao pela internet e 100% seguro."
+      },
+      "children": {
+        "title": "Privacidade de criancas",
+        "body": "TaskBlast foi projetado para usuarios de todas as idades. Contas de usuarios menores de 13 anos sao gerenciadas por um pai, mae ou responsavel por meio do recurso de conta gerenciada. Nao coletamos intencionalmente informacoes pessoais de criancas menores de 13 anos sem consentimento parental verificado."
+      },
+      "notifications": {
+        "title": "Notificacoes",
+        "body": "Podemos enviar notificacoes push relacionadas a lembretes de tarefas e atualizacoes do aplicativo. Voce pode gerenciar suas preferencias de notificacao a qualquer momento no menu Configuracoes."
+      },
+      "rights": {
+        "title": "Seus direitos",
+        "body": "Voce pode solicitar acesso, correcao ou exclusao dos seus dados pessoais a qualquer momento entrando em contato conosco. Tambem e possivel excluir sua conta diretamente pelo app, o que removera todos os dados associados dos nossos sistemas."
+      },
+      "changes": {
+        "title": "Alteracoes desta politica",
+        "body": "Podemos atualizar esta Politica de Privacidade periodicamente. Notificaremos quaisquer mudancas significativas por e-mail ou notificacao no app. O uso continuado do TaskBlast apos as mudancas entrarem em vigor constitui sua aceitacao da politica revisada."
+      },
+      "contact": {
+        "title": "Fale conosco",
+        "body": "Se voce tiver alguma duvida sobre esta Politica de Privacidade, entre em contato em kryptocapstone@gmail.com. Nosso objetivo e responder a todas as solicitacoes em ate 5 dias uteis."
+      }
+    }
+  },
   "Tasks": {
     "title": "Tarefas",
     "normal": "Normal",
