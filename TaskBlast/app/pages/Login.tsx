@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  Image,
   ImageBackground,
   Alert,
 } from "react-native";
@@ -523,37 +522,6 @@ export default function Login() {
                 <Text className="font-semibold text-yellow-300">
                   {t("Login.signUp")}
                 </Text>
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                borderWidth: 2,
-                borderColor: "rgba(255,255,255,0.4)",
-                backgroundColor: "rgba(255,255,255,0.15)",
-                padding: 12,
-                borderRadius: 16,
-                marginVertical: 8,
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.3,
-                shadowRadius: 8,
-              }}
-            >
-              <Image
-                source={{
-                  uri: "https://developers.google.com/identity/images/g-logo.png",
-                }}
-                style={{
-                  width: 20,
-                  height: 20,
-                  marginRight: 10,
-                }}
-              />
-              <Text className="font-madimi text-white">
-                Sign in with Google
               </Text>
             </TouchableOpacity>
 
