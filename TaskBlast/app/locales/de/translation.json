@@ -527,7 +527,8 @@
     "planet8": "Neptun",
     "planet9": "Pluto",
     "descriptionBonus": "{{percent}}% mehr Edelsteine",
-    "descriptionBase": "Standard-Edelsteinbelohnungen"
+    "descriptionBase": "Standard-Edelsteinbelohnungen",
+    "stats": "{{diameter}} km Durchmesser · {{distance}} km von der Sonne"
   }
 
 }

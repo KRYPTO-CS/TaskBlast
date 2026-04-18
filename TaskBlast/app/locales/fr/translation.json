@@ -539,7 +539,8 @@
     "planet8": "Neptune",
     "planet9": "Pluton",
     "descriptionBonus": "{{percent}}% de gemmes en plus",
-    "descriptionBase": "Récompenses de gemmes standard"
+    "descriptionBase": "Récompenses de gemmes standard",
+    "stats": "{{diameter}} km de diamètre · {{distance}} km du Soleil"
   }
 
 }

@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Animated,
   View,
   Modal,
   TouchableOpacity,
@@ -41,6 +40,18 @@ const PLANET_DARK_IMAGES: { [key: number]: any } = {
   7: require("../../assets/images/sprites/planets/dark/7.png"),
   8: require("../../assets/images/sprites/planets/dark/8.png"),
   9: require("../../assets/images/sprites/planets/dark/9.png"),
+};
+
+const PLANET_STATS: { [key: number]: { diameter: string; distance: string } } = {
+  1: { diameter: "4,879", distance: "57,900,000" },
+  2: { diameter: "12,104", distance: "108,200,000" },
+  3: { diameter: "12,756", distance: "149,600,000" },
+  4: { diameter: "6,792", distance: "227,900,000" },
+  5: { diameter: "142,984", distance: "778,600,000" },
+  6: { diameter: "120,536", distance: "1,433,500,000" },
+  7: { diameter: "51,118", distance: "2,872,500,000" },
+  8: { diameter: "49,528", distance: "4,495,100,000" },
+  9: { diameter: "2,377", distance: "5,906,400,000" },
 };
 
 interface PlanetModalProps {
@@ -86,35 +97,6 @@ export default function PlanetModal({
   const [justUnlocked, setJustUnlocked] = useState(false);
   const [newRocksAfterUnlock, setNewRocksAfterUnlock] = useState<number>(0);
 
-  // Animation values
-  const scaleAnim = useRef(new Animated.Value(0)).current;
-  const glowAnim = useRef(new Animated.Value(0)).current;
-
-  const triggerUnlockAnimation = () => {
-    scaleAnim.setValue(0);
-    glowAnim.setValue(0);
-    Animated.parallel([
-      Animated.spring(scaleAnim, {
-        toValue: 1,
-        friction: 5,
-        tension: 80,
-        useNativeDriver: true,
-      }),
-      Animated.sequence([
-        Animated.timing(glowAnim, {
-          toValue: 1,
-          duration: 400,
-          useNativeDriver: true,
-        }),
-        Animated.timing(glowAnim, {
-          toValue: 0.6,
-          duration: 600,
-          useNativeDriver: true,
-        }),
-      ]),
-    ]).start();
-  };
-
   const getPlanetDocRef = (id: number) => {
     return doc(db, "planets", id.toString());
   };
@@ -122,11 +104,20 @@ export default function PlanetModal({
   const getPlanetName = (id?: number): string =>
     t('Planets.planet' + (id ?? 1));
 
-  const getPlanetDescription = (multiplier?: number): string => {
+  // bonus uses DB values and calculates percentage
+  const getPlanetBonus = (multiplier?: number): string => {
     const m = multiplier ?? 1.0;
     const percent = Math.round((m - 1) * 100);
-    if (percent <= 0) return t('Planets.descriptionBase');
-    return t('Planets.descriptionBonus', { percent });
+    return percent <= 0
+      ? t('Planets.descriptionBase')
+      : t('Planets.descriptionBonus', { percent });
+  };
+
+  // get the planet stats from translator
+  const getPlanetStats = (id?: number): string => {
+    const stats = PLANET_STATS[id ?? 1];
+    if (!stats) return '';
+    return t('Planets.stats', { diameter: stats.diameter, distance: stats.distance });
   };
 
   // Check if the user has enough rocks and unlock the planet if so
@@ -189,7 +180,6 @@ export default function PlanetModal({
       setRocks(updatedRocks);
       setNewRocksAfterUnlock(updatedRocks);
       setJustUnlocked(true);
-      triggerUnlockAnimation();
 
       // update planet scroll list immediately with the new progress
       if (result.currPlanet != null) {
@@ -337,17 +327,9 @@ export default function PlanetModal({
             {/* Success state after unlock */}
             {justUnlocked && planet ? (
               <View className="items-center justify-center" style={{ gap: 12 }}>
-                <Animated.View
-                  style={{
-                    transform: [{ scale: scaleAnim }],
-                    opacity: glowAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0.5, 1],
-                    }),
-                  }}
-                >
+                <View>
                   <Image source={getPlanetImage(planetId ?? 1)} />
-                </Animated.View>
+                </View>
                 <Text className="text-green-300 text-base font-orbitron-bold text-center">
                   {getPlanetName(planetId)} is now available!
                 </Text>
@@ -366,8 +348,23 @@ export default function PlanetModal({
             ) : isLocked && planet ? (
               <View className="items-center justify-center">
                 <Image source={PLANET_DARK_IMAGES[planetId ?? 1]} />
-                <Text className="text-white text-base mt-2 font-orbitron-semibold">
-                  {getPlanetDescription(planet.multiplier)}
+                <View
+                  style={{
+                    marginTop: 8,
+                    paddingHorizontal: 16,
+                    paddingVertical: 8,
+                    borderRadius: 999,
+                    backgroundColor: "rgba(139, 92, 246, 0.25)",
+                    borderWidth: 1,
+                    borderColor: "rgba(167, 139, 250, 0.5)",
+                  }}
+                >
+                  <Text className="text-purple-300 text-sm font-orbitron-bold text-center">
+                    {getPlanetBonus(planet.multiplier)}
+                  </Text>
+                </View>
+                <Text className="text-slate-400 text-xs font-orbitron-semibold text-center mt-2 px-2">
+                  {getPlanetStats(planetId)}
                 </Text>
                 <View className="flex-row space-x-4 items-center">
                   <View className="flex-row items-center bg-purple-600/50 px-4 py-2 rounded-full max-h-10">
@@ -407,8 +404,22 @@ export default function PlanetModal({
                   style={{ gap: 15 }}
                 >
                   <Image source={getPlanetImage(planetId ?? 1)} />
-                  <Text className="text-white text-base mt-2 font-orbitron-semibold">
-                    {getPlanetDescription(planet.multiplier)}
+                  <View
+                    style={{
+                      paddingHorizontal: 16,
+                      paddingVertical: 8,
+                      borderRadius: 999,
+                      backgroundColor: "rgba(139, 92, 246, 0.25)",
+                      borderWidth: 1,
+                      borderColor: "rgba(167, 139, 250, 0.5)",
+                    }}
+                  >
+                    <Text className="text-purple-300 text-sm font-orbitron-bold text-center">
+                      {getPlanetBonus(planet.multiplier)}
+                    </Text>
+                  </View>
+                  <Text className="text-slate-400 text-xs font-orbitron-semibold text-center px-2">
+                    {getPlanetStats(planetId)}
                   </Text>
                 </View>
               )

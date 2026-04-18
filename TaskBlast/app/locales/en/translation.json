@@ -541,8 +541,9 @@
     "planet7": "Uranus",
     "planet8": "Neptune",
     "planet9": "Pluto",
-    "descriptionBonus": "{{percent}}% more gems",
-    "descriptionBase": "Standard gem rewards"
+    "descriptionBonus": "{{percent}}% more crystals",
+    "descriptionBase": "Standard crystal rewards",
+    "stats": "{{diameter}} km diameter · {{distance}} km from the Sun"
   }
 
 }

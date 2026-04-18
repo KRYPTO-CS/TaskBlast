@@ -540,7 +540,8 @@
     "planet8": "Neptune",
     "planet9": "Pluto",
     "descriptionBonus": "{{percent}}% more loot, arrr!",
-    "descriptionBase": "Standard loot, matey"
+    "descriptionBase": "Standard loot, matey",
+    "stats": "{{diameter}} km wide · {{distance}} km from the Sun, arrr!"
   }
 
 }

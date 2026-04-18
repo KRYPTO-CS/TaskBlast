@@ -525,7 +525,8 @@
     "planet8": "نبتون",
     "planet9": "بلوتو",
     "descriptionBonus": "{{percent}}% قيمة جواهر إضافية",
-    "descriptionBase": "مكافآت الجواهر القياسية"
+    "descriptionBase": "مكافآت الجواهر القياسية",
+    "stats": "قطر {{diameter}} كم · {{distance}} كم من الشمس"
   }
 
 }

@@ -540,7 +540,8 @@
     "planet8": "वरुण",
     "planet9": "यम",
     "descriptionBonus": "{{percent}}% अधिक रत्न",
-    "descriptionBase": "मानक रत्न पुरस्कार"
+    "descriptionBase": "मानक रत्न पुरस्कार",
+    "stats": "व्यास {{diameter}} कि.मी. · सूर्य से {{distance}} कि.मी."
   }
 
 }

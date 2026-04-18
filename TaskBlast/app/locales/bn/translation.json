@@ -542,7 +542,8 @@
     "planet8": "নেপচুন",
     "planet9": "প্লুটো",
     "descriptionBonus": "{{percent}}% বেশি রত্নপাথর",
-    "descriptionBase": "স্ট্যান্ডার্ড রত্নপাথর পুরস্কার"
+    "descriptionBase": "স্ট্যান্ডার্ড রত্নপাথর পুরস্কার",
+    "stats": "ব্যাস {{diameter}} কিমি · সূর্য থেকে {{distance}} কিমি"
   }
 
 }

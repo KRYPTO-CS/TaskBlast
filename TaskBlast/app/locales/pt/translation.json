@@ -525,7 +525,8 @@
     "planet8": "Netuno",
     "planet9": "Plutão",
     "descriptionBonus": "{{percent}}% mais gemas",
-    "descriptionBase": "Recompensas de gemas padrão"
+    "descriptionBase": "Recompensas de gemas padrão",
+    "stats": "{{diameter}} km de diâmetro · {{distance}} km do Sol"
   }
 
 }

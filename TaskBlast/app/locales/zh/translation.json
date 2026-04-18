@@ -540,7 +540,8 @@
     "planet8": "海王星",
     "planet9": "冥王星",
     "descriptionBonus": "多 {{percent}}% 宝石",
-    "descriptionBase": "标准宝石奖励"
+    "descriptionBase": "标准宝石奖励",
+    "stats": "直径 {{diameter}} 千米 · 距太阳 {{distance}} 千米"
   }
 
 }

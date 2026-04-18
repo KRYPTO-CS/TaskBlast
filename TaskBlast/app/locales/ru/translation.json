@@ -526,7 +526,8 @@
     "planet8": "Нептун",
     "planet9": "Плутон",
     "descriptionBonus": "{{percent}}% больше самоцветов",
-    "descriptionBase": "Стандартные награды самоцветами"
+    "descriptionBase": "Стандартные награды самоцветами",
+    "stats": "Диаметр {{diameter}} км · {{distance}} км от Солнца"
   }
 
 }
