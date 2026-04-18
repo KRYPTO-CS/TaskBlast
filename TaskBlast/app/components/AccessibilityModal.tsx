@@ -41,16 +41,24 @@ const LANGUAGES: { code: string; name: string; flag: string }[] = [
 const COLOR_BLIND_MODES: {
   value: ColorBlindMode;
   label: string;
-  desc: string;
+  descKey: string;
 }[] = [
-  { value: "none", label: "None", desc: "Default colors" },
+  { value: "none", label: "", descKey: "Settings.defaultColors" },
   {
     value: "deuteranopia",
     label: "Deuteranopia",
-    desc: "Red/green deficiency",
+    descKey: "Settings.redGreenDeficiency",
   },
-  { value: "protanopia", label: "Protanopia", desc: "Red deficiency" },
-  { value: "tritanopia", label: "Tritanopia", desc: "Blue/yellow deficiency" },
+  {
+    value: "protanopia",
+    label: "Protanopia",
+    descKey: "Settings.redDeficiency",
+  },
+  {
+    value: "tritanopia",
+    label: "Tritanopia",
+    descKey: "Settings.blueYellowDeficiency",
+  },
 ];
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -162,10 +170,10 @@ export default function AccessibilityModal({
                             : "Orbitron_400Regular",
                         }}
                       >
-                        {mode.label}
+                        {mode.value === "none" ? t("Settings.noFilter") : mode.label}
                       </Text>
                       <Text className="font-orbitron text-gray-400 text-xs mt-0.5">
-                        {mode.desc}
+                        {t(mode.descKey)}
                       </Text>
                       {/* Color swatch preview */}
                       <View
@@ -205,7 +213,7 @@ export default function AccessibilityModal({
             <Divider />
 
             {/* ── Toggle Settings ─────────────────────────────────────────── */}
-            <SectionHeader icon="volume-medium" label="Voice" />
+            <SectionHeader icon="volume-medium" label={t("Settings.voice")} />
 
             <ToggleRow
               icon="volume-medium"
