@@ -19,6 +19,7 @@ import { Text } from '../../TTS';
 import * as Notifications from "expo-notifications";
 import { useNotifications } from "../context/NotificationContext";
 import { useColorPalette } from "../styles/colorBlindThemes";
+import { useTranslation } from "react-i18next";
 
 interface NotificationPreferencesModalProps {
   visible: boolean;
@@ -47,6 +48,7 @@ interface TimePickerProps {
 }
 
 function TimePicker({ value, onChange, palette }: TimePickerProps) {
+  const { t } = useTranslation();
   const date = timeStringToDate(value);
 
   const handleChange = (_event: DateTimePickerEvent, selected?: Date) => {
@@ -77,7 +79,7 @@ function TimePicker({ value, onChange, palette }: TimePickerProps) {
           marginBottom: 4,
         }}
       >
-        Reminder Time
+        {t("NotificationPreferencesModal.reminderTime")}
       </Text>
       <DateTimePicker
         value={date}
@@ -106,6 +108,7 @@ export default function NotificationPreferencesModal({
 
   const [localPrefs, setLocalPrefs] = useState(preferences);
   const palette = useColorPalette();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setLocalPrefs(preferences);
@@ -114,9 +117,9 @@ export default function NotificationPreferencesModal({
   const handleSave = async () => {
     await updatePreferences(localPrefs);
     Alert.alert(
-      "✅ Settings Saved",
-      "Your notification preferences have been updated!",
-      [{ text: "OK", style: "default" }],
+      t("NotificationPreferencesModal.settingsSavedTitle"),
+      t("NotificationPreferencesModal.settingsSavedBody"),
+      [{ text: t("NotificationPreferencesModal.ok"), style: "default" }],
     );
     onClose();
   };
@@ -124,15 +127,14 @@ export default function NotificationPreferencesModal({
   const handleRequestPermissions = async () => {
     const granted = await requestPermissions();
     if (granted) {
-      Alert.alert("✅ Permissions Granted", "Notifications are now enabled!", [
-        { text:
-           "OK", style: "default" },
+      Alert.alert(t("NotificationPreferencesModal.permissionsGrantedTitle"), t("NotificationPreferencesModal.permissionsGrantedBody"), [
+        { text: t("NotificationPreferencesModal.ok"), style: "default" },
       ]);
     } else {
       Alert.alert(
-        "❌ Permissions Needed",
-        "Please enable notifications in your device settings to use this feature.",
-        [{ text: "OK", style: "cancel" }],
+        t("NotificationPreferencesModal.permissionsNeededTitle"),
+        t("NotificationPreferencesModal.permissionsNeededBody"),
+        [{ text: t("NotificationPreferencesModal.ok"), style: "cancel" }],
       );
     }
   };
@@ -146,17 +148,17 @@ export default function NotificationPreferencesModal({
     try {
       if (!permissionGranted) {
         Alert.alert(
-          "⚠️ Permissions Required",
-          "Please enable notifications first to test the daily reminder.",
-          [{ text: "OK" }],
+          t("NotificationPreferencesModal.permissionsRequiredTitle"),
+          t("NotificationPreferencesModal.permissionsRequiredBody"),
+          [{ text: t("NotificationPreferencesModal.ok") }],
         );
         return;
       }
 
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: "TaskBlast Reminder",
-          body: "You have 3 tasks waiting! Ready to tackle them?",
+          title: t("NotificationPreferencesModal.testNotificationTitle"),
+          body: t("NotificationPreferencesModal.testNotificationBody"),
           sound: localPrefs.soundEnabled ? "default" : false,
           data: {
             type: "DAILY_DIGEST",
@@ -167,16 +169,16 @@ export default function NotificationPreferencesModal({
       });
 
       Alert.alert(
-        "✅ Test Sent!",
-        "Check your notification tray to see what the daily reminder looks like.",
-        [{ text: "OK" }],
+        t("NotificationPreferencesModal.testSentTitle"),
+        t("NotificationPreferencesModal.testSentBody"),
+        [{ text: t("NotificationPreferencesModal.ok") }],
       );
     } catch (error) {
       console.error("Error sending test notification:", error);
       Alert.alert(
-        "❌ Test Failed",
-        "Could not send test notification. Please try again.",
-        [{ text: "OK" }],
+        t("NotificationPreferencesModal.testFailedTitle"),
+        t("NotificationPreferencesModal.testFailedBody"),
+        [{ text: t("NotificationPreferencesModal.ok") }],
       );
     }
   };
@@ -211,7 +213,7 @@ export default function NotificationPreferencesModal({
                 textShadowRadius: 15,
               }}
             >
-              Notifications
+              {t("NotificationPreferencesModal.title")}
             </Text>
             <TouchableOpacity
               onPress={onClose}
@@ -237,11 +239,10 @@ export default function NotificationPreferencesModal({
               }}
             >
               <Text className="font-orbitron-semibold text-yellow-400 mb-2">
-                ⚠️ Permissions Required
+                {t("NotificationPreferencesModal.permissionsRequiredTitle")}
               </Text>
               <Text className="font-orbitron text-gray-300 text-xs mb-3">
-                Notifications are currently disabled. Enable them to receive
-                task reminders.
+                {t("NotificationPreferencesModal.permissionsDisabledBody")}
               </Text>
               <TouchableOpacity
                 onPress={handleRequestPermissions}
@@ -249,7 +250,7 @@ export default function NotificationPreferencesModal({
                 style={{ backgroundColor: "rgba(234, 179, 8, 0.9)" }}
               >
                 <Text className="font-orbitron-bold text-black text-sm">
-                  Enable Notifications
+                  {t("NotificationPreferencesModal.enableNotifications")}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -259,11 +260,11 @@ export default function NotificationPreferencesModal({
             {/* Main Settings */}
             <View className="mb-5">
               <Text className="font-orbitron-semibold text-white text-base mb-3">
-                Main Settings
+                {t("NotificationPreferencesModal.mainSettings")}
               </Text>
               <SettingRow
-                label="Enable Notifications"
-                description="Turn all notifications on or off"
+                label={t("NotificationPreferencesModal.enableNotifications")}
+                description={t("NotificationPreferencesModal.enableNotificationsDescription")}
                 value={localPrefs.enabled}
                 onToggle={toggleEnabled}
               />
@@ -272,20 +273,20 @@ export default function NotificationPreferencesModal({
             {/* Sensory Settings */}
             <View className="mb-5">
               <Text className="font-orbitron-semibold text-white text-base mb-2">
-                Sensory Settings
+                {t("NotificationPreferencesModal.sensorySettings")}
               </Text>
               <Text className="font-orbitron text-gray-400 text-xs mb-3">
-                Control how notifications get your attention
+                {t("NotificationPreferencesModal.sensorySettingsDescription")}
               </Text>
               <SettingRow
-                label="Sound"
-                description="Play notification sound"
+                label={t("NotificationPreferencesModal.sound")}
+                description={t("NotificationPreferencesModal.soundDescription")}
                 value={localPrefs.soundEnabled}
                 onToggle={toggleSound}
               />
               <SettingRow
-                label="Vibration"
-                description="Vibrate when notification arrives"
+                label={t("NotificationPreferencesModal.vibration")}
+                description={t("NotificationPreferencesModal.vibrationDescription")}
                 value={localPrefs.vibrationEnabled}
                 onToggle={toggleVibration}
               />
@@ -294,14 +295,14 @@ export default function NotificationPreferencesModal({
             {/* Daily Digest Reminder */}
             <View className="mb-5">
               <Text className="font-orbitron-semibold text-white text-base mb-2">
-                📅 Daily Task Reminder
+                {t("NotificationPreferencesModal.dailyReminderTitle")}
               </Text>
               <Text className="font-orbitron text-gray-400 text-xs mb-3">
-                Get a daily reminder about your incomplete tasks
+                {t("NotificationPreferencesModal.dailyReminderDescription")}
               </Text>
               <SettingRow
-                label="Enable Daily Reminder"
-                description="Receive a daily notification with task count"
+                label={t("NotificationPreferencesModal.enableDailyReminder")}
+                description={t("NotificationPreferencesModal.enableDailyReminderDescription")}
                 value={localPrefs.dailyDigestEnabled}
                 onToggle={toggleDailyDigest}
               />
@@ -326,7 +327,7 @@ export default function NotificationPreferencesModal({
                     }}
                   >
                     <Text className="font-orbitron-semibold text-green-400 text-sm">
-                      🧪 Send Test Notification
+                      {t("NotificationPreferencesModal.testButton")}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -345,7 +346,9 @@ export default function NotificationPreferencesModal({
                 borderColor: "rgba(100, 116, 139, 0.5)",
               }}
             >
-              <Text className="font-orbitron-semibold text-white">Cancel</Text>
+              <Text className="font-orbitron-semibold text-white">
+                {t("NotificationPreferencesModal.cancel")}
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -358,7 +361,7 @@ export default function NotificationPreferencesModal({
               }}
             >
               <Text className="font-orbitron-bold text-white text-base">
-                Save
+                {t("NotificationPreferencesModal.save")}
               </Text>
             </TouchableOpacity>
           </View>
