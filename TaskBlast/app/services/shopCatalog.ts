@@ -7,6 +7,7 @@ export interface ShopCatalogItem {
   nameKey: string;
   iconKey: string;
   price: number;
+  crystalPrice?: number;
   active?: boolean;
 }
 
@@ -72,6 +73,7 @@ export const DEFAULT_SHOP_CATALOG: ShopCatalogItem[] = [
     nameKey: "Shop.aTopper",
     iconKey: "ship-topper-artemis",
     price: 15000,
+    crystalPrice: 30,
     active: true,
   },
   {

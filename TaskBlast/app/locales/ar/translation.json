@@ -439,6 +439,7 @@
     "owned": "تم امتلاكه",
     "confirmPurchaseTitle": "تأكيد الشراء",
     "confirmPurchaseText": "شراء هذا العنصر مقابل {{price}} بلورات؟",
+    "confirmPurchaseCrystalText": "شراء هذا العنصر مقابل {{price}} بلورات المجرة؟",
     "cancel": "إلغاء",
     "notEnoughCrystalsTitle": "لا توجد بلورات كافية",
     "notEnoughCrystalsText": "تحتاج إلى {{price}} بلورة ولكن لديك فقط {{rocks}}.",
