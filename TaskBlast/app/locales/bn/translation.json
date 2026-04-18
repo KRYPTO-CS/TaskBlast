@@ -445,17 +445,19 @@
     "purchase": "ক্রয়"
   },
   "Games": {
-    "chooseTitle": "Choose Your Game",
-    "asteroidBlaster": "Asteroid Blaster",
-    "asteroidBlasterDesc": "Blast the asteroids!",
-    "spaceSwerve": "Space Swerve",
-    "spaceSwerveDesc": "Dodge the asteroids!",
-    "freeTime": "Free Time",
-    "freeTimeDesc": "Take a break YOUR way!",
+    "chooseTitle": "তোমার গেম বেছে নাও",
+    "asteroidBlaster": "অ্যাস্টেরয়েড ব্লাস্টার",
+    "asteroidBlasterDesc": "অ্যাস্টেরয়েড উড়িয়ে দাও!",
+    "spaceSwerve": "স্পেস সুয়ার্ভ",
+    "spaceSwerveDesc": "অ্যাস্টেরয়েড এড়িয়ে চলো!",
+    "freeTime": "ফ্রি টাইম",
+    "freeTimeDesc": "নিজের মতো করে বিরতি নাও!",
     "game2048": "2048",
-    "game2048Desc": "Merge tiles. Aim for 2048!",
-    "sequentBlast": "Sequent Blast",
-    "sequentBlastDesc": "Memorize and tap the hidden sequence."
+    "game2048Desc": "টাইল এক করো। লক্ষ্য 2048!",
+    "matchBlast": "জোড়া বিস্ফোরণ",
+    "matchBlastDesc": "দ্রুত জোড়া মেলাও, বোনাস রকস জিতো!",
+    "sequentBlast": "সিকোয়েন্ট ব্লাস্ট",
+    "sequentBlastDesc": "লুকানো সিকোয়েন্স মনে রেখে ট্যাপ করো।"
   },
   "ChildAccount": {
     "title": "শিশু অ্যাকাউন্ট তৈরি করুন",

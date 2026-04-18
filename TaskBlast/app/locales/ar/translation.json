@@ -445,17 +445,19 @@
     "purchase": "شراء"
   },
   "Games": {
-    "chooseTitle": "Choose Your Game",
-    "asteroidBlaster": "Asteroid Blaster",
-    "asteroidBlasterDesc": "Blast the asteroids!",
-    "spaceSwerve": "Space Swerve",
-    "spaceSwerveDesc": "Dodge the asteroids!",
-    "freeTime": "Free Time",
-    "freeTimeDesc": "Take a break YOUR way!",
+    "chooseTitle": "اختر لعبتك",
+    "asteroidBlaster": "مفجر الكويكبات",
+    "asteroidBlasterDesc": "دمّر الكويكبات!",
+    "spaceSwerve": "مناورة فضائية",
+    "spaceSwerveDesc": "تجنّب الكويكبات!",
+    "freeTime": "وقت حر",
+    "freeTimeDesc": "خذ استراحة بطريقتك!",
     "game2048": "2048",
-    "game2048Desc": "Merge tiles. Aim for 2048!",
-    "sequentBlast": "Sequent Blast",
-    "sequentBlastDesc": "Memorize and tap the hidden sequence."
+    "game2048Desc": "ادمج المربعات واستهدف 2048!",
+    "matchBlast": "انفجار الأزواج",
+    "matchBlastDesc": "طابق الأزواج بسرعة لتحصل على صخور إضافية!",
+    "sequentBlast": "انفجار التسلسل",
+    "sequentBlastDesc": "احفظ التسلسل المخفي واضغطه."
   },
   "ChildAccount": {
     "title": "إنشاء حساب طفل",

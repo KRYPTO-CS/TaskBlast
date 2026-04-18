@@ -454,6 +454,8 @@
     "freeTimeDesc": "Take a break YOUR way!",
     "game2048": "2048",
     "game2048Desc": "Merge tiles. Aim for 2048!",
+    "matchBlast": "Match Blast",
+    "matchBlastDesc": "Match pairs fast for bonus rocks!",
     "sequentBlast": "Sequent Blast",
     "sequentBlastDesc": "Memorize and tap the hidden sequence."
   },

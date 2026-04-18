@@ -443,17 +443,19 @@
     "purchase": "खरीदें"
   },
   "Games": {
-    "chooseTitle": "Choose Your Game",
-    "asteroidBlaster": "Asteroid Blaster",
-    "asteroidBlasterDesc": "Blast the asteroids!",
-    "spaceSwerve": "Space Swerve",
-    "spaceSwerveDesc": "Dodge the asteroids!",
-    "freeTime": "Free Time",
-    "freeTimeDesc": "Take a break YOUR way!",
+    "chooseTitle": "अपना खेल चुनें",
+    "asteroidBlaster": "एस्टेरॉइड ब्लास्टर",
+    "asteroidBlasterDesc": "एस्टेरॉइड्स को उड़ाओ!",
+    "spaceSwerve": "स्पेस स्वर्व",
+    "spaceSwerveDesc": "एस्टेरॉइड्स से बचो!",
+    "freeTime": "फ्री टाइम",
+    "freeTimeDesc": "अपनी तरह से ब्रेक लो!",
     "game2048": "2048",
-    "game2048Desc": "Merge tiles. Aim for 2048!",
-    "sequentBlast": "Sequent Blast",
-    "sequentBlastDesc": "Memorize and tap the hidden sequence."
+    "game2048Desc": "टाइल्स मिलाओ। 2048 तक पहुंचो!",
+    "matchBlast": "जोड़ी विस्फोट",
+    "matchBlastDesc": "जल्दी जोड़े मिलाओ और बोनस रॉक्स पाओ!",
+    "sequentBlast": "सीक्वेंट ब्लास्ट",
+    "sequentBlastDesc": "छुपी हुई श्रृंखला याद करो और टैप करो।"
   },
   "ChildAccount": {
     "title": "बच्चे का खाता बनाएं",

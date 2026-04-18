@@ -445,17 +445,19 @@
     "purchase": "Kaufen"
   },
   "Games": {
-    "chooseTitle": "Choose Your Game",
-    "asteroidBlaster": "Asteroid Blaster",
-    "asteroidBlasterDesc": "Blast the asteroids!",
-    "spaceSwerve": "Space Swerve",
-    "spaceSwerveDesc": "Dodge the asteroids!",
-    "freeTime": "Free Time",
-    "freeTimeDesc": "Take a break YOUR way!",
+    "chooseTitle": "Wähle dein Spiel",
+    "asteroidBlaster": "Asteroiden-Blaster",
+    "asteroidBlasterDesc": "Schieß die Asteroiden weg!",
+    "spaceSwerve": "Weltraum-Ausweichmanöver",
+    "spaceSwerveDesc": "Weiche den Asteroiden aus!",
+    "freeTime": "Freie Zeit",
+    "freeTimeDesc": "Mach Pause auf deine Weise!",
     "game2048": "2048",
-    "game2048Desc": "Merge tiles. Aim for 2048!",
-    "sequentBlast": "Sequent Blast",
-    "sequentBlastDesc": "Memorize and tap the hidden sequence."
+    "game2048Desc": "Füge Kacheln zusammen. Ziel: 2048!",
+    "matchBlast": "Paar-Explosion",
+    "matchBlastDesc": "Finde Paare schnell für Bonus-Rocks!",
+    "sequentBlast": "Sequenz-Blast",
+    "sequentBlastDesc": "Merke dir die versteckte Reihenfolge und tippe sie an."
   },
   "ChildAccount": {
     "title": "Kind-Konto erstellen",

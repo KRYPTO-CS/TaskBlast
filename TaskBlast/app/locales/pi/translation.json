@@ -443,15 +443,17 @@
     "purchase": "Purchase"
   },
   "Games": {
-    "chooseTitle": "Choose Your Game",
+    "chooseTitle": "Choose Yer Game",
     "asteroidBlaster": "Asteroid Blaster",
-    "asteroidBlasterDesc": "Blast the asteroids!",
+    "asteroidBlasterDesc": "Blast those asteroids!",
     "spaceSwerve": "Space Swerve",
-    "spaceSwerveDesc": "Dodge the asteroids!",
+    "spaceSwerveDesc": "Dodge the asteroids, matey!",
     "freeTime": "Free Time",
-    "freeTimeDesc": "Take a break YOUR way!",
+    "freeTimeDesc": "Take a break yer way!",
     "game2048": "2048",
-    "game2048Desc": "Merge tiles. Aim for 2048!",
+    "game2048Desc": "Merge tiles. Aim fer 2048!",
+    "matchBlast": "Match Blast",
+    "matchBlastDesc": "Match pairs fast fer bonus rocks!",
     "sequentBlast": "Sequent Blast",
     "sequentBlastDesc": "Memorize and tap the hidden sequence."
   },

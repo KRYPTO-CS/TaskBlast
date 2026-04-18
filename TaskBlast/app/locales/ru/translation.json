@@ -444,17 +444,19 @@
     "purchase": "Купить"
   },
   "Games": {
-    "chooseTitle": "Choose Your Game",
-    "asteroidBlaster": "Asteroid Blaster",
-    "asteroidBlasterDesc": "Blast the asteroids!",
-    "spaceSwerve": "Space Swerve",
-    "spaceSwerveDesc": "Dodge the asteroids!",
-    "freeTime": "Free Time",
-    "freeTimeDesc": "Take a break YOUR way!",
+    "chooseTitle": "Выберите игру",
+    "asteroidBlaster": "Бластер астероидов",
+    "asteroidBlasterDesc": "Уничтожайте астероиды!",
+    "spaceSwerve": "Космический маневр",
+    "spaceSwerveDesc": "Уклоняйтесь от астероидов!",
+    "freeTime": "Свободное время",
+    "freeTimeDesc": "Отдохните так, как вам нравится!",
     "game2048": "2048",
-    "game2048Desc": "Merge tiles. Aim for 2048!",
-    "sequentBlast": "Sequent Blast",
-    "sequentBlastDesc": "Memorize and tap the hidden sequence."
+    "game2048Desc": "Объединяйте плитки. Цель: 2048!",
+    "matchBlast": "Взрыв пар",
+    "matchBlastDesc": "Быстро находите пары и получайте бонусные камни!",
+    "sequentBlast": "Последовательный взрыв",
+    "sequentBlastDesc": "Запомните и нажмите скрытую последовательность."
   },
   "ChildAccount": {
     "title": "Создать дочернюю учетную запись",

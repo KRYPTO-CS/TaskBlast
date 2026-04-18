@@ -443,17 +443,19 @@
     "purchase": "购买"
   },
   "Games": {
-    "chooseTitle": "Choose Your Game",
-    "asteroidBlaster": "Asteroid Blaster",
-    "asteroidBlasterDesc": "Blast the asteroids!",
-    "spaceSwerve": "Space Swerve",
-    "spaceSwerveDesc": "Dodge the asteroids!",
-    "freeTime": "Free Time",
-    "freeTimeDesc": "Take a break YOUR way!",
+    "chooseTitle": "选择你的游戏",
+    "asteroidBlaster": "小行星爆破",
+    "asteroidBlasterDesc": "击碎小行星！",
+    "spaceSwerve": "太空闪避",
+    "spaceSwerveDesc": "躲避小行星！",
+    "freeTime": "自由时间",
+    "freeTimeDesc": "按你自己的方式休息！",
     "game2048": "2048",
-    "game2048Desc": "Merge tiles. Aim for 2048!",
-    "sequentBlast": "Sequent Blast",
-    "sequentBlastDesc": "Memorize and tap the hidden sequence."
+    "game2048Desc": "合并方块，冲击 2048！",
+    "matchBlast": "配对冲击",
+    "matchBlastDesc": "快速配对，赢取额外岩石奖励！",
+    "sequentBlast": "序列爆破",
+    "sequentBlastDesc": "记住并点击隐藏序列。"
   },
   "ChildAccount": {
     "title": "创建子账户",

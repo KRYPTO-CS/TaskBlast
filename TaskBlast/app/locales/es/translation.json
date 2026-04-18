@@ -443,17 +443,19 @@
     "purchase": "Comprar"
   },
   "Games": {
-    "chooseTitle": "Choose Your Game",
-    "asteroidBlaster": "Asteroid Blaster",
-    "asteroidBlasterDesc": "Blast the asteroids!",
-    "spaceSwerve": "Space Swerve",
-    "spaceSwerveDesc": "Dodge the asteroids!",
-    "freeTime": "Free Time",
-    "freeTimeDesc": "Take a break YOUR way!",
+    "chooseTitle": "Elige tu juego",
+    "asteroidBlaster": "Destructor de asteroides",
+    "asteroidBlasterDesc": "¡Destruye los asteroides!",
+    "spaceSwerve": "Esquiva espacial",
+    "spaceSwerveDesc": "¡Esquiva los asteroides!",
+    "freeTime": "Tiempo libre",
+    "freeTimeDesc": "¡Tómate un descanso a tu manera!",
     "game2048": "2048",
-    "game2048Desc": "Merge tiles. Aim for 2048!",
-    "sequentBlast": "Sequent Blast",
-    "sequentBlastDesc": "Memorize and tap the hidden sequence."
+    "game2048Desc": "Combina fichas. ¡Apunta a 2048!",
+    "matchBlast": "Explosión de Parejas",
+    "matchBlastDesc": "¡Empareja pares rápido para ganar rocas extra!",
+    "sequentBlast": "Explosión secuencial",
+    "sequentBlastDesc": "Memoriza y toca la secuencia oculta."
   },
 
   "ChildAccount": {

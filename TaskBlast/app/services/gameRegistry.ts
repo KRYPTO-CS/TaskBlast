@@ -48,7 +48,7 @@ export const GAME_DEFINITIONS: GameDefinition[] = [
   },
   {
     id: 4,
-    name: "MatchBlast",
+    name: "Match Blast",
     description: "Match pairs fast for bonus rocks!",
     url: "https://krypto-cs.github.io/MatchBlast/",
     rewardStrategy: "raw-score",
