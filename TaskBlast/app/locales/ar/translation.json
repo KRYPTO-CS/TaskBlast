@@ -430,6 +430,31 @@
       "failedToSave": "فشل حفظ الملف الشخصي. حاول مرة أخرى."
     }
   },
+  "AnalyticsChartsModal": {
+    "title": "مخططات التحليلات",
+    "charts": {
+      "common": {
+        "date": "التاريخ"
+      },
+      "totalRocks": {
+        "title": "إجمالي البلورات المكتسبة من الألعاب",
+        "yAxis": "البلورات"
+      },
+      "workTime": {
+        "title": "وقت العمل التراكمي",
+        "yAxis": "الدقائق"
+      },
+      "playTime": {
+        "title": "وقت الاستراحة التراكمي",
+        "yAxis": "الدقائق"
+      }
+    },
+    "empty": {
+      "noRockStats": "لا توجد إحصاءات للصخور بعد.",
+      "noWorkSessions": "لا توجد جلسات عمل بعد.",
+      "noPlaySessions": "لا توجد جلسات استراحة بعد."
+    }
+  },
   "Pomodoro": {
     "time": "الوقت المتبقي",
     "work": "جلسة العمل",

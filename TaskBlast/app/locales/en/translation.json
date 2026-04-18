@@ -429,6 +429,31 @@
       "failedToSave": "Failed to save profile. Please try again."
     }
   },
+  "AnalyticsChartsModal": {
+    "title": "Analytics Charts",
+    "charts": {
+      "common": {
+        "date": "Date"
+      },
+      "totalRocks": {
+        "title": "Total Crystals Earned From Games",
+        "yAxis": "Crystals"
+      },
+      "workTime": {
+        "title": "Cumulative Work Time",
+        "yAxis": "Minutes"
+      },
+      "playTime": {
+        "title": "Cumulative Play Time",
+        "yAxis": "Minutes"
+      }
+    },
+    "empty": {
+      "noRockStats": "No rock stats yet.",
+      "noWorkSessions": "No work sessions yet.",
+      "noPlaySessions": "No play sessions yet."
+    }
+  },
   "Pomodoro": {
     "time": "Time Remaining",
     "work": "Work Session",

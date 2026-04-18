@@ -428,6 +428,31 @@
       "failedToSave": "प्रोफ़ाइल सहेजी नहीं जा सकी। कृपया फिर से प्रयास करें।"
     }
   },
+  "AnalyticsChartsModal": {
+    "title": "विश्लेषण चार्ट",
+    "charts": {
+      "common": {
+        "date": "तारीख"
+      },
+      "totalRocks": {
+        "title": "गेम्स से अर्जित कुल क्रिस्टल",
+        "yAxis": "क्रिस्टल"
+      },
+      "workTime": {
+        "title": "संचयी कार्य समय",
+        "yAxis": "मिनट"
+      },
+      "playTime": {
+        "title": "संचयी विश्राम समय",
+        "yAxis": "मिनट"
+      }
+    },
+    "empty": {
+      "noRockStats": "अभी तक कोई रॉक आँकड़े नहीं हैं।",
+      "noWorkSessions": "अभी तक कोई कार्य सत्र नहीं हैं।",
+      "noPlaySessions": "अभी तक कोई विश्राम सत्र नहीं हैं।"
+    }
+  },
   "Pomodoro": {
     "time": "शेष समय",
     "work": "कार्य सत्र",

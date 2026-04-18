@@ -430,6 +430,31 @@
       "failedToSave": "প্রোফাইল সংরক্ষণ করা যায়নি। আবার চেষ্টা করুন।"
     }
   },
+  "AnalyticsChartsModal": {
+    "title": "অ্যানালিটিক্স চার্ট",
+    "charts": {
+      "common": {
+        "date": "তারিখ"
+      },
+      "totalRocks": {
+        "title": "গেম থেকে অর্জিত মোট ক্রিস্টাল",
+        "yAxis": "ক্রিস্টাল"
+      },
+      "workTime": {
+        "title": "সঞ্চিত কাজের সময়",
+        "yAxis": "মিনিট"
+      },
+      "playTime": {
+        "title": "সঞ্চিত বিরতির সময়",
+        "yAxis": "মিনিট"
+      }
+    },
+    "empty": {
+      "noRockStats": "এখনও কোনো রক পরিসংখ্যান নেই।",
+      "noWorkSessions": "এখনও কোনো কাজের সেশন নেই।",
+      "noPlaySessions": "এখনও কোনো বিরতির সেশন নেই।"
+    }
+  },
   "Pomodoro": {
     "time": "অবশিষ্ট সময়",
     "work": "কাজের সেশন",

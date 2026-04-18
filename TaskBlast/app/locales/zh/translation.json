@@ -428,6 +428,31 @@
       "failedToSave": "保存个人资料失败，请重试。"
     }
   },
+  "AnalyticsChartsModal": {
+    "title": "分析图表",
+    "charts": {
+      "common": {
+        "date": "日期"
+      },
+      "totalRocks": {
+        "title": "游戏中获得的水晶总数",
+        "yAxis": "水晶"
+      },
+      "workTime": {
+        "title": "累计工作时间",
+        "yAxis": "分钟"
+      },
+      "playTime": {
+        "title": "累计休息时间",
+        "yAxis": "分钟"
+      }
+    },
+    "empty": {
+      "noRockStats": "暂无岩石统计。",
+      "noWorkSessions": "暂无工作会话。",
+      "noPlaySessions": "暂无休息会话。"
+    }
+  },
   "Pomodoro": {
     "time": "剩余时间",
     "work": "工作时段",

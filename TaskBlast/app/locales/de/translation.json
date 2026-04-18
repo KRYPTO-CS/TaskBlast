@@ -430,6 +430,31 @@
       "failedToSave": "Profil konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
     }
   },
+  "AnalyticsChartsModal": {
+    "title": "Analyse-Diagramme",
+    "charts": {
+      "common": {
+        "date": "Datum"
+      },
+      "totalRocks": {
+        "title": "Gesamte in Spielen verdiente Kristalle",
+        "yAxis": "Kristalle"
+      },
+      "workTime": {
+        "title": "Kumulierte Arbeitszeit",
+        "yAxis": "Minuten"
+      },
+      "playTime": {
+        "title": "Kumulierte Pausenzeit",
+        "yAxis": "Minuten"
+      }
+    },
+    "empty": {
+      "noRockStats": "Noch keine Felsenstatistiken.",
+      "noWorkSessions": "Noch keine Arbeitssitzungen.",
+      "noPlaySessions": "Noch keine Pausensitzungen."
+    }
+  },
   "Pomodoro": {
     "time": "Verbleibende Zeit",
     "work": "Arbeitszeit",
