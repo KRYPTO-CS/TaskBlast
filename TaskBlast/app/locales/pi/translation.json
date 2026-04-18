@@ -228,6 +228,45 @@
       }
     }
   },
+  "AboutScreen": {
+    "title": "About",
+    "tagline": "Blast off. Stay focused. Level up.",
+    "back": "Back",
+    "sections": {
+      "mission": {
+        "title": "Our Mission",
+        "body": "TaskBlast was built to make productivity fun. We believe that focus and accomplishment shouldn't feel like a chore, so we wrapped them in a space adventure. Our mission is to help learners of all ages build healthy habits through gamified task management."
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "body": "Add tasks, blast off into focus sessions powered by the Pomodoro technique, and land on new planets as you complete your goals. Earn Rocks and Galaxy Crystals, level up, and unlock cosmetic rewards along the way."
+      },
+      "forEveryone": {
+        "title": "Built for Everyone",
+        "body": "TaskBlast supports both independent learners and managed accounts for younger users. Parents and guardians can create child accounts, assign tasks, and set a manager PIN to keep things on track, all without disrupting the fun."
+      },
+      "accessibility": {
+        "title": "Accessibility First",
+        "body": "We're committed to an inclusive experience. TaskBlast includes colour-blind-safe themes, high-contrast mode, adjustable text sizes, reduced motion support, and a full text-to-speech system so every user can enjoy the app comfortably."
+      },
+      "languages": {
+        "title": "Multi-Language Support",
+        "body": "TaskBlast is available in English, Spanish, Portuguese, French, German, Russian, Arabic, Bengali, Chinese, Hindi, and even Pirate. We're continuously working to expand our language support."
+      },
+      "privacy": {
+        "title": "Privacy & Safety",
+        "body": "We take your data seriously. TaskBlast uses Firebase's industry-standard security infrastructure and never sells your personal information. Child accounts are fully managed by parents or guardians."
+      },
+      "credits": {
+        "title": "Credits",
+        "body": "Rotating Pixel Art Earth by j_hyde on opengameart.org"
+      },
+      "version": {
+        "title": "Version",
+        "body": "TaskBlast v1.0.0\nBuilt with React Native & Expo.\n© 2026 TaskBlast. All rights reserved."
+      }
+    }
+  },
   "Tasks": {
     "title": "Task Ledger",
     "normal": "Active",

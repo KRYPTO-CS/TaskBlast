@@ -228,6 +228,45 @@
       }
     }
   },
+  "AboutScreen": {
+    "title": "关于我们",
+    "tagline": "起飞。保持专注。升级成长。",
+    "back": "返回",
+    "sections": {
+      "mission": {
+        "title": "我们的使命",
+        "body": "TaskBlast 的诞生，是为了让生产力变得有趣。我们认为专注与成就不应像苦差事，所以把它们包装成了一场太空冒险。我们的使命是通过游戏化任务管理，帮助各年龄段的学习者养成健康习惯。"
+      },
+      "howItWorks": {
+        "title": "它如何运作",
+        "body": "添加任务，借助 Pomodoro 技术进入专注会话，并在完成目标时降落到新的星球。你可以赚取 Rocks 和 Galaxy Crystals，升级等级，并一路解锁外观奖励。"
+      },
+      "forEveryone": {
+        "title": "为每个人打造",
+        "body": "TaskBlast 同时支持独立学习者以及年幼用户的受管账户。父母和监护人可以创建儿童账号、分配任务并设置管理员 PIN，让一切井井有条，同时不影响乐趣。"
+      },
+      "accessibility": {
+        "title": "优先考虑无障碍",
+        "body": "我们致力于提供包容性的体验。TaskBlast 包含适合色盲的主题、高对比度模式、可调节字体大小、减少动画支持，以及完整的文本转语音系统，让每位用户都能舒适地使用应用。"
+      },
+      "languages": {
+        "title": "多语言支持",
+        "body": "TaskBlast 提供英语、西班牙语、葡萄牙语、法语、德语、俄语、阿拉伯语、孟加拉语、中文、印地语，甚至海盗语版本。我们也在持续扩展语言支持。"
+      },
+      "privacy": {
+        "title": "隐私与安全",
+        "body": "我们认真对待你的数据。TaskBlast 使用 Firebase 的行业标准安全基础设施，绝不会出售你的个人信息。儿童账号完全由父母或监护人管理。"
+      },
+      "credits": {
+        "title": "致谢",
+        "body": "Rotating Pixel Art Earth by j_hyde on opengameart.org"
+      },
+      "version": {
+        "title": "版本",
+        "body": "TaskBlast v1.0.0\n使用 React Native 和 Expo 构建。\n© 2026 TaskBlast。保留所有权利。"
+      }
+    }
+  },
   "Tasks": {
     "title": "任务列表",
     "normal": "普通",

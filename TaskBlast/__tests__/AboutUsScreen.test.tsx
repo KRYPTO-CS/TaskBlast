@@ -69,10 +69,10 @@ describe("AboutUsScreen", () => {
       expect(() => render(<AboutUsScreen />)).not.toThrow();
     });
 
-    it("renders the screen title from i18n key Settings.About", () => {
+    it("renders the screen title from i18n key AboutScreen.title", () => {
       const { getByText } = render(<AboutUsScreen />);
       // t() in test returns the key itself
-      expect(getByText("Settings.About")).toBeTruthy();
+      expect(getByText("AboutScreen.title")).toBeTruthy();
     });
 
     it("renders the hero card with TaskBlast brand name", () => {
@@ -82,7 +82,7 @@ describe("AboutUsScreen", () => {
 
     it("renders the hero tagline", () => {
       const { getByText } = render(<AboutUsScreen />);
-      expect(getByText("Blast off. Stay focused. Level up.")).toBeTruthy();
+      expect(getByText("AboutScreen.tagline")).toBeTruthy();
     });
   });
 
@@ -90,13 +90,14 @@ describe("AboutUsScreen", () => {
 
   describe("About sections", () => {
     const sectionTitles = [
-      "Our Mission",
-      "How It Works",
-      "Built for Everyone",
-      "Accessibility First",
-      "Multi-Language Support",
-      "Privacy & Safety",
-      "Version",
+      "AboutScreen.sections.mission.title",
+      "AboutScreen.sections.howItWorks.title",
+      "AboutScreen.sections.forEveryone.title",
+      "AboutScreen.sections.accessibility.title",
+      "AboutScreen.sections.languages.title",
+      "AboutScreen.sections.privacy.title",
+      "AboutScreen.sections.credits.title",
+      "AboutScreen.sections.version.title",
     ];
 
     sectionTitles.forEach((title) => {
@@ -125,7 +126,7 @@ describe("AboutUsScreen", () => {
       expect(router.back).toHaveBeenCalledTimes(1);
     });
 
-    it("calls router.back() when the 'Back to Settings' MainButton is pressed", () => {
+    it("calls router.back() when the back MainButton is pressed", () => {
       const { getByTestId } = render(<AboutUsScreen />);
       fireEvent.press(getByTestId("main-button"));
       expect(router.back).toHaveBeenCalled();

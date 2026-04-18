@@ -229,6 +229,45 @@
       }
     }
   },
+  "AboutScreen": {
+    "title": "Sobre",
+    "tagline": "Decole. Mantenha o foco. Suba de nivel.",
+    "back": "Voltar",
+    "sections": {
+      "mission": {
+        "title": "Nossa missao",
+        "body": "TaskBlast foi criado para tornar a produtividade divertida. Acreditamos que foco e conquistas nao devem parecer uma tarefa chata, entao os transformamos em uma aventura espacial. Nossa missao e ajudar aprendizes de todas as idades a desenvolver habitos saudaveis por meio do gerenciamento de tarefas gamificado."
+      },
+      "howItWorks": {
+        "title": "Como funciona",
+        "body": "Adicione tarefas, decole para sessoes de foco impulsionadas pela tecnica Pomodoro e pouse em novos planetas conforme voce conclui seus objetivos. Ganhe Rochas e Cristais Galacticos, suba de nivel e desbloqueie recompensas cosmeticas ao longo do caminho."
+      },
+      "forEveryone": {
+        "title": "Feito para todos",
+        "body": "TaskBlast oferece suporte tanto para aprendizes independentes quanto para contas gerenciadas de usuarios mais jovens. Pais e responsaveis podem criar contas infantis, atribuir tarefas e definir um PIN de gerente para manter tudo em ordem, sem atrapalhar a diversao."
+      },
+      "accessibility": {
+        "title": "Acessibilidade em primeiro lugar",
+        "body": "Estamos comprometidos com uma experiencia inclusiva. TaskBlast inclui temas seguros para daltonismo, modo de alto contraste, tamanhos de texto ajustaveis, suporte a reduzir movimento e um sistema completo de texto para fala para que todos possam usar o app com conforto."
+      },
+      "languages": {
+        "title": "Suporte multilanguage",
+        "body": "TaskBlast esta disponivel em ingles, espanhol, portugues, frances, alemao, russo, arabe, bengali, chines, hindi e ate pirate. Estamos trabalhando continuamente para expandir nosso suporte de idiomas."
+      },
+      "privacy": {
+        "title": "Privacidade e seguranca",
+        "body": "Levamos seus dados a serio. TaskBlast usa a infraestrutura de seguranca padrao do Firebase e nunca vende suas informacoes pessoais. Contas infantis sao totalmente gerenciadas por pais ou responsaveis."
+      },
+      "credits": {
+        "title": "Creditos",
+        "body": "Rotating Pixel Art Earth by j_hyde on opengameart.org"
+      },
+      "version": {
+        "title": "Versao",
+        "body": "TaskBlast v1.0.0\nCriado com React Native e Expo.\n© 2026 TaskBlast. Todos os direitos reservados."
+      }
+    }
+  },
   "Tasks": {
     "title": "Tarefas",
     "normal": "Normal",

@@ -14,52 +14,50 @@ import { useColorPalette } from "../styles/colorBlindThemes";
 
 interface AboutSection {
   icon: keyof typeof Ionicons.glyphMap;
-  title: string;
-  body: string;
+  titleKey: string;
+  bodyKey: string;
 }
 
 const ABOUT_SECTIONS: AboutSection[] = [
   {
     icon: "rocket-outline",
-    title: "Our Mission",
-    body:
-      "TaskBlast was built to make productivity fun. We believe that focus and accomplishment shouldn't feel like a chore — so we wrapped them in a space adventure. Our mission is to help learners of all ages build healthy habits through gamified task management.",
+    titleKey: "AboutScreen.sections.mission.title",
+    bodyKey: "AboutScreen.sections.mission.body",
   },
   {
     icon: "bulb-outline",
-    title: "How It Works",
-    body:
-      "Add tasks, blast off into focus sessions powered by the Pomodoro technique, and land on new planets as you complete your goals. Earn Rocks and Galaxy Crystals, level up, and unlock cosmetic rewards along the way.",
+    titleKey: "AboutScreen.sections.howItWorks.title",
+    bodyKey: "AboutScreen.sections.howItWorks.body",
   },
   {
     icon: "people-outline",
-    title: "Built for Everyone",
-    body:
-      "TaskBlast supports both independent learners and managed accounts for younger users. Parents and guardians can create child accounts, assign tasks, and set a manager PIN to keep things on track — all without disrupting the fun.",
+    titleKey: "AboutScreen.sections.forEveryone.title",
+    bodyKey: "AboutScreen.sections.forEveryone.body",
   },
   {
     icon: "accessibility-outline",
-    title: "Accessibility First",
-    body:
-      "We're committed to an inclusive experience. TaskBlast includes colour-blind-safe themes, high-contrast mode, adjustable text sizes, reduced motion support, and a full text-to-speech system so every user can enjoy the app comfortably.",
+    titleKey: "AboutScreen.sections.accessibility.title",
+    bodyKey: "AboutScreen.sections.accessibility.body",
   },
   {
     icon: "globe-outline",
-    title: "Multi-Language Support",
-    body:
-      "TaskBlast is available in English, Spanish, Portuguese, French, German, Russian, Arabic, Bengali, Chinese, Hindi, and even Pirate 🏴‍☠️. We're continuously working to expand our language support.",
+    titleKey: "AboutScreen.sections.languages.title",
+    bodyKey: "AboutScreen.sections.languages.body",
   },
   {
     icon: "shield-checkmark-outline",
-    title: "Privacy & Safety",
-    body:
-      "We take your data seriously. TaskBlast uses Firebase's industry-standard security infrastructure and never sells your personal information. Child accounts are fully managed by parents or guardians.",
+    titleKey: "AboutScreen.sections.privacy.title",
+    bodyKey: "AboutScreen.sections.privacy.body",
+  },
+  {
+    icon: "color-palette-outline",
+    titleKey: "AboutScreen.sections.credits.title",
+    bodyKey: "AboutScreen.sections.credits.body",
   },
   {
     icon: "star-outline",
-    title: "Version",
-    body:
-      "TaskBlast v1.0.0\nBuilt with React Native & Expo.\n© 2026 TaskBlast. All rights reserved.",
+    titleKey: "AboutScreen.sections.version.title",
+    bodyKey: "AboutScreen.sections.version.body",
   },
 ];
 
@@ -102,7 +100,7 @@ export default function AboutUsScreen() {
           style={{ marginRight: 10 }}
         />
         <Text className="font-orbitron-semibold text-white text-xl flex-1">
-          {t("Settings.About")}
+          {t("AboutScreen.title")}
         </Text>
       </View>
 
@@ -125,7 +123,7 @@ export default function AboutUsScreen() {
             TaskBlast
           </Text>
           <Text className="font-madimi text-white/70 text-sm mt-1 text-center">
-            Blast off. Stay focused. Level up.
+            {t("AboutScreen.tagline")}
           </Text>
         </View>
 
@@ -157,7 +155,7 @@ export default function AboutUsScreen() {
                 />
               </View>
               <Text className="font-orbitron-semibold text-white text-sm flex-1">
-                {section.title}
+                {t(section.titleKey)}
               </Text>
             </View>
 
@@ -169,7 +167,7 @@ export default function AboutUsScreen() {
 
             {/* Body */}
             <Text className="font-madimi text-white/80 text-sm leading-6">
-              {section.body}
+              {t(section.bodyKey)}
             </Text>
           </View>
         ))}
@@ -177,7 +175,7 @@ export default function AboutUsScreen() {
         {/* Back button */}
         <View className="mt-4">
           <MainButton
-            title="Back to Settings"
+            title={t("AboutScreen.back")}
             variant="primary"
             onPress={() => router.back()}
           />
