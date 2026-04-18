@@ -438,6 +438,7 @@
     "owned": "मालिक",
     "confirmPurchaseTitle": "खरीद की पुष्टि करें",
     "confirmPurchaseText": "क्या आप इस आइटम को {{price}} क्रिस्टल में खरीदना चाहते हैं?",
+    "confirmPurchaseCrystalText": "क्या आप इस आइटम को {{price}} गैलेक्सी क्रिस्टल में खरीदना चाहते हैं?",
     "cancel": "रद्द करें",
     "notEnoughCrystalsTitle": "पर्याप्त क्रिस्टल नहीं हैं",
     "notEnoughCrystalsText": "आपको {{price}} क्रिस्टल चाहिए, लेकिन आपके पास केवल {{rocks}} हैं।",

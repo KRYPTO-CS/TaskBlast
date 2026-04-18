@@ -440,6 +440,7 @@
     "owned": "Owned",
     "confirmPurchaseTitle": "Confirm Purchase",
     "confirmPurchaseText": "Purchase this item for {{price}} crystals?",
+    "confirmPurchaseCrystalText": "Purchase this item for {{price}} Galaxy Crystals?",
     "cancel": "Cancel",
     "notEnoughCrystalsTitle": "Not Enough Crystals",
     "notEnoughCrystalsText": "You need {{price}} crystals but only have {{rocks}}.",

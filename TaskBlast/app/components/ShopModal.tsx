@@ -19,7 +19,7 @@ import {
 } from "firebase/firestore";
 import { useColorPalette } from "../styles/colorBlindThemes";
 import { useTranslation } from "react-i18next";
-import { purchaseShopItem } from "../services/economyService";
+import { purchaseShopItem, purchaseShopItemWithCrystals } from "../services/economyService";
 import {
   DEFAULT_SHOP_CATALOG,
   getShopIconSource,
@@ -47,6 +47,7 @@ type ShopItem = {
   nameKey: string;
   iconPath: any;
   price: number;
+  crystalPrice?: number;
   category: ShopCategory;
 };
 
@@ -77,6 +78,7 @@ const fallbackShopItems: ShopItem[] = DEFAULT_SHOP_CATALOG.map((item) => ({
   nameKey: item.nameKey,
   iconPath: getShopIconSource(item.iconKey),
   price: item.price,
+  crystalPrice: item.crystalPrice,
   category: item.category,
 }));
 
@@ -88,6 +90,7 @@ export default function ShopModal({
   const palette = useColorPalette();
   const [selectedPage, setSelectedPage] = useState(0);
   const [rocks, setRocks] = useState<number>(0);
+  const [galaxyCrystals, setGalaxyCrystals] = useState<number>(0);
   const [shopItems, setShopItems] = useState<ShopItem[]>(fallbackShopItems);
   const [unlockedItems, setUnlockedItems] = useState<{
     body: boolean[];
@@ -145,6 +148,7 @@ export default function ShopModal({
               iconKey?: string;
               price?: number;
               cost?: number;
+              crystalPrice?: number;
               active?: boolean;
             };
 
@@ -169,6 +173,11 @@ export default function ShopModal({
               return null;
             }
 
+            const crystalPrice =
+              data.crystalPrice !== undefined && Number.isFinite(Number(data.crystalPrice))
+                ? Number(data.crystalPrice)
+                : undefined;
+
             return {
               id: String(data.id || docSnap.id),
               index,
@@ -178,6 +187,7 @@ export default function ShopModal({
                 String(data.iconKey || "ship-body-blue"),
               ),
               price,
+              crystalPrice,
             } as ShopItem;
           })
           .filter((item): item is ShopItem => Boolean(item))
@@ -211,6 +221,10 @@ export default function ShopModal({
           const finalRocks = isNaN(rocksValue) ? 0 : Math.max(0, Math.floor(rocksValue));
           setRocks(finalRocks);
           console.log("[ShopModal] Loaded user rocks balance:", finalRocks);
+
+          // Load galaxy crystals balance
+          const gcValue = Number(userData.galaxyCrystals || 0);
+          setGalaxyCrystals(isNaN(gcValue) ? 0 : Math.max(0, Math.floor(gcValue)));
 
           let needsUpdate = false;
           const updates: any = {};
@@ -252,9 +266,9 @@ export default function ShopModal({
             // Merge to ensure newly-added categories (e.g. toppers) are always present
             const merged = {
               ...defaultShopItems,
-              ...userData.shopItems,
+              ...(userData.shopItems || {}),
             };
-            if (!userData.shopItems.toppers) {
+            if (!userData.shopItems?.toppers) {
               updates.shopItems = merged;
               needsUpdate = true;
             }
@@ -339,7 +353,18 @@ export default function ShopModal({
       return;
     }
 
-    if (rocks < item.price) {
+    if (item.crystalPrice !== undefined) {
+      if (galaxyCrystals < item.crystalPrice) {
+        Alert.alert(
+          t("Shop.notEnoughCrystalsTitle"),
+          t("Shop.notEnoughCrystalsText", {
+            price: item.crystalPrice,
+            rocks: galaxyCrystals,
+          }),
+        );
+        return;
+      }
+    } else if (rocks < item.price) {
       Alert.alert(
         t("Shop.notEnoughCrystalsTitle"),
         t("Shop.notEnoughCrystalsText", {
@@ -367,27 +392,47 @@ export default function ShopModal({
         return;
       }
 
-      const purchaseResult = await purchaseShopItem({ itemId: item.id, childDocId });
+      let newUnlockedItems: typeof unlockedItems;
+      let newUnlockedPlanets: boolean[];
 
-      if (!purchaseResult.success) {
-        throw new Error(purchaseResult.message || "Purchase failed");
+      if (item.crystalPrice !== undefined) {
+        const purchaseResult = await purchaseShopItemWithCrystals({ itemId: item.id, childDocId });
+
+        if (!purchaseResult.success) {
+          throw new Error(purchaseResult.message || "Purchase failed");
+        }
+
+        newUnlockedItems = purchaseResult.shopItems || { ...unlockedItems };
+        newUnlockedPlanets = [...unlockedPlanets];
+        const newGCAmount =
+          typeof purchaseResult.newGalaxyCrystals === "number"
+            ? purchaseResult.newGalaxyCrystals
+            : Math.max(0, galaxyCrystals - item.crystalPrice);
+
+        console.log("[ShopModal] Crystal purchase confirmed for item:", item.id, "Crystal price:", item.crystalPrice);
+        setGalaxyCrystals(newGCAmount);
+      } else {
+        const purchaseResult = await purchaseShopItem({ itemId: item.id, childDocId });
+
+        if (!purchaseResult.success) {
+          throw new Error(purchaseResult.message || "Purchase failed");
+        }
+
+        newUnlockedItems = purchaseResult.shopItems || { ...unlockedItems };
+        newUnlockedPlanets = purchaseResult.unlockedPlanets || [...unlockedPlanets];
+        const newRocksAmount =
+          typeof purchaseResult.newRocks === "number"
+            ? purchaseResult.newRocks
+            : Math.max(0, rocks - item.price);
+
+        console.log("[ShopModal] Purchase confirmed for item:", item.id, "Price:", item.price);
+        console.log("[ShopModal] Rocks before:", rocks, "Rocks after:", newRocksAmount);
+        setRocks(newRocksAmount);
       }
-
-      const newUnlockedItems = purchaseResult.shopItems || { ...unlockedItems };
-      const newUnlockedPlanets =
-        purchaseResult.unlockedPlanets || [...unlockedPlanets];
-      const newRocksAmount =
-        typeof purchaseResult.newRocks === "number"
-          ? purchaseResult.newRocks
-          : Math.max(0, rocks - item.price);
-
-      console.log("[ShopModal] Purchase confirmed for item:", item.id, "Price:", item.price);
-      console.log("[ShopModal] Rocks before:", rocks, "Rocks after:", newRocksAmount);
 
       // Update local state
       setUnlockedItems(newUnlockedItems);
       setUnlockedPlanets(newUnlockedPlanets);
-      setRocks(newRocksAmount);
 
       try {
         const refreshedSnap = await getDoc(getProfileDocRef());
@@ -397,7 +442,11 @@ export default function ShopModal({
           setRocks(
             Number.isFinite(refreshedRocks)
               ? Math.max(0, Math.floor(refreshedRocks))
-              : newRocksAmount,
+              : rocks,
+          );
+          const refreshedGC = Number(refreshedData.galaxyCrystals || 0);
+          setGalaxyCrystals(
+            Number.isFinite(refreshedGC) ? Math.max(0, Math.floor(refreshedGC)) : galaxyCrystals,
           );
           if (refreshedData.shopItems) {
             setUnlockedItems(refreshedData.shopItems);
@@ -563,6 +612,24 @@ export default function ShopModal({
                           {t("Shop.owned")}
                         </Text>
                       </View>
+                    ) : item.crystalPrice !== undefined ? (
+                      <View
+                        className="flex-row items-center px-3 py-1.5 rounded-full"
+                        style={{
+                          backgroundColor: "#1a2a4a",
+                          borderWidth: 1,
+                          borderColor: "#4a90e2",
+                        }}
+                      >
+                        <Image
+                          source={require("../../assets/images/sprites/galaxyCrystal.png")}
+                          style={{ width: 16, height: 16 }}
+                          resizeMode="contain"
+                        />
+                        <Text className="font-orbitron-bold text-white text-sm ml-1">
+                          {item.crystalPrice}
+                        </Text>
+                      </View>
                     ) : (
                       <View
                         className="flex-row items-center px-3 py-1.5 rounded-full"
@@ -623,29 +690,49 @@ export default function ShopModal({
                 {t(confirmPurchase.item.nameKey)}
               </Text>
 
-              <View
-                className="flex-row items-center px-4 py-2 rounded-full"
-                style={{
-                  backgroundColor: palette.accentSoft,
-                  borderWidth: 1,
-                  borderColor: palette.accentSoftBorder,
-                }}
-              >
-                <Image
-                  source={require("../../assets/images/sprites/crystal.png")}
-                  style={{ width: 20, height: 20 }}
-                  resizeMode="contain"
-                />
-                <Text className="font-orbitron-bold text-white text-base ml-2">
-                  {confirmPurchase.item.price}
-                </Text>
-              </View>
+              {confirmPurchase.item.crystalPrice !== undefined ? (
+                <View
+                  className="flex-row items-center px-4 py-2 rounded-full"
+                  style={{
+                    backgroundColor: "#1a2a4a",
+                    borderWidth: 1,
+                    borderColor: "#4a90e2",
+                  }}
+                >
+                  <Image
+                    source={require("../../assets/images/sprites/galaxyCrystal.png")}
+                    style={{ width: 20, height: 20 }}
+                    resizeMode="contain"
+                  />
+                  <Text className="font-orbitron-bold text-white text-base ml-2">
+                    {confirmPurchase.item.crystalPrice}
+                  </Text>
+                </View>
+              ) : (
+                <View
+                  className="flex-row items-center px-4 py-2 rounded-full"
+                  style={{
+                    backgroundColor: palette.accentSoft,
+                    borderWidth: 1,
+                    borderColor: palette.accentSoftBorder,
+                  }}
+                >
+                  <Image
+                    source={require("../../assets/images/sprites/crystal.png")}
+                    style={{ width: 20, height: 20 }}
+                    resizeMode="contain"
+                  />
+                  <Text className="font-orbitron-bold text-white text-base ml-2">
+                    {confirmPurchase.item.price}
+                  </Text>
+                </View>
+              )}
             </View>
 
             <Text className="font-orbitron text-white/80 text-sm mb-6 text-center">
-              {t("Shop.confirmPurchaseText", {
-                price: confirmPurchase.item.price,
-              })}
+              {confirmPurchase.item.crystalPrice !== undefined
+                ? t("Shop.confirmPurchaseCrystalText", { price: confirmPurchase.item.crystalPrice })
+                : t("Shop.confirmPurchaseText", { price: confirmPurchase.item.price })}
             </Text>
 
             <View className="flex-row gap-3">

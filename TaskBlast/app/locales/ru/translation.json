@@ -439,6 +439,7 @@
     "owned": "Владеется",
     "confirmPurchaseTitle": "Подтвердить покупку",
     "confirmPurchaseText": "Купить этот предмет за {{price}} кристаллов?",
+    "confirmPurchaseCrystalText": "Купить этот предмет за {{price}} Галактических кристалла?",
     "cancel": "Отмена",
     "notEnoughCrystalsTitle": "Недостаточно кристаллов",
     "notEnoughCrystalsText": "Нужно {{price}} кристаллов, но у вас только {{rocks}}.",

@@ -438,6 +438,7 @@
     "owned": "Poseído",
     "confirmPurchaseTitle": "Confirmar compra",
     "confirmPurchaseText": "¿Comprar este objeto por {{price}} cristales?",
+    "confirmPurchaseCrystalText": "¿Comprar este objeto por {{price}} Cristales galácticos?",
     "cancel": "Cancelar",
     "notEnoughCrystalsTitle": "No tienes suficientes cristales",
     "notEnoughCrystalsText": "Necesitas {{price}} cristales, pero solo tienes {{rocks}}.",

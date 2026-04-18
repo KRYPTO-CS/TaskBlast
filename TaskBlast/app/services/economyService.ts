@@ -37,6 +37,16 @@ export interface PurchaseShopItemResponse extends BaseResponse {
   unlockedPlanets?: boolean[];
 }
 
+export interface PurchaseWithCrystalsResponse extends BaseResponse {
+  itemId?: string;
+  newGalaxyCrystals?: number;
+  shopItems?: {
+    body: boolean[];
+    wings: boolean[];
+    toppers: boolean[];
+  };
+}
+
 export interface ClaimBattlePassRewardResponse extends BaseResponse {
   level?: number;
   isGalaxyReward?: boolean;
@@ -92,6 +102,19 @@ export const purchaseShopItem = async (payload: {
   const callable = httpsCallable<typeof payload, PurchaseShopItemResponse>(
     functions,
     "purchaseShopItem",
+  );
+
+  const result = await callable(payload);
+  return result.data;
+};
+
+export const purchaseShopItemWithCrystals = async (payload: {
+  itemId: string;
+  childDocId?: string | null;
+}): Promise<PurchaseWithCrystalsResponse> => {
+  const callable = httpsCallable<typeof payload, PurchaseWithCrystalsResponse>(
+    functions,
+    "purchaseShopItemWithCrystals",
   );
 
   const result = await callable(payload);

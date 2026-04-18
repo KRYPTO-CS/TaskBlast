@@ -438,6 +438,7 @@
     "owned": "已拥有",
     "confirmPurchaseTitle": "确认购买",
     "confirmPurchaseText": "以 {{price}} 水晶购买此物品？",
+    "confirmPurchaseCrystalText": "以 {{price}} 银河水晶购买此物品？",
     "cancel": "取消",
     "notEnoughCrystalsTitle": "水晶不足",
     "notEnoughCrystalsText": "你需要 {{price}} 个水晶，但你只有 {{rocks}} 个。",

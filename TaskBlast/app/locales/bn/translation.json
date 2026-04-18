@@ -440,6 +440,7 @@
     "owned": "মালিকানাধীন",
     "confirmPurchaseTitle": "ক্রয় নিশ্চিত করুন",
     "confirmPurchaseText": "{{price}} ক্রিস্টাল দিয়ে এই আইটেমটি কিনবেন?",
+    "confirmPurchaseCrystalText": "{{price}} গ্যালাক্সি ক্রিস্টাল দিয়ে এই আইটেমটি কিনবেন?",
     "cancel": "বাতিল",
     "notEnoughCrystalsTitle": "পর্যাপ্ত ক্রিস্টাল নেই",
     "notEnoughCrystalsText": "আপনার {{price}} ক্রিস্টাল দরকার, কিন্তু আপনার কাছে আছে মাত্র {{rocks}}।",

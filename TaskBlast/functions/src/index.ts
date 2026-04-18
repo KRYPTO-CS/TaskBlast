@@ -886,6 +886,123 @@ export const purchaseShopItem = onCall(
   },
 );
 
+export const purchaseShopItemWithCrystals = onCall(
+  { invoker: "public" },
+  async (request: CallableRequest<unknown>) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError("unauthenticated", "Authentication is required.");
+    }
+
+    const { itemId, childDocId } = request.data as { itemId?: string; childDocId?: string | null };
+    if (!itemId) {
+      throw new HttpsError("invalid-argument", "Unknown shop item.");
+    }
+
+    const uid = request.auth.uid;
+    const itemRef = db.collection("shopItems").doc(itemId);
+    const userRef = getUserProfileRef(uid, childDocId);
+
+    const result = await db.runTransaction(
+      async (tx: admin.firestore.Transaction) => {
+        const itemSnap = await tx.get(itemRef);
+        const itemData = itemSnap.exists ? itemSnap.data() || {} : {};
+        const seededFallback = DEFAULT_SHOP_CATALOG_BY_ID[itemId];
+
+        const rawCategory = String(
+          itemData.category ?? seededFallback?.category ?? "",
+        );
+        const category =
+          rawCategory === "Body" || rawCategory === "Wings" || rawCategory === "Topper"
+            ? rawCategory
+            : null;
+        const index = Number(itemData.index ?? seededFallback?.index ?? -1);
+        const crystalPrice = Number(itemData.crystalPrice ?? NaN);
+        const isActive =
+          itemData.active === undefined
+            ? true
+            : Boolean(itemData.active);
+
+        if (
+          !category ||
+          !Number.isFinite(index) ||
+          index < 0 ||
+          !Number.isFinite(crystalPrice) ||
+          crystalPrice < 0 ||
+          !isActive
+        ) {
+          throw new HttpsError("failed-precondition", "Shop item is unavailable or has no crystal price set.");
+        }
+
+        const userSnap = await tx.get(userRef);
+        if (!userSnap.exists) {
+          throw new HttpsError("not-found", "User profile not found.");
+        }
+
+        const userData = userSnap.data() || {};
+        const currentGalaxyCrystals = Number(userData.galaxyCrystals || 0);
+        const shopItems = userData.shopItems || {
+          body: [true, false, false, false],
+          wings: [false, true, false, false],
+          toppers: [true, false],
+        };
+
+        const key = category === "Body" ? "body" : category === "Wings" ? "wings" : "toppers";
+        const categoryArr = Array.isArray(shopItems[key]) ? [...shopItems[key]] : [];
+
+        while (categoryArr.length <= index) {
+          categoryArr.push(false);
+        }
+
+        if (categoryArr[index]) {
+          return {
+            alreadyOwned: true,
+            newGalaxyCrystals: currentGalaxyCrystals,
+            updatedShopItems: shopItems,
+          };
+        }
+
+        if (currentGalaxyCrystals < crystalPrice) {
+          throw new HttpsError(
+            "failed-precondition",
+            "Not enough galaxy crystals for this purchase.",
+          );
+        }
+
+        categoryArr[index] = true;
+        const updatedShopItems = {
+          ...shopItems,
+          [key]: categoryArr,
+        };
+        const newGalaxyCrystals = currentGalaxyCrystals - crystalPrice;
+
+        tx.set(
+          userRef,
+          {
+            shopItems: updatedShopItems,
+            galaxyCrystals: newGalaxyCrystals,
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          },
+          { merge: true },
+        );
+
+        return {
+          alreadyOwned: false,
+          newGalaxyCrystals,
+          updatedShopItems,
+        };
+      },
+    );
+
+    return {
+      success: true,
+      itemId,
+      newGalaxyCrystals: result.newGalaxyCrystals,
+      shopItems: result.updatedShopItems,
+      message: result.alreadyOwned ? "Item already owned." : "Purchase complete.",
+    };
+  },
+);
+
 export const deleteChildAccount = onCall(
   { invoker: "public" },
   async (request: CallableRequest<unknown>) => {
