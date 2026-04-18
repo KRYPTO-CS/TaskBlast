@@ -433,6 +433,7 @@
     "rWings": "लाल पंख",
     "yWings": "पीले पंख",
     "gWings": "हरे पंख",
+    "galaxyWings": "गैलेक्सी पंख",
     "equipped": "एक्विप्ड",
     "owned": "मालिक",
     "confirmPurchaseTitle": "खरीद की पुष्टि करें",
@@ -475,6 +476,19 @@
     "desc2": "माता-पिता खाता से एक बनाएं",
     "text": "या बच्चा चुनें",
     "EnterPin": "के लिए PIN दर्ज करें"
+  },
+  "Planets": {
+    "planet1": "बुध",
+    "planet2": "शुक्र",
+    "planet3": "पृथ्वी",
+    "planet4": "मंगल",
+    "planet5": "बृहस्पति",
+    "planet6": "शनि",
+    "planet7": "अरुण",
+    "planet8": "वरुण",
+    "planet9": "यम",
+    "descriptionBonus": "{{percent}}% अधिक रत्न",
+    "descriptionBase": "मानक रत्न पुरस्कार"
   }
 
 }

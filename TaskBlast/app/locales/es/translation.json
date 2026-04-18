@@ -433,6 +433,7 @@
     "rWings": "Alas Rojas",
     "gWings": "Alas Verdes",
     "yWings": "Alas Amarillas",
+    "galaxyWings": "Alas Galaxia",
     "equipped": "Equipado",
     "owned": "Poseído",
     "confirmPurchaseTitle": "Confirmar compra",
@@ -476,6 +477,19 @@
     "desc2": "Crea una desde la cuenta de tutor",
     "text": "O SELECCIONA NIÑO",
     "EnterPin": "Ingrese PIN para"
+  },
+  "Planets": {
+    "planet1": "Mercurio",
+    "planet2": "Venus",
+    "planet3": "Tierra",
+    "planet4": "Marte",
+    "planet5": "Júpiter",
+    "planet6": "Saturno",
+    "planet7": "Urano",
+    "planet8": "Neptuno",
+    "planet9": "Plutón",
+    "descriptionBonus": "{{percent}}% más gemas",
+    "descriptionBase": "Recompensas de gemas estándar"
   }
 
 }

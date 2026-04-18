@@ -433,6 +433,7 @@
     "rWings": "红色翅膀",
     "yWings": "黄色翅膀",
     "gWings": "绿色翅膀",
+    "galaxyWings": "银河之翼",
     "equipped": "已装备",
     "owned": "已拥有",
     "confirmPurchaseTitle": "确认购买",
@@ -475,6 +476,19 @@
     "desc2": "从家长账户创建一个",
     "text": "或者选择孩子账户",
     "EnterPin": "输入 PIN 码以访问"
+  },
+  "Planets": {
+    "planet1": "水星",
+    "planet2": "金星",
+    "planet3": "地球",
+    "planet4": "火星",
+    "planet5": "木星",
+    "planet6": "土星",
+    "planet7": "天王星",
+    "planet8": "海王星",
+    "planet9": "冥王星",
+    "descriptionBonus": "多 {{percent}}% 宝石",
+    "descriptionBase": "标准宝石奖励"
   }
 
 }

@@ -12,6 +12,7 @@ import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { useTranslation } from "react-i18next";
 import MainButton from "./MainButton";
 import { unlockPlanet } from "../services/economyService";
 import { useActiveProfile } from "../context/ActiveProfileContext";
@@ -58,6 +59,7 @@ interface PlanetData {
   description?: string;
   [key: string]: any;
   cost?: number;
+  multiplier?: number;
 }
 
 export default function PlanetModal({
@@ -72,6 +74,7 @@ export default function PlanetModal({
 }: PlanetModalProps) {
   const auth = getAuth();
   const db = getFirestore();
+  const { t } = useTranslation();
   const { childDocId, getProfileDocRef, isLoading: isProfileLoading, profileType } =
     useActiveProfile();
 
@@ -114,6 +117,16 @@ export default function PlanetModal({
 
   const getPlanetDocRef = (id: number) => {
     return doc(db, "planets", id.toString());
+  };
+
+  const getPlanetName = (id?: number): string =>
+    t('Planets.planet' + (id ?? 1));
+
+  const getPlanetDescription = (multiplier?: number): string => {
+    const m = multiplier ?? 1.0;
+    const percent = Math.round((m - 1) * 100);
+    if (percent <= 0) return t('Planets.descriptionBase');
+    return t('Planets.descriptionBonus', { percent });
   };
 
   // Check if the user has enough rocks and unlock the planet if so
@@ -291,7 +304,7 @@ export default function PlanetModal({
                   ? "Planet Not Unlocked"
                   : loading
                     ? "Loading..."
-                    : (planet?.name ?? "")}
+                    : getPlanetName(planetId)}
             </Text>
 
             <TouchableOpacity
@@ -336,7 +349,7 @@ export default function PlanetModal({
                   <Image source={getPlanetImage(planetId ?? 1)} />
                 </Animated.View>
                 <Text className="text-green-300 text-base font-orbitron-bold text-center">
-                  {planet.name} is now available!
+                  {getPlanetName(planetId)} is now available!
                 </Text>
                 <View className="flex-row items-center bg-purple-600/50 px-4 py-2 rounded-full">
                   <Image
@@ -354,7 +367,7 @@ export default function PlanetModal({
               <View className="items-center justify-center">
                 <Image source={PLANET_DARK_IMAGES[planetId ?? 1]} />
                 <Text className="text-white text-base mt-2 font-orbitron-semibold">
-                  {planet.description}
+                  {getPlanetDescription(planet.multiplier)}
                 </Text>
                 <View className="flex-row space-x-4 items-center">
                   <View className="flex-row items-center bg-purple-600/50 px-4 py-2 rounded-full max-h-10">
@@ -395,7 +408,7 @@ export default function PlanetModal({
                 >
                   <Image source={getPlanetImage(planetId ?? 1)} />
                   <Text className="text-white text-base mt-2 font-orbitron-semibold">
-                    {planet.description}
+                    {getPlanetDescription(planet.multiplier)}
                   </Text>
                 </View>
               )

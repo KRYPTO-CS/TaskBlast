@@ -434,6 +434,7 @@
     "rWings": "Ailes Rouges",
     "yWings": "Ailes Jaunes",
     "gWings": "Ailes Vertes",
+    "galaxyWings": "Ailes Galaxie",
     "equipped": "Équipé",
     "owned": "Possédé",
     "confirmPurchaseTitle": "Confirmer l'achat",
@@ -476,6 +477,19 @@
     "desc2": "Créez-en un à partir du compte parent",
     "text": "OU SÉLECTIONNEZ UN ENFANT",
     "EnterPin": "Entrez le PIN pour"
+  },
+  "Planets": {
+    "planet1": "Mercure",
+    "planet2": "Vénus",
+    "planet3": "Terre",
+    "planet4": "Mars",
+    "planet5": "Jupiter",
+    "planet6": "Saturne",
+    "planet7": "Uranus",
+    "planet8": "Neptune",
+    "planet9": "Pluton",
+    "descriptionBonus": "{{percent}}% de gemmes en plus",
+    "descriptionBase": "Récompenses de gemmes standard"
   }
 
 }

@@ -52,6 +52,7 @@ const WING_IMAGES: { [key: number]: any } = {
   1: require("../../assets/images/ship_components/wing/1.png"),
   2: require("../../assets/images/ship_components/wing/2.png"),
   3: require("../../assets/images/ship_components/wing/3.png"),
+  4: require("../../assets/images/ship_components/wing/4.png"),
 };
 
 const DETAILS_IMAGES: { [key: number]: any } = {

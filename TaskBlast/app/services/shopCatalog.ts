@@ -112,6 +112,16 @@ export const DEFAULT_SHOP_CATALOG: ShopCatalogItem[] = [
     price: 750,
     active: true,
   },
+  {
+    id: "wing-4",
+    category: "Wings",
+    index: 4,
+    nameKey: "Shop.galaxyWings",
+    iconKey: "ship-wing-galaxy",
+    price: 0,
+    crystalPrice: 30,
+    active: true,
+  },
 ];
 
 export const getShopIconSource = (iconKey: string) => {
@@ -132,6 +142,8 @@ export const getShopIconSource = (iconKey: string) => {
       return require("../../assets/images/shop_icons/ShipWingIconGreen.png");
     case "ship-wing-yellow":
       return require("../../assets/images/shop_icons/ShipWingIconYellow.png");
+    case "ship-wing-galaxy":
+      return require("../../assets/images/shop_icons/ShipWingIconGalaxy.png");
     case "ship-topper-default":
       return require("../../assets/images/shop_icons/ShipTopperIconDefault.png");
     case "ship-topper-blue_fire":

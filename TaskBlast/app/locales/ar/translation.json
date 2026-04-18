@@ -434,8 +434,7 @@
     "bWings": "الкрыات الزرقاء",
     "rWings": "الкрыات الحمراء",
     "yWings": "الкрыات الصفراء",
-    "gWings": "الкрыات الخضراء",
-    "equipped": "تم التجهيز",
+    "gWings": "الкрыات الخضراء",    "galaxyWings": "أجنحة المجرة",    "equipped": "تم التجهيز",
     "owned": "تم امتلاكه",
     "confirmPurchaseTitle": "تأكيد الشراء",
     "confirmPurchaseText": "شراء هذا العنصر مقابل {{price}} بلورات؟",
@@ -477,6 +476,19 @@
     "desc2": "أنشئ واحدة من حساب الوالدين",
     "text": "أو اختر الطفل",
     "EnterPin": "أدخل PIN لـ"
+  },
+  "Planets": {
+    "planet1": "عطارد",
+    "planet2": "الزهرة",
+    "planet3": "الأرض",
+    "planet4": "المريخ",
+    "planet5": "المشتري",
+    "planet6": "زحل",
+    "planet7": "أورانوس",
+    "planet8": "نبتون",
+    "planet9": "بلوتو",
+    "descriptionBonus": "{{percent}}% قيمة جواهر إضافية",
+    "descriptionBase": "مكافآت الجواهر القياسية"
   }
 
 }

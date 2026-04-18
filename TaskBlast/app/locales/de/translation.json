@@ -435,6 +435,7 @@
     "rWings": "Rote Flügel",
     "yWings": "Gelbe Flügel",
     "gWings": "Grüne Flügel",
+    "galaxyWings": "Galaxie-Flügel",
     "equipped": "Ausgerüstet",
     "owned": "Besitzt",
     "confirmPurchaseTitle": "Kauf bestätigen",
@@ -477,6 +478,19 @@
     "desc2": "Erstellen Sie eines aus dem Elternkonto",
     "text": "ODER KIND AUSWÄHLEN",
     "EnterPin": "PIN eingeben für"
+  },
+  "Planets": {
+    "planet1": "Merkur",
+    "planet2": "Venus",
+    "planet3": "Erde",
+    "planet4": "Mars",
+    "planet5": "Jupiter",
+    "planet6": "Saturn",
+    "planet7": "Uranus",
+    "planet8": "Neptun",
+    "planet9": "Pluto",
+    "descriptionBonus": "{{percent}}% mehr Edelsteine",
+    "descriptionBase": "Standard-Edelsteinbelohnungen"
   }
 
 }

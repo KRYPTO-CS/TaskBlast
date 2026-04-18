@@ -433,6 +433,7 @@
     "rWings": "Red Sails",
     "yWings": "Yellow Sails",
     "gWings": "Green Sails",
+    "galaxyWings": "Galaxy Sails",
     "equipped": "Equipped",
     "owned": "Owned",
     "confirmPurchaseTitle": "Confirm Purchase",
@@ -475,6 +476,19 @@
     "desc2": "Create one from the parent account",
     "text": "OR SELECT CHILD",
     "EnterPin": "Enter PIN for"
+  },
+  "Planets": {
+    "planet1": "Mercury",
+    "planet2": "Venus",
+    "planet3": "Earth",
+    "planet4": "Mars",
+    "planet5": "Jupiter",
+    "planet6": "Saturn",
+    "planet7": "Uranus",
+    "planet8": "Neptune",
+    "planet9": "Pluto",
+    "descriptionBonus": "{{percent}}% more loot, arrr!",
+    "descriptionBase": "Standard loot, matey"
   }
 
 }

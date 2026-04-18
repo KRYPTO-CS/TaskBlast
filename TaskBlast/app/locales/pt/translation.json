@@ -433,6 +433,7 @@
     "rWings": "Asas Vermelhas",
     "yWings": "Asas Amarelas",
     "gWings": "Asas Verdes",
+    "galaxyWings": "Asas Galáxia",
     "equipped": "Equipado",
     "owned": "Possuído",
     "confirmPurchaseTitle": "Confirmar compra",
@@ -475,6 +476,19 @@
     "desc2": "Crie uma a partir da conta de pais",
     "text": "OU SELECIONE CRIANÇA",
     "EnterPin": "Digite o PIN para"
+  },
+  "Planets": {
+    "planet1": "Mercúrio",
+    "planet2": "Vênus",
+    "planet3": "Terra",
+    "planet4": "Marte",
+    "planet5": "Júpiter",
+    "planet6": "Saturno",
+    "planet7": "Urano",
+    "planet8": "Netuno",
+    "planet9": "Plutão",
+    "descriptionBonus": "{{percent}}% mais gemas",
+    "descriptionBase": "Recompensas de gemas padrão"
   }
 
 }

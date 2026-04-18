@@ -98,7 +98,7 @@ export default function ShopModal({
     toppers: boolean[];
   }>({
     body: [true, false, false, false],
-    wings: [false, true, false, false],
+    wings: [false, true, false, false, false],
     toppers: [true, false],
   });
   const [unlockedPlanets, setUnlockedPlanets] = useState<boolean[]>([
@@ -239,7 +239,7 @@ export default function ShopModal({
           // Check if shopItems exist, if not create them
           const defaultShopItems = {
             body: [true, false, false, false],
-            wings: [false, true, false, false],
+            wings: [false, true, false, false, false],
             toppers: [true, false],
           };
           if (!userData.shopItems) {
