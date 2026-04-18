@@ -34,21 +34,6 @@
     "lastName": "اسم العائلة",
     "continue": "متابعة"
   },
-  "Email": {
-    "title": "ما هو بريدك الإلكتروني؟",
-    "desc": "سنرسل رمز تحقق لتأكيد عنوان بريدك الإلكتروني",
-    "emailPlaceholder": "عنوان البريد الإلكتروني",
-    "send": "إرسال الرابط"
-  },
-  "Password": {
-    "title": "إنشاء كلمة مرور",
-    "desc": "اختر كلمة مرور قوية للحفاظ على أمان حسابك",
-    "passwordPlaceholder": "كلمة المرور",
-    "ConfirmPasswordPlaceholder": "تأكيد كلمة المرور",
-    "submit": "إنشاء الحساب",
-    "match": "كلمتا المرور غير متطابقتين",
-    "length": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل"
-  },
   "Login": {
     "title": "تسجيل الدخول",
     "emailPlaceholder": "البريد الإلكتروني أو اسم المستخدم",
@@ -349,6 +334,7 @@
     "details": "معلومات المهمة",
     "close": "إغلاق",
     "minutesShort": "د",
+    "hoursShort": "س",
     "managerAccess": "الوصول إلى الإدارة",
     "managerAccessDesc": "أدخل رمز PIN من 4 أرقام للوصول إلى وضع التحرير مع الصلاحيات المرتفعة.",
     "unlock": "فتح القفل"
@@ -357,20 +343,20 @@
 
   "Traits": {
 
-  "ADHD" : "ADHD",
-  "Aspergers": "Aspergers",
-  "Autism": "Autism",
-  "DevelopmentalLanguageDisorder": "Developmental Language Disorder",
-  "Disability Confident": "Disability Confident",
-  "Dyscalculia": "Dyscalculia",
-  "Dysgraphia": "Dysgraphia",
-  "Dyslexia": "Dyslexia",
-  "Dyspraxia": "Dyspraxia",
-  "Hyperlexia": "Hyperlexia",
-  "Irlen Syndrome": "Irlen Syndrome",
-  "OCD": "OCD",
-  "Synthesia": "Synthesia",
-  "Tourette's Syndrome": "Tourette's Syndrome",
+  "ADHD" : "اضطراب فرط الحركة وتشتت الانتباه",
+  "Aspergers": "متلازمة أسبرجر",
+  "Autism": "التوحد",
+  "DevelopmentalLanguageDisorder": "اضطراب تطور اللغة",
+  "Disability Confident": "الثقة مع الإعاقة",
+  "Dyscalculia": "عسر الحساب",
+  "Dysgraphia": "عسر الكتابة",
+  "Dyslexia": "عسر القراءة",
+  "Dyspraxia": "تعذر الأداء",
+  "Hyperlexia": "فرط القراءة",
+  "Irlen Syndrome": "متلازمة إيرلن",
+  "OCD": "الوسواس القهري",
+  "Synthesia": "الحس المرافق",
+  "Tourette's Syndrome": "متلازمة توريت",
   "selectTraits": "اختر الخصائص",
   "saveTraits"  : "احفظ الخصائص"
 
@@ -402,6 +388,57 @@
     "coachMarkStats": "هنا يمكنك رؤية إحصائياتك وتتبع تقدمك مع مرور الوقت!",
     "edit": "تعديل",
     "advanced": "متقدم"
+  },
+  "EditProfileModal": {
+    "title": "تعديل الملف الشخصي",
+    "tapToChangePicture": "اضغط لتغيير صورة الملف الشخصي",
+    "firstName": "الاسم الأول",
+    "firstNamePlaceholder": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "lastNamePlaceholder": "اسم العائلة",
+    "displayName": "اسم العرض (اللقب)",
+    "displayNamePlaceholder": "اسم العرض",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "البريد الإلكتروني",
+    "birthdate": "تاريخ الميلاد (MM/DD/YYYY)",
+    "birthdatePlaceholder": "MM/DD/YYYY",
+    "saveChanges": "حفظ التغييرات",
+    "errors": {
+      "loginToUpdatePicture": "يجب تسجيل الدخول لتحديث صورة الملف الشخصي",
+      "failedToUpdatePicture": "فشل تحديث صورة الملف الشخصي",
+      "firstAndLastRequired": "الاسم الأول واسم العائلة مطلوبان",
+      "displayNameRequired": "اسم العرض مطلوب",
+      "emailRequired": "البريد الإلكتروني مطلوب",
+      "invalidEmail": "يرجى إدخال بريد إلكتروني صالح",
+      "loginToUpdateProfile": "يجب تسجيل الدخول لتحديث ملفك الشخصي",
+      "childProfileMissing": "تعذر العثور على ملف الطفل النشط",
+      "failedToSave": "فشل حفظ الملف الشخصي. حاول مرة أخرى."
+    }
+  },
+  "AnalyticsChartsModal": {
+    "title": "مخططات التحليلات",
+    "charts": {
+      "common": {
+        "date": "التاريخ"
+      },
+      "totalRocks": {
+        "title": "إجمالي البلورات المكتسبة من الألعاب",
+        "yAxis": "البلورات"
+      },
+      "workTime": {
+        "title": "وقت العمل التراكمي",
+        "yAxis": "الدقائق"
+      },
+      "playTime": {
+        "title": "وقت الاستراحة التراكمي",
+        "yAxis": "الدقائق"
+      }
+    },
+    "empty": {
+      "noRockStats": "لا توجد إحصاءات للصخور بعد.",
+      "noWorkSessions": "لا توجد جلسات عمل بعد.",
+      "noPlaySessions": "لا توجد جلسات استراحة بعد."
+    }
   },
   "Pomodoro": {
     "time": "الوقت المتبقي",

@@ -34,21 +34,6 @@
     "lastName": "Nachname",
     "continue": "Weiter"
   },
-  "Email": {
-    "title": "Wie lautet Ihre E-Mail-Adresse?",
-    "desc": "Wir senden Ihnen einen Bestätigungscode, um Ihre E-Mail-Adresse zu verifizieren",
-    "emailPlaceholder": "E-Mail-Adresse",
-    "send": "Link senden"
-  },
-  "Password": {
-    "title": "Passwort erstellen",
-    "desc": "Wählen Sie ein sicheres Passwort zum Schutz Ihres Kontos",
-    "passwordPlaceholder": "Passwort",
-    "ConfirmPasswordPlaceholder": "Passwort bestätigen",
-    "submit": "Konto erstellen",
-    "match": "Die Passwörter stimmen nicht überein",
-    "length": "Das Passwort muss mindestens 8 Zeichen lang sein"
-  },
   "Login": {
     "title": "Anmelden",
     "emailPlaceholder": "E-Mail oder Benutzername",
@@ -349,6 +334,7 @@
     "details": "Aufgaben-details",
     "close": "Schließen",
     "minutesShort": "Min",
+    "hoursShort": "Std",
     "managerAccess": "Manager-Zugriff",
     "managerAccessDesc": "Geben Sie eine 4-stellige PIN ein, um Zugriff auf den erweiterten Bearbeitungsmodus zu erhalten.",
     "unlock": "Entsperren"
@@ -357,20 +343,20 @@
 
   "Traits": {
 
-  "ADHD" : "ADHD",
-  "Aspergers": "Aspergers",
-  "Autism": "Autism",
-  "DevelopmentalLanguageDisorder": "Developmental Language Disorder",
-  "Disability Confident": "Disability Confident",
-  "Dyscalculia": "Dyscalculia",
-  "Dysgraphia": "Dysgraphia",
-  "Dyslexia": "Dyslexia",
-  "Dyspraxia": "Dyspraxia",
-  "Hyperlexia": "Hyperlexia",
-  "Irlen Syndrome": "Irlen Syndrome",
-  "OCD": "OCD",
-  "Synthesia": "Synthesia",
-  "Tourette's Syndrome": "Tourette's Syndrome",
+  "ADHD" : "ADHS",
+  "Aspergers": "Asperger-Syndrom",
+  "Autism": "Autismus",
+  "DevelopmentalLanguageDisorder": "Entwicklungsbedingte Sprachstörung",
+  "Disability Confident": "Sicher im Umgang mit Behinderung",
+  "Dyscalculia": "Dyskalkulie",
+  "Dysgraphia": "Dysgraphie",
+  "Dyslexia": "Dyslexie",
+  "Dyspraxia": "Dyspraxie",
+  "Hyperlexia": "Hyperlexie",
+  "Irlen Syndrome": "Irlen-Syndrom",
+  "OCD": "Zwangsstörung",
+  "Synthesia": "Synästhesie",
+  "Tourette's Syndrome": "Tourette-Syndrom",
   "selectTraits": "Eigenschaften auswählen",
   "saveTraits"  : "Eigenschaften speichern"
 
@@ -402,6 +388,57 @@
     "coachMarkStats": "Hier können Sie Ihre Statistiken anzeigen und Ihren Fortschritt im Laufe der Zeit verfolgen!",
     "edit": "Bearbeiten",
     "advanced": "Erweitert"
+  },
+  "EditProfileModal": {
+    "title": "Profil bearbeiten",
+    "tapToChangePicture": "Tippen, um das Profilbild zu ändern",
+    "firstName": "Vorname",
+    "firstNamePlaceholder": "Vorname",
+    "lastName": "Nachname",
+    "lastNamePlaceholder": "Nachname",
+    "displayName": "Anzeigename (Spitzname)",
+    "displayNamePlaceholder": "Anzeigename",
+    "email": "E-Mail",
+    "emailPlaceholder": "E-Mail",
+    "birthdate": "Geburtsdatum (MM/TT/JJJJ)",
+    "birthdatePlaceholder": "MM/TT/JJJJ",
+    "saveChanges": "Änderungen speichern",
+    "errors": {
+      "loginToUpdatePicture": "Sie müssen angemeldet sein, um Ihr Profilbild zu aktualisieren",
+      "failedToUpdatePicture": "Profilbild konnte nicht aktualisiert werden",
+      "firstAndLastRequired": "Vorname und Nachname sind erforderlich",
+      "displayNameRequired": "Anzeigename ist erforderlich",
+      "emailRequired": "E-Mail ist erforderlich",
+      "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+      "loginToUpdateProfile": "Sie müssen angemeldet sein, um Ihr Profil zu aktualisieren",
+      "childProfileMissing": "Aktives Kinderprofil wurde nicht gefunden",
+      "failedToSave": "Profil konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
+    }
+  },
+  "AnalyticsChartsModal": {
+    "title": "Analyse-Diagramme",
+    "charts": {
+      "common": {
+        "date": "Datum"
+      },
+      "totalRocks": {
+        "title": "Gesamte in Spielen verdiente Kristalle",
+        "yAxis": "Kristalle"
+      },
+      "workTime": {
+        "title": "Kumulierte Arbeitszeit",
+        "yAxis": "Minuten"
+      },
+      "playTime": {
+        "title": "Kumulierte Pausenzeit",
+        "yAxis": "Minuten"
+      }
+    },
+    "empty": {
+      "noRockStats": "Noch keine Felsenstatistiken.",
+      "noWorkSessions": "Noch keine Arbeitssitzungen.",
+      "noPlaySessions": "Noch keine Pausensitzungen."
+    }
   },
   "Pomodoro": {
     "time": "Verbleibende Zeit",

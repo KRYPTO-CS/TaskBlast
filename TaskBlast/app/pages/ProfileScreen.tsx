@@ -41,6 +41,13 @@ import { deleteChildAccount } from "../services/accountService";
 
 const ACTIVE_CHILD_PROFILE_KEY = "activeChildProfile";
 
+const normalizeTraitKey = (trait: string): string => {
+  if (trait === "Developmental Language Disorder") {
+    return "DevelopmentalLanguageDisorder";
+  }
+  return trait;
+};
+
 export default function ProfileScreen() {
   const router = useRouter();
   const palette = useColorPalette();
@@ -617,7 +624,7 @@ export default function ProfileScreen() {
                     }}
                   >
                     <Text className="font-orbitron-semibold text-xl text-white text-sm">
-                      {trait}
+                      {t(`Traits.${normalizeTraitKey(trait)}`, { defaultValue: trait })}
                     </Text>
                   </View>
                 ))}
@@ -747,7 +754,7 @@ export default function ProfileScreen() {
                             workTimes.length,
                         )
                       : 0}
-                    m
+                    {t("Tasks.minutesShort")}
                   </Text>
                 </View>
                 <View
@@ -766,7 +773,7 @@ export default function ProfileScreen() {
                             playTimes.length,
                         )
                       : 0}
-                    m
+                    {t("Tasks.minutesShort")}
                   </Text>
                 </View>
                 <View
@@ -800,10 +807,10 @@ export default function ProfileScreen() {
                   <Text className="font-orbitron-semibold text-white text-xs">
                     {t("Profile.total")}
                     {(() => {
-                      const t =
+                      const totalMinutes =
                         workTimes.reduce((a, b) => a + b, 0) +
                         playTimes.reduce((a, b) => a + b, 0);
-                      return `${(t / 60).toFixed(1)}h`;
+                      return `${(totalMinutes / 60).toFixed(1)}${t("Tasks.hoursShort")}`;
                     })()}
                   </Text>
                 </View>

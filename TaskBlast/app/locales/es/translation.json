@@ -34,21 +34,6 @@
     "lastName": "Apellido",
     "continue": "Continuar"
   },
-  "Email": {
-    "title": "¿Cuál es tu correo electrónico?",
-    "desc": "Te enviaremos un código de verificación para confirmar tu dirección de correo electrónico",
-    "emailPlaceholder": "Dirección de correo electrónico",
-    "send": "Enviar enlace"
-  },
-  "Password": {
-    "title": "Crea Una Contraseña",
-    "desc": "Elige una contraseña segura para proteger tu cuenta",
-    "passwordPlaceholder": "Contraseña",
-    "ConfirmPasswordPlaceholder": "Confirmar contraseña",
-    "submit": "Crear cuenta",
-    "match": "Las contraseñas no coinciden",
-    "length": "La contraseña debe tener al menos 8 caracteres"
-  },
   "Login": {
     "title": "Iniciar sesión",
     "emailPlaceholder": "Correo electrónico o nombre de usuario",
@@ -349,6 +334,7 @@
     "details": "informacion",
     "close" : "Cerrar",
     "minutesShort": "min",
+    "hoursShort": "h",
     "managerAccess": "Acceso de gestor",
     "managerAccessDesc": "Ingresa el PIN de 4 dígitos para acceder al modo de edición con permisos elevados.",
     "unlock": "Desbloquear"
@@ -356,20 +342,20 @@
 
   "Traits": {
 
-  "ADHD" : "ADHD",
-  "Aspergers": "Aspergers",
-  "Autism": "Autism",
-  "DevelopmentalLanguageDisorder": "Developmental Language Disorder",
-  "Disability Confident": "Disability Confident",
-  "Dyscalculia": "Dyscalculia",
-  "Dysgraphia": "Dysgraphia",
-  "Dyslexia": "Dyslexia",
-  "Dyspraxia": "Dyspraxia",
-  "Hyperlexia": "Hyperlexia",
-  "Irlen Syndrome": "Irlen Syndrome",
-  "OCD": "OCD",
-  "Synthesia": "Synthesia",
-  "Tourette's Syndrome": "Tourette's Syndrome",
+  "ADHD" : "TDAH",
+  "Aspergers": "Síndrome de Asperger",
+  "Autism": "Autismo",
+  "DevelopmentalLanguageDisorder": "Trastorno del desarrollo del lenguaje",
+  "Disability Confident": "Confianza en la discapacidad",
+  "Dyscalculia": "Discalculia",
+  "Dysgraphia": "Disgrafía",
+  "Dyslexia": "Dislexia",
+  "Dyspraxia": "Dispraxia",
+  "Hyperlexia": "Hiperlexia",
+  "Irlen Syndrome": "Síndrome de Irlen",
+  "OCD": "TOC",
+  "Synthesia": "Sinestesia",
+  "Tourette's Syndrome": "Síndrome de Tourette",
   "selectTraits": "Seleccionar Rasgos",
   "saveTraits"  : "Guardar Rasgos"
 
@@ -400,6 +386,57 @@
     "coachMarkStats": "¡Aquí puedes ver tus estadísticas y seguir tu progreso a lo largo del tiempo!",
     "edit": "Editar",
     "advanced": "Avanzado"
+  },
+  "EditProfileModal": {
+    "title": "Editar perfil",
+    "tapToChangePicture": "Toca para cambiar la foto de perfil",
+    "firstName": "Nombre",
+    "firstNamePlaceholder": "Nombre",
+    "lastName": "Apellido",
+    "lastNamePlaceholder": "Apellido",
+    "displayName": "Nombre para mostrar (apodo)",
+    "displayNamePlaceholder": "Nombre para mostrar",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "Correo electrónico",
+    "birthdate": "Fecha de nacimiento (MM/DD/AAAA)",
+    "birthdatePlaceholder": "MM/DD/AAAA",
+    "saveChanges": "Guardar cambios",
+    "errors": {
+      "loginToUpdatePicture": "Debes iniciar sesión para actualizar tu foto de perfil",
+      "failedToUpdatePicture": "No se pudo actualizar la foto de perfil",
+      "firstAndLastRequired": "El nombre y el apellido son obligatorios",
+      "displayNameRequired": "El nombre para mostrar es obligatorio",
+      "emailRequired": "El correo electrónico es obligatorio",
+      "invalidEmail": "Ingresa una dirección de correo válida",
+      "loginToUpdateProfile": "Debes iniciar sesión para actualizar tu perfil",
+      "childProfileMissing": "No se encontró el perfil infantil activo",
+      "failedToSave": "No se pudo guardar el perfil. Inténtalo de nuevo."
+    }
+  },
+  "AnalyticsChartsModal": {
+    "title": "Gráficas de análisis",
+    "charts": {
+      "common": {
+        "date": "Fecha"
+      },
+      "totalRocks": {
+        "title": "Total de cristales ganados en juegos",
+        "yAxis": "Cristales"
+      },
+      "workTime": {
+        "title": "Tiempo de trabajo acumulado",
+        "yAxis": "Minutos"
+      },
+      "playTime": {
+        "title": "Tiempo de descanso acumulado",
+        "yAxis": "Minutos"
+      }
+    },
+    "empty": {
+      "noRockStats": "Aún no hay estadísticas de rocas.",
+      "noWorkSessions": "Aún no hay sesiones de trabajo.",
+      "noPlaySessions": "Aún no hay sesiones de descanso."
+    }
   },
   "Pomodoro": {
     "time": "Tiempo Restante",

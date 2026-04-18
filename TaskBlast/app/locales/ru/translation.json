@@ -34,21 +34,6 @@
     "lastName": "Фамилия",
     "continue": "Продолжить"
   },
-  "Email": {
-    "title": "Укажите ваш адрес электронной почты",
-    "desc": "Мы отправим вам код подтверждения для проверки адреса электронной почты",
-    "emailPlaceholder": "Адрес электронной почты",
-    "send": "Отправить ссылку"
-  },
-  "Password": {
-    "title": "Создайте пароль",
-    "desc": "Выберите надежный пароль для защиты вашей учетной записи",
-    "passwordPlaceholder": "Пароль",
-    "ConfirmPasswordPlaceholder": "Подтвердите пароль",
-    "submit": "Создать учетную запись",
-    "match": "Пароли не совпадают",
-    "length": "Пароль должен содержать не менее 8 символов"
-  },
   "Login": {
     "title": "Вход",
     "emailPlaceholder": "Электронная почта или имя пользователя",
@@ -349,6 +334,7 @@
     "details": "Детали задачи",
     "close": "Закрыть",
     "minutesShort": "мин",
+    "hoursShort": "ч",
     "managerAccess": "Доступ менеджера",
     "managerAccessDesc": "Введите 4-значный PIN-код, чтобы получить доступ к режиму редактирования с повышенными разрешениями.",
     "unlock": "Разблокировать"
@@ -356,20 +342,20 @@
 
   "Traits": {
 
-  "ADHD" : "ADHD",
-  "Aspergers": "Aspergers",
-  "Autism": "Autism",
-  "DevelopmentalLanguageDisorder": "Developmental Language Disorder",
-  "Disability Confident": "Disability Confident",
-  "Dyscalculia": "Dyscalculia",
-  "Dysgraphia": "Dysgraphia",
-  "Dyslexia": "Dyslexia",
-  "Dyspraxia": "Dyspraxia",
-  "Hyperlexia": "Hyperlexia",
-  "Irlen Syndrome": "Irlen Syndrome",
-  "OCD": "OCD",
-  "Synthesia": "Synthesia",
-  "Tourette's Syndrome": "Tourette's Syndrome",
+  "ADHD" : "СДВГ",
+  "Aspergers": "Синдром Аспергера",
+  "Autism": "Аутизм",
+  "DevelopmentalLanguageDisorder": "Расстройство развития речи",
+  "Disability Confident": "Уверенность при инвалидности",
+  "Dyscalculia": "Дискалькулия",
+  "Dysgraphia": "Дисграфия",
+  "Dyslexia": "Дислексия",
+  "Dyspraxia": "Диспраксия",
+  "Hyperlexia": "Гиперлексия",
+  "Irlen Syndrome": "Синдром Ирлен",
+  "OCD": "ОКР",
+  "Synthesia": "Синестезия",
+  "Tourette's Syndrome": "Синдром Туретта",
   "selectTraits": "Выбрать особенности",
   "saveTraits"  : "Сохранить особенности"
 
@@ -401,6 +387,57 @@
     "coachMarkStats": "Здесь вы можете увидеть свою статистику и отслеживать свой прогресс с течением времени!",
     "edit": "Редактировать",
     "advanced": "Дополнительно"
+  },
+  "EditProfileModal": {
+    "title": "Редактировать профиль",
+    "tapToChangePicture": "Нажмите, чтобы изменить фото профиля",
+    "firstName": "Имя",
+    "firstNamePlaceholder": "Имя",
+    "lastName": "Фамилия",
+    "lastNamePlaceholder": "Фамилия",
+    "displayName": "Отображаемое имя (никнейм)",
+    "displayNamePlaceholder": "Отображаемое имя",
+    "email": "Эл. почта",
+    "emailPlaceholder": "Эл. почта",
+    "birthdate": "Дата рождения (ММ/ДД/ГГГГ)",
+    "birthdatePlaceholder": "ММ/ДД/ГГГГ",
+    "saveChanges": "Сохранить изменения",
+    "errors": {
+      "loginToUpdatePicture": "Вы должны войти в систему, чтобы обновить фото профиля",
+      "failedToUpdatePicture": "Не удалось обновить фото профиля",
+      "firstAndLastRequired": "Имя и фамилия обязательны",
+      "displayNameRequired": "Отображаемое имя обязательно",
+      "emailRequired": "Эл. почта обязательна",
+      "invalidEmail": "Введите корректный адрес электронной почты",
+      "loginToUpdateProfile": "Вы должны войти в систему, чтобы обновить профиль",
+      "childProfileMissing": "Активный детский профиль не найден",
+      "failedToSave": "Не удалось сохранить профиль. Попробуйте снова."
+    }
+  },
+  "AnalyticsChartsModal": {
+    "title": "Графики аналитики",
+    "charts": {
+      "common": {
+        "date": "Дата"
+      },
+      "totalRocks": {
+        "title": "Всего кристаллов, полученных в играх",
+        "yAxis": "Кристаллы"
+      },
+      "workTime": {
+        "title": "Накопленное рабочее время",
+        "yAxis": "Минуты"
+      },
+      "playTime": {
+        "title": "Накопленное время отдыха",
+        "yAxis": "Минуты"
+      }
+    },
+    "empty": {
+      "noRockStats": "Пока нет статистики по камням.",
+      "noWorkSessions": "Пока нет рабочих сессий.",
+      "noPlaySessions": "Пока нет сессий отдыха."
+    }
   },
   "Pomodoro": {
     "time": "Оставшееся время",

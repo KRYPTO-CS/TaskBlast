@@ -30,23 +30,23 @@
   "Name": {
     "title": "您的姓名是？",
     "desc": "告诉我们在使用 TaskBlast 时如何称呼您",
-    "firstName": "名",
-    "lastName": "姓",
+    "firstName": "名字",
+    "lastName": "姓氏",
     "continue": "继续"
   },
   "Email": {
-    "title": "您的电子邮箱是什么？",
-    "desc": "我们将向您发送验证码以确认您的电子邮箱地址",
-    "emailPlaceholder": "电子邮箱地址",
+    "title": "您的电子邮件是什么？",
+    "desc": "我们将向您发送验证码以确认您的电子邮件地址",
+    "emailPlaceholder": "电子邮件地址",
     "send": "发送链接"
   },
   "Password": {
     "title": "创建密码",
-    "desc": "请选择一个强密码来保护您的账户",
+    "desc": "选择强密码来保护您的帐户",
     "passwordPlaceholder": "密码",
     "ConfirmPasswordPlaceholder": "确认密码",
     "submit": "创建账户",
-    "match": "两次输入的密码不一致",
+    "match": "密码不匹配",
     "length": "密码长度必须至少为 8 个字符"
   },
   "Login": {
@@ -349,6 +349,7 @@
     "details": "任务详情",
     "close": "关闭",
     "minutesShort": "分钟",
+    "hoursShort": "小时",
     "managerAccess": "管理访问",
     "managerAccessDesc": "输入 4 位数字 PIN 以访问具有提升权限的编辑模式。",
     "unlock": "解锁"
@@ -356,20 +357,20 @@
 
     "Traits": {
 
-  "ADHD" : "ADHD",
-  "Aspergers": "Aspergers",
-  "Autism": "Autism",
-  "DevelopmentalLanguageDisorder": "Developmental Language Disorder",
-  "Disability Confident": "Disability Confident",
-  "Dyscalculia": "Dyscalculia",
-  "Dysgraphia": "Dysgraphia",
-  "Dyslexia": "Dyslexia",
-  "Dyspraxia": "Dyspraxia",
-  "Hyperlexia": "Hyperlexia",
-  "Irlen Syndrome": "Irlen Syndrome",
-  "OCD": "OCD",
-  "Synthesia": "Synthesia",
-  "Tourette's Syndrome": "Tourette's Syndrome",
+    "ADHD" : "注意缺陷多动障碍",
+    "Aspergers": "阿斯伯格综合征",
+    "Autism": "自闭症",
+    "DevelopmentalLanguageDisorder": "发展性语言障碍",
+    "Disability Confident": "残障自信",
+    "Dyscalculia": "计算障碍",
+    "Dysgraphia": "书写障碍",
+    "Dyslexia": "阅读障碍",
+    "Dyspraxia": "动作协调障碍",
+    "Hyperlexia": "超读症",
+    "Irlen Syndrome": "艾尔伦综合征",
+    "OCD": "强迫症",
+    "Synthesia": "联觉",
+    "Tourette's Syndrome": "图雷特综合征",
   "selectTraits": "选择特征",
   "saveTraits"  : "保存特征"
 
@@ -400,6 +401,57 @@
     "coachMarkStats": "这里您可以查看您的统计数据并跟踪您的进度！",
     "edit": "编辑",
     "advanced": "高级"
+  },
+  "EditProfileModal": {
+    "title": "编辑个人资料",
+    "tapToChangePicture": "点击以更换头像",
+    "firstName": "名字",
+    "firstNamePlaceholder": "名字",
+    "lastName": "姓氏",
+    "lastNamePlaceholder": "姓氏",
+    "displayName": "显示名称（昵称）",
+    "displayNamePlaceholder": "显示名称",
+    "email": "电子邮箱",
+    "emailPlaceholder": "电子邮箱",
+    "birthdate": "出生日期（MM/DD/YYYY）",
+    "birthdatePlaceholder": "MM/DD/YYYY",
+    "saveChanges": "保存更改",
+    "errors": {
+      "loginToUpdatePicture": "您必须登录后才能更新头像",
+      "failedToUpdatePicture": "更新头像失败",
+      "firstAndLastRequired": "名字和姓氏为必填项",
+      "displayNameRequired": "显示名称为必填项",
+      "emailRequired": "电子邮箱为必填项",
+      "invalidEmail": "请输入有效的电子邮箱地址",
+      "loginToUpdateProfile": "您必须登录后才能更新个人资料",
+      "childProfileMissing": "未找到当前子账户资料",
+      "failedToSave": "保存个人资料失败，请重试。"
+    }
+  },
+  "AnalyticsChartsModal": {
+    "title": "分析图表",
+    "charts": {
+      "common": {
+        "date": "日期"
+      },
+      "totalRocks": {
+        "title": "游戏中获得的水晶总数",
+        "yAxis": "水晶"
+      },
+      "workTime": {
+        "title": "累计工作时间",
+        "yAxis": "分钟"
+      },
+      "playTime": {
+        "title": "累计休息时间",
+        "yAxis": "分钟"
+      }
+    },
+    "empty": {
+      "noRockStats": "暂无岩石统计。",
+      "noWorkSessions": "暂无工作会话。",
+      "noPlaySessions": "暂无休息会话。"
+    }
   },
   "Pomodoro": {
     "time": "剩余时间",

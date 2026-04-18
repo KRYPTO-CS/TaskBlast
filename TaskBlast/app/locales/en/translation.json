@@ -349,6 +349,7 @@
     "details": "Task info",
     "close": "Close",
     "minutesShort": "min",
+    "hoursShort": "h",
     "managerAccess": "Manager Access",
     "managerAccessDesc": "Enter the 4-digit PIN to access edit mode wiht elevated permissions.",
     "unlock": "Unlock"
@@ -401,6 +402,57 @@
     "edit": "Edit",
     "advanced": "Advanced",
     "deleteAccount": "Delete Account"
+  },
+  "EditProfileModal": {
+    "title": "Edit Profile",
+    "tapToChangePicture": "Tap to change profile picture",
+    "firstName": "First Name",
+    "firstNamePlaceholder": "First Name",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Last Name",
+    "displayName": "Display Name (Nickname)",
+    "displayNamePlaceholder": "Display Name",
+    "email": "Email",
+    "emailPlaceholder": "Email",
+    "birthdate": "Birthdate (MM/DD/YYYY)",
+    "birthdatePlaceholder": "MM/DD/YYYY",
+    "saveChanges": "Save Changes",
+    "errors": {
+      "loginToUpdatePicture": "You must be logged in to update your profile picture",
+      "failedToUpdatePicture": "Failed to update profile picture",
+      "firstAndLastRequired": "First name and last name are required",
+      "displayNameRequired": "Display name is required",
+      "emailRequired": "Email is required",
+      "invalidEmail": "Please enter a valid email address",
+      "loginToUpdateProfile": "You must be logged in to update your profile",
+      "childProfileMissing": "Active child profile was not found",
+      "failedToSave": "Failed to save profile. Please try again."
+    }
+  },
+  "AnalyticsChartsModal": {
+    "title": "Analytics Charts",
+    "charts": {
+      "common": {
+        "date": "Date"
+      },
+      "totalRocks": {
+        "title": "Total Crystals Earned From Games",
+        "yAxis": "Crystals"
+      },
+      "workTime": {
+        "title": "Cumulative Work Time",
+        "yAxis": "Minutes"
+      },
+      "playTime": {
+        "title": "Cumulative Play Time",
+        "yAxis": "Minutes"
+      }
+    },
+    "empty": {
+      "noRockStats": "No rock stats yet.",
+      "noWorkSessions": "No work sessions yet.",
+      "noPlaySessions": "No play sessions yet."
+    }
   },
   "Pomodoro": {
     "time": "Time Remaining",

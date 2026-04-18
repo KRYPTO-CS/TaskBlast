@@ -35,14 +35,14 @@
     "continue": "চালিয়ে যান"
   },
   "Email": {
-    "title": "আপনার ইমেইল কী?",
-    "desc": "আপনার ইমেইল ঠিকানা নিশ্চিত করতে আমরা একটি যাচাইকরণ কোড পাঠাব",
-    "emailPlaceholder": "ইমেইল ঠিকানা",
+    "title": "আপনার ইমেল কী?",
+    "desc": "আমরা আপনার ইমেল ঠিকানা নিশ্চিত করতে একটি যাচাইকরণ কোড পাঠাব",
+    "emailPlaceholder": "ইমেল ঠিকানা",
     "send": "লিংক পাঠান"
   },
   "Password": {
-    "title": "পাসওয়ার্ড তৈরি করুন",
-    "desc": "আপনার অ্যাকাউন্ট সুরক্ষিত রাখতে একটি শক্তিশালী পাসওয়ার্ড নির্বাচন করুন",
+    "title": "একটি পাসওয়ার্ড তৈরি করুন",
+    "desc": "আপনার অ্যাকাউন্ট রক্ষা করতে একটি শক্তিশালী পাসওয়ার্ড বেছে নিন",
     "passwordPlaceholder": "পাসওয়ার্ড",
     "ConfirmPasswordPlaceholder": "পাসওয়ার্ড নিশ্চিত করুন",
     "submit": "অ্যাকাউন্ট তৈরি করুন",
@@ -349,6 +349,7 @@
     "details": "কাজের বিবরণ",
     "close": "বাতিল",
     "minutesShort": "মিনিট",
+    "hoursShort": "ঘ",
     "managerAccess": "পরিচালনা অ্যাক্সেস",
     "managerAccessDesc": "উন্নত অনুমতির সাথে সম্পাদনা মোডে প্রবেশ করতে 4 অংকের PIN লিখুন।",
     "unlock": "আনলক"
@@ -357,20 +358,20 @@
 
   "Traits": {
 
-  "ADHD" : "ADHD",
-  "Aspergers": "Aspergers",
-  "Autism": "Autism",
-  "DevelopmentalLanguageDisorder": "Developmental Language Disorder",
-  "Disability Confident": "Disability Confident",
-  "Dyscalculia": "Dyscalculia",
-  "Dysgraphia": "Dysgraphia",
-  "Dyslexia": "Dyslexia",
-  "Dyspraxia": "Dyspraxia",
-  "Hyperlexia": "Hyperlexia",
-  "Irlen Syndrome": "Irlen Syndrome",
-  "OCD": "OCD",
-  "Synthesia": "Synthesia",
-  "Tourette's Syndrome": "Tourette's Syndrome",
+  "ADHD" : "এডিএইচডি",
+  "Aspergers": "অ্যাসপার্গার সিনড্রোম",
+  "Autism": "অটিজম",
+  "DevelopmentalLanguageDisorder": "বিকাশজনিত ভাষা ব্যাধি",
+  "Disability Confident": "প্রতিবন্ধিতা আত্মবিশ্বাস",
+  "Dyscalculia": "ডিসক্যালকুলিয়া",
+  "Dysgraphia": "ডিসগ্রাফিয়া",
+  "Dyslexia": "ডিসলেক্সিয়া",
+  "Dyspraxia": "ডিসপ্র্যাক্সিয়া",
+  "Hyperlexia": "হাইপারলেক্সিয়া",
+  "Irlen Syndrome": "ইরলেন সিনড্রোম",
+  "OCD": "ওসিডি",
+  "Synthesia": "সিনেস্থেসিয়া",
+  "Tourette's Syndrome": "টুরেট সিনড্রোম",
   "selectTraits": "বৈশিষ্ট্য নির্বাচন করুন",
   "saveTraits"  : "বৈশিষ্ট্য সংরক্ষণ করুন"
 
@@ -402,6 +403,57 @@
     "edit": "সম্পাদনা",
     "advanced": "উন্নত"
 
+  },
+  "EditProfileModal": {
+    "title": "প্রোফাইল সম্পাদনা করুন",
+    "tapToChangePicture": "প্রোফাইল ছবি পরিবর্তন করতে ট্যাপ করুন",
+    "firstName": "নামের প্রথম অংশ",
+    "firstNamePlaceholder": "নামের প্রথম অংশ",
+    "lastName": "নামের শেষ অংশ",
+    "lastNamePlaceholder": "নামের শেষ অংশ",
+    "displayName": "প্রদর্শিত নাম (ডাকনাম)",
+    "displayNamePlaceholder": "প্রদর্শিত নাম",
+    "email": "ইমেইল",
+    "emailPlaceholder": "ইমেইল",
+    "birthdate": "জন্মতারিখ (MM/DD/YYYY)",
+    "birthdatePlaceholder": "MM/DD/YYYY",
+    "saveChanges": "পরিবর্তন সংরক্ষণ করুন",
+    "errors": {
+      "loginToUpdatePicture": "প্রোফাইল ছবি আপডেট করতে আপনাকে লগইন করতে হবে",
+      "failedToUpdatePicture": "প্রোফাইল ছবি আপডেট করা যায়নি",
+      "firstAndLastRequired": "নামের প্রথম ও শেষ অংশ আবশ্যক",
+      "displayNameRequired": "প্রদর্শিত নাম আবশ্যক",
+      "emailRequired": "ইমেইল আবশ্যক",
+      "invalidEmail": "অনুগ্রহ করে একটি বৈধ ইমেইল ঠিকানা লিখুন",
+      "loginToUpdateProfile": "প্রোফাইল আপডেট করতে আপনাকে লগইন করতে হবে",
+      "childProfileMissing": "সক্রিয় চাইল্ড প্রোফাইল পাওয়া যায়নি",
+      "failedToSave": "প্রোফাইল সংরক্ষণ করা যায়নি। আবার চেষ্টা করুন।"
+    }
+  },
+  "AnalyticsChartsModal": {
+    "title": "অ্যানালিটিক্স চার্ট",
+    "charts": {
+      "common": {
+        "date": "তারিখ"
+      },
+      "totalRocks": {
+        "title": "গেম থেকে অর্জিত মোট ক্রিস্টাল",
+        "yAxis": "ক্রিস্টাল"
+      },
+      "workTime": {
+        "title": "সঞ্চিত কাজের সময়",
+        "yAxis": "মিনিট"
+      },
+      "playTime": {
+        "title": "সঞ্চিত বিরতির সময়",
+        "yAxis": "মিনিট"
+      }
+    },
+    "empty": {
+      "noRockStats": "এখনও কোনো রক পরিসংখ্যান নেই।",
+      "noWorkSessions": "এখনও কোনো কাজের সেশন নেই।",
+      "noPlaySessions": "এখনও কোনো বিরতির সেশন নেই।"
+    }
   },
   "Pomodoro": {
     "time": "অবশিষ্ট সময়",

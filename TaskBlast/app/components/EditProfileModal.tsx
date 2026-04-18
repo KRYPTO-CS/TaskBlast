@@ -20,6 +20,7 @@ import {
 import { auth } from "../../server/firebase";
 import { updateDoc } from "firebase/firestore";
 import { useActiveProfile } from "../context/ActiveProfileContext";
+import { useTranslation } from "react-i18next";
 
 interface EditProfileModalProps {
   visible: boolean;
@@ -46,6 +47,7 @@ export default function EditProfileModal({
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState("");
   const { getChildDocRef, profileType } = useActiveProfile();
+  const { t } = useTranslation();
 
   // Reset form fields when modal opens
   useEffect(() => {
@@ -66,7 +68,7 @@ export default function EditProfileModal({
     try {
       const currentUser = auth.currentUser;
       if (!currentUser) {
-        setError("You must be logged in to update your profile picture");
+        setError(t("EditProfileModal.errors.loginToUpdatePicture"));
         return;
       }
 
@@ -78,7 +80,7 @@ export default function EditProfileModal({
       }
     } catch (error) {
       console.error("Error updating profile picture:", error);
-      setError("Failed to update profile picture");
+      setError(t("EditProfileModal.errors.failedToUpdatePicture"));
     } finally {
       setIsUploadingImage(false);
     }
@@ -89,25 +91,25 @@ export default function EditProfileModal({
 
     // Validation
     if (!firstName.trim() || !lastName.trim()) {
-      setError("First name and last name are required");
+      setError(t("EditProfileModal.errors.firstAndLastRequired"));
       return;
     }
 
     if (!displayName.trim()) {
-      setError("Display name is required");
+      setError(t("EditProfileModal.errors.displayNameRequired"));
       return;
     }
 
     // Email validation - only for parent accounts
     if (profileType !== "child") {
       if (!email.trim()) {
-        setError("Email is required");
+        setError(t("EditProfileModal.errors.emailRequired"));
         return;
       }
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
-        setError("Please enter a valid email address");
+        setError(t("EditProfileModal.errors.invalidEmail"));
         return;
       }
     }
@@ -116,7 +118,7 @@ export default function EditProfileModal({
     try {
       const currentUser = auth.currentUser;
       if (!currentUser) {
-        setError("You must be logged in to update your profile");
+        setError(t("EditProfileModal.errors.loginToUpdateProfile"));
         return;
       }
 
@@ -124,7 +126,7 @@ export default function EditProfileModal({
         // Update child profile
         const childRef = getChildDocRef();
         if (!childRef) {
-          setError("Active child profile was not found");
+          setError(t("EditProfileModal.errors.childProfileMissing"));
           return;
         }
 
@@ -161,7 +163,7 @@ export default function EditProfileModal({
       onClose();
     } catch (error) {
       console.error("Error saving profile:", error);
-      setError("Failed to save profile. Please try again.");
+      setError(t("EditProfileModal.errors.failedToSave"));
     } finally {
       setIsSaving(false);
     }
@@ -194,7 +196,7 @@ export default function EditProfileModal({
               style={{ borderBottomColor: "rgba(147, 51, 234, 0.3)" }}
             >
               <Text className="font-orbitron-semibold text-2xl text-white">
-                Edit Profile
+                {t("EditProfileModal.title")}
               </Text>
               <TouchableOpacity
                 onPress={onClose}
@@ -245,7 +247,7 @@ export default function EditProfileModal({
                   <Ionicons name="camera" size={20} color="white" />
                 </View>
                 <Text className="font-madimi text-sm text-white/60 mt-3">
-                  Tap to change profile picture
+                  {t("EditProfileModal.tapToChangePicture")}
                 </Text>
               </View>
 
@@ -264,7 +266,7 @@ export default function EditProfileModal({
               {/* First Name */}
               <View className="mb-4">
                 <Text className="font-orbitron-semibold text-white text-sm mb-2">
-                  First Name
+                  {t("EditProfileModal.firstName")}
                 </Text>
                 <View
                   className="flex-row items-center bg-white/10 border-2 rounded-xl px-4 h-14"
@@ -278,7 +280,7 @@ export default function EditProfileModal({
                   />
                   <TextInput
                     className="font-madimi flex-1 text-base text-white"
-                    placeholder="First Name"
+                    placeholder={t("EditProfileModal.firstNamePlaceholder")}
                     placeholderTextColor="rgba(255,255,255,0.4)"
                     value={firstName}
                     onChangeText={setFirstName}
@@ -290,7 +292,7 @@ export default function EditProfileModal({
               {/* Last Name */}
               <View className="mb-4">
                 <Text className="font-orbitron-semibold text-white text-sm mb-2">
-                  Last Name
+                  {t("EditProfileModal.lastName")}
                 </Text>
                 <View
                   className="flex-row items-center bg-white/10 border-2 rounded-xl px-4 h-14"
@@ -304,7 +306,7 @@ export default function EditProfileModal({
                   />
                   <TextInput
                     className="font-madimi flex-1 text-base text-white"
-                    placeholder="Last Name"
+                    placeholder={t("EditProfileModal.lastNamePlaceholder")}
                     placeholderTextColor="rgba(255,255,255,0.4)"
                     value={lastName}
                     onChangeText={setLastName}
@@ -317,7 +319,7 @@ export default function EditProfileModal({
               {profileType !== "child" && (
                 <View className="mb-4">
                   <Text className="font-orbitron-semibold text-white text-sm mb-2">
-                    Display Name (Nickname)
+                    {t("EditProfileModal.displayName")}
                   </Text>
                   <View
                     className="flex-row items-center bg-white/10 border-2 rounded-xl px-4 h-14"
@@ -331,7 +333,7 @@ export default function EditProfileModal({
                     />
                     <TextInput
                       className="font-madimi flex-1 text-base text-white"
-                      placeholder="Display Name"
+                      placeholder={t("EditProfileModal.displayNamePlaceholder")}
                       placeholderTextColor="rgba(255,255,255,0.4)"
                       value={displayName}
                       onChangeText={setDisplayName}
@@ -344,7 +346,7 @@ export default function EditProfileModal({
               {profileType !== "child" && (
                 <View className="mb-4">
                   <Text className="font-orbitron-semibold text-white text-sm mb-2">
-                    Email
+                    {t("EditProfileModal.email")}
                   </Text>
                   <View
                     className="flex-row items-center bg-white/10 border-2 rounded-xl px-4 h-14"
@@ -358,7 +360,7 @@ export default function EditProfileModal({
                     />
                     <TextInput
                       className="font-madimi flex-1 text-base text-white"
-                      placeholder="Email"
+                      placeholder={t("EditProfileModal.emailPlaceholder")}
                       placeholderTextColor="rgba(255,255,255,0.4)"
                       value={email}
                       onChangeText={setEmail}
@@ -372,7 +374,7 @@ export default function EditProfileModal({
               {/* Birthdate */}
               <View className="mb-6">
                 <Text className="font-orbitron-semibold text-white text-sm mb-2">
-                  Birthdate (MM/DD/YYYY)
+                  {t("EditProfileModal.birthdate")}
                 </Text>
                 <View
                   className="flex-row items-center bg-white/10 border-2 rounded-xl px-4 h-14"
@@ -386,7 +388,7 @@ export default function EditProfileModal({
                   />
                   <TextInput
                     className="font-madimi flex-1 text-base text-white"
-                    placeholder="MM/DD/YYYY"
+                    placeholder={t("EditProfileModal.birthdatePlaceholder")}
                     placeholderTextColor="rgba(255,255,255,0.4)"
                     value={birthdate}
                     onChangeText={setBirthdate}
@@ -411,7 +413,7 @@ export default function EditProfileModal({
                   <ActivityIndicator size="small" color="white" />
                 ) : (
                   <Text className="font-orbitron-semibold text-white text-base">
-                    Save Changes
+                    {t("EditProfileModal.saveChanges")}
                   </Text>
                 )}
               </TouchableOpacity>

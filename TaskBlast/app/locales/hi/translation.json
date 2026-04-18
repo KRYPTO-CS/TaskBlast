@@ -36,7 +36,7 @@
   },
   "Email": {
     "title": "आपका ईमेल क्या है?",
-    "desc": "हम आपके ईमेल पते की पुष्टि के लिए एक सत्यापन कोड भेजेंगे",
+    "desc": "हम आपके ईमेल पते की पुष्टि करने के लिए एक सत्यापन कोड भेजेंगे",
     "emailPlaceholder": "ईमेल पता",
     "send": "लिंक भेजें"
   },
@@ -349,6 +349,7 @@
     "details": "कार्य की जानकारी",
     "close": "बंद करें",
     "minutesShort": "मिनट",
+    "hoursShort": "घं",
     "managerAccess": "प्रबंधक पहुंच",
     "managerAccessDesc": "उन्नत अनुमतियों के साथ संपादन मोड तक पहुंचने के लिए 4-अंकीय PIN दर्ज करें।",
     "unlock": "अनलॉक करें"
@@ -356,20 +357,20 @@
 
   "Traits": {
 
-  "ADHD" : "ADHD",
-  "Aspergers": "Aspergers",
-  "Autism": "Autism",
-  "DevelopmentalLanguageDisorder": "Developmental Language Disorder",
-  "Disability Confident": "Disability Confident",
-  "Dyscalculia": "Dyscalculia",
-  "Dysgraphia": "Dysgraphia",
-  "Dyslexia": "Dyslexia",
-  "Dyspraxia": "Dyspraxia",
-  "Hyperlexia": "Hyperlexia",
-  "Irlen Syndrome": "Irlen Syndrome",
-  "OCD": "OCD",
-  "Synthesia": "Synthesia",
-  "Tourette's Syndrome": "Tourette's Syndrome",
+  "ADHD" : "एडीएचडी",
+  "Aspergers": "एस्पर्जर सिंड्रोम",
+  "Autism": "ऑटिज़्म",
+  "DevelopmentalLanguageDisorder": "विकासात्मक भाषा विकार",
+  "Disability Confident": "विकलांगता आत्मविश्वास",
+  "Dyscalculia": "डिस्कैल्कुलिया",
+  "Dysgraphia": "डिसग्राफिया",
+  "Dyslexia": "डिस्लेक्सिया",
+  "Dyspraxia": "डिस्प्रैक्सिया",
+  "Hyperlexia": "हाइपरलेक्सिया",
+  "Irlen Syndrome": "इरलेन सिंड्रोम",
+  "OCD": "ओसीडी",
+  "Synthesia": "सिनेस्थेसिया",
+  "Tourette's Syndrome": "टॉरेट सिंड्रोम",
   "selectTraits": "ट्रेट्स चुनें",
   "saveTraits"  : "ट्रेट्स सहेजें"
 
@@ -400,6 +401,57 @@
     "coachMarkStats": "यहां आप अपने आंकड़े देख सकते हैं और समय के साथ अपनी प्रगति को ट्रैक कर सकते हैं!",
     "edit": "संपादित करें",
     "advanced": "उन्नत"
+  },
+  "EditProfileModal": {
+    "title": "प्रोफ़ाइल संपादित करें",
+    "tapToChangePicture": "प्रोफ़ाइल फ़ोटो बदलने के लिए टैप करें",
+    "firstName": "पहला नाम",
+    "firstNamePlaceholder": "पहला नाम",
+    "lastName": "अंतिम नाम",
+    "lastNamePlaceholder": "अंतिम नाम",
+    "displayName": "डिस्प्ले नाम (उपनाम)",
+    "displayNamePlaceholder": "डिस्प्ले नाम",
+    "email": "ईमेल",
+    "emailPlaceholder": "ईमेल",
+    "birthdate": "जन्मतिथि (MM/DD/YYYY)",
+    "birthdatePlaceholder": "MM/DD/YYYY",
+    "saveChanges": "परिवर्तन सहेजें",
+    "errors": {
+      "loginToUpdatePicture": "प्रोफ़ाइल फ़ोटो अपडेट करने के लिए आपको लॉग इन होना चाहिए",
+      "failedToUpdatePicture": "प्रोफ़ाइल फ़ोटो अपडेट नहीं हो सकी",
+      "firstAndLastRequired": "पहला और अंतिम नाम आवश्यक है",
+      "displayNameRequired": "डिस्प्ले नाम आवश्यक है",
+      "emailRequired": "ईमेल आवश्यक है",
+      "invalidEmail": "कृपया एक मान्य ईमेल पता दर्ज करें",
+      "loginToUpdateProfile": "प्रोफ़ाइल अपडेट करने के लिए आपको लॉग इन होना चाहिए",
+      "childProfileMissing": "सक्रिय चाइल्ड प्रोफ़ाइल नहीं मिली",
+      "failedToSave": "प्रोफ़ाइल सहेजी नहीं जा सकी। कृपया फिर से प्रयास करें।"
+    }
+  },
+  "AnalyticsChartsModal": {
+    "title": "विश्लेषण चार्ट",
+    "charts": {
+      "common": {
+        "date": "तारीख"
+      },
+      "totalRocks": {
+        "title": "गेम्स से अर्जित कुल क्रिस्टल",
+        "yAxis": "क्रिस्टल"
+      },
+      "workTime": {
+        "title": "संचयी कार्य समय",
+        "yAxis": "मिनट"
+      },
+      "playTime": {
+        "title": "संचयी विश्राम समय",
+        "yAxis": "मिनट"
+      }
+    },
+    "empty": {
+      "noRockStats": "अभी तक कोई रॉक आँकड़े नहीं हैं।",
+      "noWorkSessions": "अभी तक कोई कार्य सत्र नहीं हैं।",
+      "noPlaySessions": "अभी तक कोई विश्राम सत्र नहीं हैं।"
+    }
   },
   "Pomodoro": {
     "time": "शेष समय",

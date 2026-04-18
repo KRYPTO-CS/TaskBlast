@@ -37,15 +37,15 @@
   "Email": {
     "title": "What be yer email?",
     "desc": "We’ll send ye a message in a bottle (verification code)",
-    "emailPlaceholder": "Email Address",
-    "send": "Send Message"
-  },
-  "Password": {
-    "title": "Forge Yer Secret Code",
-    "desc": "Choose a strong password to guard yer treasure",
-    "passwordPlaceholder": "Password",
-    "ConfirmPasswordPlaceholder": "Confirm Password",
-    "submit": "Create Account",
+  "Aspergers": "Asperger's",
+  "Autism": "Autism",
+  "DevelopmentalLanguageDisorder": "Language Trouble",
+  "Disability Confident": "Disability Confidence",
+  "Dyscalculia": "Number Trouble",
+  "Dysgraphia": "Writing Trouble",
+  "Dyslexia": "Reading Trouble",
+  "Dyspraxia": "Movement Trouble",
+  "Hyperlexia": "Hyperlexia",
     "match": "Yer passwords don’t match, matey",
     "length": "Password must be at least 8 characters long"
   },
@@ -349,6 +349,7 @@
     "details": "Task info",
     "close": "Close",
     "minutesShort": "min",
+    "hoursShort": "hr",
     "managerAccess": "Manager Access",
     "managerAccessDesc": "Enter the 4-digit PIN to access edit mode with elevated permissions.",
     "unlock": "Unlock"
@@ -357,14 +358,14 @@
   "Traits": {
 
   "ADHD" : "ADHD",
-  "Aspergers": "Aspergers",
+  "Aspergers": "Asperger's",
   "Autism": "Autism",
-  "DevelopmentalLanguageDisorder": "Developmental Language Disorder",
-  "Disability Confident": "Disability Confident",
-  "Dyscalculia": "Dyscalculia",
-  "Dysgraphia": "Dysgraphia",
-  "Dyslexia": "Dyslexia",
-  "Dyspraxia": "Dyspraxia",
+  "DevelopmentalLanguageDisorder": "Language Trouble",
+  "Disability Confident": "Disability Confidence",
+  "Dyscalculia": "Number Trouble",
+  "Dysgraphia": "Writing Trouble",
+  "Dyslexia": "Reading Trouble",
+  "Dyspraxia": "Movement Trouble",
   "Hyperlexia": "Hyperlexia",
   "Irlen Syndrome": "Irlen Syndrome",
   "OCD": "OCD",
@@ -400,6 +401,57 @@
     "coachMarkStats": "Track yer progress over time!",
     "edit": "Edit",
     "advanced": "Advanced"
+  },
+  "EditProfileModal": {
+    "title": "Edit Yer Profile",
+    "tapToChangePicture": "Tap to change yer profile picture",
+    "firstName": "First Name",
+    "firstNamePlaceholder": "First Name",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Last Name",
+    "displayName": "Display Name (Nickname)",
+    "displayNamePlaceholder": "Display Name",
+    "email": "Email",
+    "emailPlaceholder": "Email",
+    "birthdate": "Birthdate (MM/DD/YYYY)",
+    "birthdatePlaceholder": "MM/DD/YYYY",
+    "saveChanges": "Save Changes",
+    "errors": {
+      "loginToUpdatePicture": "Ye must be logged in to update yer profile picture",
+      "failedToUpdatePicture": "Failed to update yer profile picture",
+      "firstAndLastRequired": "First name and last name be required",
+      "displayNameRequired": "Display name be required",
+      "emailRequired": "Email be required",
+      "invalidEmail": "Please enter a valid email address",
+      "loginToUpdateProfile": "Ye must be logged in to update yer profile",
+      "childProfileMissing": "Active child profile was not found",
+      "failedToSave": "Failed to save profile. Please try again."
+    }
+  },
+  "AnalyticsChartsModal": {
+    "title": "Analytics Charts",
+    "charts": {
+      "common": {
+        "date": "Date"
+      },
+      "totalRocks": {
+        "title": "Total Crystals Earned From Games",
+        "yAxis": "Crystals"
+      },
+      "workTime": {
+        "title": "Cumulative Work Time",
+        "yAxis": "Minutes"
+      },
+      "playTime": {
+        "title": "Cumulative Play Time",
+        "yAxis": "Minutes"
+      }
+    },
+    "empty": {
+      "noRockStats": "No rock stats yet.",
+      "noWorkSessions": "No work sessions yet.",
+      "noPlaySessions": "No play sessions yet."
+    }
   },
   "Pomodoro": {
     "time": "Time Remaining",

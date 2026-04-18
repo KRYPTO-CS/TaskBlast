@@ -10,6 +10,7 @@ import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import { WebView } from "react-native-webview";
 import { useColorPalette } from "../styles/colorBlindThemes";
+import { useTranslation } from "react-i18next";
 
 interface AnalyticsChartsModalProps {
   visible: boolean;
@@ -32,6 +33,9 @@ const totalRocksChart = (
   chartColor: string,
   chartBorder: string,
   chartFill: string,
+  title: string,
+  yAxisLabel: string,
+  xAxisLabel: string,
 ) =>
   `
 <!DOCTYPE html>
@@ -81,12 +85,12 @@ const totalRocksChart = (
         maintainAspectRatio: false,
         plugins: {
           legend: { display: false },
-          title: { display: true, text: 'Total Crystals Earned From Games', color: '#fff', font: { family:'Orbitron', size: 22, weight: '700' } },
+          title: { display: true, text: '${title}', color: '#fff', font: { family:'Orbitron', size: 22, weight: '700' } },
           tooltip: { titleFont:{family:'Orbitron', size:14, weight:'600'}, bodyFont:{family:'Orbitron', size:13} }
         },
         scales: {
-          y: { beginAtZero: true, ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: 'Crystals', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } },
-          x: { ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:10}, maxRotation: 45, autoSkip: true, maxTicksLimit: 8 }, title: { display: true, text: 'Date', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } }
+          y: { beginAtZero: true, ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: '${yAxisLabel}', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } },
+          x: { ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:10}, maxRotation: 45, autoSkip: true, maxTicksLimit: 8 }, title: { display: true, text: '${xAxisLabel}', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } }
         }
       }
     });
@@ -98,6 +102,7 @@ const totalRocksChart = (
 const cumulativeChart = (
   title: string,
   yLabel: string,
+  xAxisLabel: string,
   labels: string[],
   values: number[],
   chartColor: string,
@@ -160,7 +165,7 @@ const cumulativeChart = (
         },
         scales: {
           y: { beginAtZero: true, ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:12} }, title: { display: true, text: '${yLabel}', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } },
-          x: { ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:10}, maxRotation: 45, autoSkip: true, maxTicksLimit: 8 }, title: { display: true, text: 'Date', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } }
+          x: { ticks: { color: '#e5e7eb', font:{family:'Orbitron', size:10}, maxRotation: 45, autoSkip: true, maxTicksLimit: 8 }, title: { display: true, text: '${xAxisLabel}', color: '#fff', font:{family:'Orbitron', size:14, weight:'600'} } }
         }
       }
     });
@@ -181,6 +186,7 @@ export default function AnalyticsChartsModal({
   playTimes,
 }: AnalyticsChartsModalProps) {
   const palette = useColorPalette();
+  const { t } = useTranslation();
 
   return (
     <Modal
@@ -209,7 +215,7 @@ export default function AnalyticsChartsModal({
                 textShadowRadius: 10,
               }}
             >
-              Analytics Charts
+              {t("AnalyticsChartsModal.title")}
             </Text>
             <TouchableOpacity
               onPress={onClose}
@@ -242,6 +248,9 @@ export default function AnalyticsChartsModal({
                     palette.statsAccent,
                     palette.statsChartBorder,
                     palette.statsChartFill,
+                    t("AnalyticsChartsModal.charts.totalRocks.title"),
+                    t("AnalyticsChartsModal.charts.totalRocks.yAxis"),
+                    t("AnalyticsChartsModal.charts.common.date"),
                   ),
                 }}
                 scrollEnabled={false}
@@ -257,7 +266,7 @@ export default function AnalyticsChartsModal({
                 }}
               >
                 <Text className="font-orbitron-semibold text-white px-2">
-                  No rock stats yet.
+                  {t("AnalyticsChartsModal.empty.noRockStats")}
                 </Text>
               </View>
             )}
@@ -277,8 +286,9 @@ export default function AnalyticsChartsModal({
                 originWhitelist={["*"]}
                 source={{
                   html: cumulativeChart(
-                    "Cumulative Work Time",
-                    "Minutes",
+                    t("AnalyticsChartsModal.charts.workTime.title"),
+                    t("AnalyticsChartsModal.charts.workTime.yAxis"),
+                    t("AnalyticsChartsModal.charts.common.date"),
                     workLabels,
                     workTimes,
                     palette.statsAccent,
@@ -299,7 +309,7 @@ export default function AnalyticsChartsModal({
                 }}
               >
                 <Text className="font-orbitron-semibold text-white px-2">
-                  No work sessions yet.
+                  {t("AnalyticsChartsModal.empty.noWorkSessions")}
                 </Text>
               </View>
             )}
@@ -319,8 +329,9 @@ export default function AnalyticsChartsModal({
                 originWhitelist={["*"]}
                 source={{
                   html: cumulativeChart(
-                    "Cumulative Play Time",
-                    "Minutes",
+                    t("AnalyticsChartsModal.charts.playTime.title"),
+                    t("AnalyticsChartsModal.charts.playTime.yAxis"),
+                    t("AnalyticsChartsModal.charts.common.date"),
                     playLabels,
                     playTimes,
                     palette.statsAccent,
@@ -341,7 +352,7 @@ export default function AnalyticsChartsModal({
                 }}
               >
                 <Text className="font-orbitron-semibold text-white px-2">
-                  No play sessions yet.
+                  {t("AnalyticsChartsModal.empty.noPlaySessions")}
                 </Text>
               </View>
             )}
