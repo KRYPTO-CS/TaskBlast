@@ -341,8 +341,11 @@ export default function ShopModal({
 
     if (rocks < item.price) {
       Alert.alert(
-        "Not Enough Crystals",
-        `You need ${item.price} crystals but only have ${rocks}.`,
+        t("Shop.notEnoughCrystalsTitle"),
+        t("Shop.notEnoughCrystalsText", {
+          price: item.price,
+          rocks,
+        }),
       );
       return;
     }
@@ -606,7 +609,7 @@ export default function ShopModal({
             style={{ borderWidth: 2, borderColor: palette.modalBorder }}
           >
             <Text className="font-orbitron-bold text-white text-xl mb-4 text-center">
-              Confirm Purchase
+              {t("Shop.confirmPurchaseTitle")}
             </Text>
 
             <View className="items-center mb-4">
@@ -640,7 +643,9 @@ export default function ShopModal({
             </View>
 
             <Text className="font-orbitron text-white/80 text-sm mb-6 text-center">
-              Purchase this item for {confirmPurchase.item.price} crystals?
+              {t("Shop.confirmPurchaseText", {
+                price: confirmPurchase.item.price,
+              })}
             </Text>
 
             <View className="flex-row gap-3">
@@ -649,7 +654,7 @@ export default function ShopModal({
                 className="flex-1 bg-gray-600 py-3 rounded-xl"
               >
                 <Text className="font-orbitron-bold text-white text-center">
-                  Cancel
+                  {t("Shop.cancel")}
                 </Text>
               </TouchableOpacity>
 
@@ -659,7 +664,7 @@ export default function ShopModal({
                 style={{ backgroundColor: palette.accent }}
               >
                 <Text className="font-orbitron-bold text-white text-center">
-                  Purchase
+                  {t("Shop.purchase")}
                 </Text>
               </TouchableOpacity>
             </View>

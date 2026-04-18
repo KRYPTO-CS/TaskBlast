@@ -98,6 +98,9 @@
     "Level Rewards": "Level Rewards",
     "Claimed": "Claimed",
     "Claim": "Claim",
+    "Claiming": "Claiming...",
+    "expLabel": "EXP",
+    "levelShort": "Lv",
     "Locked": "Locked",
     "Crystals": "Crystals",
     "galaxyCrystals": "Galaxy Crystals",
@@ -253,7 +256,13 @@
     "yWings": "Yellow Wings",
     "gWings": "Green Wings",
     "equipped": "Equipped",
-    "owned": "Owned"
+    "owned": "Owned",
+    "confirmPurchaseTitle": "Confirm Purchase",
+    "confirmPurchaseText": "Purchase this item for {{price}} crystals?",
+    "cancel": "Cancel",
+    "notEnoughCrystalsTitle": "Not Enough Crystals",
+    "notEnoughCrystalsText": "You need {{price}} crystals but only have {{rocks}}.",
+    "purchase": "Purchase"
   },
   "Games": {
     "chooseTitle": "Choose Your Game",

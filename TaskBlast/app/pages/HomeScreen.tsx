@@ -684,7 +684,7 @@ export default function HomeScreen() {
               </View>
 
               <Text className="font-orbitron text-white/80 text-left">
-                EXP: {clampedCurrentExp}/{neededExp}
+                {t("Home.expLabel")}: {clampedCurrentExp}/{neededExp}
               </Text>
 
               <Text className="font-orbitron-bold text-white text-lg mt-5 mb-3">
@@ -719,7 +719,7 @@ export default function HomeScreen() {
                       >
                         <View className="flex-row items-center">
                           <Text className="font-orbitron-bold text-white mr-2">
-                            Lv {level}
+                            {t("Home.levelShort")} {level}
                           </Text>
                           <View className="flex-row items-center">
                             <Text className="font-orbitron text-white/80 text-xs mr-1">
@@ -757,7 +757,7 @@ export default function HomeScreen() {
                             }}
                           >
                             <Text className="font-orbitron-bold text-white text-xs">
-                              {isClaiming ? "Claiming..." : "Claim"}
+                              {isClaiming ? t("Home.Claiming") : t("Home.Claim")}
                             </Text>
                           </TouchableOpacity>
                         ) : (
