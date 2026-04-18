@@ -135,6 +135,9 @@
     "logoutText": "¿Estás seguro de que quieres cerrar sesión?",
     "parentAccount": "👤 Cuenta de tutor",
     "noFilter": "Sin filtro",
+    "deuteranopia": "Deuteranopia",
+    "protanopia": "Protanopia",
+    "tritanopia": "Tritanopia",
     "customize": "Toca para personalizar",
     "replayTutorial": "Repetir tutorial"
   },
@@ -345,6 +348,7 @@
     "created": "Creada",
     "details": "informacion",
     "close" : "Cerrar",
+    "minutesShort": "min",
     "managerAccess": "Acceso de gestor",
     "managerAccessDesc": "Ingresa el PIN de 4 dígitos para acceder al modo de edición con permisos elevados.",
     "unlock": "Desbloquear"

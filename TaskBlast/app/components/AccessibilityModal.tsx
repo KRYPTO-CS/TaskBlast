@@ -40,23 +40,23 @@ const LANGUAGES: { code: string; name: string; flag: string }[] = [
 
 const COLOR_BLIND_MODES: {
   value: ColorBlindMode;
-  label: string;
+  labelKey: string;
   descKey: string;
 }[] = [
-  { value: "none", label: "", descKey: "Settings.defaultColors" },
+  { value: "none", labelKey: "Settings.noFilter", descKey: "Settings.defaultColors" },
   {
     value: "deuteranopia",
-    label: "Deuteranopia",
+    labelKey: "Settings.deuteranopia",
     descKey: "Settings.redGreenDeficiency",
   },
   {
     value: "protanopia",
-    label: "Protanopia",
+    labelKey: "Settings.protanopia",
     descKey: "Settings.redDeficiency",
   },
   {
     value: "tritanopia",
-    label: "Tritanopia",
+    labelKey: "Settings.tritanopia",
     descKey: "Settings.blueYellowDeficiency",
   },
 ];
@@ -170,7 +170,7 @@ export default function AccessibilityModal({
                             : "Orbitron_400Regular",
                         }}
                       >
-                        {mode.value === "none" ? t("Settings.noFilter") : mode.label}
+                        {t(mode.labelKey)}
                       </Text>
                       <Text className="font-orbitron text-gray-400 text-xs mt-0.5">
                         {t(mode.descKey)}

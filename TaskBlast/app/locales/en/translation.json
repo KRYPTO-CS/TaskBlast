@@ -135,6 +135,9 @@
     "logoutText": "Are you sure you want to logout?",
     "parentAccount": "👤 Parent Account",
     "noFilter": "No Filter",
+    "deuteranopia": "Deuteranopia",
+    "protanopia": "Protanopia",
+    "tritanopia": "Tritanopia",
     "customize": "Tap to customize",
     "replayTutorial": "Replay Tutorial"
   },
@@ -345,6 +348,7 @@
     "created": "Created",
     "details": "Task info",
     "close": "Close",
+    "minutesShort": "min",
     "managerAccess": "Manager Access",
     "managerAccessDesc": "Enter the 4-digit PIN to access edit mode wiht elevated permissions.",
     "unlock": "Unlock"

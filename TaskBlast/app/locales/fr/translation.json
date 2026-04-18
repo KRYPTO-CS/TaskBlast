@@ -135,6 +135,9 @@
     "logoutText": "Êtes-vous sûr de vouloir vous déconnecter ?",
     "parentAccount": "👤 Compte parent",
     "noFilter": "Aucun filtre",
+    "deuteranopia": "Deuteranopie",
+    "protanopia": "Protanopie",
+    "tritanopia": "Tritanopie",
     "customize": "Appuyez pour personnaliser",
     "replayTutorial": "Rejouer le tutoriel"
   },
@@ -345,6 +348,7 @@
     "created": "Créé",
     "details": "Informations sur la tâche",
     "close": "Fermer",
+    "minutesShort": "min",
     "managerAccess": "Accès gestionnaire",
     "managerAccessDesc": "Entrez le code PIN à 4 chiffres pour accéder au mode édition avec des permissions élevées.",
     "unlock": "Débloquer"

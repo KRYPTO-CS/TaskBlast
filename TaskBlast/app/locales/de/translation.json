@@ -135,6 +135,9 @@
     "logoutText": "Sind Sie sicher, dass Sie sich abmelden möchten?",
     "parentAccount": "👤 Elternkonto",
     "noFilter": "Kein Filter",
+    "deuteranopia": "Deuteranopie",
+    "protanopia": "Protanopie",
+    "tritanopia": "Tritanopie",
     "customize": "Tippen Sie zum Anpassen",
     "replayTutorial": "Tutorial erneut abspielen"
   },
@@ -345,6 +348,7 @@
     "created": "Erstellt",
     "details": "Aufgaben-details",
     "close": "Schließen",
+    "minutesShort": "Min",
     "managerAccess": "Manager-Zugriff",
     "managerAccessDesc": "Geben Sie eine 4-stellige PIN ein, um Zugriff auf den erweiterten Bearbeitungsmodus zu erhalten.",
     "unlock": "Entsperren"

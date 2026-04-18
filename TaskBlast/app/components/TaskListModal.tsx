@@ -106,6 +106,9 @@ export default function TaskListModal({
   const pinRefs = useRef<Array<TextInput | null>>([null, null, null, null]);
   const auth = getAuth();
   const { t, i18n } = useTranslation();
+  const taskDateLocale = i18n.resolvedLanguage === "pi"
+    ? "en-US"
+    : i18n.resolvedLanguage || "en-US";
   const { start } = useCoachmark();
   const {
     activeChildUsername,
@@ -1470,7 +1473,7 @@ export default function TaskListModal({
                         {t("Tasks.workTime")}
                       </Text>
                       <Text className="font-orbitron-bold text-white text-base">
-                        {selectedTask.workTime} min
+                        {selectedTask.workTime} {t("Tasks.minutesShort")}
                       </Text>
                     </View>
                     <View className="bg-purple-600/20 border border-purple-500/40 rounded-lg px-3 py-2 flex-1 mr-2">
@@ -1478,7 +1481,7 @@ export default function TaskListModal({
                         {t("Tasks.playTime")}
                       </Text>
                       <Text className="font-orbitron-bold text-white text-base">
-                        {selectedTask.playTime} min
+                        {selectedTask.playTime} {t("Tasks.minutesShort")}
                       </Text>
                     </View>
                     <View className="bg-purple-600/20 border border-purple-500/40 rounded-lg px-3 py-2 flex-1">
@@ -1499,7 +1502,7 @@ export default function TaskListModal({
                   <Text className="font-madimi text-white text-base mb-4">
                     {new Date(
                       selectedTask.createdAt.seconds * 1000,
-                    ).toLocaleDateString("en-US", {
+                    ).toLocaleDateString(taskDateLocale, {
                       month: "long",
                       day: "numeric",
                       year: "numeric",

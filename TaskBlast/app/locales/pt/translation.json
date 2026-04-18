@@ -136,6 +136,9 @@
     "logoutText": "Tem certeza de que deseja sair?",
     "parentAccount": "👤 Conta dos pais",
     "noFilter": "Sem filtro",
+    "deuteranopia": "Deuteranopia",
+    "protanopia": "Protanopia",
+    "tritanopia": "Tritanopia",
     "customize": "Toque para personalizar",
     "replayTutorial": "Repetir tutorial"
   },
@@ -345,6 +348,7 @@
     "created": "Criado",
     "details": "Detalhes da Tarefa",
     "close": "Fechar",
+    "minutesShort": "min",
     "managerAccess": "Acesso do Gerente",
     "managerAccessDesc": "Digite o PIN de 4 dígitos para acessar o modo de edição com permissões elevadas.",
     "unlock": "Desbloquear"
