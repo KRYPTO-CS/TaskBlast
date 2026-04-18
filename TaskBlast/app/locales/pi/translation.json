@@ -402,6 +402,32 @@
     "edit": "Edit",
     "advanced": "Advanced"
   },
+  "EditProfileModal": {
+    "title": "Edit Yer Profile",
+    "tapToChangePicture": "Tap to change yer profile picture",
+    "firstName": "First Name",
+    "firstNamePlaceholder": "First Name",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Last Name",
+    "displayName": "Display Name (Nickname)",
+    "displayNamePlaceholder": "Display Name",
+    "email": "Email",
+    "emailPlaceholder": "Email",
+    "birthdate": "Birthdate (MM/DD/YYYY)",
+    "birthdatePlaceholder": "MM/DD/YYYY",
+    "saveChanges": "Save Changes",
+    "errors": {
+      "loginToUpdatePicture": "Ye must be logged in to update yer profile picture",
+      "failedToUpdatePicture": "Failed to update yer profile picture",
+      "firstAndLastRequired": "First name and last name be required",
+      "displayNameRequired": "Display name be required",
+      "emailRequired": "Email be required",
+      "invalidEmail": "Please enter a valid email address",
+      "loginToUpdateProfile": "Ye must be logged in to update yer profile",
+      "childProfileMissing": "Active child profile was not found",
+      "failedToSave": "Failed to save profile. Please try again."
+    }
+  },
   "Pomodoro": {
     "time": "Time Remaining",
     "work": "Work Voyage",

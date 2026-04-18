@@ -404,6 +404,32 @@
     "advanced": "উন্নত"
 
   },
+  "EditProfileModal": {
+    "title": "প্রোফাইল সম্পাদনা করুন",
+    "tapToChangePicture": "প্রোফাইল ছবি পরিবর্তন করতে ট্যাপ করুন",
+    "firstName": "নামের প্রথম অংশ",
+    "firstNamePlaceholder": "নামের প্রথম অংশ",
+    "lastName": "নামের শেষ অংশ",
+    "lastNamePlaceholder": "নামের শেষ অংশ",
+    "displayName": "প্রদর্শিত নাম (ডাকনাম)",
+    "displayNamePlaceholder": "প্রদর্শিত নাম",
+    "email": "ইমেইল",
+    "emailPlaceholder": "ইমেইল",
+    "birthdate": "জন্মতারিখ (MM/DD/YYYY)",
+    "birthdatePlaceholder": "MM/DD/YYYY",
+    "saveChanges": "পরিবর্তন সংরক্ষণ করুন",
+    "errors": {
+      "loginToUpdatePicture": "প্রোফাইল ছবি আপডেট করতে আপনাকে লগইন করতে হবে",
+      "failedToUpdatePicture": "প্রোফাইল ছবি আপডেট করা যায়নি",
+      "firstAndLastRequired": "নামের প্রথম ও শেষ অংশ আবশ্যক",
+      "displayNameRequired": "প্রদর্শিত নাম আবশ্যক",
+      "emailRequired": "ইমেইল আবশ্যক",
+      "invalidEmail": "অনুগ্রহ করে একটি বৈধ ইমেইল ঠিকানা লিখুন",
+      "loginToUpdateProfile": "প্রোফাইল আপডেট করতে আপনাকে লগইন করতে হবে",
+      "childProfileMissing": "সক্রিয় চাইল্ড প্রোফাইল পাওয়া যায়নি",
+      "failedToSave": "প্রোফাইল সংরক্ষণ করা যায়নি। আবার চেষ্টা করুন।"
+    }
+  },
   "Pomodoro": {
     "time": "অবশিষ্ট সময়",
     "work": "কাজের সেশন",

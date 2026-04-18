@@ -402,6 +402,32 @@
     "edit": "Editar",
     "advanced": "Avanzado"
   },
+  "EditProfileModal": {
+    "title": "Editar perfil",
+    "tapToChangePicture": "Toca para cambiar la foto de perfil",
+    "firstName": "Nombre",
+    "firstNamePlaceholder": "Nombre",
+    "lastName": "Apellido",
+    "lastNamePlaceholder": "Apellido",
+    "displayName": "Nombre para mostrar (apodo)",
+    "displayNamePlaceholder": "Nombre para mostrar",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "Correo electrónico",
+    "birthdate": "Fecha de nacimiento (MM/DD/AAAA)",
+    "birthdatePlaceholder": "MM/DD/AAAA",
+    "saveChanges": "Guardar cambios",
+    "errors": {
+      "loginToUpdatePicture": "Debes iniciar sesión para actualizar tu foto de perfil",
+      "failedToUpdatePicture": "No se pudo actualizar la foto de perfil",
+      "firstAndLastRequired": "El nombre y el apellido son obligatorios",
+      "displayNameRequired": "El nombre para mostrar es obligatorio",
+      "emailRequired": "El correo electrónico es obligatorio",
+      "invalidEmail": "Ingresa una dirección de correo válida",
+      "loginToUpdateProfile": "Debes iniciar sesión para actualizar tu perfil",
+      "childProfileMissing": "No se encontró el perfil infantil activo",
+      "failedToSave": "No se pudo guardar el perfil. Inténtalo de nuevo."
+    }
+  },
   "Pomodoro": {
     "time": "Tiempo Restante",
     "work": "Sesión de Trabajo",

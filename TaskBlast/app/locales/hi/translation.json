@@ -402,6 +402,32 @@
     "edit": "संपादित करें",
     "advanced": "उन्नत"
   },
+  "EditProfileModal": {
+    "title": "प्रोफ़ाइल संपादित करें",
+    "tapToChangePicture": "प्रोफ़ाइल फ़ोटो बदलने के लिए टैप करें",
+    "firstName": "पहला नाम",
+    "firstNamePlaceholder": "पहला नाम",
+    "lastName": "अंतिम नाम",
+    "lastNamePlaceholder": "अंतिम नाम",
+    "displayName": "डिस्प्ले नाम (उपनाम)",
+    "displayNamePlaceholder": "डिस्प्ले नाम",
+    "email": "ईमेल",
+    "emailPlaceholder": "ईमेल",
+    "birthdate": "जन्मतिथि (MM/DD/YYYY)",
+    "birthdatePlaceholder": "MM/DD/YYYY",
+    "saveChanges": "परिवर्तन सहेजें",
+    "errors": {
+      "loginToUpdatePicture": "प्रोफ़ाइल फ़ोटो अपडेट करने के लिए आपको लॉग इन होना चाहिए",
+      "failedToUpdatePicture": "प्रोफ़ाइल फ़ोटो अपडेट नहीं हो सकी",
+      "firstAndLastRequired": "पहला और अंतिम नाम आवश्यक है",
+      "displayNameRequired": "डिस्प्ले नाम आवश्यक है",
+      "emailRequired": "ईमेल आवश्यक है",
+      "invalidEmail": "कृपया एक मान्य ईमेल पता दर्ज करें",
+      "loginToUpdateProfile": "प्रोफ़ाइल अपडेट करने के लिए आपको लॉग इन होना चाहिए",
+      "childProfileMissing": "सक्रिय चाइल्ड प्रोफ़ाइल नहीं मिली",
+      "failedToSave": "प्रोफ़ाइल सहेजी नहीं जा सकी। कृपया फिर से प्रयास करें।"
+    }
+  },
   "Pomodoro": {
     "time": "शेष समय",
     "work": "कार्य सत्र",

@@ -403,6 +403,32 @@
     "edit": "Редактировать",
     "advanced": "Дополнительно"
   },
+  "EditProfileModal": {
+    "title": "Редактировать профиль",
+    "tapToChangePicture": "Нажмите, чтобы изменить фото профиля",
+    "firstName": "Имя",
+    "firstNamePlaceholder": "Имя",
+    "lastName": "Фамилия",
+    "lastNamePlaceholder": "Фамилия",
+    "displayName": "Отображаемое имя (никнейм)",
+    "displayNamePlaceholder": "Отображаемое имя",
+    "email": "Эл. почта",
+    "emailPlaceholder": "Эл. почта",
+    "birthdate": "Дата рождения (ММ/ДД/ГГГГ)",
+    "birthdatePlaceholder": "ММ/ДД/ГГГГ",
+    "saveChanges": "Сохранить изменения",
+    "errors": {
+      "loginToUpdatePicture": "Вы должны войти в систему, чтобы обновить фото профиля",
+      "failedToUpdatePicture": "Не удалось обновить фото профиля",
+      "firstAndLastRequired": "Имя и фамилия обязательны",
+      "displayNameRequired": "Отображаемое имя обязательно",
+      "emailRequired": "Эл. почта обязательна",
+      "invalidEmail": "Введите корректный адрес электронной почты",
+      "loginToUpdateProfile": "Вы должны войти в систему, чтобы обновить профиль",
+      "childProfileMissing": "Активный детский профиль не найден",
+      "failedToSave": "Не удалось сохранить профиль. Попробуйте снова."
+    }
+  },
   "Pomodoro": {
     "time": "Оставшееся время",
     "work": "Рабочий сеанс",

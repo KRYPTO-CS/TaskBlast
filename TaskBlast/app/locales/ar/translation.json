@@ -404,6 +404,32 @@
     "edit": "تعديل",
     "advanced": "متقدم"
   },
+  "EditProfileModal": {
+    "title": "تعديل الملف الشخصي",
+    "tapToChangePicture": "اضغط لتغيير صورة الملف الشخصي",
+    "firstName": "الاسم الأول",
+    "firstNamePlaceholder": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "lastNamePlaceholder": "اسم العائلة",
+    "displayName": "اسم العرض (اللقب)",
+    "displayNamePlaceholder": "اسم العرض",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "البريد الإلكتروني",
+    "birthdate": "تاريخ الميلاد (MM/DD/YYYY)",
+    "birthdatePlaceholder": "MM/DD/YYYY",
+    "saveChanges": "حفظ التغييرات",
+    "errors": {
+      "loginToUpdatePicture": "يجب تسجيل الدخول لتحديث صورة الملف الشخصي",
+      "failedToUpdatePicture": "فشل تحديث صورة الملف الشخصي",
+      "firstAndLastRequired": "الاسم الأول واسم العائلة مطلوبان",
+      "displayNameRequired": "اسم العرض مطلوب",
+      "emailRequired": "البريد الإلكتروني مطلوب",
+      "invalidEmail": "يرجى إدخال بريد إلكتروني صالح",
+      "loginToUpdateProfile": "يجب تسجيل الدخول لتحديث ملفك الشخصي",
+      "childProfileMissing": "تعذر العثور على ملف الطفل النشط",
+      "failedToSave": "فشل حفظ الملف الشخصي. حاول مرة أخرى."
+    }
+  },
   "Pomodoro": {
     "time": "الوقت المتبقي",
     "work": "جلسة العمل",

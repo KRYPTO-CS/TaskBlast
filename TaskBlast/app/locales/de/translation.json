@@ -404,6 +404,32 @@
     "edit": "Bearbeiten",
     "advanced": "Erweitert"
   },
+  "EditProfileModal": {
+    "title": "Profil bearbeiten",
+    "tapToChangePicture": "Tippen, um das Profilbild zu ändern",
+    "firstName": "Vorname",
+    "firstNamePlaceholder": "Vorname",
+    "lastName": "Nachname",
+    "lastNamePlaceholder": "Nachname",
+    "displayName": "Anzeigename (Spitzname)",
+    "displayNamePlaceholder": "Anzeigename",
+    "email": "E-Mail",
+    "emailPlaceholder": "E-Mail",
+    "birthdate": "Geburtsdatum (MM/TT/JJJJ)",
+    "birthdatePlaceholder": "MM/TT/JJJJ",
+    "saveChanges": "Änderungen speichern",
+    "errors": {
+      "loginToUpdatePicture": "Sie müssen angemeldet sein, um Ihr Profilbild zu aktualisieren",
+      "failedToUpdatePicture": "Profilbild konnte nicht aktualisiert werden",
+      "firstAndLastRequired": "Vorname und Nachname sind erforderlich",
+      "displayNameRequired": "Anzeigename ist erforderlich",
+      "emailRequired": "E-Mail ist erforderlich",
+      "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+      "loginToUpdateProfile": "Sie müssen angemeldet sein, um Ihr Profil zu aktualisieren",
+      "childProfileMissing": "Aktives Kinderprofil wurde nicht gefunden",
+      "failedToSave": "Profil konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
+    }
+  },
   "Pomodoro": {
     "time": "Verbleibende Zeit",
     "work": "Arbeitszeit",
