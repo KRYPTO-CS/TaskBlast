@@ -30,7 +30,7 @@ const AVAILABLE_TRAITS = [
   "ADHD",
   "Aspergers",
   "Autism",
-  "Developmental Language Disorder",
+  "DevelopmentalLanguageDisorder",
   "Disability Confident",
   "Dyscalculia",
   "Dysgraphia",
@@ -43,6 +43,13 @@ const AVAILABLE_TRAITS = [
   "Tourette's Syndrome",
 ];
 
+const normalizeTraitKey = (trait: string): string => {
+  if (trait === "Developmental Language Disorder") {
+    return "DevelopmentalLanguageDisorder";
+  }
+  return trait;
+};
+
 export default function TraitsModal({
   visible,
   onClose,
@@ -50,7 +57,7 @@ export default function TraitsModal({
   onTraitsUpdate,
 }: TraitsModalProps) {
   const [selectedTraits, setSelectedTraits] = useState<string[]>(
-    userProfile.traits || []
+    (userProfile.traits || []).map(normalizeTraitKey)
   );
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState("");
@@ -59,7 +66,7 @@ export default function TraitsModal({
 
   // Update local state when userProfile prop changes
   useEffect(() => {
-    setSelectedTraits(userProfile.traits || []);
+    setSelectedTraits((userProfile.traits || []).map(normalizeTraitKey));
   }, [userProfile]);
 
   const toggleTrait = (trait: string) => {
@@ -122,7 +129,7 @@ export default function TraitsModal({
 
   const handleCancel = () => {
     // Reset to original traits
-    setSelectedTraits(userProfile.traits || []);
+    setSelectedTraits((userProfile.traits || []).map(normalizeTraitKey));
     setError("");
     onClose();
   };
@@ -221,7 +228,7 @@ export default function TraitsModal({
                         textShadowRadius: 8,
                       }}
                     >
-                      {trait}
+                      {t(`Traits.${trait}`)}
                     </Text>
                     {isSelected && (
                       <View

@@ -349,6 +349,7 @@
     "details": "Task info",
     "close": "Close",
     "minutesShort": "min",
+    "hoursShort": "h",
     "managerAccess": "Manager Access",
     "managerAccessDesc": "Enter the 4-digit PIN to access edit mode wiht elevated permissions.",
     "unlock": "Unlock"
