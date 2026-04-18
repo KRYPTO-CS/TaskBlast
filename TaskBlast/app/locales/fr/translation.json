@@ -130,7 +130,8 @@
     "logoutText": "Êtes-vous sûr de vouloir vous déconnecter ?",
     "parentAccount": "👤 Compte parent",
     "noFilter": "Aucun filtre",
-    "customize": "Appuyez pour personnaliser"
+    "customize": "Appuyez pour personnaliser",
+    "replayTutorial": "Rejouer le tutoriel"
   },
   "Tasks": {
     "title": "Mes tâches",

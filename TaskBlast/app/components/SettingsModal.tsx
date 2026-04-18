@@ -525,7 +525,7 @@ export default function SettingsModal({
                     style={{ marginRight: 12 }}
                   />
                   <Text className="font-orbitron-medium text-white text-base">
-                    {t("Replay Tutorial")}
+                    {t("Settings.replayTutorial")}
                   </Text>
                 </View>
               </TouchableOpacity>

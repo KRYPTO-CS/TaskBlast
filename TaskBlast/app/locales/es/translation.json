@@ -130,7 +130,8 @@
     "logoutText": "¿Estás seguro de que quieres cerrar sesión?",
     "parentAccount": "👤 Cuenta de tutor",
     "noFilter": "Sin filtro",
-    "customize": "Toca para personalizar"
+    "customize": "Toca para personalizar",
+    "replayTutorial": "Repetir tutorial"
   },
   "Tasks": {
     "title": "Tareas",

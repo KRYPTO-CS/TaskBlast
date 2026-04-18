@@ -35,6 +35,7 @@ import {
   useCoachmark,
   createTour,
 } from "@edwardloopez/react-native-coachmark";
+import IconCoachmarkTooltip from "../components/IconCoachmarkTooltip";
 import { useActiveProfile } from "../context/ActiveProfileContext";
 import { deleteChildAccount } from "../services/accountService";
 
@@ -116,21 +117,25 @@ export default function ProfileScreen() {
           id: "edit-profile-button",
           title: t("Profile.editP"),
           description: t("Profile.coachMarkeditP"),
+          renderTooltip: IconCoachmarkTooltip,
         },
         {
           id: "traits-section",
           title: t("Profile.coachMarkTraitsTitle"),
           description: t("Profile.coachMarkTraits"),
+          renderTooltip: IconCoachmarkTooltip,
         },
         {
           id: "awards-section",
           title: t("Profile.coachMarkAwardsTitle"),
           description: t("Profile.coachMarkAwards"),
+          renderTooltip: IconCoachmarkTooltip,
         },
         {
           id: "stats-section",
           title: t("Profile.coachMarkStatsTitle"),
           description: t("Profile.coachMarkStats"),
+          renderTooltip: IconCoachmarkTooltip,
         },
       ]),
     [t],

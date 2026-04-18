@@ -130,7 +130,8 @@
     "logoutText": "Are you sure you want to logout?",
     "parentAccount": "👤 Parent Account",
     "noFilter": "No filter",
-    "customize": "Tap to customize"
+    "customize": "Tap to customize",
+    "replayTutorial": "Replay Tutorial"
   },
   "Tasks": {
     "title": "Task List",

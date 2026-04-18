@@ -130,7 +130,8 @@
     "logoutText": "您确定要退出登录吗？",
     "parentAccount": "👤 家长账户",
     "noFilter": "无过滤",
-    "customize": "点击自定义"
+    "customize": "点击自定义",
+    "replayTutorial": "重新播放教程"
   },
   "Tasks": {
     "title": "任务列表",

@@ -35,6 +35,7 @@ import {
   useCoachmark,
   createTour,
 } from "@edwardloopez/react-native-coachmark";
+import IconCoachmarkTooltip from "../components/IconCoachmarkTooltip";
 import Svg, { Circle, G } from "react-native-svg";
 import { claimBattlePassReward } from "../services/economyService";
 import { useActiveProfile } from "../context/ActiveProfileContext";
@@ -94,31 +95,37 @@ export default function HomeScreen() {
           id: "task-button",
           title: t("Home.coachMarktaskstitle"),
           description: t("Home.coachMarktasks"),
+          renderTooltip: IconCoachmarkTooltip,
         },
         {
           id: "profile-button",
           title: t("Home.coachMarkProfiletitle"),
           description: t("Home.coachMarkProfile"),
+          renderTooltip: IconCoachmarkTooltip,
         },
         {
           id: "settings-button",
           title: t("Settings.title"),
           description: t("Home.coachMarksettings"),
+          renderTooltip: IconCoachmarkTooltip,
         },
         {
           id: "takeoff-button",
           title: t("Home.takeoff"),
           description: t("Home.coachMarktakeoff"),
+          renderTooltip: IconCoachmarkTooltip,
         },
         {
           id: "shop-section",
           title: t("Shop.title"),
           description: t("Home.coachMarkshop"),
+          renderTooltip: IconCoachmarkTooltip,
         },
         {
           id: "level-button",
           title: t("Home.playerLevel"),
           description: t("Home.coachMarklevel"),
+          renderTooltip: IconCoachmarkTooltip,
         },
       ]),
     [t],

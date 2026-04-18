@@ -131,7 +131,8 @@
     "logoutText": "Tem certeza de que deseja sair?",
     "parentAccount": "👤 Conta dos pais",
     "noFilter": "Sem filtro",
-    "customize": "Toque para personalizar"
+    "customize": "Toque para personalizar",
+    "replayTutorial": "Repetir tutorial"
   },
   "Tasks": {
     "title": "Tarefas",

@@ -35,6 +35,7 @@ import {
   useCoachmark,
   createTour,
 } from "@edwardloopez/react-native-coachmark";
+import IconCoachmarkTooltip from "../components/IconCoachmarkTooltip";
 import { getGameDefinition } from "../services/gameRegistry";
 import { useActiveProfile } from "../context/ActiveProfileContext";
 import src from "@react-native-community/datetimepicker";
@@ -87,16 +88,19 @@ export default function PomodoroScreen() {
           id: "time-section",
           title: t("Pomodoro.time"),
           description: t("Pomodoro.coachMarkTime"),
+          renderTooltip: IconCoachmarkTooltip,
         },
         {
           id: "pause-button",
           title: t("Pomodoro.Pause"),
           description: t("Pomodoro.coachMarkPause"),
+          renderTooltip: IconCoachmarkTooltip,
         },
         {
           id: "land-button",
           title: t("Pomodoro.Land"),
           description: t("Pomodoro.coachMarkLand"),
+          renderTooltip: IconCoachmarkTooltip,
         },
       ]),
     [t],

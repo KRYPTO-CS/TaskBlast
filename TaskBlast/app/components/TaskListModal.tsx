@@ -30,6 +30,7 @@ import {
   useCoachmark,
   createTour,
 } from "@edwardloopez/react-native-coachmark";
+import IconCoachmarkTooltip from "./IconCoachmarkTooltip";
 import { claimTaskReward } from "../services/economyService";
 import { useActiveProfile } from "../context/ActiveProfileContext";
 
@@ -115,13 +116,17 @@ export default function TaskListModal({
     isLoading: isProfileLoading,
   } = useActiveProfile();
 
-  const onboardingTour = createTour("onboarding", [
-    {
-      id: "task-button",
-      title: t("Tasks.title"),
-      description: t("Tasks.coachMarkdesc"),
-    },
-  ]);
+  const onboardingTour = createTour(
+    "onboarding",
+    [
+      {
+        id: "task-button",
+        title: t("Tasks.title"),
+        description: t("Tasks.coachMarkdesc"),
+        renderTooltip: IconCoachmarkTooltip,
+      },
+    ],
+  );
 
   // Helper to get the correct tasks collection reference
   const getTasksCollectionRef = () => {

@@ -130,7 +130,8 @@
     "logoutText": "Sind Sie sicher, dass Sie sich abmelden möchten?",
     "parentAccount": "👤 Elternkonto",
     "noFilter": "Kein Filter",
-    "customize": "Tippen Sie zum Anpassen"
+    "customize": "Tippen Sie zum Anpassen",
+    "replayTutorial": "Tutorial erneut abspielen"
   },
   "Tasks": {
     "title": "Aufgabenliste",
