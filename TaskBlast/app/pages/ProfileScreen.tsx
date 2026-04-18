@@ -126,12 +126,6 @@ export default function ProfileScreen() {
           renderTooltip: IconCoachmarkTooltip,
         },
         {
-          id: "awards-section",
-          title: t("Profile.coachMarkAwardsTitle"),
-          description: t("Profile.coachMarkAwards"),
-          renderTooltip: IconCoachmarkTooltip,
-        },
-        {
           id: "stats-section",
           title: t("Profile.coachMarkStatsTitle"),
           description: t("Profile.coachMarkStats"),
@@ -624,52 +618,6 @@ export default function ProfileScreen() {
                   >
                     <Text className="font-orbitron-semibold text-xl text-white text-sm">
                       {trait}
-                    </Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-          </View>
-
-          {/* Awards Container */}
-          <View className="mb-8">
-            <CoachmarkAnchor id="awards-section" shape="circle">
-              <Text
-                className="font-orbitron-semibold text-xl text-white text-xl mb-4"
-                style={{
-                  textShadowColor: `${palette.tertiary}99`,
-                  textShadowOffset: { width: 0, height: 0 },
-                  textShadowRadius: 10,
-                }}
-              >
-                {t("Profile.awards")}
-              </Text>
-            </CoachmarkAnchor>
-            <View
-              className="p-4 rounded-2xl"
-              style={{
-                backgroundColor: palette.tertiarySoft,
-                borderWidth: 2,
-                borderColor: palette.tertiarySoftBorder,
-                shadowColor: palette.tertiary,
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.3,
-                shadowRadius: 8,
-              }}
-            >
-              <View className="flex-row flex-wrap gap-2">
-                {userProfile?.awards?.map((award: string, index: number) => (
-                  <View
-                    key={index}
-                    className="px-4 py-2 rounded-full"
-                    style={{
-                      backgroundColor: palette.tertiarySoftBorder,
-                      borderWidth: 1,
-                      borderColor: palette.tertiary,
-                    }}
-                  >
-                    <Text className="font-orbitron-semibold text-white text-">
-                      {award}
                     </Text>
                   </View>
                 ))}
