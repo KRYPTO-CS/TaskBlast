@@ -268,7 +268,7 @@ export default function SettingsModal({
 
   return (
     <Modal
-      animationType={reduceMotion ? "fade" : "slide"}
+      animationType="fade"
       transparent={true}
       visible={visible}
       onRequestClose={onClose}
