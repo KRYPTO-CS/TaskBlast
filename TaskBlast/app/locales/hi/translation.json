@@ -176,6 +176,58 @@
       }
     }
   },
+  "SupportScreen": {
+    "title": "सहायता और सपोर्ट",
+    "intro": "सोलर सिस्टम में नेविगेट करने में मदद चाहिए? नीचे दिए गए FAQ देखें या सीधे हमारी टीम से संपर्क करें।",
+    "faqHeading": "अक्सर पूछे जाने वाले सवाल",
+    "contactHeading": "हमसे संपर्क करें",
+    "responseTime": "हम 5 कार्य दिवसों के भीतर सभी पूछताछ का उत्तर देने का प्रयास करते हैं।",
+    "back": "वापस जाएं",
+    "contactCards": {
+      "generalSupport": "सामान्य सहायता",
+      "privacyEnquiries": "गोपनीयता संबंधी पूछताछ"
+    },
+    "faq": {
+      "items": {
+        "1": {
+          "question": "मैं नया कार्य कैसे जोड़ूं?",
+          "answer": "होम स्क्रीन पर कार्य आइकन पर टैप करके अपनी कार्य सूची खोलें। फिर 'Add New Task' पर टैप करें, कार्य का नाम, वैकल्पिक विवरण और रॉक्स इनाम भरें, और सेव करने के लिए 'Add Task' पर टैप करें।"
+        },
+        "2": {
+          "question": "फोकस सत्र कैसे काम करते हैं?",
+          "answer": "TaskBlast Pomodoro तकनीक का उपयोग करता है - काम और ब्रेक के चक्र बारी-बारी से चलते हैं। कोई कार्य चुनें और सत्र शुरू करने के लिए 'Take Off' पर टैप करें। आप कभी भी pause या जल्दी land कर सकते हैं, और पूरा होने पर रॉक्स मिलेंगे।"
+        },
+        "3": {
+          "question": "Rocks और Galaxy Crystals क्या हैं?",
+          "answer": "Rocks कार्य और फोकस सत्र पूरा करने पर मिलते हैं। Galaxy Crystals एक प्रीमियम मुद्रा है जो level-up milestones से मिलती है। दोनों को Shop में खर्च करके avatar customization अनलॉक किया जा सकता है।"
+        },
+        "4": {
+          "question": "मैं child account कैसे बनाऊं?",
+          "answer": "अपनी Profile स्क्रीन से 'Add Child Account' पर टैप करें। आपको Manager PIN के साथ managed account सेटअप करना होगा। इसके बाद बच्चा Profile Selection स्क्रीन से अपनी प्रोफाइल चुन सकता है।"
+        },
+        "5": {
+          "question": "मैं अपना Manager PIN भूल गया/गई हूं। क्या करूं?",
+          "answer": "अभी Manager PIN आपके खाते में सुरक्षित रूप से संग्रहीत होता है। अपने पंजीकृत ईमेल से {{email}} पर संपर्क करें, हम आपको दोबारा एक्सेस पाने में मदद करेंगे।"
+        },
+        "6": {
+          "question": "मैं ऐप की भाषा कैसे बदलूं?",
+          "answer": "Settings में जाएं और 'Language' पर टैप करें। आप English, Spanish, Portuguese, French, German, Russian, Arabic, Bengali, Chinese, Hindi और Pirate में से चुन सकते हैं।"
+        },
+        "7": {
+          "question": "ऐप अलग दिख रही है - colour-blind modes क्या हैं?",
+          "answer": "Settings में 'Accessibility' पर टैप करके colour-blind-safe themes (Deuteranopia, Protanopia, Tritanopia, Achromatopsia), high-contrast mode और reduced motion toggles पाए जा सकते हैं।"
+        },
+        "8": {
+          "question": "मैं notifications कैसे बंद करूं?",
+          "answer": "Settings में जाएं और 'Notifications' पर टैप करें। आप किसी भी समय अलग-अलग notification प्रकारों को चालू या बंद कर सकते हैं।"
+        },
+        "9": {
+          "question": "मैं अपना खाता कैसे हटाऊं?",
+          "answer": "खाता हटाने का अनुरोध करने के लिए अपने पंजीकृत ईमेल से {{email}} पर संपर्क करें। हम 5 कार्य दिवसों के भीतर अनुरोध प्रोसेस करके संबंधित सभी डेटा हटा देंगे।"
+        }
+      }
+    }
+  },
   "Tasks": {
     "title": "कार्य",
     "normal": "सामान्य",

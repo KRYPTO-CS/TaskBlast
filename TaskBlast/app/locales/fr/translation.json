@@ -176,6 +176,58 @@
       }
     }
   },
+  "SupportScreen": {
+    "title": "Aide et support",
+    "intro": "Besoin d'aide pour naviguer dans le Systeme Solaire ? Consultez la FAQ ci-dessous ou contactez directement notre equipe.",
+    "faqHeading": "Questions frequentes",
+    "contactHeading": "Nous contacter",
+    "responseTime": "Nous visons a repondre a toutes les demandes sous 5 jours ouvrables.",
+    "back": "Retour",
+    "contactCards": {
+      "generalSupport": "Support general",
+      "privacyEnquiries": "Demandes de confidentialite"
+    },
+    "faq": {
+      "items": {
+        "1": {
+          "question": "Comment ajouter une nouvelle tache ?",
+          "answer": "Appuyez sur l'icone des taches sur l'ecran d'accueil pour ouvrir votre liste de taches. Ensuite, appuyez sur 'Ajouter une tache', remplissez le nom, une description facultative et une recompense en roches, puis appuyez sur 'Ajouter la tache' pour enregistrer."
+        },
+        "2": {
+          "question": "Comment fonctionnent les sessions de concentration ?",
+          "answer": "TaskBlast utilise la technique Pomodoro, en alternant des cycles de travail et de pause. Selectionnez une tache et appuyez sur 'Decoller' pour demarrer une session. Vous pouvez mettre en pause ou atterrir plus tot a tout moment, et vous gagnerez des roches a la fin."
+        },
+        "3": {
+          "question": "Que sont les Roches et les Cristaux Galactiques ?",
+          "answer": "Les roches sont gagnees en accomplissant des taches et des sessions de concentration. Les cristaux galactiques sont une monnaie premium obtenue lors des paliers de niveau. Les deux peuvent etre depenses dans la boutique pour debloquer des personnalisations d'avatar."
+        },
+        "4": {
+          "question": "Comment creer un compte enfant ?",
+          "answer": "Depuis votre ecran Profil, appuyez sur 'Ajouter un compte enfant'. Vous devrez configurer un compte gere avec un code PIN gestionnaire. L'enfant pourra ensuite selectionner son profil depuis l'ecran de selection de profil."
+        },
+        "5": {
+          "question": "J'ai oublie mon PIN gestionnaire. Que faire ?",
+          "answer": "Actuellement, les PIN gestionnaires sont stockes en toute securite sur votre compte. Veuillez nous contacter a {{email}} avec votre adresse e-mail enregistree et nous vous aiderons a recuperer l'acces."
+        },
+        "6": {
+          "question": "Comment changer la langue de l'application ?",
+          "answer": "Allez dans Parametres puis appuyez sur 'Langue'. Vous pouvez choisir entre anglais, espagnol, portugais, francais, allemand, russe, arabe, bengali, chinois, hindi et pirate."
+        },
+        "7": {
+          "question": "L'application a un aspect different : que sont les modes daltoniens ?",
+          "answer": "Dans Parametres, appuyez sur 'Accessibilite' pour trouver des themes adaptes au daltonisme (deuteranopie, protanopie, tritanopie, achromatopsie), ainsi que les options contraste eleve et reduction des animations."
+        },
+        "8": {
+          "question": "Comment desactiver les notifications ?",
+          "answer": "Allez dans Parametres puis appuyez sur 'Notifications'. Vous pouvez activer ou desactiver chaque type de notification a tout moment."
+        },
+        "9": {
+          "question": "Comment supprimer mon compte ?",
+          "answer": "Pour demander la suppression du compte, veuillez nous contacter a {{email}} depuis votre adresse e-mail enregistree. Nous traiterons votre demande sous 5 jours ouvrables et supprimerons toutes les donnees associees."
+        }
+      }
+    }
+  },
   "Tasks": {
     "title": "Mes tâches",
     "normal": "Normal",

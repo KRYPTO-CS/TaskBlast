@@ -74,26 +74,24 @@ describe("SupportScreen", () => {
       expect(() => render(<SupportScreen />)).not.toThrow();
     });
 
-    it("renders the screen title from i18n key Settings.Help", () => {
+    it("renders the screen title from i18n key SupportScreen.title", () => {
       const { getByText } = render(<SupportScreen />);
-      expect(getByText("Settings.Help")).toBeTruthy();
+      expect(getByText("SupportScreen.title")).toBeTruthy();
     });
 
     it("renders the intro banner text", () => {
       const { getByText } = render(<SupportScreen />);
-      expect(
-        getByText(/Need help navigating the Solar System/i),
-      ).toBeTruthy();
+      expect(getByText("SupportScreen.intro")).toBeTruthy();
     });
 
     it("renders the 'Frequently Asked Questions' section heading", () => {
       const { getByText } = render(<SupportScreen />);
-      expect(getByText("Frequently Asked Questions")).toBeTruthy();
+      expect(getByText("SupportScreen.faqHeading")).toBeTruthy();
     });
 
     it("renders the 'Contact Us' section heading", () => {
       const { getByText } = render(<SupportScreen />);
-      expect(getByText("Contact Us")).toBeTruthy();
+      expect(getByText("SupportScreen.contactHeading")).toBeTruthy();
     });
   });
 
@@ -101,15 +99,15 @@ describe("SupportScreen", () => {
 
   describe("FAQ items", () => {
     const faqQuestions = [
-      "How do I add a new task?",
-      "How do focus sessions work?",
-      "What are Rocks and Galaxy Crystals?",
-      "How do I create a child account?",
-      "I forgot my Manager PIN. What do I do?",
-      "How do I change the app language?",
-      "The app looks different — what are colour-blind modes?",
-      "How do I turn off notifications?",
-      "How do I delete my account?",
+      "SupportScreen.faq.items.1.question",
+      "SupportScreen.faq.items.2.question",
+      "SupportScreen.faq.items.3.question",
+      "SupportScreen.faq.items.4.question",
+      "SupportScreen.faq.items.5.question",
+      "SupportScreen.faq.items.6.question",
+      "SupportScreen.faq.items.7.question",
+      "SupportScreen.faq.items.8.question",
+      "SupportScreen.faq.items.9.question",
     ];
 
     faqQuestions.forEach((question) => {
@@ -132,34 +130,26 @@ describe("SupportScreen", () => {
   describe("FAQ accordion expand/collapse", () => {
     it("does not show answer text before the FAQ is expanded", () => {
       const { queryByText } = render(<SupportScreen />);
-      expect(
-        queryByText(/Tap the task icon on the Home screen/i),
-      ).toBeNull();
+      expect(queryByText("SupportScreen.faq.items.1.answer")).toBeNull();
     });
 
     it("shows the answer after pressing a FAQ question", () => {
       const { getByText, queryByText } = render(<SupportScreen />);
-      fireEvent.press(getByText("How do I add a new task?"));
-      expect(
-        getByText(/Tap the task icon on the Home screen/i),
-      ).toBeTruthy();
+      fireEvent.press(getByText("SupportScreen.faq.items.1.question"));
+      expect(getByText("SupportScreen.faq.items.1.answer")).toBeTruthy();
     });
 
     it("hides the answer after pressing the same FAQ question twice", () => {
       const { getByText, queryByText } = render(<SupportScreen />);
-      fireEvent.press(getByText("How do I add a new task?"));
-      fireEvent.press(getByText("How do I add a new task?"));
-      expect(
-        queryByText(/Tap the task icon on the Home screen/i),
-      ).toBeNull();
+      fireEvent.press(getByText("SupportScreen.faq.items.1.question"));
+      fireEvent.press(getByText("SupportScreen.faq.items.1.question"));
+      expect(queryByText("SupportScreen.faq.items.1.answer")).toBeNull();
     });
 
     it("shows the correct answer for a different FAQ", () => {
       const { getByText } = render(<SupportScreen />);
-      fireEvent.press(getByText("How do focus sessions work?"));
-      expect(
-        getByText(/Pomodoro technique/i),
-      ).toBeTruthy();
+      fireEvent.press(getByText("SupportScreen.faq.items.2.question"));
+      expect(getByText("SupportScreen.faq.items.2.answer")).toBeTruthy();
     });
   });
 
@@ -168,12 +158,12 @@ describe("SupportScreen", () => {
   describe("Contact cards", () => {
     it("renders the General Support contact card label", () => {
       const { getByText } = render(<SupportScreen />);
-      expect(getByText("General Support")).toBeTruthy();
+      expect(getByText("SupportScreen.contactCards.generalSupport")).toBeTruthy();
     });
 
     it("renders the Privacy Enquiries contact card label", () => {
       const { getByText } = render(<SupportScreen />);
-      expect(getByText("Privacy Enquiries")).toBeTruthy();
+      expect(getByText("SupportScreen.contactCards.privacyEnquiries")).toBeTruthy();
     });
   });
 

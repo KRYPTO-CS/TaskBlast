@@ -176,6 +176,58 @@
       }
     }
   },
+  "SupportScreen": {
+    "title": "Hilfe und Support",
+    "intro": "Brauchst du Hilfe bei der Navigation im Sonnensystem? Sieh dir die FAQs unten an oder kontaktiere unser Team direkt.",
+    "faqHeading": "Haufig gestellte Fragen",
+    "contactHeading": "Kontakt",
+    "responseTime": "Wir beantworten Anfragen in der Regel innerhalb von 5 Werktagen.",
+    "back": "Zuruck",
+    "contactCards": {
+      "generalSupport": "Allgemeiner Support",
+      "privacyEnquiries": "Datenschutzanfragen"
+    },
+    "faq": {
+      "items": {
+        "1": {
+          "question": "Wie fige ich eine neue Aufgabe hinzu?",
+          "answer": "Tippe auf dem Startbildschirm auf das Aufgaben-Symbol, um deine Aufgabenliste zu offnen. Tippe dann auf 'Neue Aufgabe hinzufugen', trage den Namen, eine optionale Beschreibung und eine Belohnung in Rocks ein und speichere mit 'Aufgabe hinzufugen'."
+        },
+        "2": {
+          "question": "Wie funktionieren Fokus-Sitzungen?",
+          "answer": "TaskBlast nutzt die Pomodoro-Technik mit abwechselnden Arbeits- und Pausenzyklen. Wahle eine Aufgabe und tippe auf 'Take Off', um eine Sitzung zu starten. Du kannst jederzeit pausieren oder fruh landen und erhaltst bei Abschluss Rocks."
+        },
+        "3": {
+          "question": "Was sind Rocks und Galaxie-Kristalle?",
+          "answer": "Rocks erhaltst du fur abgeschlossene Aufgaben und Fokus-Sitzungen. Galaxie-Kristalle sind eine Premium-Wahrung, die du bei Level-Meilensteinen bekommst. Beides kannst du im Shop fur Avatar-Anpassungen ausgeben."
+        },
+        "4": {
+          "question": "Wie erstelle ich ein Kinderkonto?",
+          "answer": "Gehe in dein Profil und tippe auf 'Kinderkonto hinzufugen'. Danach richtest du ein verwaltetes Konto mit Manager-PIN ein. Das Kind kann dann sein Profil im Profilauswahl-Bildschirm auswahlen."
+        },
+        "5": {
+          "question": "Ich habe meine Manager-PIN vergessen. Was kann ich tun?",
+          "answer": "Manager-PINs werden derzeit sicher in deinem Konto gespeichert. Kontaktiere uns bitte unter {{email}} mit deiner registrierten E-Mail-Adresse, dann helfen wir dir beim Wiederherstellen des Zugangs."
+        },
+        "6": {
+          "question": "Wie andere ich die App-Sprache?",
+          "answer": "Gehe zu Einstellungen und tippe auf 'Sprache'. Du kannst zwischen Englisch, Spanisch, Portugiesisch, Franzosisch, Deutsch, Russisch, Arabisch, Bengalisch, Chinesisch, Hindi und Piratisch wahlen."
+        },
+        "7": {
+          "question": "Die App sieht anders aus - was sind Farbenblind-Modi?",
+          "answer": "In den Einstellungen unter 'Barrierefreiheit' findest du farbenblind-freundliche Themen (Deuteranopie, Protanopie, Tritanopie, Achromatopsie) sowie Optionen fur hohen Kontrast und reduzierte Bewegung."
+        },
+        "8": {
+          "question": "Wie schalte ich Benachrichtigungen aus?",
+          "answer": "Gehe zu Einstellungen und tippe auf 'Benachrichtigungen'. Dort kannst du einzelne Benachrichtigungstypen jederzeit ein- oder ausschalten."
+        },
+        "9": {
+          "question": "Wie losche ich mein Konto?",
+          "answer": "Um die Kontoloschung anzufordern, kontaktiere uns bitte unter {{email}} von deiner registrierten E-Mail-Adresse aus. Wir bearbeiten deine Anfrage innerhalb von 5 Werktagen und entfernen alle zugeordneten Daten."
+        }
+      }
+    }
+  },
   "Tasks": {
     "title": "Aufgabenliste",
     "normal": "Normal",

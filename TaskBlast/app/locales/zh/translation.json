@@ -176,6 +176,58 @@
       }
     }
   },
+  "SupportScreen": {
+    "title": "帮助与支持",
+    "intro": "需要帮助探索太阳系吗？请查看下方常见问题，或直接联系我们的团队。",
+    "faqHeading": "常见问题",
+    "contactHeading": "联系我们",
+    "responseTime": "我们力求在 5 个工作日内回复所有咨询。",
+    "back": "返回",
+    "contactCards": {
+      "generalSupport": "一般支持",
+      "privacyEnquiries": "隐私咨询"
+    },
+    "faq": {
+      "items": {
+        "1": {
+          "question": "如何添加新任务？",
+          "answer": "点击主页上的任务图标打开任务列表。然后点击 'Add New Task'，填写任务名称、可选描述和 Rocks 奖励，再点击 'Add Task' 保存。"
+        },
+        "2": {
+          "question": "专注会话如何工作？",
+          "answer": "TaskBlast 使用 Pomodoro 技术，交替进行工作和休息周期。选择任务后点击 'Take Off' 开始会话。你可以随时暂停或提前结束，完成后将获得 Rocks。"
+        },
+        "3": {
+          "question": "什么是 Rocks 和 Galaxy Crystals？",
+          "answer": "完成任务和专注会话可获得 Rocks。Galaxy Crystals 是通过升级里程碑获得的高级货币。两者都可以在 Shop 中用于解锁头像自定义内容。"
+        },
+        "4": {
+          "question": "如何创建儿童账号？",
+          "answer": "在 Profile 页面点击 'Add Child Account'。系统会提示你使用 Manager PIN 设置受管账号。之后孩子可以在 Profile Selection 页面选择自己的档案。"
+        },
+        "5": {
+          "question": "我忘记了 Manager PIN，该怎么办？",
+          "answer": "目前 Manager PIN 会安全存储在你的账号中。请使用注册邮箱发送邮件至 {{email}}，我们将协助你恢复访问权限。"
+        },
+        "6": {
+          "question": "如何更改应用语言？",
+          "answer": "进入 Settings 并点击 'Language'。你可以选择 English、Spanish、Portuguese、French、German、Russian、Arabic、Bengali、Chinese、Hindi 和 Pirate。"
+        },
+        "7": {
+          "question": "应用看起来不一样了，什么是色盲模式？",
+          "answer": "在 Settings 中点击 'Accessibility'，可以找到色盲友好主题（Deuteranopia、Protanopia、Tritanopia、Achromatopsia），以及高对比度和减少动画开关。"
+        },
+        "8": {
+          "question": "如何关闭通知？",
+          "answer": "进入 Settings 并点击 'Notifications'。你可以随时单独开启或关闭各类通知。"
+        },
+        "9": {
+          "question": "如何删除我的账号？",
+          "answer": "如需申请删除账号，请使用注册邮箱联系 {{email}}。我们会在 5 个工作日内处理你的请求并删除所有关联数据。"
+        }
+      }
+    }
+  },
   "Tasks": {
     "title": "任务列表",
     "normal": "普通",

@@ -176,6 +176,58 @@
       }
     }
   },
+  "SupportScreen": {
+    "title": "Help & Support",
+    "intro": "Need help navigating the Solar System? Browse the FAQs below or get in touch with our crew directly.",
+    "faqHeading": "Frequently Asked Questions",
+    "contactHeading": "Contact Us",
+    "responseTime": "We aim to respond to all enquiries within 5 business days.",
+    "back": "Back",
+    "contactCards": {
+      "generalSupport": "General Support",
+      "privacyEnquiries": "Privacy Enquiries"
+    },
+    "faq": {
+      "items": {
+        "1": {
+          "question": "How do I add a new task?",
+          "answer": "Tap the task icon on the Home screen to open your Task List. Then tap 'Add New Task', fill in the task name, optional description, and a rock reward, and tap 'Add Task' to save it."
+        },
+        "2": {
+          "question": "How do focus sessions work?",
+          "answer": "TaskBlast uses the Pomodoro technique - alternating work and play cycles. Select a task and tap 'Take Off' to start a session. You can pause or land early at any time, and you'll earn rocks upon completion."
+        },
+        "3": {
+          "question": "What are Rocks and Galaxy Crystals?",
+          "answer": "Rocks are earned by completing tasks and focus sessions. Galaxy Crystals are a premium currency rewarded through level-up milestones. Both can be spent in the Shop to unlock avatar customizations."
+        },
+        "4": {
+          "question": "How do I create a child account?",
+          "answer": "From your Profile screen, tap 'Add Child Account'. You'll be prompted to set up a managed account with a Manager PIN. The child can then select their profile from the Profile Selection screen."
+        },
+        "5": {
+          "question": "I forgot my Manager PIN. What do I do?",
+          "answer": "Currently, Manager PINs are stored securely on your account. Please contact us at {{email}} with your registered email address and we'll help you regain access."
+        },
+        "6": {
+          "question": "How do I change the app language?",
+          "answer": "Go to Settings and tap 'Language'. You can choose from English, Spanish, Portuguese, French, German, Russian, Arabic, Bengali, Chinese, Hindi, and Pirate."
+        },
+        "7": {
+          "question": "The app looks different - what are colour-blind modes?",
+          "answer": "In Settings, tap 'Accessibility' to find colour-blind-safe themes (Deuteranopia, Protanopia, Tritanopia, Achromatopsia) as well as high-contrast mode and reduced motion toggles."
+        },
+        "8": {
+          "question": "How do I turn off notifications?",
+          "answer": "Go to Settings and tap 'Notifications'. You can toggle individual notification types on or off at any time."
+        },
+        "9": {
+          "question": "How do I delete my account?",
+          "answer": "To request account deletion, please contact us at {{email}} from your registered email address. We will process your request within 5 business days and remove all associated data."
+        }
+      }
+    }
+  },
   "Tasks": {
     "title": "Task List",
     "normal": "Normal",

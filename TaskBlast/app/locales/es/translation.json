@@ -176,6 +176,58 @@
       }
     }
   },
+  "SupportScreen": {
+    "title": "Ayuda y soporte",
+    "intro": "Necesitas ayuda para navegar el Sistema Solar? Revisa las preguntas frecuentes de abajo o ponte en contacto con nuestro equipo.",
+    "faqHeading": "Preguntas frecuentes",
+    "contactHeading": "Contáctanos",
+    "responseTime": "Nuestro objetivo es responder a todas las consultas en un plazo de 5 días hábiles.",
+    "back": "Volver",
+    "contactCards": {
+      "generalSupport": "Soporte general",
+      "privacyEnquiries": "Consultas de privacidad"
+    },
+    "faq": {
+      "items": {
+        "1": {
+          "question": "¿Cómo agrego una nueva tarea?",
+          "answer": "Toca el icono de tareas en la pantalla de inicio para abrir tu lista de tareas. Luego toca 'Agregar nueva tarea', completa el nombre, una descripción opcional y una recompensa en rocas, y toca 'Agregar tarea' para guardar."
+        },
+        "2": {
+          "question": "¿Cómo funcionan las sesiones de enfoque?",
+          "answer": "TaskBlast usa la técnica Pomodoro, alternando ciclos de trabajo y descanso. Selecciona una tarea y toca 'Despegar' para iniciar una sesión. Puedes pausar o aterrizar antes en cualquier momento, y ganarás rocas al completar."
+        },
+        "3": {
+          "question": "¿Qué son las Rocas y los Cristales Galácticos?",
+          "answer": "Las rocas se ganan al completar tareas y sesiones de enfoque. Los cristales galácticos son una moneda premium que se obtiene al subir de nivel. Ambos se pueden gastar en la tienda para desbloquear personalizaciones del avatar."
+        },
+        "4": {
+          "question": "¿Cómo creo una cuenta infantil?",
+          "answer": "Desde tu pantalla de perfil, toca 'Agregar cuenta infantil'. Se te pedirá configurar una cuenta administrada con un PIN de administrador. Luego el niño podrá seleccionar su perfil desde la pantalla de selección de perfil."
+        },
+        "5": {
+          "question": "Olvidé mi PIN de administrador. ¿Qué hago?",
+          "answer": "Actualmente, los PIN de administrador se almacenan de forma segura en tu cuenta. Contáctanos en {{email}} desde tu correo registrado y te ayudaremos a recuperar el acceso."
+        },
+        "6": {
+          "question": "¿Cómo cambio el idioma de la app?",
+          "answer": "Ve a Configuración y toca 'Idioma'. Puedes elegir entre inglés, español, portugués, francés, alemán, ruso, árabe, bengalí, chino, hindi y pirata."
+        },
+        "7": {
+          "question": "La app se ve diferente, ¿qué son los modos daltónicos?",
+          "answer": "En Configuración, toca 'Accesibilidad' para encontrar temas aptos para daltonismo (deuteranopía, protanopía, tritanopía y acromatopsia), además del modo de alto contraste y reducir movimiento."
+        },
+        "8": {
+          "question": "¿Cómo desactivo las notificaciones?",
+          "answer": "Ve a Configuración y toca 'Notificaciones'. Puedes activar o desactivar cada tipo de notificación en cualquier momento."
+        },
+        "9": {
+          "question": "¿Cómo elimino mi cuenta?",
+          "answer": "Para solicitar la eliminación de la cuenta, contáctanos en {{email}} desde tu correo registrado. Procesaremos tu solicitud en un plazo de 5 días hábiles y eliminaremos todos los datos asociados."
+        }
+      }
+    }
+  },
   "Tasks": {
     "title": "Tareas",
     "normal": "Normal",

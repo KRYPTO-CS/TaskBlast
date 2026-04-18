@@ -24,54 +24,6 @@ interface FAQ {
   answer: string;
 }
 
-const FAQS: FAQ[] = [
-  {
-    question: "How do I add a new task?",
-    answer:
-      "Tap the task icon on the Home screen to open your Task List. Then tap 'Add New Task', fill in the task name, optional description, and a rock reward, and tap 'Add Task' to save it.",
-  },
-  {
-    question: "How do focus sessions work?",
-    answer:
-      "TaskBlast uses the Pomodoro technique — alternating work and play cycles. Select a task and tap 'Take Off' to start a session. You can pause or land early at any time, and you'll earn rocks upon completion.",
-  },
-  {
-    question: "What are Rocks and Galaxy Crystals?",
-    answer:
-      "Rocks are earned by completing tasks and focus sessions. Galaxy Crystals are a premium currency rewarded through level-up milestones. Both can be spent in the Shop to unlock avatar customizations.",
-  },
-  {
-    question: "How do I create a child account?",
-    answer:
-      "From your Profile screen, tap 'Add Child Account'. You'll be prompted to set up a managed account with a Manager PIN. The child can then select their profile from the Profile Selection screen.",
-  },
-  {
-    question: "I forgot my Manager PIN. What do I do?",
-    answer:
-      "Currently, Manager PINs are stored securely on your account. Please contact us at {Email TBD} with your registered email address and we'll help you regain access.",
-  },
-  {
-    question: "How do I change the app language?",
-    answer:
-      "Go to Settings and tap 'Language'. You can choose from English, Spanish, Portuguese, French, German, Russian, Arabic, Bengali, Chinese, Hindi, and Pirate.",
-  },
-  {
-    question: "The app looks different — what are colour-blind modes?",
-    answer:
-      "In Settings, tap 'Accessibility' to find colour-blind-safe themes (Deuteranopia, Protanopia, Tritanopia, Achromatopsia) as well as high-contrast mode and reduced motion toggles.",
-  },
-  {
-    question: "How do I turn off notifications?",
-    answer:
-      "Go to Settings and tap 'Notifications'. You can toggle individual notification types on or off at any time.",
-  },
-  {
-    question: "How do I delete my account?",
-    answer:
-      "To request account deletion, please contact us at {Email TBD} from your registered email address. We will process your request within 5 business days and remove all associated data.",
-  },
-];
-
 interface ContactCard {
   icon: keyof typeof Ionicons.glyphMap;
   label: string;
@@ -79,8 +31,8 @@ interface ContactCard {
 }
 
 const CONTACT_CARDS: ContactCard[] = [
-  { icon: "mail-outline", label: "General Support", value: "{Email TBD}" },
-  { icon: "shield-outline", label: "Privacy Enquiries", value: "{Email TBD}" },
+  { icon: "mail-outline", label: "", value: "" },
+  { icon: "shield-outline", label: "", value: "" },
 ];
 
 function FAQItem({ item, palette }: { item: FAQ; palette: any }) {
@@ -137,6 +89,22 @@ export default function SupportScreen() {
   const router = useRouter();
   const palette = useColorPalette();
   const { t } = useTranslation();
+  const supportEmail = "kryptocapstone@gmail.com";
+
+  const faqIds = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  const faqs: FAQ[] = faqIds.map((id) => ({
+    question: t(`SupportScreen.faq.items.${id}.question`),
+    answer: t(`SupportScreen.faq.items.${id}.answer`, { email: supportEmail }),
+  }));
+
+  const contactCards: ContactCard[] = CONTACT_CARDS.map((card, index) => ({
+    ...card,
+    label:
+      index === 0
+        ? t("SupportScreen.contactCards.generalSupport")
+        : t("SupportScreen.contactCards.privacyEnquiries"),
+    value: supportEmail,
+  }));
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
@@ -172,7 +140,7 @@ export default function SupportScreen() {
           style={{ marginRight: 10 }}
         />
         <Text className="font-orbitron-semibold text-white text-xl flex-1">
-          {t("Settings.Help")}
+          {t("SupportScreen.title")}
         </Text>
       </View>
 
@@ -197,7 +165,7 @@ export default function SupportScreen() {
             style={{ marginRight: 12, marginTop: 2 }}
           />
           <Text className="font-madimi text-white/90 text-sm leading-6 flex-1">
-            Need help navigating the Solar System? Browse the FAQs below or get in touch with our crew directly.
+            {t("SupportScreen.intro")}
           </Text>
         </View>
 
@@ -209,11 +177,11 @@ export default function SupportScreen() {
               style={{ backgroundColor: palette.accent }}
             />
             <Text className="font-orbitron-semibold text-white text-base">
-              Frequently Asked Questions
+              {t("SupportScreen.faqHeading")}
             </Text>
           </View>
 
-          {FAQS.map((faq, index) => (
+          {faqs.map((faq, index) => (
             <FAQItem key={index} item={faq} palette={palette} />
           ))}
         </View>
@@ -232,11 +200,11 @@ export default function SupportScreen() {
               style={{ backgroundColor: palette.tertiary }}
             />
             <Text className="font-orbitron-semibold text-white text-base">
-              Contact Us
+              {t("SupportScreen.contactHeading")}
             </Text>
           </View>
 
-          {CONTACT_CARDS.map((card, index) => (
+          {contactCards.map((card, index) => (
             <View
               key={index}
               className="rounded-2xl p-4 mb-3 flex-row items-center"
@@ -272,7 +240,7 @@ export default function SupportScreen() {
             }}
           >
             <Text className="font-madimi text-white/70 text-xs text-center leading-5">
-              We aim to respond to all enquiries within 5 business days.
+              {t("SupportScreen.responseTime")}
             </Text>
           </View>
         </View>
@@ -280,7 +248,7 @@ export default function SupportScreen() {
         {/* Back button */}
         <View className="mt-6">
           <MainButton
-            title="Back to Settings"
+            title={t("SupportScreen.back")}
             variant="primary"
             onPress={() => router.back()}
           />

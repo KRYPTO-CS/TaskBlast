@@ -177,6 +177,58 @@
       }
     }
   },
+  "SupportScreen": {
+    "title": "Ajuda e suporte",
+    "intro": "Precisa de ajuda para navegar no Sistema Solar? Veja as perguntas frequentes abaixo ou fale diretamente com a nossa equipe.",
+    "faqHeading": "Perguntas frequentes",
+    "contactHeading": "Fale conosco",
+    "responseTime": "Nosso objetivo e responder a todas as solicitacoes em ate 5 dias uteis.",
+    "back": "Voltar",
+    "contactCards": {
+      "generalSupport": "Suporte geral",
+      "privacyEnquiries": "Consultas de privacidade"
+    },
+    "faq": {
+      "items": {
+        "1": {
+          "question": "Como adiciono uma nova tarefa?",
+          "answer": "Toque no icone de tarefas na tela inicial para abrir sua lista de tarefas. Depois toque em 'Adicionar nova tarefa', preencha o nome, uma descricao opcional e uma recompensa em rochas, e toque em 'Adicionar tarefa' para salvar."
+        },
+        "2": {
+          "question": "Como funcionam as sessoes de foco?",
+          "answer": "TaskBlast usa a tecnica Pomodoro, alternando ciclos de trabalho e pausa. Selecione uma tarefa e toque em 'Decolar' para iniciar uma sessao. Voce pode pausar ou encerrar antes a qualquer momento e ganhara rochas ao concluir."
+        },
+        "3": {
+          "question": "O que sao Rochas e Cristais Galacticos?",
+          "answer": "Rochas sao ganhas ao concluir tarefas e sessoes de foco. Cristais galacticos sao uma moeda premium obtida em marcos de nivel. Ambos podem ser gastos na Loja para desbloquear personalizacoes do avatar."
+        },
+        "4": {
+          "question": "Como crio uma conta infantil?",
+          "answer": "Na tela de Perfil, toque em 'Adicionar conta infantil'. Voce sera orientado a configurar uma conta gerenciada com PIN de gerente. Depois, a crianca podera selecionar o perfil na tela de selecao de perfil."
+        },
+        "5": {
+          "question": "Esqueci meu PIN de gerente. O que faco?",
+          "answer": "Atualmente, PINs de gerente sao armazenados com seguranca na sua conta. Entre em contato em {{email}} com seu e-mail registrado e ajudaremos voce a recuperar o acesso."
+        },
+        "6": {
+          "question": "Como altero o idioma do app?",
+          "answer": "Va em Configuracoes e toque em 'Idioma'. Voce pode escolher entre ingles, espanhol, portugues, frances, alemao, russo, arabe, bengali, chines, hindi e pirata."
+        },
+        "7": {
+          "question": "O app esta diferente. O que sao os modos para daltonismo?",
+          "answer": "Em Configuracoes, toque em 'Acessibilidade' para encontrar temas adaptados para daltonismo (deuteranopia, protanopia, tritanopia, acromatopsia), alem de alto contraste e reducao de movimento."
+        },
+        "8": {
+          "question": "Como desativo as notificacoes?",
+          "answer": "Va em Configuracoes e toque em 'Notificacoes'. Voce pode ativar ou desativar tipos individuais de notificacao a qualquer momento."
+        },
+        "9": {
+          "question": "Como excluo minha conta?",
+          "answer": "Para solicitar a exclusao da conta, entre em contato em {{email}} usando seu e-mail registrado. Processaremos sua solicitacao em ate 5 dias uteis e removeremos todos os dados associados."
+        }
+      }
+    }
+  },
   "Tasks": {
     "title": "Tarefas",
     "normal": "Normal",
