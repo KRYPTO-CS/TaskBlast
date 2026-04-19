@@ -70,7 +70,10 @@
     "title": "Passwort vergessen?",
     "desc": "Geben Sie Ihre E-Mail-Adresse ein, und wir senden Ihnen einen Code zum Zurücksetzen Ihres Passworts",
     "emailPlaceholder": "E-Mail-Adresse",
-    "submit": "Absenden"
+    "submit": "Absenden",
+    "resetEmailSentTitle": "Reset-E-Mail gesendet",
+    "resetEmailSentBody": "Prüfen Sie Ihre E-Mails auf einen Zurücksetzungslink. Bitte klicken Sie auf den Link, um Ihr Passwort zurückzusetzen.",
+    "ok": "OK"
   },
   "VerifyCode": {
     "title": "Code bestätigen",

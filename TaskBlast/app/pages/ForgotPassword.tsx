@@ -53,13 +53,14 @@ export default function ForgotPassword({
 
     try {
       await sendPasswordResetEmail(auth, trimmedEmail);
-      const successText =
-        "Check your email for a reset link. Please check your email and click the link to reset your password.";
+      const successText = t("ForgotPassword.resetEmailSentBody");
       setSuccessMessage(successText);
       setEmailSent(true);
 
       // Show a system alert so the user knows to check their email
-      Alert.alert("Reset Email Sent", successText, [{ text: "OK" }]);
+      Alert.alert(t("ForgotPassword.resetEmailSentTitle"), successText, [
+        { text: t("ForgotPassword.ok") },
+      ]);
 
       // Notify parent (Login) only after a successful send so it can navigate back to login
       onSubmit(trimmedEmail);

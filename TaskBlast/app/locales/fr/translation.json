@@ -68,7 +68,10 @@
     "title": "Mot de passe oublié ?",
     "desc": "Entrez votre adresse e-mail et nous vous enverrons un code pour réinitialiser votre mot de passe",
     "emailPlaceholder": "Adresse e-mail",
-    "submit": "Envoyer"
+    "submit": "Envoyer",
+    "resetEmailSentTitle": "E-mail de réinitialisation envoyé",
+    "resetEmailSentBody": "Vérifiez votre e-mail pour un lien de réinitialisation. Veuillez cliquer sur le lien pour réinitialiser votre mot de passe.",
+    "ok": "OK"
   },
   "VerifyCode": {
     "title": "Vérifier le code",

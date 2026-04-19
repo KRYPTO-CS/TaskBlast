@@ -70,7 +70,10 @@
     "title": "Forgot Your Password?",
     "desc": "Enter your email address and we will sendy our a code to reset your password",
     "emailPlaceholder": "Email Address",
-    "submit": "Submit"
+    "submit": "Submit",
+    "resetEmailSentTitle": "Reset Email Sent",
+    "resetEmailSentBody": "Check your email for a reset link. Please click the link to reset your password.",
+    "ok": "OK"
   },
   "VerifyCode": {
     "title": "Verify Code",

@@ -70,7 +70,10 @@
     "title": "Lost Yer Secret?",
     "desc": "Enter yer email and we’ll send ye a code",
     "emailPlaceholder": "Email Address",
-    "submit": "Send"
+    "submit": "Send",
+    "resetEmailSentTitle": "Reset Letter Sent",
+    "resetEmailSentBody": "Check yer email fer the reset link. Click it to forge a new password.",
+    "ok": "Aye"
   },
   "VerifyCode": {
     "title": "Verify Code",

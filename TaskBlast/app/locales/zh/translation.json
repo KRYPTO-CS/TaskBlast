@@ -70,7 +70,10 @@
     "title": "忘记密码？",
     "desc": "请输入您的电子邮箱，我们将发送验证码以重置您的密码",
     "emailPlaceholder": "电子邮箱地址",
-    "submit": "提交"
+    "submit": "提交",
+    "resetEmailSentTitle": "重置邮件已发送",
+    "resetEmailSentBody": "请查收电子邮箱中的重置链接。点击该链接即可重置您的密码。",
+    "ok": "确定"
   },
   "VerifyCode": {
     "title": "验证代码",

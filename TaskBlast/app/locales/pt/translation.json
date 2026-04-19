@@ -70,7 +70,10 @@
     "title": "Esqueceu sua senha?",
     "desc": "Digite seu e-mail e enviaremos um código para redefinir sua senha",
     "emailPlaceholder": "Endereço de e-mail",
-    "submit": "Enviar"
+    "submit": "Enviar",
+    "resetEmailSentTitle": "E-mail de redefinição enviado",
+    "resetEmailSentBody": "Verifique seu e-mail para um link de redefinição. Toque no link para redefinir sua senha.",
+    "ok": "OK"
   },
   "VerifyCode": {
     "title": "Verificar código",

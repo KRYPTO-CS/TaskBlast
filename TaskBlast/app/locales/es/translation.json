@@ -70,7 +70,10 @@
     "title": "¿Olvidaste tu contraseña?",
     "desc": "Ingresa tu dirección de correo electrónico y te enviaremos un código para restablecer tu contraseña",
     "emailPlaceholder": "Correo electrónico",
-    "submit": "Enviar"
+    "submit": "Enviar",
+    "resetEmailSentTitle": "Correo de restablecimiento enviado",
+    "resetEmailSentBody": "Revisa tu correo para encontrar un enlace de restablecimiento. Haz clic en el enlace para restablecer tu contraseña.",
+    "ok": "OK"
   },
   "VerifyCode": {
     "title": "Verificar código",
