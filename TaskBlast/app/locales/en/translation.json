@@ -61,7 +61,10 @@
     "forgotPassword": "Forgot Your Password?",
     "loginButton": "Submit",
     "noAccount": "Don't have an account?",
-    "signUp": "Sign Up"
+    "signUp": "Sign Up",
+    "verifyEmailTitle": "Verify Your Email",
+    "verifyEmailBody": "A verification email was sent. Please verify your email before signing in. Make sure to check spam/junk folders if you don't see it.",
+    "ok": "OK"
   },
   "ForgotPassword": {
     "title": "Forgot Your Password?",

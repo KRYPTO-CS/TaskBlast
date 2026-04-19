@@ -61,7 +61,10 @@
     "forgotPassword": "忘记密码？",
     "loginButton": "提交",
     "noAccount": "还没有账户？",
-    "signUp": "注册"
+    "signUp": "注册",
+    "verifyEmailTitle": "请验证您的电子邮箱",
+    "verifyEmailBody": "验证邮件已发送。请先验证您的电子邮箱再登录。如果未看到邮件，请检查垃圾邮件文件夹。",
+    "ok": "确定"
   },
   "ForgotPassword": {
     "title": "忘记密码？",

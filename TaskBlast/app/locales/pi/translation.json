@@ -61,7 +61,10 @@
     "forgotPassword": "Forgot Yer Secret?",
     "loginButton": "Enter",
     "noAccount": "No account yet?",
-    "signUp": "Join the Crew"
+    "signUp": "Join the Crew",
+    "verifyEmailTitle": "Verify Yer Email",
+    "verifyEmailBody": "A verification email be sent. Verify yer email before ye board. Check spam/junk if ye don't spot it.",
+    "ok": "Aye"
   },
   "ForgotPassword": {
     "title": "Lost Yer Secret?",

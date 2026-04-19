@@ -61,7 +61,10 @@
     "forgotPassword": "Esqueceu sua senha?",
     "loginButton": "Enviar",
     "noAccount": "Não tem uma conta?",
-    "signUp": "Cadastrar-se"
+    "signUp": "Cadastrar-se",
+    "verifyEmailTitle": "Verifique seu e-mail",
+    "verifyEmailBody": "Um e-mail de verificação foi enviado. Verifique seu e-mail antes de entrar. Se não encontrar, verifique também a pasta de spam/lixo eletrônico.",
+    "ok": "OK"
   },
   "ForgotPassword": {
     "title": "Esqueceu sua senha?",

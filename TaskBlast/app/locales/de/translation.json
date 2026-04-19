@@ -61,7 +61,10 @@
     "forgotPassword": "Passwort vergessen?",
     "loginButton": "Absenden",
     "noAccount": "Noch kein Konto?",
-    "signUp": "Registrieren"
+    "signUp": "Registrieren",
+    "verifyEmailTitle": "E-Mail bestätigen",
+    "verifyEmailBody": "Eine Bestätigungs-E-Mail wurde gesendet. Bitte bestätigen Sie Ihre E-Mail, bevor Sie sich anmelden. Prüfen Sie auch den Spam-/Junk-Ordner, falls Sie nichts sehen.",
+    "ok": "OK"
   },
   "ForgotPassword": {
     "title": "Passwort vergessen?",

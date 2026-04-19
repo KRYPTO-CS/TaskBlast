@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import {
   View,
   TextInput,
@@ -7,6 +7,7 @@ import {
   Keyboard,
   ImageBackground,
   Alert,
+  ScrollView,
 } from "react-native";
 import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
@@ -37,6 +38,21 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAdmin } from "../context/AdminContext";
 import { normalizeAdminEmail } from "../services/adminService";
 import { useActiveProfile } from "../context/ActiveProfileContext";
+import { AccessibilityContext } from "../context/AccessibilityContext";
+
+const LOGIN_LANGUAGES: { code: string; name: string; flag: string }[] = [
+  { code: "en", name: "English", flag: "🇺🇸" },
+  { code: "es", name: "Español", flag: "🇲🇽" },
+  { code: "pt", name: "Português", flag: "🇧🇷" },
+  { code: "fr", name: "Français", flag: "🇫🇷" },
+  { code: "de", name: "Deutsch", flag: "🇩🇪" },
+  { code: "ru", name: "Русский", flag: "🇷🇺" },
+  { code: "ar", name: "العربية", flag: "🇸🇦" },
+  { code: "bn", name: "বাংলা", flag: "🇧🇩" },
+  { code: "zh", name: "中文", flag: "🇨🇳" },
+  { code: "hi", name: "हिन्दी", flag: "🇮🇳" },
+  { code: "pi", name: "Piratese", flag: "🏴‍☠️" },
+];
 
 type Screen =
   | "login"
@@ -62,8 +78,12 @@ export default function Login() {
   const { t } = useTranslation();
   const { checkEligibility, clearAdminSession } = useAdmin();
   const { activeChildUsername, refreshProfile } = useActiveProfile();
+  const accessibility = useContext(AccessibilityContext);
+  const language = accessibility?.language ?? "en";
+  const setLanguage = accessibility?.setLanguage ?? (async () => undefined);
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
+  const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
 
   // Sign up state
   const [signUpData, setSignUpData] = useState({
@@ -153,9 +173,9 @@ export default function Login() {
           setCurrentScreen("homeScreen");
         } else {
           Alert.alert(
-            "Verify Your Email",
-            "A verification email was sent. Please verify your email before signing in. Make sure to check spam/junk folders if you don't see it.",
-            [{ text: "OK" }],
+            t("Login.verifyEmailTitle"),
+            t("Login.verifyEmailBody"),
+            [{ text: t("Login.ok") }],
           );
           setCurrentScreen("login");
         }
@@ -272,7 +292,6 @@ export default function Login() {
         displayName: `${payload.firstName} ${payload.lastName}`,
       });
 
-      // send email verification via Firebase
       try {
         await sendEmailVerification(user);
         console.log("Verification email sent to:", user.email);
@@ -321,14 +340,13 @@ export default function Login() {
         throw writeErr;
       }
 
-      // Clear sensitive data from state
       setSignUpData({ ...payload, password: "" });
 
       console.log("Sign up complete with data:", {
         ...payload,
         password: "***",
       });
-      // only allow home screen if email verified (no code needed anymore)
+
       if (user.emailVerified) {
         setCurrentScreen("homeScreen");
       } else {
@@ -540,7 +558,7 @@ export default function Login() {
           <View className="mt-8 items-center">
             <TouchableOpacity onPress={handleSignUp} className="my-2">
               <Text className="font-madimi text-sm text-white drop-shadow-md">
-                {t("Login.noAccount")}{" "}
+                {t("Login.noAccount")} {" "}
                 <Text className="font-semibold text-yellow-300">
                   {t("Login.signUp")}
                 </Text>
@@ -553,8 +571,98 @@ export default function Login() {
               </Text>
             </TouchableOpacity>
           </View>
+
+          <View className="absolute bottom-6 left-0 right-0 items-center px-5">
+            <LanguagePicker
+              language={language}
+              open={languageMenuOpen}
+              setOpen={setLanguageMenuOpen}
+              onSelect={setLanguage}
+            />
+          </View>
         </View>
       </View>
     </TouchableWithoutFeedback>
+  );
+}
+
+function LanguagePicker({
+  language,
+  open,
+  setOpen,
+  onSelect,
+}: {
+  language: string;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  onSelect: (code: string) => Promise<void>;
+}) {
+  const { t } = useTranslation();
+  const current =
+    LOGIN_LANGUAGES.find((entry) => entry.code === language) ?? LOGIN_LANGUAGES[0];
+
+  return (
+    <View className="relative w-full max-w-[260px]">
+      <TouchableOpacity
+        accessibilityRole="button"
+        onPress={() => setOpen(!open)}
+        className="flex-row items-center justify-between rounded-full border-2 border-white/30 bg-white/10 px-4 py-3"
+      >
+        <View className="flex-row items-center">
+          <Text style={{ fontSize: 18, marginRight: 8 }}>{current.flag}</Text>
+          <Text className="font-madimi text-sm text-white">
+            {t("Settings.language")}: {current.name}
+          </Text>
+        </View>
+        <Ionicons
+          name={open ? "chevron-up" : "chevron-down"}
+          size={16}
+          color="white"
+        />
+      </TouchableOpacity>
+
+      {open && (
+        <View className="absolute bottom-full mb-2 left-0 right-0 overflow-hidden rounded-2xl border border-white/20 bg-slate-950/95">
+          <ScrollView
+            style={{ maxHeight: 320 }}
+            contentContainerStyle={{ paddingVertical: 2 }}
+            showsVerticalScrollIndicator
+            nestedScrollEnabled
+          >
+            {LOGIN_LANGUAGES.map((entry, index) => {
+              const active = entry.code === language;
+              return (
+                <TouchableOpacity
+                  key={entry.code}
+                  accessibilityRole="button"
+                  onPress={async () => {
+                    await onSelect(entry.code);
+                    setOpen(false);
+                  }}
+                  className="flex-row items-center justify-between px-4 py-3"
+                  style={{
+                    borderTopWidth: index === 0 ? 0 : 1,
+                    borderTopColor: "rgba(255,255,255,0.08)",
+                    backgroundColor: active
+                      ? "rgba(96, 165, 250, 0.18)"
+                      : "transparent",
+                  }}
+                >
+                  <View className="flex-row items-center">
+                    <Text style={{ fontSize: 18, marginRight: 8 }}>{entry.flag}</Text>
+                    <Text className="font-madimi text-xs text-white">
+                      {entry.name}
+                    </Text>
+                  </View>
+                  {active ? (
+                    <Ionicons name="checkmark" size={16} color="#93c5fd" />
+                  ) : null}
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+        </View>
+      )}
+    </View>
   );
 }
