@@ -17,9 +17,9 @@ describe("SignUpManagerPin", () => {
 
     fireEvent.changeText(getByPlaceholderText("1234"), "1234");
     fireEvent.changeText(getByPlaceholderText("Confirm PIN"), "9999");
-    fireEvent.press(getByText("Continue"));
+    fireEvent.press(getByText("ManagerPin.continue"));
 
-    expect(getByText("PINs do not match")).toBeTruthy();
+    expect(getByText("ManagerPin.pinMismatchError")).toBeTruthy();
     expect(onSubmit).not.toHaveBeenCalled();
   });
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import {
   View,
   TextInput,
@@ -23,18 +23,26 @@ export default function SignUpManagerPin({
   const [pin, setPin] = useState("");
   const [confirmPin, setConfirmPin] = useState("");
   const [error, setError] = useState("");
-  const [t, i18n] = useTranslation();
+  const { t } = useTranslation();
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
   const handleContinue = () => {
     setError("");
     if (pin.length !== 4 || confirmPin.length !== 4) {
-      setError("PIN must be 4 digits");
+      setError(
+        t("ManagerPin.pinLengthError", {
+          defaultValue: "PIN must be 4 digits",
+        }),
+      );
       return;
     }
     if (pin !== confirmPin) {
-      setError("PINs do not match");
+      setError(
+        t("ManagerPin.pinMismatchError", {
+          defaultValue: "PINs do not match",
+        }),
+      );
       return;
     }
     console.log("Managerial PIN created:", pin.replace(/./g, "*"));
@@ -55,15 +63,15 @@ export default function SignUpManagerPin({
         <View className="flex-1 items-center justify-center p-5">
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
             <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
-              {t("ManagedPIN.title")}
+              {t("ManagerPin.title")}
             </Text>
 
             <Text className="font-madimi text-sm text-white/90 mb-6 text-left">
-              {t("ManagedPIN.desc")}
+              {t("ManagerPin.desc")}
             </Text>
 
             <Text className="font-madimi text-xs text-white/80 mb-2">
-              {t("ManagedPIN.pin")}
+              {t("ManagerPin.pin")}
             </Text>
             <View className="mb-4">
               <View className="flex-row items-center bg-white/20 border-2 border-white/40 rounded-2xl px-4 h-14 shadow-lg">
@@ -90,7 +98,7 @@ export default function SignUpManagerPin({
             </View>
 
             <Text className="font-madimi text-xs text-white/80 mb-2">
-              {t("ManagedPIN.confirmPinPlaceholder")}
+              {t("ManagerPin.confirmPinPlaceholder")}
             </Text>
             <View className="mb-4">
               <View className="flex-row items-center bg-white/20 border-2 border-white/40 rounded-2xl px-4 h-14 shadow-lg">
@@ -102,7 +110,7 @@ export default function SignUpManagerPin({
                 />
                 <TextInput
                   className="font-madimi flex-1 text-base text-white"
-                  placeholder={t("ManagedPIN.confirmPinPlaceholder")}
+                  placeholder={t("ManagerPin.confirmPinPlaceholder")}
                   placeholderTextColor="rgba(255,255,255,0.5)"
                   value={confirmPin}
                   onChangeText={(t) =>
@@ -123,7 +131,7 @@ export default function SignUpManagerPin({
             ) : null}
 
             <MainButton
-              title={t("ManagedPIN.continue")}
+              title={t("ManagerPin.continue")}
               variant="primary"
               size="medium"
               customStyle={{
@@ -139,9 +147,9 @@ export default function SignUpManagerPin({
                 className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
                 onPress={onBack}
               >
-                Back to{" "}
+                {t("language.backTo")}{" "}
                 <Text className="font-semibold text-yellow-300">
-                  Previous Step
+                  {t("birthdate.previousStep")}
                 </Text>
               </Text>
             </View>
