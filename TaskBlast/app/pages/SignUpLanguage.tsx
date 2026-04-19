@@ -21,8 +21,11 @@ const Lang_Map = {
   Bengali: "bn",
   Chinese: "zh",
   Hindi: "hi",
-  Pirate: "pi",
 } as const;
+
+const Lang_FromCode = Object.fromEntries(
+  Object.entries(Lang_Map).map(([language, code]) => [code, language]),
+) as Record<string, language>;
 
 type language = keyof typeof Lang_Map;
 
@@ -35,7 +38,10 @@ export default function SignUpAccountType({
   onSubmit,
   onBack,
 }: SignUpAccountTypeProps) {
-  const [selected, setSelected] = useState<language | null>(null);
+  const { t, i18n } = useTranslation();
+  const defaultLanguage =
+    i18n.language === "pi" ? null : Lang_FromCode[i18n.language] ?? "English";
+  const [selected, setSelected] = useState<language | null>(defaultLanguage);
   const [error, setError] = useState("");
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
@@ -49,18 +55,16 @@ export default function SignUpAccountType({
   const Bengali = require("../../assets/images/bangladesh.png");
   const China = require("../../assets/images/china.png");
   const India = require("../../assets/images/india.png");
-  const Pirate = require("../../assets/images/pirate-flag.png");
-  const { t, i18n } = useTranslation();
 
   const handleContinue = () => {
     setError("");
-    if (!selected) {
-      setError(t("language.selectLanguage"));
-      return;
+    const nextLanguage = selected ?? (i18n.language === "pi" ? null : "English");
+
+    if (nextLanguage) {
+      i18n.changeLanguage(Lang_Map[nextLanguage]);
     }
 
-    i18n.changeLanguage(Lang_Map[selected]);
-    onSubmit(selected);
+    onSubmit((nextLanguage ?? "English") as language);
   };
 
   const Option = ({
@@ -78,8 +82,7 @@ export default function SignUpAccountType({
       | "Arabic"
       | "Bengali"
       | "Chinese"
-      | "Hindi"
-      | "Pirate";
+      | "Hindi";
     image?: any;
     title: string;
   }) => {
@@ -143,7 +146,6 @@ export default function SignUpAccountType({
           <Option value="Chinese" image={China} title="中文" />
 
           <Option value="Hindi" image={India} title="हिन्दी" />
-          <Option value="Pirate" image={Pirate} title="Pirate English" />
 
           {error ? (
             <Text className="font-madimi text-sm text-red-300 mb-4 text-left drop-shadow-md">

@@ -122,33 +122,23 @@ describe("SignUpLanguage", () => {
   });
 
   describe("Form Validation", () => {
-    it("should show error when continuing without selecting a language", () => {
+    it("should continue with the default language when nothing is selected", () => {
       render(<SignUpLanguage onSubmit={mockOnSubmit} onBack={mockOnBack} />);
 
       const continueButton = screen.getByTestId("language-continue-button");
       fireEvent.press(continueButton);
 
-      expect(
-        screen.getAllByText("Select your language").length,
-      ).toBeGreaterThanOrEqual(1);
-      expect(mockOnSubmit).not.toHaveBeenCalled();
+      expect(mockOnSubmit).toHaveBeenCalledWith("English");
     });
 
-    it("should clear error when language is selected", () => {
+    it("should allow changing the default selection before continuing", () => {
       render(<SignUpLanguage onSubmit={mockOnSubmit} onBack={mockOnBack} />);
-
-      // Try to continue without selection
-      const continueButton = screen.getByTestId("language-continue-button");
-      fireEvent.press(continueButton);
-
-      expect(
-        screen.getAllByText("Select your language").length,
-      ).toBeGreaterThanOrEqual(1);
 
       // Select a language
       fireEvent.press(screen.getByTestId("language-option-english"));
 
       // Press continue again
+      const continueButton = screen.getByTestId("language-continue-button");
       fireEvent.press(continueButton);
 
       // Continue should succeed once selection is made
