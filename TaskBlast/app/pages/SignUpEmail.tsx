@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   View,
   TextInput,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
   ImageBackground,
@@ -109,15 +110,14 @@ export default function SignUpEmail({ onSubmit, onBack }: SignUpEmailProps) {
 
           {/* Back Link */}
           <View className="mt-8 items-center">
-            <Text
-              className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
-              onPress={onBack}
-            >
-              {t("language.backTo")}
-              <Text className="font-semibold text-yellow-300">
-                {" "}{t("birthdate.previousStep")}
+            <TouchableOpacity onPress={onBack} activeOpacity={0.8}>
+              <Text className="font-madimi text-sm text-white drop-shadow-md">
+                {t("language.backTo")}
+                <Text className="font-semibold text-yellow-300">
+                  {" "}{t("birthdate.previousStep")}
+                </Text>
               </Text>
-            </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

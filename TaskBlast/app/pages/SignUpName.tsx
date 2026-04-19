@@ -3,6 +3,7 @@ import {
   View,
   TextInput,
   TouchableWithoutFeedback,
+  TouchableOpacity,
   Keyboard,
   ImageBackground,
 } from "react-native";
@@ -122,16 +123,15 @@ export default function SignUpName({ onSubmit, onBack }: SignUpNameProps) {
 
           {/* Back Link */}
           <View className="mt-8 items-center">
-            <Text
-              className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
-              onPress={onBack}
-            >
-              {t("language.backTo")}
-              <Text className="font-semibold text-yellow-300">
-                {" "}
-                {t("birthdate.previousStep")}
+            <TouchableOpacity onPress={onBack} activeOpacity={0.75}>
+              <Text className="font-madimi text-sm text-white drop-shadow-md">
+                {t("language.backTo")}
+                <Text className="font-semibold text-yellow-300">
+                  {" "}
+                  {t("birthdate.previousStep")}
+                </Text>
               </Text>
-            </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

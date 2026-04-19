@@ -203,9 +203,7 @@ describe("Forgot Password Process", () => {
       fireEvent.press(submitButton);
 
       await waitFor(() => {
-        expect(
-          getByText(/Please check your email and click the link/i)
-        ).toBeTruthy();
+        expect(getByText(/Please check your email and click the link/i)).toBeTruthy();
       });
     });
 

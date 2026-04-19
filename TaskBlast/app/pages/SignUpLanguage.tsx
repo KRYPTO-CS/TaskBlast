@@ -166,17 +166,16 @@ export default function SignUpAccountType({
             onPress={handleContinue}
           />
 
-          <View className="mt-6">
-            <Text
-              className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
-              onPress={onBack}
-            >
-              {t("language.backTo")}
-              <Text className="font-semibold text-yellow-300">
-                {" "}
-                {t("language.Login")}
+          <View className="mt-6 mb-8">
+            <TouchableOpacity onPress={onBack} activeOpacity={0.8}>
+              <Text className="font-madimi text-sm text-white drop-shadow-md">
+                {t("language.backTo")}
+                <Text className="font-semibold text-yellow-300">
+                  {" "}
+                  {t("language.Login")}
+                </Text>
               </Text>
-            </Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </View>

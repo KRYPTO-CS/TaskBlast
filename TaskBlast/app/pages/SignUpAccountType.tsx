@@ -117,15 +117,14 @@ export default function SignUpAccountType({
           />
 
           <View className="mt-6">
-            <Text
-              className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
-              onPress={onBack}
-            >
-              {t("language.backTo")}
-              <Text className="font-semibold text-yellow-300">
-                {" "}{t("birthdate.previousStep")}
+            <TouchableOpacity onPress={onBack} activeOpacity={0.8}>
+              <Text className="font-madimi text-sm text-white drop-shadow-md">
+                {t("language.backTo")}
+                <Text className="font-semibold text-yellow-300">
+                  {" "}{t("birthdate.previousStep")}
+                </Text>
               </Text>
-            </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

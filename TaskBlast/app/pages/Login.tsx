@@ -13,11 +13,9 @@ import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../components/MainButton";
 import ForgotPassword from "./ForgotPassword";
-import VerifyCode from "./VerifyCode";
 import ResetPassword from "./ResetPassword";
 import SignUpBirthdate from "./SignUpBirthdate";
 import SignUpAccountType from "./SignUpAccountType";
-import SignUpManagerPin from "./SignUpManagerPin";
 import SignUpName from "./SignUpName";
 import SignUpEmail from "./SignUpEmail";
 import SignUpLanguage from "./SignUpLanguage";
@@ -40,6 +38,8 @@ import { normalizeAdminEmail } from "../services/adminService";
 import { useActiveProfile } from "../context/ActiveProfileContext";
 import { AccessibilityContext } from "../context/AccessibilityContext";
 
+const SignUpManagerPin = require("./SignUpManagerPin").default;
+
 const LOGIN_LANGUAGES: { code: string; name: string; flag: string }[] = [
   { code: "en", name: "English", flag: "🇺🇸" },
   { code: "es", name: "Español", flag: "🇲🇽" },
@@ -57,7 +57,6 @@ const LOGIN_LANGUAGES: { code: string; name: string; flag: string }[] = [
 type Screen =
   | "login"
   | "forgotPassword"
-  | "verifyCode"
   | "resetPassword"
   | "signUpLanguage"
   | "signUpBirthdate"
@@ -73,8 +72,6 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [currentScreen, setCurrentScreen] = useState<Screen>("login");
-  const [resetEmail, setResetEmail] = useState("");
-  const [verificationCode, setVerificationCode] = useState("");
   const { t } = useTranslation();
   const { checkEligibility, clearAdminSession } = useAdmin();
   const { activeChildUsername, refreshProfile } = useActiveProfile();
@@ -198,27 +195,18 @@ export default function Login() {
   };
 
   const handleEmailSubmit = (email: string) => {
-    setResetEmail(email);
-    setCurrentScreen("verifyCode");
-  };
-
-  const handleCodeSubmit = (code: string) => {
-    setVerificationCode(code);
-    setCurrentScreen("resetPassword");
+    console.log("Password reset email sent to:", email);
+    setCurrentScreen("login");
   };
 
   const handlePasswordReset = (newPassword: string) => {
-    console.log("Password reset successful for:", resetEmail);
+    console.log("Password reset successful");
     // Reset state and return to login
-    setResetEmail("");
-    setVerificationCode("");
     setCurrentScreen("login");
   };
 
   const handleBackToLogin = () => {
     setCurrentScreen("login");
-    setResetEmail("");
-    setVerificationCode("");
   };
 
   // Sign Up Flow Handlers
@@ -380,16 +368,6 @@ export default function Login() {
   if (currentScreen === "forgotPassword") {
     return (
       <ForgotPassword onSubmit={handleEmailSubmit} onBack={handleBackToLogin} />
-    );
-  }
-
-  if (currentScreen === "verifyCode") {
-    return (
-      <VerifyCode
-        email={resetEmail}
-        onSubmit={handleCodeSubmit}
-        onBack={() => setCurrentScreen("forgotPassword")}
-      />
     );
   }
 

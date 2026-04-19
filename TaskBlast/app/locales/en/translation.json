@@ -68,7 +68,7 @@
   },
   "ForgotPassword": {
     "title": "Forgot Your Password?",
-    "desc": "Enter your email address and we will sendy our a code to reset your password",
+    "desc": "Enter your email address and we'll send you a code to reset your password",
     "emailPlaceholder": "Email Address",
     "submit": "Submit",
     "resetEmailSentTitle": "Reset Email Sent",

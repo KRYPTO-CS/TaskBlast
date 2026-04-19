@@ -155,10 +155,11 @@ export default function ForgotPassword({
             {emailSent && (
               <TouchableOpacity
                 onPress={handleResend}
+                activeOpacity={0.75}
                 style={{ marginTop: 16 }}
               >
                 <Text className="font-madimi text-sm text-yellow-300 text-center drop-shadow-md">
-                  Resend Email
+                  {t("ForgotPassword.resend")}
                 </Text>
               </TouchableOpacity>
             )}
@@ -166,15 +167,14 @@ export default function ForgotPassword({
 
           {/* Back to Login Link */}
           <View className="mt-8 items-center">
-            <Text
-              className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
-              onPress={onBack}
-            >
-              {t("language.backTo")}
-              <Text className="font-semibold text-yellow-300">
-                {" "}{t("language.Login")}
+            <TouchableOpacity onPress={onBack} activeOpacity={0.75}>
+              <Text className="font-madimi text-sm text-white drop-shadow-md">
+                {t("language.backTo")}
+                <Text className="font-semibold text-yellow-300">
+                  {" "}{t("language.Login")}
+                </Text>
               </Text>
-            </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

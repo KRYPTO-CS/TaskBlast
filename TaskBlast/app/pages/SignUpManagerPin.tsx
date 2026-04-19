@@ -3,10 +3,11 @@ import {
   View,
   TextInput,
   TouchableWithoutFeedback,
+  TouchableOpacity,
   Keyboard,
   ImageBackground,
 } from "react-native";
-import { Text } from '../../TTS';
+import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../components/MainButton";
 import { useTranslation } from "react-i18next";
@@ -52,14 +53,12 @@ export default function SignUpManagerPin({
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View className="flex-1">
-        {/* Animated stars background */}
         <ImageBackground
           source={starBackground}
           className="absolute inset-0 w-full h-full"
           resizeMode="cover"
         />
 
-        {/* Content overlay */}
         <View className="flex-1 items-center justify-center p-5">
           <View className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-white/30 shadow-2xl">
             <Text className="text-4xl font-madimi font-semibold text-white mb-4 text-left drop-shadow-md">
@@ -86,8 +85,8 @@ export default function SignUpManagerPin({
                   placeholder="1234"
                   placeholderTextColor="rgba(255,255,255,0.5)"
                   value={pin}
-                  onChangeText={(t) =>
-                    setPin(t.replace(/[^0-9]/g, "").slice(0, 4))
+                  onChangeText={(value) =>
+                    setPin(value.replace(/[^0-9]/g, "").slice(0, 4))
                   }
                   keyboardType="number-pad"
                   secureTextEntry
@@ -113,8 +112,8 @@ export default function SignUpManagerPin({
                   placeholder={t("ManagerPin.confirmPinPlaceholder")}
                   placeholderTextColor="rgba(255,255,255,0.5)"
                   value={confirmPin}
-                  onChangeText={(t) =>
-                    setConfirmPin(t.replace(/[^0-9]/g, "").slice(0, 4))
+                  onChangeText={(value) =>
+                    setConfirmPin(value.replace(/[^0-9]/g, "").slice(0, 4))
                   }
                   keyboardType="number-pad"
                   secureTextEntry
@@ -143,15 +142,14 @@ export default function SignUpManagerPin({
             />
 
             <View className="mt-6">
-              <Text
-                className="font-madimi text-sm text-white drop-shadow-md cursor-pointer"
-                onPress={onBack}
-              >
-                {t("language.backTo")}{" "}
-                <Text className="font-semibold text-yellow-300">
-                  {t("birthdate.previousStep")}
+              <TouchableOpacity onPress={onBack} activeOpacity={0.75}>
+                <Text className="font-madimi text-sm text-white drop-shadow-md">
+                  {t("language.backTo")} {" "}
+                  <Text className="font-semibold text-yellow-300">
+                    {t("birthdate.previousStep")}
+                  </Text>
                 </Text>
-              </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
