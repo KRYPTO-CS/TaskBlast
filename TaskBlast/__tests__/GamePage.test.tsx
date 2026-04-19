@@ -385,12 +385,12 @@ describe("Game Screen", () => {
         data1: "2",
         data2: "3",
         data3: "0",
-        data4: "9",
+        data4: "0",
         data5: "2",
         bodyId: 2,
         wingsId: 3,
         gameId: 0,
-        planetId: 9,
+        soundMode: 0,
         colorBlindMode: 2,
       });
 

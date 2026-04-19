@@ -20,6 +20,7 @@ import { getFirestore, doc, getDoc, runTransaction } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AccessibilityContext } from "../context/AccessibilityContext";
 import { useActiveProfile } from "../context/ActiveProfileContext";
+import { useAudio } from "../context/AudioContext";
 import {
   ACTIVE_PLANET_STORAGE_KEY,
   GAME_HIGHEST_TILE_STORAGE_KEY,
@@ -47,7 +48,7 @@ type GodotSkinsPayload = {
   wingsId: number;
   topperId: number;
   gameId: number;
-  planetId: number;
+  soundMode: number;
   colorBlindMode: number;
 };
 
@@ -56,6 +57,19 @@ const COLOR_BLIND_MODE_MAP: Record<string, number> = {
   deuteranopia: 1,
   protanopia: 2,
   tritanopia: 3,
+};
+
+const getSoundMode = (soundEnabled: boolean, musicEnabled: boolean): number => {
+  if (!soundEnabled && !musicEnabled) {
+    return 3;
+  }
+  if (!soundEnabled) {
+    return 1;
+  }
+  if (!musicEnabled) {
+    return 2;
+  }
+  return 0;
 };
 
 const normalizeInt = (
@@ -83,14 +97,14 @@ const buildGodotSkinsPayload = ({
   bodyId,
   wingsId,
   gameId,
-  planetId,
+  soundMode,
   colorBlindMode,
   topperId,
 }: {
   bodyId: number;
   wingsId: number;
   gameId: number;
-  planetId: number;
+  soundMode: number;
   colorBlindMode: string;
   topperId: number;
 }): GodotSkinsPayload => {
@@ -98,8 +112,7 @@ const buildGodotSkinsPayload = ({
   const safeWingsId = normalizeInt(wingsId, 1, 0);
   const safeTopperId = normalizeInt(topperId, 0, 0);
   const safeGameId = normalizeInt(gameId, 0, 0);
-  // SpaceShooter JSB multiplier mapping currently expects slots 1-9.
-  const safePlanetId = normalizeInt(planetId, 1, 1, 9);
+  const safeSoundMode = normalizeInt(soundMode, 0, 0, 3);
   const colorBlindModeValue = normalizeInt(
     COLOR_BLIND_MODE_MAP[colorBlindMode] ?? 0,
     0,
@@ -113,7 +126,7 @@ const buildGodotSkinsPayload = ({
     data1: String(safeBodyId),
     data2: String(safeWingsId),
     data3: String(safeGameId),
-    data4: String(safePlanetId),
+    data4: String(safeSoundMode),
     data5: String(colorBlindModeValue),
     data6: String(safeTopperId),
     // Named aliases for future compatibility and diagnostics.
@@ -121,7 +134,7 @@ const buildGodotSkinsPayload = ({
     wingsId: safeWingsId,
     topperId: safeTopperId,
     gameId: safeGameId,
-    planetId: safePlanetId,
+    soundMode: safeSoundMode,
     colorBlindMode: colorBlindModeValue,
   };
 };
@@ -137,6 +150,7 @@ export default function GamePage() {
   const accessibilityContext = useContext(AccessibilityContext);
   const colorBlindMode = accessibilityContext?.colorBlindMode || "none";
   const { getProfileDocRef, isLoading: isProfileLoading } = useActiveProfile();
+  const { soundEnabled, musicEnabled } = useAudio();
 
   const playTime = params.playTime ? parseInt(params.playTime as string) : 5;
   const taskId = params.taskId as string;
@@ -528,7 +542,7 @@ export default function GamePage() {
         bodyId: equipped[0],
         wingsId: equipped[1],
         gameId,
-        planetId: activePlanetId,
+        soundMode: getSoundMode(soundEnabled, musicEnabled),
         colorBlindMode,
         topperId: equipped[2] ?? "1",
       });
@@ -537,7 +551,7 @@ export default function GamePage() {
       console.log("Send reason:", reason);
       console.log("Current equipped values:", equipped);
       console.log("Game ID:", gameId);
-      console.log("Active planet ID:", activePlanetId);
+      console.log("Sound mode:", payload.data4);
       console.log("Colorblind mode:", colorBlindMode, "->", payload.data5);
 
       const payloadString = JSON.stringify(payload);
@@ -573,7 +587,8 @@ export default function GamePage() {
     [
       equipped,
       gameId,
-      activePlanetId,
+      soundEnabled,
+      musicEnabled,
       colorBlindMode,
       isSpaceSwerve,
       isWebViewLoaded,
@@ -611,7 +626,8 @@ export default function GamePage() {
     isEquippedConfigLoaded,
     equipped,
     gameId,
-    activePlanetId,
+    soundEnabled,
+    musicEnabled,
     colorBlindMode,
     sendMessageToGodot,
   ]);
