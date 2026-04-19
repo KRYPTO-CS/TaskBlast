@@ -32,7 +32,7 @@ describe("SignUpEmail", () => {
     fireEvent.changeText(getByPlaceholderText("Email Address"), "not-an-email");
     fireEvent.press(getByText("Send Link"));
 
-    expect(getByText("Please enter a valid email address")).toBeTruthy();
+    expect(getByText("EditProfileModal.errors.invalidEmail")).toBeTruthy();
     expect(onSubmit).not.toHaveBeenCalled();
   });
 

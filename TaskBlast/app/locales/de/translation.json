@@ -34,6 +34,12 @@
     "lastName": "Nachname",
     "continue": "Weiter"
   },
+  "Email": {
+    "title": "Wie lautet Ihre E-Mail-Adresse?",
+    "desc": "Wir senden Ihnen einen Verifizierungscode, um Ihre E-Mail-Adresse zu bestätigen",
+    "emailPlaceholder": "E-Mail-Adresse",
+    "send": "Link senden"
+  },
   "Login": {
     "title": "Anmelden",
     "emailPlaceholder": "E-Mail oder Benutzername",

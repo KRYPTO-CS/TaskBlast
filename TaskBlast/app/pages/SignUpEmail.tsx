@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import {
   View,
   TextInput,
@@ -19,7 +19,7 @@ interface SignUpEmailProps {
 export default function SignUpEmail({ onSubmit, onBack }: SignUpEmailProps) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  const [t, i18n] = useTranslation();
+  const { t } = useTranslation();
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
 
   const handleSubmit = () => {
@@ -33,7 +33,11 @@ export default function SignUpEmail({ onSubmit, onBack }: SignUpEmailProps) {
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      setError("Please enter a valid email address");
+      setError(
+        t("EditProfileModal.errors.invalidEmail", {
+          defaultValue: "Please enter a valid email address",
+        }),
+      );
       return;
     }
 

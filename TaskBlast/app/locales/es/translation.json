@@ -34,6 +34,12 @@
     "lastName": "Apellido",
     "continue": "Continuar"
   },
+  "Email": {
+    "title": "¿Cuál es tu correo electrónico?",
+    "desc": "Te enviaremos un código de verificación para confirmar tu correo electrónico",
+    "emailPlaceholder": "Correo electrónico",
+    "send": "Enviar enlace"
+  },
   "Login": {
     "title": "Iniciar sesión",
     "emailPlaceholder": "Correo electrónico o nombre de usuario",
