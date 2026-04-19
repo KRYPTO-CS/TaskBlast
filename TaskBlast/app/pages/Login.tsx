@@ -51,7 +51,14 @@ const LOGIN_LANGUAGES: { code: string; name: string; flag: string }[] = [
   { code: "bn", name: "বাংলা", flag: "🇧🇩" },
   { code: "zh", name: "中文", flag: "🇨🇳" },
   { code: "hi", name: "हिन्दी", flag: "🇮🇳" },
-  { code: "pi", name: "Piratese", flag: "🏴‍☠️" },
+  { code: "jp", name: "日本語", flag: "🇯🇵" },
+  { code: "kr", name: "한국어", flag: "🇰🇷" },
+  { code: "it", name: "Italiano", flag: "🇮🇹" },
+  { code: "nl", name: "Nederlands", flag: "🇳🇱" },
+  { code: "tr", name: "Türkçe", flag: "🇹🇷" },
+  { code: "vn", name: "Tiếng Việt", flag: "🇻🇳" },
+  { code: "id", name: "Bahasa Indonesia", flag: "🇮🇩" },
+  {code: "pi", name: "Piratese", flag: "🏴‍☠️"},
 ];
 
 type Screen =

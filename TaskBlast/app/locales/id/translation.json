@@ -1,0 +1,518 @@
+{
+  "language": {
+    "selectLanguage": "Pilih bahasa Anda",
+    "continue": "Lanjutkan",
+    "backTo": "Kembali ke",
+    "Login": "Masuk"
+  },
+  "birthdate": {
+    "title": "Berapa tanggal lahir Anda?",
+    "notice": "Anda harus berusia minimal 13 tahun untuk mendaftar",
+    "month": "Bulan",
+    "day": "Tanggal",
+    "year": "Tahun",
+    "continue": "Lanjutkan",
+    "previousStep": "Langkah sebelumnya",
+    "error": "Masukkan tanggal yang valid",
+    "age": "Berikan perangkat ini kepada orang tua atau wali",
+    "empty": "Harap isi semua kolom"
+  },
+  "AccountType": {
+    "title": "Siapa yang akan menggunakan TaskBlast?",
+    "type": "Pilih jenis akun yang paling sesuai dengan pengguna utama TaskBlast.",
+    "managetitle": "Akun Terkelola",
+    "managedesc": "Untuk anak atau pengguna yang bergantung. Beberapa fitur dibatasi dan dikendalikan oleh PIN orang tua/wali.",
+    "indetitle": "Akun Independen",
+    "indedesc": "Untuk pelajar mandiri. Akses penuh tanpa batasan.",
+    "continue": "Lanjutkan",
+    "error": "Pilih jenis akun untuk melanjutkan"
+  },
+  "Name": {
+    "title": "Siapa nama Anda?",
+    "desc": "Beritahu kami bagaimana kami harus memanggil Anda di TaskBlast",
+    "firstName": "Nama Depan",
+    "lastName": "Nama Belakang",
+    "continue": "Lanjutkan"
+  },
+  "Email": {
+    "title": "Apa alamat email Anda?",
+    "desc": "Kami akan mengirimkan kode verifikasi untuk mengonfirmasi alamat email Anda",
+    "emailPlaceholder": "Alamat Email",
+    "send": "Kirim Link"
+  },
+  "Password": {
+    "title": "Buat Password",
+    "desc": "Pilih password yang kuat untuk melindungi akun Anda",
+    "passwordPlaceholder": "Password",
+    "ConfirmPasswordPlaceholder": "Konfirmasi Password",
+    "submit": "Buat Akun",
+    "match": "Password tidak cocok",
+    "length": "Password harus minimal 8 karakter",
+    "emailRequiredError": "Email wajib diisi.",
+    "emailInUseError": "Email ini sudah digunakan. Silakan masuk atau reset password.",
+    "invalidEmailError": "Masukkan alamat email yang valid.",
+    "weakPasswordError": "Password terlalu lemah. Gunakan minimal 8 karakter.",
+    "signUpFailedError": "Pendaftaran gagal. Silakan coba lagi."
+  },
+  "Login": {
+    "title": "Masuk",
+    "emailPlaceholder": "Email atau Nama Pengguna",
+    "passwordPlaceholder": "Password",
+    "forgotPassword": "Lupa Password?",
+    "loginButton": "Masuk",
+    "noAccount": "Belum punya akun?",
+    "signUp": "Daftar",
+    "verifyEmailTitle": "Verifikasi Email Anda",
+    "verifyEmailBody": "Kami telah mengirim email verifikasi. Harap verifikasi email Anda sebelum masuk. Periksa folder spam/junk jika tidak muncul.",
+    "ok": "OK"
+  },
+  "ForgotPassword": {
+    "title": "Lupa Password?",
+    "desc": "Masukkan alamat email Anda, kami akan mengirimkan kode untuk mereset password",
+    "emailPlaceholder": "Alamat Email",
+    "submit": "Kirim",
+    "resetEmailSentTitle": "Email Reset Terkirim",
+    "resetEmailSentBody": "Periksa email Anda untuk link reset. Klik link tersebut untuk mereset password.",
+    "ok": "OK"
+  },
+  "VerifyCode": {
+    "title": "Verifikasi Kode",
+    "desc": "Masukkan kode 5 digit yang dikirim ke",
+    "notreceived": "Tidak menerima kode?",
+    "resend": "Kirim Ulang",
+    "submit": "Kirim"
+  },
+  "ResetPassword": {
+    "title": "Buat Password Baru",
+    "desc": "Masukkan password baru di bawah ini",
+    "newPasswordPlaceholder": "Password Baru",
+    "confirmPasswordPlaceholder": "Konfirmasi Password",
+    "submit": "Reset Password"
+  },
+  "ManagerPin": {
+    "title": "Buat PIN Orang Tua",
+    "desc": "PIN 4 digit ini memungkinkan orang tua atau wali mengelola akun dan membuat tugas untuk anak. Jaga kerahasiaannya.",
+    "pin": "PIN (4 digit)",
+    "confirmPinPlaceholder": "Konfirmasi PIN",
+    "continue": "Lanjutkan"
+  },
+  "Home": {
+    "takeoff": "Lepas Landas",
+    "coachMarktaskstitle": "Tambah Tugas Baru",
+    "coachMarktasks": "Ketuk di sini untuk menambahkan tugas baru, mengatur hadiah, dan menyesuaikan sesi fokus!",
+    "coachMarkProfiletitle": "Lihat Profil Anda",
+    "coachMarkProfile": "Ketuk di sini untuk melihat profil, melacak kemajuan, dan menyesuaikan avatar Anda!",
+    "coachMarksettings": "Ketuk di sini untuk mengatur preferensi, mengelola notifikasi, dan lainnya!",
+    "coachMarktakeoff": "Ketuk di sini untuk memulai sesi fokus dan meluncur menuju tujuan Anda!",
+    "coachMarkshop": "Ketuk di sini untuk mengunjungi toko dan menyesuaikan avatar dengan tubuh dan sayap baru!",
+    "playerLevel": "Level Pemain",
+    "Level Rewards": "Hadiah Level",
+    "Claimed": "Sudah Diklaim",
+    "Claim": "Klaim",
+    "Claiming": "Mengklaim...",
+    "expLabel": "EXP",
+    "levelShort": "Lv",
+    "Locked": "Terkunci",
+    "Crystals": "Kristal",
+    "galaxyCrystals": "Kristal Galaksi",
+    "level": "Level",
+    "coachMarklevel": "Ini adalah level pemain Anda saat ini. Dapatkan poin pengalaman dengan menyelesaikan tugas dan sesi fokus untuk naik level dan mendapatkan hadiah!"
+  },
+  "Settings": {
+    "title": "Pengaturan",
+    "sound": "Efek Suara",
+    "music": "Musik",
+    "notifications": "Notifikasi",
+    "privacy": "Privasi",
+    "Help": "Bantuan & Dukungan",
+    "About": "Tentang",
+    "Logout": "Keluar",
+    "accessibility": "Aksesibilitas",
+    "language": "Bahasa",
+    "colorBlind": "Mode Buta Warna",
+    "textSize": "Ukuran Teks",
+    "highContrast": "Kontras Tinggi",
+    "reduceMotion": "Kurangi Gerakan",
+    "voice": "Suara",
+    "tts": "Teks ke Suara",
+    "ttsDesc": "Baca isi layar dengan suara",
+    "defaultColors": "Warna default",
+    "redGreenDeficiency": "Kekurangan merah/hijau",
+    "redDeficiency": "Kekurangan merah",
+    "blueYellowDeficiency": "Kekurangan biru/kuning",
+    "done": "Selesai",
+    "logout": "Keluar",
+    "switchProfile": "Ganti Profil",
+    "logoutText": "Apakah Anda yakin ingin keluar?",
+    "parentAccount": "👤 Akun Orang Tua",
+    "noFilter": "Tanpa Filter",
+    "deuteranopia": "Deuteranopia",
+    "protanopia": "Protanopia",
+    "tritanopia": "Tritanopia",
+    "customize": "Ketuk untuk menyesuaikan",
+    "replayTutorial": "Putar Ulang Tutorial"
+  },
+  "PrivacyScreen": {
+    "lastUpdated": "Terakhir diperbarui: 30 Maret 2026",
+    "intro": "Di TaskBlast, privasi Anda sangat penting bagi kami. Kebijakan Privasi ini menjelaskan informasi apa yang kami kumpulkan, bagaimana kami menggunakannya, dan pilihan yang Anda miliki. Silakan baca dengan teliti.",
+    "backToSettings": "Kembali",
+    "sections": {
+      "informationCollect": {
+        "title": "Informasi yang Kami Kumpulkan",
+        "body": "Kami mengumpulkan informasi yang Anda berikan saat membuat akun, seperti nama, alamat email, dan tanggal lahir. Untuk akun anak, orang tua atau wali harus memberikan izin. Kami juga mengumpulkan data penggunaan seperti tugas yang diselesaikan, waktu sesi fokus, dan pembelian dalam aplikasi untuk meningkatkan pengalaman Anda."
+      },
+      "howUse": {
+        "title": "Bagaimana Kami Menggunakan Informasi Anda",
+        "body": "Informasi Anda digunakan untuk menyediakan dan meningkatkan layanan TaskBlast, mempersonalisasi pengalaman, mengirim notifikasi yang Anda pilih, dan menjaga keamanan akun. Kami tidak menjual data pribadi Anda kepada pihak ketiga."
+      },
+      "sharing": {
+        "title": "Berbagi Informasi",
+        "body": "Kami tidak membagikan informasi pribadi Anda kepada pihak ketiga kecuali diwajibkan oleh hukum atau untuk menyediakan fungsi inti aplikasi (misalnya autentikasi Firebase dan penyimpanan cloud). Layanan pihak ketiga yang kami gunakan tunduk pada kebijakan privasi mereka sendiri."
+      },
+      "security": {
+        "title": "Keamanan Data",
+        "body": "Kami menggunakan enkripsi standar industri dan aturan keamanan Firebase untuk melindungi data Anda. Akses ke informasi pribadi dibatasi hanya untuk personel yang berwenang. Namun, tidak ada metode transmisi melalui internet yang 100% aman."
+      },
+      "children": {
+        "title": "Privasi Anak",
+        "body": "TaskBlast dirancang untuk semua usia. Akun untuk pengguna di bawah 13 tahun dikelola oleh orang tua atau wali melalui fitur akun terkelola. Kami tidak sengaja mengumpulkan informasi pribadi dari anak di bawah 13 tahun tanpa persetujuan orang tua yang terverifikasi."
+      },
+      "notifications": {
+        "title": "Notifikasi",
+        "body": "Kami dapat mengirim notifikasi push terkait pengingat tugas dan pembaruan aplikasi. Anda dapat mengelola preferensi notifikasi kapan saja di menu Pengaturan."
+      },
+      "rights": {
+        "title": "Hak Anda",
+        "body": "Anda dapat meminta akses, koreksi, atau penghapusan data pribadi Anda kapan saja dengan menghubungi kami. Anda juga dapat menghapus akun langsung dari aplikasi, yang akan menghapus semua data terkait dari sistem kami."
+      },
+      "changes": {
+        "title": "Perubahan Kebijakan",
+        "body": "Kami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu. Kami akan memberi tahu Anda tentang perubahan signifikan melalui email atau notifikasi dalam aplikasi. Penggunaan TaskBlast yang berkelanjutan setelah perubahan berarti Anda menerima kebijakan yang telah direvisi."
+      },
+      "contact": {
+        "title": "Hubungi Kami",
+        "body": "Jika Anda memiliki pertanyaan tentang Kebijakan Privasi ini, silakan hubungi kami di kryptocapstone@gmail.com. Kami berusaha menjawab semua pertanyaan dalam waktu 5 hari kerja."
+      }
+    }
+  },
+  "SupportScreen": {
+    "title": "Bantuan & Dukungan",
+    "intro": "Butuh bantuan menavigasi Tata Surya? Lihat FAQ di bawah atau hubungi kru kami langsung.",
+    "faqHeading": "Pertanyaan yang Sering Diajukan",
+    "contactHeading": "Hubungi Kami",
+    "responseTime": "Kami berusaha menjawab semua pertanyaan dalam waktu 5 hari kerja.",
+    "back": "Kembali",
+    "contactCards": {
+      "generalSupport": "Dukungan Umum",
+      "privacyEnquiries": "Pertanyaan Privasi"
+    },
+    "faq": {
+      "items": {
+        "1": {
+          "question": "Bagaimana cara menambahkan tugas baru?",
+          "answer": "Ketuk ikon tugas di layar Beranda untuk membuka Daftar Tugas. Ketuk 'Tambah Tugas Baru', isi nama tugas, deskripsi opsional, dan hadiah rocks, lalu ketuk 'Tambah Tugas'."
+        },
+        "2": {
+          "question": "Bagaimana cara kerja sesi fokus?",
+          "answer": "TaskBlast menggunakan teknik Pomodoro – bergantian antara sesi kerja dan istirahat. Pilih tugas lalu ketuk 'Lepas Landas' untuk memulai. Anda dapat menjeda atau mendarat lebih awal kapan saja, dan Anda akan mendapatkan rocks setelah menyelesaikannya."
+        },
+        "3": {
+          "question": "Apa itu Rocks dan Kristal Galaksi?",
+          "answer": "Rocks diperoleh dengan menyelesaikan tugas dan sesi fokus. Kristal Galaksi adalah mata uang premium yang didapat melalui pencapaian level. Keduanya dapat digunakan di Toko untuk menyesuaikan avatar."
+        },
+        "4": {
+          "question": "Bagaimana cara membuat akun anak?",
+          "answer": "Dari layar Profil, ketuk 'Tambah Akun Anak'. Anda akan diminta membuat akun terkelola dengan PIN Orang Tua. Anak kemudian dapat memilih profilnya di layar Pemilihan Profil."
+        },
+        "5": {
+          "question": "Saya lupa PIN Orang Tua. Apa yang harus saya lakukan?",
+          "answer": "PIN Orang Tua disimpan dengan aman di akun Anda. Hubungi kami di {{email}} dengan alamat email terdaftar, kami akan membantu Anda memulihkan akses."
+        },
+        "6": {
+          "question": "Bagaimana cara mengubah bahasa aplikasi?",
+          "answer": "Buka Pengaturan dan ketuk 'Bahasa'. Anda dapat memilih Bahasa Inggris, Spanyol, Portugis, Prancis, Jerman, Rusia, Arab, Bengali, Cina, Hindi, dan Bahasa Bajak Laut."
+        },
+        "7": {
+          "question": "Tampilan aplikasi berubah – apa itu mode buta warna?",
+          "answer": "Di Pengaturan, ketuk 'Aksesibilitas' untuk menemukan tema ramah buta warna (Deuteranopia, Protanopia, Tritanopia), mode kontras tinggi, dan pengurangan gerakan."
+        },
+        "8": {
+          "question": "Bagaimana cara mematikan notifikasi?",
+          "answer": "Buka Pengaturan dan ketuk 'Notifikasi'. Anda dapat mengaktifkan atau menonaktifkan jenis notifikasi kapan saja."
+        },
+        "9": {
+          "question": "Bagaimana cara menghapus akun saya?",
+          "answer": "Untuk meminta penghapusan akun, hubungi kami di {{email}} dari alamat email terdaftar Anda. Kami akan memproses permintaan dalam 5 hari kerja dan menghapus semua data terkait."
+        }
+      }
+    }
+  },
+  "AboutScreen": {
+    "title": "Tentang",
+    "tagline": "Lepas landas. Fokus. Naik level.",
+    "back": "Kembali",
+    "sections": {
+      "mission": {
+        "title": "Misi Kami",
+        "body": "TaskBlast dibuat untuk menjadikan produktivitas menyenangkan. Kami percaya bahwa fokus dan pencapaian tidak harus terasa seperti beban, jadi kami membungkusnya dalam petualangan luar angkasa. Misi kami adalah membantu pelajar dari segala usia membangun kebiasaan sehat melalui pengelolaan tugas yang digamifikasi."
+      },
+      "howItWorks": {
+        "title": "Cara Kerja",
+        "body": "Tambahkan tugas, lepas landas ke sesi fokus berbasis teknik Pomodoro, dan mendarat di planet baru saat Anda mencapai tujuan. Dapatkan Rocks dan Kristal Galaksi, naik level, dan buka hadiah kosmetik di sepanjang perjalanan."
+      },
+      "forEveryone": {
+        "title": "Dibuat untuk Semua Orang",
+        "body": "TaskBlast mendukung pelajar mandiri maupun akun terkelola untuk pengguna yang lebih muda. Orang tua dan wali dapat membuat akun anak, memberikan tugas, dan mengatur PIN Orang Tua tanpa mengganggu kesenangan."
+      },
+      "accessibility": {
+        "title": "Aksesibilitas Prioritas Utama",
+        "body": "Kami berkomitmen untuk pengalaman yang inklusif. TaskBlast menyertakan tema ramah buta warna, mode kontras tinggi, ukuran teks yang dapat disesuaikan, dukungan pengurangan gerakan, dan sistem teks ke suara lengkap."
+      },
+      "languages": {
+        "title": "Dukungan Multi Bahasa",
+        "body": "TaskBlast tersedia dalam Bahasa Inggris, Spanyol, Portugis, Prancis, Jerman, Rusia, Arab, Bengali, Cina, Hindi, dan bahkan Bahasa Bajak Laut. Kami terus berupaya menambah dukungan bahasa."
+      },
+      "privacy": {
+        "title": "Privasi & Keamanan",
+        "body": "Kami serius menjaga data Anda. TaskBlast menggunakan infrastruktur keamanan standar industri Firebase dan tidak pernah menjual informasi pribadi Anda. Akun anak sepenuhnya dikelola oleh orang tua atau wali."
+      },
+      "credits": {
+        "title": "Kredit",
+        "body": "Rotating Pixel Art Earth by j_hyde on opengameart.org"
+      },
+      "version": {
+        "title": "Versi",
+        "body": "TaskBlast v1.0.0\nDibuat dengan React Native & Expo.\n© 2026 TaskBlast. Hak cipta dilindungi."
+      }
+    }
+  },
+  "Tasks": {
+    "title": "Daftar Tugas",
+    "normal": "Normal",
+    "edit": "Edit",
+    "archive": "Arsipkan",
+    "empty": "Belum ada tugas. Tambahkan tugas pertama Anda!",
+    "button": "Tambah Tugas Baru",
+    "archivedempty": "Tidak ada tugas yang diarsipkan.",
+    "new": "Tugas Baru",
+    "desc": "Deskripsi (opsional, maks. 200 karakter)",
+    "reward": "Hadiah (rocks)",
+    "min": "Izinkan Minimalkan",
+    "settings": "Pengaturan Pomodoro",
+    "worktime": "Waktu Kerja (menit)",
+    "playtime": "Waktu Istirahat (menit)",
+    "cycles": "Jumlah Siklus",
+    "cancel": "Batal",
+    "add": "Tambah Tugas",
+    "planetDisclaimer": "Anda akan mendapatkan pengganda kristal tertinggi yang telah dibuka untuk tugas kustom.",
+    "editTask": "Edit Tugas",
+    "save": "Simpan",
+    "coachMarkdesc": "Di sini Anda dapat mengelola tugas Anda. Ketuk tugas untuk melihat detail, memulai sesi fokus, atau mengeditnya. Gunakan tab untuk beralih antara tugas aktif dan diarsipkan.",
+    "Done": "Selesai",
+    "TaskName": "Nama Tugas",
+    "description": "Deskripsi",
+    "reward2": "Hadiah",
+    "status": "Status",
+    "complete": "Selesai",
+    "incomplete": "Belum Selesai",
+    "yes": "Ya",
+    "no": "Tidak",
+    "workTime": "Waktu Kerja",
+    "playTime": "Waktu Istirahat",
+    "Cycles": "Siklus",
+    "created": "Dibuat",
+    "details": "Info Tugas",
+    "close": "Tutup",
+    "minutesShort": "mnt",
+    "hoursShort": "j",
+    "managerAccess": "Akses Orang Tua",
+    "managerAccessDesc": "Masukkan PIN 4 digit untuk mengakses mode edit dengan izin lebih tinggi.",
+    "unlock": "Buka Kunci"
+  },
+  "Traits": {
+    "ADHD": "ADHD",
+    "Aspergers": "Sindrom Asperger",
+    "Autism": "Autisme",
+    "DevelopmentalLanguageDisorder": "Gangguan Bahasa Perkembangan",
+    "Disability Confident": "Ramah Disabilitas",
+    "Dyscalculia": "Diskalkulia",
+    "Dysgraphia": "Disgrafia",
+    "Dyslexia": "Disleksia",
+    "Dyspraxia": "Dispraxia",
+    "Hyperlexia": "Hiperleksia",
+    "Irlen Syndrome": "Sindrom Irlen",
+    "OCD": "OCD (Gangguan Obsesif-Kompulsif)",
+    "Synthesia": "Sintesesia",
+    "Tourette's Syndrome": "Sindrom Tourette",
+    "selectTraits": "Pilih Ciri",
+    "saveTraits": "Simpan Ciri"
+  },
+  "Profile": {
+    "traits": "Ciri-ciri",
+    "editP": "Edit Profil",
+    "awards": "Penghargaan",
+    "YourStats": "Statistik Anda",
+    "rocksEarned": "Total Kristal yang Didapat: ",
+    "rocksSpent": "Total Kristal yang Dihabiskan: ",
+    "AvgWorkCycle": "Rata-rata Durasi Siklus Kerja: ",
+    "AvgPlayCycle": "Rata-rata Durasi Siklus Istirahat: ",
+    "work": "Rasio Kerja/Istirahat: ",
+    "level": "Level Saat Ini: ",
+    "planets": "Planet yang Ditemukan: ",
+    "total": "Total Waktu yang Dihabiskan untuk Tugas: ",
+    "AddChildAccount": "Tambah Akun Anak",
+    "SwitchProfile": "Ganti Profil",
+    "Logout": "Keluar",
+    "coachMarkeditP": "Ketuk di sini untuk memperbarui informasi profil Anda!",
+    "coachMarkTraitsTitle": "Lihat Ciri",
+    "coachMarkTraits": "Di sini Anda dapat melihat ciri-ciri Anda dan menambahkan yang baru!",
+    "coachMarkAwardsTitle": "Lihat Penghargaan",
+    "coachMarkAwards": "Di sini Anda dapat melihat penghargaan dan pencapaian Anda!",
+    "coachMarkStatsTitle": "Lihat Statistik",
+    "coachMarkStats": "Di sini Anda dapat melihat statistik dan melacak kemajuan Anda dari waktu ke waktu!",
+    "edit": "Edit",
+    "advanced": "Lanjutan",
+    "deleteAccount": "Hapus Akun"
+  },
+  "EditProfileModal": {
+    "title": "Edit Profil",
+    "tapToChangePicture": "Ketuk untuk mengubah foto profil",
+    "firstName": "Nama Depan",
+    "firstNamePlaceholder": "Nama Depan",
+    "lastName": "Nama Belakang",
+    "lastNamePlaceholder": "Nama Belakang",
+    "displayName": "Nama Tampilan (Nama Panggilan)",
+    "displayNamePlaceholder": "Nama Tampilan",
+    "email": "Email",
+    "emailPlaceholder": "Email",
+    "birthdate": "Tanggal Lahir (MM/DD/YYYY)",
+    "birthdatePlaceholder": "MM/DD/YYYY",
+    "saveChanges": "Simpan Perubahan",
+    "errors": {
+      "loginToUpdatePicture": "Anda harus masuk untuk mengubah foto profil",
+      "failedToUpdatePicture": "Gagal memperbarui foto profil",
+      "firstAndLastRequired": "Nama depan dan belakang wajib diisi",
+      "displayNameRequired": "Nama tampilan wajib diisi",
+      "emailRequired": "Email wajib diisi",
+      "invalidEmail": "Masukkan alamat email yang valid",
+      "loginToUpdateProfile": "Anda harus masuk untuk memperbarui profil",
+      "childProfileMissing": "Profil anak aktif tidak ditemukan",
+      "failedToSave": "Gagal menyimpan profil. Silakan coba lagi."
+    }
+  },
+  "AnalyticsChartsModal": {
+    "title": "Grafik Analisis",
+    "charts": {
+      "common": {
+        "date": "Tanggal"
+      },
+      "totalRocks": {
+        "title": "Total Kristal yang Didapat dari Game",
+        "yAxis": "Kristal"
+      },
+      "workTime": {
+        "title": "Total Waktu Kerja",
+        "yAxis": "Menit"
+      },
+      "playTime": {
+        "title": "Total Waktu Istirahat",
+        "yAxis": "Menit"
+      }
+    },
+    "empty": {
+      "noRockStats": "Belum ada statistik kristal.",
+      "noWorkSessions": "Belum ada sesi kerja.",
+      "noPlaySessions": "Belum ada sesi istirahat."
+    }
+  },
+  "Pomodoro": {
+    "time": "Waktu Tersisa",
+    "work": "Sesi Kerja",
+    "Resume": "Lanjutkan",
+    "Pause": "Jeda",
+    "Land": "Mendarat",
+    "Play": "Mainkan Game",
+    "coachMarkTime": "Ini adalah waktu tersisa dalam sesi saat ini. Di akhir Anda dapat mendarat di planet atau bermain game. Fokus dan saksikan hitung mundurnya!",
+    "coachMarkwork": "Ini menunjukkan apakah Anda sedang dalam sesi kerja atau istirahat. Tetap fokus saat bekerja dan rileks saat istirahat!",
+    "coachMarkPause": "Ketuk di sini untuk menjeda sesi jika Anda perlu istirahat yang tidak terjadwal.",
+    "coachMarkLand": "Ketuk di sini untuk mengakhiri sesi dan mendarat di planet Anda. Kerja bagus pada waktu fokus Anda!",
+    "worksession": "Sesi Kerja",
+    "freeTime": "Waktu Bebas",
+    "startTask": "Mulai Tugas",
+    "ChooseGame": "Pilih Game Anda"
+  },
+  "Shop": {
+    "title": "Toko",
+    "body": "Badan",
+    "wings": "Sayap",
+    "toppers": "Booster",
+    "bBody": "Badan Biru",
+    "rBody": "Badan Merah",
+    "yBody": "Badan Kuning",
+    "gBody": "Badan Hijau",
+    "dTopper": "Default",
+    "bTopper": "Api Biru",
+    "aTopper": "Peluncuran Artemis",
+    "bWings": "Sayap Biru",
+    "rWings": "Sayap Merah",
+    "yWings": "Sayap Kuning",
+    "gWings": "Sayap Hijau",
+    "galaxyWings": "Sayap Galaksi",
+    "equipped": "Dipakai",
+    "owned": "Dimiliki",
+    "confirmPurchaseTitle": "Konfirmasi Pembelian",
+    "confirmPurchaseText": "Beli item ini seharga {{price}} kristal?",
+    "confirmPurchaseCrystalText": "Beli item ini seharga {{price}} Kristal Galaksi?",
+    "cancel": "Batal",
+    "notEnoughCrystalsTitle": "Kristal Tidak Cukup",
+    "notEnoughCrystalsText": "Anda membutuhkan {{price}} kristal, tetapi hanya memiliki {{rocks}}.",
+    "purchase": "Beli"
+  },
+  "Games": {
+    "chooseTitle": "Pilih Game Anda",
+    "asteroidBlaster": "Asteroid Blaster",
+    "asteroidBlasterDesc": "Hancurkan asteroid!",
+    "spaceSwerve": "Space Swerve",
+    "spaceSwerveDesc": "Hindari asteroid!",
+    "freeTime": "Waktu Bebas",
+    "freeTimeDesc": "Istirahat dengan cara Anda sendiri!",
+    "game2048": "2048",
+    "game2048Desc": "Gabungkan ubin. Targetkan 2048!",
+    "matchBlast": "Match Blast",
+    "matchBlastDesc": "Cocokkan pasangan dengan cepat untuk rocks bonus!",
+    "sequentBlast": "Sequent Blast",
+    "sequentBlastDesc": "Ingat dan ketuk urutan tersembunyi."
+  },
+  "ChildAccount": {
+    "title": "Buat Akun Anak",
+    "firstName": "Masukkan nama depan",
+    "lastName": "Masukkan nama belakang",
+    "birthdate": "Tanggal lahir",
+    "username": "Nama Pengguna",
+    "usernameDesc": "Pilih nama pengguna yang unik",
+    "create": "Buat Akun Anak"
+  },
+  "ProfileSelection": {
+    "title": "Siapa yang menggunakan TaskBlast?",
+    "parentProfile": "Akun Orang Tua",
+    "childProfile": "Akun Anak",
+    "desc": "Belum ada akun anak.",
+    "desc2": "Buat dari akun orang tua",
+    "text": "ATAU PILIH ANAK",
+    "EnterPin": "Masukkan PIN untuk"
+  },
+  "Planets": {
+    "planet1": "Merkurius",
+    "planet2": "Venus",
+    "planet3": "Bumi",
+    "planet4": "Mars",
+    "planet5": "Jupiter",
+    "planet6": "Saturnus",
+    "planet7": "Uranus",
+    "planet8": "Neptunus",
+    "planet9": "Pluto",
+    "descriptionBonus": "{{percent}}% lebih banyak kristal",
+    "descriptionBase": "Hadiah kristal standar",
+    "stats": "{{diameter}} km diameter · {{distance}} km dari Matahari"
+  }
+}

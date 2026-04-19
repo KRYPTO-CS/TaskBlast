@@ -21,6 +21,13 @@ const Lang_Map = {
   Bengali: "bn",
   Chinese: "zh",
   Hindi: "hi",
+  Japanese: "jp",
+  Korean: "kr",
+  Italian: "it",
+  Dutch: "nl",
+  Turkish: "tr",
+  Vietnamese: "vn",
+  Indonesian: "id",
 } as const;
 
 const Lang_FromCode = Object.fromEntries(
@@ -55,6 +62,13 @@ export default function SignUpAccountType({
   const Bengali = require("../../assets/images/bangladesh.png");
   const China = require("../../assets/images/china.png");
   const India = require("../../assets/images/india.png");
+  const Japan = require("../../assets/images/japan.png");
+  const Korea = require("../../assets/images/south-korea.png");
+  const Italy = require("../../assets/images/italy.png");
+  const Netherlands = require("../../assets/images/netherlands.png");
+  const Turkey = require("../../assets/images/turkey.png");
+  const Vietnam = require("../../assets/images/vietnam.png");
+  const Indonesia = require("../../assets/images/indonesia-flag.png");
 
   const handleContinue = () => {
     setError("");
@@ -82,7 +96,15 @@ export default function SignUpAccountType({
       | "Arabic"
       | "Bengali"
       | "Chinese"
-      | "Hindi";
+      | "Hindi"
+      | "Japanese"
+      | "Korean"
+      | "Italian"
+      | "Dutch"
+      | "Turkish"
+      | "Vietnamese"
+      | "Indonesian"
+      ;
     image?: any;
     title: string;
   }) => {
@@ -146,6 +168,20 @@ export default function SignUpAccountType({
           <Option value="Chinese" image={China} title="中文" />
 
           <Option value="Hindi" image={India} title="हिन्दी" />
+
+          <Option value="Japanese" image={Japan} title="日本語" />
+
+          <Option value="Korean" image={Korea} title="한국어" />
+
+          <Option value="Italian" image={Italy} title="Italiano" />
+
+          <Option value="Dutch" image={Netherlands} title="Nederlands" />
+
+          <Option value="Turkish" image={Turkey} title="Türkçe" />
+
+          <Option value="Vietnamese" image={Vietnam} title="Tiếng Việt" />
+
+          <Option value="Indonesian" image={Indonesia} title="Bahasa Indonesi" />
 
           {error ? (
             <Text className="font-madimi text-sm text-red-300 mb-4 text-left drop-shadow-md">

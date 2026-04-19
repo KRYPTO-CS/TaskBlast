@@ -1,0 +1,518 @@
+{
+  "language": {
+    "selectLanguage": "言語を選択してください",
+    "continue": "続ける",
+    "backTo": "戻る",
+    "Login": "ログイン"
+  },
+  "birthdate": {
+    "title": "生年月日を教えてください",
+    "notice": "登録するには13歳以上である必要があります",
+    "month": "月",
+    "day": "日",
+    "year": "年",
+    "continue": "続ける",
+    "previousStep": "前のステップ",
+    "error": "有効な日付を入力してください",
+    "age": "保護者または後見人にデバイスを渡してください",
+    "empty": "すべての項目を入力してください"
+  },
+  "AccountType": {
+    "title": "TaskBlastを使うのは誰ですか？",
+    "type": "TaskBlastの主なユーザーとして最も適したアカウントタイプを選択してください。",
+    "managetitle": "管理アカウント",
+    "managedesc": "依存者のためのアカウント。一部の機能は保護者/後見人のPINで制限・管理されます。",
+    "indetitle": "独立アカウント",
+    "indedesc": "個人の学習者のためのアカウント。制限なしでフルアクセスできます。",
+    "continue": "続ける",
+    "error": "続けるにはアカウントタイプを選択してください"
+  },
+  "Name": {
+    "title": "お名前を教えてください",
+    "desc": "TaskBlast内で呼ぶ名前を教えてください",
+    "firstName": "名",
+    "lastName": "姓",
+    "continue": "続ける"
+  },
+  "Email": {
+    "title": "メールアドレスを教えてください",
+    "desc": "メールアドレスを確認するための認証コードをお送りします",
+    "emailPlaceholder": "メールアドレス",
+    "send": "リンクを送信"
+  },
+  "Password": {
+    "title": "パスワードを作成",
+    "desc": "アカウントを保護するための強力なパスワードを選択してください",
+    "passwordPlaceholder": "パスワード",
+    "ConfirmPasswordPlaceholder": "パスワードを確認",
+    "submit": "アカウントを作成",
+    "match": "パスワードが一致しません",
+    "length": "パスワードは8文字以上である必要があります",
+    "emailRequiredError": "メールアドレスは必須です。",
+    "emailInUseError": "このメールアドレスはすでに使用されています。ログインするかパスワードをリセットしてください。",
+    "invalidEmailError": "有効なメールアドレスを入力してください。",
+    "weakPasswordError": "パスワードが弱すぎます。少なくとも8文字以上を使用してください。",
+    "signUpFailedError": "サインアップに失敗しました。もう一度お試しください。"
+  },
+  "Login": {
+    "title": "ログイン",
+    "emailPlaceholder": "メールアドレスまたはユーザー名",
+    "passwordPlaceholder": "パスワード",
+    "forgotPassword": "パスワードをお忘れですか？",
+    "loginButton": "送信",
+    "noAccount": "アカウントをお持ちではありませんか？",
+    "signUp": "サインアップ",
+    "verifyEmailTitle": "メールアドレスを確認",
+    "verifyEmailBody": "確認メールを送信しました。ログインする前にメールアドレスを確認してください。見当たらない場合はスパム/迷惑メールフォルダもご確認ください。",
+    "ok": "OK"
+  },
+  "ForgotPassword": {
+    "title": "パスワードをお忘れですか？",
+    "desc": "メールアドレスを入力すると、パスワードをリセットするためのコードをお送りします",
+    "emailPlaceholder": "メールアドレス",
+    "submit": "送信",
+    "resetEmailSentTitle": "リセットメールを送信しました",
+    "resetEmailSentBody": "メールでリセットリンクを確認してください。リンクをクリックしてパスワードをリセットできます。",
+    "ok": "OK"
+  },
+  "VerifyCode": {
+    "title": "コードを確認",
+    "desc": "送信された5桁のコードを入力してください",
+    "notreceived": "コードが届きませんでしたか？",
+    "resend": "再送信",
+    "submit": "送信"
+  },
+  "ResetPassword": {
+    "title": "新しいパスワードを作成",
+    "desc": "新しいパスワードを入力してください",
+    "newPasswordPlaceholder": "新しいパスワード",
+    "confirmPasswordPlaceholder": "パスワードを確認",
+    "submit": "パスワードをリセット"
+  },
+  "ManagerPin": {
+    "title": "管理者PINを作成",
+    "desc": "この4桁のPINで、保護者または後見人がアカウントを管理し、学習者にタスクを作成できます。秘密にしておいてください。",
+    "pin": "PIN（4桁）",
+    "confirmPinPlaceholder": "PINを確認",
+    "continue": "続ける"
+  },
+  "Home": {
+    "takeoff": "離陸",
+    "coachMarktaskstitle": "新しいタスクを追加",
+    "coachMarktasks": "ここをタップして新しいタスクを追加し、リワードを設定したり、集中セッションをカスタマイズできます！",
+    "coachMarkProfiletitle": "プロフィールを確認",
+    "coachMarkProfile": "ここをタップしてプロフィールを確認し、進捗を追跡したり、アバターをカスタマイズできます！",
+    "coachMarksettings": "ここをタップして設定を調整したり、通知を管理したりできます！",
+    "coachMarktakeoff": "ここをタップして集中セッションを開始し、目標に向かって爆進しましょう！",
+    "coachMarkshop": "ここをタップしてショップに行き、新しいボディや翼でアバターをカスタマイズできます！",
+    "playerLevel": "プレイヤーレベル",
+    "Level Rewards": "レベル報酬",
+    "Claimed": "受け取り済み",
+    "Claim": "受け取る",
+    "Claiming": "受け取り中...",
+    "expLabel": "EXP",
+    "levelShort": "Lv",
+    "Locked": "ロック中",
+    "Crystals": "クリスタル",
+    "galaxyCrystals": "ギャラクシークリスタル",
+    "level": "レベル",
+    "coachMarklevel": "現在のプレイヤーレベルです。タスクや集中セッションを完了して経験値を稼ぎ、レベルアップして報酬を獲得しましょう！"
+  },
+  "Settings": {
+    "title": "設定",
+    "sound": "効果音",
+    "music": "音楽",
+    "notifications": "通知",
+    "privacy": "プライバシー",
+    "Help": "ヘルプ＆サポート",
+    "About": "アプリについて",
+    "Logout": "ログアウト",
+    "accessibility": "アクセシビリティ",
+    "language": "言語",
+    "colorBlind": "色覚異常モード",
+    "textSize": "文字サイズ",
+    "highContrast": "ハイコントラスト",
+    "reduceMotion": "モーション低減",
+    "voice": "音声",
+    "tts": "テキスト読み上げ",
+    "ttsDesc": "画面の内容を音声で読み上げる",
+    "defaultColors": "デフォルトカラー",
+    "redGreenDeficiency": "赤/緑色覚異常",
+    "redDeficiency": "赤色覚異常",
+    "blueYellowDeficiency": "青/黄色覚異常",
+    "done": "完了",
+    "logout": "ログアウト",
+    "switchProfile": "プロフィールを切り替え",
+    "logoutText": "本当にログアウトしますか？",
+    "parentAccount": "👤 親アカウント",
+    "noFilter": "フィルターなし",
+    "deuteranopia": "緑色盲（デューテラノピア）",
+    "protanopia": "赤色盲（プロタノピア）",
+    "tritanopia": "青黄色盲（トリタノピア）",
+    "customize": "タップしてカスタマイズ",
+    "replayTutorial": "チュートリアルを再生"
+  },
+  "PrivacyScreen": {
+    "lastUpdated": "最終更新日: 2026年3月30日",
+    "intro": "TaskBlastでは、あなたのプライバシーを大切にしています。このプライバシーポリシーでは、収集する情報、その使用方法、およびあなたの選択肢について説明します。よくお読みください。",
+    "backToSettings": "戻る",
+    "sections": {
+      "informationCollect": {
+        "title": "収集する情報",
+        "body": "アカウント作成時に提供される情報（名前、メールアドレス、生年月日など）を収集します。子供アカウントの場合、親または後見人の承認が必要です。また、タスク完了状況、集中セッションの時間、アプリ内購入などの使用データを収集し、体験を向上させます。"
+      },
+      "howUse": {
+        "title": "情報の使用方法",
+        "body": "提供された情報は、TaskBlastサービスの提供・改善、体験のパーソナライズ、希望する通知の送信、アカウントセキュリティの維持に使用されます。個人データを第三者に販売することはありません。"
+      },
+      "sharing": {
+        "title": "情報の共有",
+        "body": "法律で義務付けられている場合や、アプリのコア機能を提供する場合（例: Firebase認証やクラウドストレージ）を除き、個人情報を第三者と共有しません。使用する第三者サービスは、それぞれのプライバシーポリシーに従います。"
+      },
+      "security": {
+        "title": "データセキュリティ",
+        "body": "業界標準の暗号化とFirebaseのセキュリティルールを使用してデータを保護しています。個人情報へのアクセスは、許可された担当者のみに制限されています。ただし、インターネット経由の送信は100%安全とは言えません。"
+      },
+      "children": {
+        "title": "子供のプライバシー",
+        "body": "TaskBlastはすべての年齢層に対応しています。13歳未満のユーザーは、管理アカウント機能を通じて親または後見人が管理します。検証済みの親の同意なしに、13歳未満の子供から個人情報を意図的に収集することはありません。"
+      },
+      "notifications": {
+        "title": "通知",
+        "body": "タスクのリマインダーやアプリの更新に関するプッシュ通知を送信する場合があります。設定メニューでいつでも通知の設定を管理できます。"
+      },
+      "rights": {
+        "title": "あなたの権利",
+        "body": "いつでも個人データへのアクセス、修正、削除をリクエストできます。また、アプリ内から直接アカウントを削除でき、関連するすべてのデータがシステムから削除されます。"
+      },
+      "changes": {
+        "title": "ポリシーの変更",
+        "body": "このプライバシーポリシーは随時更新される場合があります。重要な変更がある場合は、メールまたはアプリ内通知でお知らせします。変更後にTaskBlastを継続して使用することは、改訂されたポリシーに同意したものとみなされます。"
+      },
+      "contact": {
+        "title": "お問い合わせ",
+        "body": "このプライバシーポリシーに関するご質問は、kryptocapstone@gmail.com までお問い合わせください。すべての問い合わせに5営業日以内に回答するよう努めています。"
+      }
+    }
+  },
+  "SupportScreen": {
+    "title": "ヘルプ＆サポート",
+    "intro": "ソーラーシステムのナビゲーションでお困りですか？以下のFAQをご覧いただくか、クルーに直接お問い合わせください。",
+    "faqHeading": "よくある質問",
+    "contactHeading": "お問い合わせ",
+    "responseTime": "すべての問い合わせに5営業日以内に回答するよう努めています。",
+    "back": "戻る",
+    "contactCards": {
+      "generalSupport": "一般サポート",
+      "privacyEnquiries": "プライバシーに関するお問い合わせ"
+    },
+    "faq": {
+      "items": {
+        "1": {
+          "question": "新しいタスクを追加するにはどうすればいいですか？",
+          "answer": "ホーム画面のタスクアイコンをタップしてタスクリストを開きます。「新しいタスクを追加」をタップし、タスク名、任意の説明、ロックス報酬を入力して「タスクを追加」をタップします。"
+        },
+        "2": {
+          "question": "集中セッションはどのように機能しますか？",
+          "answer": "TaskBlastはポモドーロ・テクニックを使用しています。作業と休憩を交互に繰り返します。タスクを選択して「離陸」をタップするとセッションが開始されます。いつでも一時停止や早期着陸ができ、完了するとロックスを獲得できます。"
+        },
+        "3": {
+          "question": "ロックスとギャラクシークリスタルとは何ですか？",
+          "answer": "ロックスはタスクや集中セッションの完了で獲得できます。ギャラクシークリスタルはレベルアップのマイルストーンで獲得できるプレミアム通貨です。どちらもショップでアバターのカスタマイズに使用できます。"
+        },
+        "4": {
+          "question": "子供アカウントを作成するにはどうすればいいですか？",
+          "answer": "プロフィール画面から「子供アカウントを追加」をタップします。管理者PINを設定して管理アカウントを作成すると、子供はプロフィール選択画面から自分のプロフィールを選択できます。"
+        },
+        "5": {
+          "question": "管理者PINを忘れてしまいました。どうすればいいですか？",
+          "answer": "現在、管理者PINはアカウントに安全に保存されています。登録済みのメールアドレスを添えてkryptocapstone@gmail.com までお問い合わせください。アクセス回復をお手伝いします。"
+        },
+        "6": {
+          "question": "アプリの言語を変更するにはどうすればいいですか？",
+          "answer": "設定画面で「言語」をタップします。英語、スペイン語、ポルトガル語、フランス語、ドイツ語、ロシア語、アラビア語、ベンガル語、中国語、ヒンディー語、パイレーツ語から選択できます。"
+        },
+        "7": {
+          "question": "アプリの見た目が変わりました — 色覚異常モードとは何ですか？",
+          "answer": "設定の「アクセシビリティ」で、色覚異常対応テーマ（緑色盲、赤色盲、青黄色盲など）、ハイコントラストモード、モーション低減の切り替えが利用できます。"
+        },
+        "8": {
+          "question": "通知をオフにするにはどうすればいいですか？",
+          "answer": "設定画面で「通知」をタップします。個々の通知タイプをいつでもオン/オフにできます。"
+        },
+        "9": {
+          "question": "アカウントを削除するにはどうすればいいですか？",
+          "answer": "アカウント削除をリクエストするには、登録済みのメールアドレスからkryptocapstone@gmail.com までお問い合わせください。5営業日以内に処理し、関連データをすべて削除します。"
+        }
+      }
+    }
+  },
+  "AboutScreen": {
+    "title": "アプリについて",
+    "tagline": "離陸せよ。集中せよ。レベルアップせよ。",
+    "back": "戻る",
+    "sections": {
+      "mission": {
+        "title": "私たちのミッション",
+        "body": "TaskBlastは、生産性を楽しくすることを目指して作られました。集中と達成感が義務のように感じられないよう、宇宙アドベンチャーで包みました。私たちのミッションは、あらゆる年齢の学習者がゲーム化されたタスク管理を通じて健康的な習慣を築く手助けをすることです。"
+      },
+      "howItWorks": {
+        "title": "使い方",
+        "body": "タスクを追加し、ポモドーロ・テクニックによる集中セッションで離陸し、目標達成とともに新しい惑星に着陸します。ロックスとギャラクシークリスタルを獲得し、レベルアップしながらコスメティック報酬をアンロックしましょう。"
+      },
+      "forEveryone": {
+        "title": "みんなのために",
+        "body": "TaskBlastは独立した学習者と、若いユーザー向けの管理アカウントの両方をサポートしています。親や後見人は子供アカウントを作成し、タスクを割り当て、管理者PINを設定して軌道を維持できます。楽しさを損なうことなく。"
+      },
+      "accessibility": {
+        "title": "アクセシビリティを最優先に",
+        "body": "すべての人が快適に使える体験を提供します。色覚異常対応テーマ、ハイコントラストモード、文字サイズ調整、モーション低減、フルテキスト読み上げシステムを搭載しています。"
+      },
+      "languages": {
+        "title": "多言語対応",
+        "body": "TaskBlastは英語、スペイン語、ポルトガル語、フランス語、ドイツ語、ロシア語、アラビア語、ベンガル語、中国語、ヒンディー語、そしてパイレーツ語に対応しています。今後も言語サポートを拡大していきます。"
+      },
+      "privacy": {
+        "title": "プライバシーと安全性",
+        "body": "あなたのデータを真剣に扱います。TaskBlastはFirebaseの業界標準セキュリティ基盤を使用し、個人情報を販売することはありません。子供アカウントは親または後見人が完全に管理します。"
+      },
+      "credits": {
+        "title": "クレジット",
+        "body": "Rotating Pixel Art Earth by j_hyde on opengameart.org"
+      },
+      "version": {
+        "title": "バージョン",
+        "body": "TaskBlast v1.0.0\nReact Native & Expoで構築。\n© 2026 TaskBlast. All rights reserved."
+      }
+    }
+  },
+  "Tasks": {
+    "title": "タスクリスト",
+    "normal": "通常",
+    "edit": "編集",
+    "archive": "アーカイブ",
+    "empty": "まだタスクがありません。最初のタスクを追加しましょう！",
+    "button": "新しいタスクを追加",
+    "archivedempty": "アーカイブされたタスクはありません。",
+    "new": "新しいタスク",
+    "desc": "説明（任意、最大200文字）",
+    "reward": "報酬（ロックス）",
+    "min": "最小化を許可",
+    "settings": "ポモドーロ設定",
+    "worktime": "作業時間（分）",
+    "playtime": "休憩時間（分）",
+    "cycles": "サイクル数",
+    "cancel": "キャンセル",
+    "add": "タスクを追加",
+    "planetDisclaimer": "カスタムタスクでは、最高のアンロック済みクリスタル倍率が適用されます。",
+    "editTask": "タスクを編集",
+    "save": "保存",
+    "coachMarkdesc": "ここでタスクを管理できます。タスクをタップすると詳細を表示したり、集中セッションを開始したり、編集したりできます。タブでアクティブとアーカイブを切り替えられます。",
+    "Done": "完了",
+    "TaskName": "タスク名",
+    "description": "説明",
+    "reward2": "報酬",
+    "status": "ステータス",
+    "complete": "完了",
+    "incomplete": "未完了",
+    "yes": "はい",
+    "no": "いいえ",
+    "workTime": "作業時間",
+    "playTime": "休憩時間",
+    "Cycles": "サイクル",
+    "created": "作成日",
+    "details": "タスク情報",
+    "close": "閉じる",
+    "minutesShort": "分",
+    "hoursShort": "時間",
+    "managerAccess": "管理者アクセス",
+    "managerAccessDesc": "編集モードにアクセスするには4桁のPINを入力してください（高い権限）。",
+    "unlock": "解除"
+  },
+  "Traits": {
+    "ADHD": "ADHD",
+    "Aspergers": "アスペルガー症候群",
+    "Autism": "自閉症",
+    "DevelopmentalLanguageDisorder": "発達性言語障害",
+    "Disability Confident": "障害者対応",
+    "Dyscalculia": "算数障害",
+    "Dysgraphia": "書字障害",
+    "Dyslexia": "失読症",
+    "Dyspraxia": "協調運動障害",
+    "Hyperlexia": "過剰読字",
+    "Irlen Syndrome": "アーレン症候群",
+    "OCD": "強迫性障害",
+    "Synthesia": "共感覚（シネスシア）",
+    "Tourette's Syndrome": "トゥレット症候群",
+    "selectTraits": "特性を選択",
+    "saveTraits": "特性を保存"
+  },
+  "Profile": {
+    "traits": "特性",
+    "editP": "プロフィールを編集",
+    "awards": "表彰",
+    "YourStats": "あなたの統計",
+    "rocksEarned": "獲得したクリスタル総数: ",
+    "rocksSpent": "使用したクリスタル総数: ",
+    "AvgWorkCycle": "平均作業サイクル時間: ",
+    "AvgPlayCycle": "平均休憩サイクル時間: ",
+    "work": "作業/休憩比率: ",
+    "level": "現在のレベル: ",
+    "planets": "発見した惑星: ",
+    "total": "タスクにかかった総時間: ",
+    "AddChildAccount": "子供アカウントを追加",
+    "SwitchProfile": "プロフィールを切り替え",
+    "Logout": "ログアウト",
+    "coachMarkeditP": "ここをタップしてプロフィール情報を更新できます！",
+    "coachMarkTraitsTitle": "特性を表示",
+    "coachMarkTraits": "ここで自分の特性を確認したり、新しいものを追加できます！",
+    "coachMarkAwardsTitle": "表彰を表示",
+    "coachMarkAwards": "ここで表彰や実績を確認できます！",
+    "coachMarkStatsTitle": "統計を表示",
+    "coachMarkStats": "ここで統計を確認し、時間の経過とともに進捗を追跡できます！",
+    "edit": "編集",
+    "advanced": "詳細設定",
+    "deleteAccount": "アカウントを削除"
+  },
+  "EditProfileModal": {
+    "title": "プロフィールを編集",
+    "tapToChangePicture": "タップしてプロフィール画像を変更",
+    "firstName": "名",
+    "firstNamePlaceholder": "名",
+    "lastName": "姓",
+    "lastNamePlaceholder": "姓",
+    "displayName": "表示名（ニックネーム）",
+    "displayNamePlaceholder": "表示名",
+    "email": "メールアドレス",
+    "emailPlaceholder": "メールアドレス",
+    "birthdate": "生年月日（MM/DD/YYYY）",
+    "birthdatePlaceholder": "MM/DD/YYYY",
+    "saveChanges": "変更を保存",
+    "errors": {
+      "loginToUpdatePicture": "プロフィール画像を更新するにはログインが必要です",
+      "failedToUpdatePicture": "プロフィール画像の更新に失敗しました",
+      "firstAndLastRequired": "名と姓は必須です",
+      "displayNameRequired": "表示名は必須です",
+      "emailRequired": "メールアドレスは必須です",
+      "invalidEmail": "有効なメールアドレスを入力してください",
+      "loginToUpdateProfile": "プロフィールを更新するにはログインが必要です",
+      "childProfileMissing": "アクティブな子供プロフィールが見つかりません",
+      "failedToSave": "プロフィールの保存に失敗しました。もう一度お試しください。"
+    }
+  },
+  "AnalyticsChartsModal": {
+    "title": "分析チャート",
+    "charts": {
+      "common": {
+        "date": "日付"
+      },
+      "totalRocks": {
+        "title": "ゲームから獲得したクリスタル総数",
+        "yAxis": "クリスタル"
+      },
+      "workTime": {
+        "title": "累積作業時間",
+        "yAxis": "分"
+      },
+      "playTime": {
+        "title": "累積休憩時間",
+        "yAxis": "分"
+      }
+    },
+    "empty": {
+      "noRockStats": "まだクリスタル統計がありません。",
+      "noWorkSessions": "まだ作業セッションがありません。",
+      "noPlaySessions": "まだ休憩セッションがありません。"
+    }
+  },
+  "Pomodoro": {
+    "time": "残り時間",
+    "work": "作業セッション",
+    "Resume": "再開",
+    "Pause": "一時停止",
+    "Land": "着陸",
+    "Play": "ゲームをプレイ",
+    "coachMarkTime": "現在のセッションの残り時間です。終了すると惑星に着陸するかゲームをプレイできます。集中してカウントダウンを見守りましょう！",
+    "coachMarkwork": "現在が作業セッションか休憩かを示しています。作業中は集中し、休憩中はリラックスしましょう！",
+    "coachMarkPause": "予定外の休憩が必要な場合はここをタップしてセッションを一時停止できます。",
+    "coachMarkLand": "ここをタップしてセッションを終了し、惑星に着陸します。集中タイムお疲れ様でした！",
+    "worksession": "作業セッション",
+    "freeTime": "フリータイム",
+    "startTask": "タスクを開始",
+    "ChooseGame": "ゲームを選択"
+  },
+  "Shop": {
+    "title": "ショップ",
+    "body": "ボディ",
+    "wings": "翼",
+    "toppers": "ブースター",
+    "bBody": "青いボディ",
+    "rBody": "赤いボディ",
+    "yBody": "黄色いボディ",
+    "gBody": "緑のボディ",
+    "dTopper": "デフォルト",
+    "bTopper": "青い炎",
+    "aTopper": "アルテミス発射",
+    "bWings": "青い翼",
+    "rWings": "赤い翼",
+    "yWings": "黄色い翼",
+    "gWings": "緑の翼",
+    "galaxyWings": "ギャラクシー翼",
+    "equipped": "装備中",
+    "owned": "所有済み",
+    "confirmPurchaseTitle": "購入確認",
+    "confirmPurchaseText": "このアイテムを{{price}}クリスタルで購入しますか？",
+    "confirmPurchaseCrystalText": "このアイテムを{{price}}ギャラクシークリスタルで購入しますか？",
+    "cancel": "キャンセル",
+    "notEnoughCrystalsTitle": "クリスタルが不足しています",
+    "notEnoughCrystalsText": "{{price}}クリスタル必要ですが、現在{{rocks}}しかありません。",
+    "purchase": "購入"
+  },
+  "Games": {
+    "chooseTitle": "ゲームを選択",
+    "asteroidBlaster": "アステロイドブラスター",
+    "asteroidBlasterDesc": "小惑星を破壊しよう！",
+    "spaceSwerve": "スペーススワーブ",
+    "spaceSwerveDesc": "小惑星をかわそう！",
+    "freeTime": "フリータイム",
+    "freeTimeDesc": "自分だけの方法で休憩しよう！",
+    "game2048": "2048",
+    "game2048Desc": "タイルを合わせて2048を目指そう！",
+    "matchBlast": "マッチブラスト",
+    "matchBlastDesc": "素早くペアを合わせてボーナスロックスを獲得！",
+    "sequentBlast": "シーケントブラスト",
+    "sequentBlastDesc": "隠されたシーケンスを覚えてタップしよう。"
+  },
+  "ChildAccount": {
+    "title": "子供アカウントを作成",
+    "firstName": "名を入力",
+    "lastName": "姓を入力",
+    "birthdate": "生年月日",
+    "username": "ユーザー名",
+    "usernameDesc": "ユニークなユーザー名を選択してください",
+    "create": "子供アカウントを作成"
+  },
+  "ProfileSelection": {
+    "title": "TaskBlastを使うのは誰ですか？",
+    "parentProfile": "親アカウント",
+    "childProfile": "子供アカウント",
+    "desc": "まだ子供アカウントがありません。",
+    "desc2": "親アカウントから作成してください",
+    "text": "または子供を選択",
+    "EnterPin": "PINを入力"
+  },
+  "Planets": {
+    "planet1": "水星",
+    "planet2": "金星",
+    "planet3": "地球",
+    "planet4": "火星",
+    "planet5": "木星",
+    "planet6": "土星",
+    "planet7": "天王星",
+    "planet8": "海王星",
+    "planet9": "冥王星",
+    "descriptionBonus": "{{percent}}% クリスタル増加",
+    "descriptionBase": "標準クリスタル報酬",
+    "stats": "直径 {{diameter}} km ・ 太陽からの距離 {{distance}} km"
+  }
+}

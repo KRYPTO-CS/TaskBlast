@@ -1,0 +1,518 @@
+{
+  "language": {
+    "selectLanguage": "Selecteer je taal",
+    "continue": "Doorgaan",
+    "backTo": "Terug naar",
+    "Login": "Inloggen"
+  },
+  "birthdate": {
+    "title": "Wat is je geboortedatum?",
+    "notice": "Je moet minstens 13 jaar oud zijn om je te registreren",
+    "month": "Maand",
+    "day": "Dag",
+    "year": "Jaar",
+    "continue": "Doorgaan",
+    "previousStep": "Vorige stap",
+    "error": "Voer een geldige datum in",
+    "age": "Geef het apparaat aan een ouder of voogd",
+    "empty": "Vul alle velden in"
+  },
+  "AccountType": {
+    "title": "Wie gaat TaskBlast gebruiken?",
+    "type": "Kies het accounttype dat het beste past bij de primaire gebruiker van TaskBlast.",
+    "managetitle": "Beheerd Account",
+    "managedesc": "Voor kinderen en jongeren. Sommige functies zijn beperkt en worden beheerd via een ouder/voogd PIN.",
+    "indetitle": "Onafhankelijk Account",
+    "indedesc": "Voor zelfstandige gebruikers. Volledige toegang zonder beperkingen.",
+    "continue": "Doorgaan",
+    "error": "Kies een accounttype om verder te gaan"
+  },
+  "Name": {
+    "title": "Wat is je naam?",
+    "desc": "Laat ons weten hoe we je mogen noemen in TaskBlast",
+    "firstName": "Voornaam",
+    "lastName": "Achternaam",
+    "continue": "Doorgaan"
+  },
+  "Email": {
+    "title": "Wat is je e-mailadres?",
+    "desc": "We sturen je een verificatiecode om je e-mailadres te bevestigen",
+    "emailPlaceholder": "E-mailadres",
+    "send": "Link versturen"
+  },
+  "Password": {
+    "title": "Maak een wachtwoord aan",
+    "desc": "Kies een sterk wachtwoord om je account te beschermen",
+    "passwordPlaceholder": "Wachtwoord",
+    "ConfirmPasswordPlaceholder": "Bevestig wachtwoord",
+    "submit": "Account aanmaken",
+    "match": "Wachtwoorden komen niet overeen",
+    "length": "Wachtwoord moet minstens 8 tekens lang zijn",
+    "emailRequiredError": "E-mailadres is verplicht.",
+    "emailInUseError": "Dit e-mailadres is al in gebruik. Probeer in te loggen of je wachtwoord te resetten.",
+    "invalidEmailError": "Voer een geldig e-mailadres in.",
+    "weakPasswordError": "Wachtwoord is te zwak. Gebruik minstens 8 tekens.",
+    "signUpFailedError": "Registratie mislukt. Probeer het opnieuw."
+  },
+  "Login": {
+    "title": "Inloggen",
+    "emailPlaceholder": "E-mail of gebruikersnaam",
+    "passwordPlaceholder": "Wachtwoord",
+    "forgotPassword": "Wachtwoord vergeten?",
+    "loginButton": "Inloggen",
+    "noAccount": "Heb je nog geen account?",
+    "signUp": "Registreren",
+    "verifyEmailTitle": "Verifieer je e-mail",
+    "verifyEmailBody": "We hebben een verificatie-e-mail verstuurd. Bevestig je e-mailadres voordat je inlogt. Controleer ook je spam/junk map.",
+    "ok": "OK"
+  },
+  "ForgotPassword": {
+    "title": "Wachtwoord vergeten?",
+    "desc": "Voer je e-mailadres in en we sturen je een code om je wachtwoord te resetten",
+    "emailPlaceholder": "E-mailadres",
+    "submit": "Versturen",
+    "resetEmailSentTitle": "Reset-e-mail verzonden",
+    "resetEmailSentBody": "Controleer je e-mail voor de resetlink. Klik op de link om je wachtwoord te resetten.",
+    "ok": "OK"
+  },
+  "VerifyCode": {
+    "title": "Code verifiëren",
+    "desc": "Voer de 5-cijferige code in die is verstuurd naar",
+    "notreceived": "Geen code ontvangen?",
+    "resend": "Opnieuw versturen",
+    "submit": "Versturen"
+  },
+  "ResetPassword": {
+    "title": "Maak een nieuw wachtwoord",
+    "desc": "Voer hieronder je nieuwe wachtwoord in",
+    "newPasswordPlaceholder": "Nieuw wachtwoord",
+    "confirmPasswordPlaceholder": "Bevestig wachtwoord",
+    "submit": "Wachtwoord resetten"
+  },
+  "ManagerPin": {
+    "title": "Maak een Ouder-PIN aan",
+    "desc": "Deze 4-cijferige PIN laat een ouder of voogd het account beheren en taken aanmaken voor de leerling. Houd hem geheim.",
+    "pin": "PIN (4 cijfers)",
+    "confirmPinPlaceholder": "Bevestig PIN",
+    "continue": "Doorgaan"
+  },
+  "Home": {
+    "takeoff": "Lancering",
+    "coachMarktaskstitle": "Nieuwe taken toevoegen",
+    "coachMarktasks": "Tik hier om nieuwe taken toe te voegen, beloningen in te stellen en je concentratiesessies aan te passen!",
+    "coachMarkProfiletitle": "Bekijk je profiel",
+    "coachMarkProfile": "Tik hier om je profiel te bekijken, je voortgang te volgen en je avatar aan te passen!",
+    "coachMarksettings": "Tik hier om je voorkeuren aan te passen, meldingen te beheren en meer!",
+    "coachMarktakeoff": "Tik hier om een concentratiesessie te starten en op weg te gaan naar je doelen!",
+    "coachMarkshop": "Tik hier om de winkel te bezoeken en je avatar aan te kleden met nieuwe lichamen en vleugels!",
+    "playerLevel": "Spelersniveau",
+    "Level Rewards": "Niveau Beloningen",
+    "Claimed": "Opgeëist",
+    "Claim": "Claimen",
+    "Claiming": "Bezig met claimen...",
+    "expLabel": "EXP",
+    "levelShort": "Lv",
+    "Locked": "Vergrendeld",
+    "Crystals": "Kristallen",
+    "galaxyCrystals": "Galactische Kristallen",
+    "level": "Niveau",
+    "coachMarklevel": "Dit is je huidige spelersniveau. Verdien ervaringspunten door taken en concentratiesessies te voltooien om levels te stijgen en beloningen te verdienen!"
+  },
+  "Settings": {
+    "title": "Instellingen",
+    "sound": "Geluidseffecten",
+    "music": "Muziek",
+    "notifications": "Meldingen",
+    "privacy": "Privacy",
+    "Help": "Help & Ondersteuning",
+    "About": "Over",
+    "Logout": "Uitloggen",
+    "accessibility": "Toegankelijkheid",
+    "language": "Taal",
+    "colorBlind": "Kleurenblind-modus",
+    "textSize": "Lettergrootte",
+    "highContrast": "Hoog contrast",
+    "reduceMotion": "Minder beweging",
+    "voice": "Stem",
+    "tts": "Tekst-naar-spraak",
+    "ttsDesc": "Lees scherminhoud voor",
+    "defaultColors": "Standaard kleuren",
+    "redGreenDeficiency": "Rood/groen deficiëntie",
+    "redDeficiency": "Rood deficiëntie",
+    "blueYellowDeficiency": "Blauw/geel deficiëntie",
+    "done": "Klaar",
+    "logout": "Uitloggen",
+    "switchProfile": "Profiel wisselen",
+    "logoutText": "Weet je zeker dat je wilt uitloggen?",
+    "parentAccount": "👤 Ouderaccount",
+    "noFilter": "Geen filter",
+    "deuteranopia": "Deuteranopie",
+    "protanopia": "Protanopie",
+    "tritanopia": "Tritanopie",
+    "customize": "Tik om aan te passen",
+    "replayTutorial": "Tutorial opnieuw afspelen"
+  },
+  "PrivacyScreen": {
+    "lastUpdated": "Laatst bijgewerkt: 30 maart 2026",
+    "intro": "Bij TaskBlast vinden we jouw privacy belangrijk. Dit privacybeleid legt uit welke informatie we verzamelen, hoe we die gebruiken en welke keuzes je hebt. Lees het aandachtig door.",
+    "backToSettings": "Terug",
+    "sections": {
+      "informationCollect": {
+        "title": "Informatie die we verzamelen",
+        "body": "We verzamelen informatie die je opgeeft bij het aanmaken van een account, zoals naam, e-mailadres en geboortedatum. Voor kinderaccounts moet een ouder of voogd het account goedkeuren. We verzamelen ook gebruiksgegevens zoals voltooide taken, tijd in concentratiesessies en in-app aankopen om je ervaring te verbeteren."
+      },
+      "howUse": {
+        "title": "Hoe we je informatie gebruiken",
+        "body": "Je informatie wordt gebruikt om de TaskBlast-dienst te leveren en te verbeteren, je ervaring te personaliseren, meldingen te versturen waar je voor hebt gekozen en de accountbeveiliging te waarborgen. We verkopen je persoonlijke gegevens niet aan derden."
+      },
+      "sharing": {
+        "title": "Delen van informatie",
+        "body": "We delen je persoonlijke informatie niet met derden, tenzij dit wettelijk verplicht is of nodig is voor kernfunctionaliteit van de app (bijv. Firebase-authenticatie en cloudopslag). Derde partijen die we gebruiken vallen onder hun eigen privacybeleid."
+      },
+      "security": {
+        "title": "Gegevensbeveiliging",
+        "body": "We gebruiken industriestandaard versleuteling en Firebase-beveiligingsregels om je gegevens te beschermen. Toegang tot persoonlijke informatie is beperkt tot geautoriseerd personeel. Geen enkele internettransmissie is echter 100% veilig."
+      },
+      "children": {
+        "title": "Privacy van kinderen",
+        "body": "TaskBlast is ontworpen voor gebruikers van alle leeftijden. Accounts voor gebruikers onder de 13 jaar worden beheerd door een ouder of voogd via de beheerde accountfunctie. We verzamelen geen persoonlijke informatie van kinderen onder de 13 jaar zonder geverifieerde ouderlijke toestemming."
+      },
+      "notifications": {
+        "title": "Meldingen",
+        "body": "We kunnen pushmeldingen sturen over taakherinneringen en app-updates. Je kunt je meldingsvoorkeuren altijd aanpassen in de Instellingen."
+      },
+      "rights": {
+        "title": "Jouw rechten",
+        "body": "Je kunt op elk moment toegang, correctie of verwijdering van je persoonlijke gegevens aanvragen door contact met ons op te nemen. Je kunt je account ook direct in de app verwijderen, waarna alle gekoppelde gegevens uit ons systeem worden verwijderd."
+      },
+      "changes": {
+        "title": "Wijzigingen in dit beleid",
+        "body": "We kunnen dit privacybeleid af en toe bijwerken. We zullen je informeren over belangrijke wijzigingen via e-mail of een melding in de app. Door TaskBlast te blijven gebruiken na een wijziging, ga je akkoord met het herziene beleid."
+      },
+      "contact": {
+        "title": "Contacteer ons",
+        "body": "Heb je vragen over dit privacybeleid? Neem dan contact met ons op via kryptocapstone@gmail.com. We streven ernaar om binnen 5 werkdagen te reageren."
+      }
+    }
+  },
+  "SupportScreen": {
+    "title": "Help & Ondersteuning",
+    "intro": "Hulp nodig bij het navigeren door het zonnestelsel? Bekijk de veelgestelde vragen hieronder of neem direct contact op met ons team.",
+    "faqHeading": "Veelgestelde Vragen",
+    "contactHeading": "Contacteer ons",
+    "responseTime": "We streven ernaar om alle vragen binnen 5 werkdagen te beantwoorden.",
+    "back": "Terug",
+    "contactCards": {
+      "generalSupport": "Algemene Ondersteuning",
+      "privacyEnquiries": "Privacy-vragen"
+    },
+    "faq": {
+      "items": {
+        "1": {
+          "question": "Hoe voeg ik een nieuwe taak toe?",
+          "answer": "Tik op het taak-icoon op het startscherm om je takenlijst te openen. Tik op 'Nieuwe taak toevoegen', vul de taaknaam, optionele beschrijving en rock-beloning in en tik op 'Taak toevoegen'."
+        },
+        "2": {
+          "question": "Hoe werken concentratiesessies?",
+          "answer": "TaskBlast gebruikt de Pomodoro-techniek: afwisselend werk- en pauzecycli. Selecteer een taak en tik op 'Lancering' om te starten. Je kunt op elk moment pauzeren of vroegtijdig landen en verdient rocks bij voltooiing."
+        },
+        "3": {
+          "question": "Wat zijn Rocks en Galactische Kristallen?",
+          "answer": "Rocks verdien je door taken en concentratiesessies te voltooien. Galactische Kristallen zijn premium valuta die je krijgt bij level-ups. Beide kun je uitgeven in de winkel om je avatar aan te passen."
+        },
+        "4": {
+          "question": "Hoe maak ik een kinderaccount aan?",
+          "answer": "Ga naar je profiel en tik op 'Kinderaccount toevoegen'. Je wordt gevraagd een beheerd account aan te maken met een Ouder-PIN. Het kind kan daarna zijn profiel selecteren op het profielkeuzescherm."
+        },
+        "5": {
+          "question": "Ik ben mijn Ouder-PIN vergeten. Wat moet ik doen?",
+          "answer": "Ouder-PINs worden veilig opgeslagen op je account. Neem contact met ons op via {{email}} met je geregistreerde e-mailadres en we helpen je om toegang te herstellen."
+        },
+        "6": {
+          "question": "Hoe verander ik de taal van de app?",
+          "answer": "Ga naar Instellingen en tik op 'Taal'. Je kunt kiezen uit Engels, Spaans, Portugees, Frans, Duits, Russisch, Arabisch, Bengaals, Chinees, Hindi en Piraten-taal."
+        },
+        "7": {
+          "question": "De app ziet er anders uit – wat zijn kleurenblind-modi?",
+          "answer": "In Instellingen tik je op 'Toegankelijkheid' voor kleurenblind-vriendelijke thema's (Deuteranopie, Protanopie, Tritanopie), hoog contrast en verminderde beweging."
+        },
+        "8": {
+          "question": "Hoe zet ik meldingen uit?",
+          "answer": "Ga naar Instellingen en tik op 'Meldingen'. Je kunt individuele meldingstypes op elk moment aan- of uitzetten."
+        },
+        "9": {
+          "question": "Hoe verwijder ik mijn account?",
+          "answer": "Om je account te laten verwijderen, neem je contact met ons op via {{email}} vanaf je geregistreerde e-mailadres. We verwerken je verzoek binnen 5 werkdagen en verwijderen alle gekoppelde gegevens."
+        }
+      }
+    }
+  },
+  "AboutScreen": {
+    "title": "Over",
+    "tagline": "Lanceer. Focus. Level up.",
+    "back": "Terug",
+    "sections": {
+      "mission": {
+        "title": "Onze missie",
+        "body": "TaskBlast is gemaakt om productiviteit leuk te maken. We geloven dat concentratie en prestatie geen corvee hoeven te zijn, daarom hebben we ze verpakt in een ruimte-avontuur. Onze missie is om leerlingen van alle leeftijden te helpen gezonde gewoontes op te bouwen via gamified taakbeheer."
+      },
+      "howItWorks": {
+        "title": "Hoe het werkt",
+        "body": "Voeg taken toe, lanceer in concentratiesessies op basis van de Pomodoro-techniek en land op nieuwe planeten terwijl je je doelen bereikt. Verdien Rocks en Galactische Kristallen, stijg in level en unlock cosmetische beloningen."
+      },
+      "forEveryone": {
+        "title": "Voor iedereen",
+        "body": "TaskBlast ondersteunt zowel zelfstandige gebruikers als beheerde accounts voor jongere kinderen. Ouders en voogden kunnen kinderaccounts aanmaken, taken toewijzen en een Ouder-PIN instellen, zonder het plezier te verstoren."
+      },
+      "accessibility": {
+        "title": "Toegankelijkheid eerst",
+        "body": "We streven naar een inclusieve ervaring. TaskBlast bevat kleurenblind-vriendelijke thema's, hoog contrast, aanpasbare lettergrootte, verminderde beweging en een volledig tekst-naar-spraak systeem."
+      },
+      "languages": {
+        "title": "Meertalige ondersteuning",
+        "body": "TaskBlast is beschikbaar in het Engels, Spaans, Portugees, Frans, Duits, Russisch, Arabisch, Bengaals, Chinees, Hindi en zelfs Piraten-taal. We werken continu aan uitbreiding van de talen."
+      },
+      "privacy": {
+        "title": "Privacy & Veiligheid",
+        "body": "We nemen je gegevens serieus. TaskBlast gebruikt de industriestandaard beveiliging van Firebase en verkoopt nooit je persoonlijke informatie. Kinderaccounts worden volledig beheerd door ouders of voogden."
+      },
+      "credits": {
+        "title": "Credits",
+        "body": "Rotating Pixel Art Earth by j_hyde on opengameart.org"
+      },
+      "version": {
+        "title": "Versie",
+        "body": "TaskBlast v1.0.0\nGemaakt met React Native & Expo.\n© 2026 TaskBlast. Alle rechten voorbehouden."
+      }
+    }
+  },
+  "Tasks": {
+    "title": "Takenlijst",
+    "normal": "Normaal",
+    "edit": "Bewerken",
+    "archive": "Archiveren",
+    "empty": "Nog geen taken. Voeg je eerste taak toe!",
+    "button": "Nieuwe taak toevoegen",
+    "archivedempty": "Geen gearchiveerde taken.",
+    "new": "Nieuwe taak",
+    "desc": "Beschrijving (optioneel, max 200 tekens)",
+    "reward": "Beloning (rocks)",
+    "min": "Minimaliseren toestaan",
+    "settings": "Pomodoro-instellingen",
+    "worktime": "Werktijd (minuten)",
+    "playtime": "Pauzetijd (minuten)",
+    "cycles": "Aantal cycli",
+    "cancel": "Annuleren",
+    "add": "Taak toevoegen",
+    "planetDisclaimer": "Je ontvangt de hoogste ontgrendelde kristalvermenigvuldiger voor aangepaste taken.",
+    "editTask": "Taak bewerken",
+    "save": "Opslaan",
+    "coachMarkdesc": "Hier beheer je je taken. Tik op een taak voor details, om een concentratiesessie te starten of om te bewerken. Gebruik de tabs om te wisselen tussen actieve en gearchiveerde taken.",
+    "Done": "Klaar",
+    "TaskName": "Taaknaam",
+    "description": "Beschrijving",
+    "reward2": "Beloning",
+    "status": "Status",
+    "complete": "Voltooid",
+    "incomplete": "Onvoltooid",
+    "yes": "Ja",
+    "no": "Nee",
+    "workTime": "Werktijd",
+    "playTime": "Pauzetijd",
+    "Cycles": "Cycli",
+    "created": "Aangemaakt",
+    "details": "Taakinfo",
+    "close": "Sluiten",
+    "minutesShort": "min",
+    "hoursShort": "u",
+    "managerAccess": "Ouder-toegang",
+    "managerAccessDesc": "Voer de 4-cijferige PIN in voor bewerkmodus met verhoogde rechten.",
+    "unlock": "Ontgrendelen"
+  },
+  "Traits": {
+    "ADHD": "ADHD",
+    "Aspergers": "Asperger",
+    "Autism": "Autisme",
+    "DevelopmentalLanguageDisorder": "Ontwikkelingsstoornis in de taal",
+    "Disability Confident": "Disability Confident",
+    "Dyscalculia": "Dyscalculie",
+    "Dysgraphia": "Dysgrafie",
+    "Dyslexia": "Dyslexie",
+    "Dyspraxia": "Dyspraxie",
+    "Hyperlexia": "Hyperlexie",
+    "Irlen Syndrome": "Irlen-syndroom",
+    "OCD": "OCS (Obsessief-Compulsieve Stoornis)",
+    "Synthesia": "Synesthesie",
+    "Tourette's Syndrome": "Tourette-syndroom",
+    "selectTraits": "Selecteer kenmerken",
+    "saveTraits": "Kenmerken opslaan"
+  },
+  "Profile": {
+    "traits": "Kenmerken",
+    "editP": "Profiel bewerken",
+    "awards": "Awards",
+    "YourStats": "Jouw statistieken",
+    "rocksEarned": "Totaal verdiende kristallen: ",
+    "rocksSpent": "Totaal uitgegeven kristallen: ",
+    "AvgWorkCycle": "Gemiddelde werktijd per cyclus: ",
+    "AvgPlayCycle": "Gemiddelde pauzetijd per cyclus: ",
+    "work": "Werk/pauze-verhouding: ",
+    "level": "Huidig niveau: ",
+    "planets": "Ontdekte planeten: ",
+    "total": "Totale tijd besteed aan taken: ",
+    "AddChildAccount": "Kinderaccount toevoegen",
+    "SwitchProfile": "Profiel wisselen",
+    "Logout": "Uitloggen",
+    "coachMarkeditP": "Tik hier om je profielinformatie bij te werken!",
+    "coachMarkTraitsTitle": "Kenmerken bekijken",
+    "coachMarkTraits": "Hier kun je je kenmerken zien en nieuwe toevoegen!",
+    "coachMarkAwardsTitle": "Awards bekijken",
+    "coachMarkAwards": "Hier kun je je awards en prestaties zien!",
+    "coachMarkStatsTitle": "Statistieken bekijken",
+    "coachMarkStats": "Hier kun je je statistieken zien en je voortgang in de tijd volgen!",
+    "edit": "Bewerken",
+    "advanced": "Geavanceerd",
+    "deleteAccount": "Account verwijderen"
+  },
+  "EditProfileModal": {
+    "title": "Profiel bewerken",
+    "tapToChangePicture": "Tik om profielfoto te wijzigen",
+    "firstName": "Voornaam",
+    "firstNamePlaceholder": "Voornaam",
+    "lastName": "Achternaam",
+    "lastNamePlaceholder": "Achternaam",
+    "displayName": "Weergavenaam (bijnaam)",
+    "displayNamePlaceholder": "Weergavenaam",
+    "email": "E-mail",
+    "emailPlaceholder": "E-mail",
+    "birthdate": "Geboortedatum (MM/DD/YYYY)",
+    "birthdatePlaceholder": "MM/DD/YYYY",
+    "saveChanges": "Wijzigingen opslaan",
+    "errors": {
+      "loginToUpdatePicture": "Je moet ingelogd zijn om je profielfoto te wijzigen",
+      "failedToUpdatePicture": "Profielfoto bijwerken mislukt",
+      "firstAndLastRequired": "Voor- en achternaam zijn verplicht",
+      "displayNameRequired": "Weergavenaam is verplicht",
+      "emailRequired": "E-mailadres is verplicht",
+      "invalidEmail": "Voer een geldig e-mailadres in",
+      "loginToUpdateProfile": "Je moet ingelogd zijn om je profiel bij te werken",
+      "childProfileMissing": "Actief kinderprofiel niet gevonden",
+      "failedToSave": "Profiel opslaan mislukt. Probeer het opnieuw."
+    }
+  },
+  "AnalyticsChartsModal": {
+    "title": "Analyse grafieken",
+    "charts": {
+      "common": {
+        "date": "Datum"
+      },
+      "totalRocks": {
+        "title": "Totaal verdiende kristallen uit games",
+        "yAxis": "Kristallen"
+      },
+      "workTime": {
+        "title": "Cumulatieve werktijd",
+        "yAxis": "Minuten"
+      },
+      "playTime": {
+        "title": "Cumulatieve pauzetijd",
+        "yAxis": "Minuten"
+      }
+    },
+    "empty": {
+      "noRockStats": "Nog geen rock-statistieken.",
+      "noWorkSessions": "Nog geen werksessies.",
+      "noPlaySessions": "Nog geen pauzesessies."
+    }
+  },
+  "Pomodoro": {
+    "time": "Resterende tijd",
+    "work": "Werksessie",
+    "Resume": "Hervatten",
+    "Pause": "Pauzeren",
+    "Land": "Landen",
+    "Play": "Spelen",
+    "coachMarkTime": "Dit is de resterende tijd in je huidige sessie. Aan het einde kun je landen op je planeet of een game spelen. Blijf gefocust en kijk naar de countdown!",
+    "coachMarkwork": "Dit geeft aan of je in een werksessie of pauze zit. Blijf gefocust tijdens het werk en ontspan tijdens de pauze!",
+    "coachMarkPause": "Tik hier om de sessie te pauzeren als je een onverwachte pauze nodig hebt.",
+    "coachMarkLand": "Tik hier om de sessie te beëindigen en terug te landen op je planeet. Goed gedaan met je concentratietijd!",
+    "worksession": "Werksessie",
+    "freeTime": "Vrije tijd",
+    "startTask": "Taak starten",
+    "ChooseGame": "Kies je game"
+  },
+  "Shop": {
+    "title": "Winkel",
+    "body": "Lichaam",
+    "wings": "Vleugels",
+    "toppers": "Booster",
+    "bBody": "Blauw Lichaam",
+    "rBody": "Rood Lichaam",
+    "yBody": "Geel Lichaam",
+    "gBody": "Groen Lichaam",
+    "dTopper": "Standaard",
+    "bTopper": "Blauwe Vlam",
+    "aTopper": "Artemis Lancering",
+    "bWings": "Blauwe Vleugels",
+    "rWings": "Rode Vleugels",
+    "yWings": "Gele Vleugels",
+    "gWings": "Groene Vleugels",
+    "galaxyWings": "Galactische Vleugels",
+    "equipped": "Uitgerust",
+    "owned": "In bezit",
+    "confirmPurchaseTitle": "Bevestig aankoop",
+    "confirmPurchaseText": "Dit item kopen voor {{price}} kristallen?",
+    "confirmPurchaseCrystalText": "Dit item kopen voor {{price}} Galactische Kristallen?",
+    "cancel": "Annuleren",
+    "notEnoughCrystalsTitle": "Niet genoeg kristallen",
+    "notEnoughCrystalsText": "Je hebt {{price}} kristallen nodig, maar je hebt er maar {{rocks}}.",
+    "purchase": "Kopen"
+  },
+  "Games": {
+    "chooseTitle": "Kies je game",
+    "asteroidBlaster": "Asteroid Blaster",
+    "asteroidBlasterDesc": "Schiet de asteroïden kapot!",
+    "spaceSwerve": "Space Swerve",
+    "spaceSwerveDesc": "Ontwijk de asteroïden!",
+    "freeTime": "Vrije tijd",
+    "freeTimeDesc": "Neem een pauze op jouw manier!",
+    "game2048": "2048",
+    "game2048Desc": "Combineer tegels. Mik op 2048!",
+    "matchBlast": "Match Blast",
+    "matchBlastDesc": "Match paren snel voor bonus rocks!",
+    "sequentBlast": "Sequent Blast",
+    "sequentBlastDesc": "Onthoud en tik de verborgen reeks."
+  },
+  "ChildAccount": {
+    "title": "Kinderaccount aanmaken",
+    "firstName": "Voornaam invoeren",
+    "lastName": "Achternaam invoeren",
+    "birthdate": "Geboortedatum",
+    "username": "Gebruikersnaam",
+    "usernameDesc": "Kies een unieke gebruikersnaam",
+    "create": "Kinderaccount aanmaken"
+  },
+  "ProfileSelection": {
+    "title": "Wie gebruikt TaskBlast?",
+    "parentProfile": "Ouderaccount",
+    "childProfile": "Kinderaccount",
+    "desc": "Nog geen kinderaccounts.",
+    "desc2": "Maak er een aan via het ouderaccount",
+    "text": "OF SELECTEER KIND",
+    "EnterPin": "Voer PIN in voor"
+  },
+  "Planets": {
+    "planet1": "Mercurius",
+    "planet2": "Venus",
+    "planet3": "Aarde",
+    "planet4": "Mars",
+    "planet5": "Jupiter",
+    "planet6": "Saturnus",
+    "planet7": "Uranus",
+    "planet8": "Neptunus",
+    "planet9": "Pluto",
+    "descriptionBonus": "{{percent}}% meer kristallen",
+    "descriptionBase": "Standaard kristalbeloningen",
+    "stats": "{{diameter}} km diameter · {{distance}} km van de Zon"
+  }
+}

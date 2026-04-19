@@ -1,0 +1,518 @@
+{
+  "language": {
+    "selectLanguage": "Seleziona la tua lingua",
+    "continue": "Continua",
+    "backTo": "Torna a",
+    "Login": "Accedi"
+  },
+  "birthdate": {
+    "title": "Qual è la tua data di nascita?",
+    "notice": "Devi avere almeno 13 anni per registrarti",
+    "month": "Mese",
+    "day": "Giorno",
+    "year": "Anno",
+    "continue": "Continua",
+    "previousStep": "Passo precedente",
+    "error": "Inserisci una data valida",
+    "age": "Consegna il dispositivo a un genitore o tutore",
+    "empty": "Compila tutti i campi"
+  },
+  "AccountType": {
+    "title": "Chi userà TaskBlast?",
+    "type": "Scegli il tipo di account che meglio descrive l'utente principale di TaskBlast.",
+    "managetitle": "Account Gestito",
+    "managedesc": "Per utenti dipendenti. Alcune funzioni sono limitate e controllate da un PIN genitore/tutore.",
+    "indetitle": "Account Indipendente",
+    "indedesc": "Per studenti autonomi. Accesso completo senza restrizioni.",
+    "continue": "Continua",
+    "error": "Seleziona un tipo di account per continuare"
+  },
+  "Name": {
+    "title": "Come ti chiami?",
+    "desc": "Dicci come vogliamo chiamarti mentre usi TaskBlast",
+    "firstName": "Nome",
+    "lastName": "Cognome",
+    "continue": "Continua"
+  },
+  "Email": {
+    "title": "Qual è il tuo indirizzo email?",
+    "desc": "Ti invieremo un codice di verifica per confermare il tuo indirizzo email",
+    "emailPlaceholder": "Indirizzo email",
+    "send": "Invia link"
+  },
+  "Password": {
+    "title": "Crea una password",
+    "desc": "Scegli una password forte per proteggere il tuo account",
+    "passwordPlaceholder": "Password",
+    "ConfirmPasswordPlaceholder": "Conferma password",
+    "submit": "Crea account",
+    "match": "Le password non corrispondono",
+    "length": "La password deve essere lunga almeno 8 caratteri",
+    "emailRequiredError": "L'email è obbligatoria.",
+    "emailInUseError": "Questa email è già in uso. Prova ad accedere o a reimpostare la password.",
+    "invalidEmailError": "Inserisci un indirizzo email valido.",
+    "weakPasswordError": "La password è troppo debole. Usa almeno 8 caratteri.",
+    "signUpFailedError": "Registrazione fallita. Riprova."
+  },
+  "Login": {
+    "title": "Accedi",
+    "emailPlaceholder": "Email o nome utente",
+    "passwordPlaceholder": "Password",
+    "forgotPassword": "Hai dimenticato la password?",
+    "loginButton": "Accedi",
+    "noAccount": "Non hai un account?",
+    "signUp": "Registrati",
+    "verifyEmailTitle": "Verifica la tua email",
+    "verifyEmailBody": "Abbiamo inviato un'email di verifica. Verifica il tuo indirizzo email prima di accedere. Controlla anche la cartella spam/junk.",
+    "ok": "OK"
+  },
+  "ForgotPassword": {
+    "title": "Hai dimenticato la password?",
+    "desc": "Inserisci il tuo indirizzo email e ti invieremo un codice per reimpostare la password",
+    "emailPlaceholder": "Indirizzo email",
+    "submit": "Invia",
+    "resetEmailSentTitle": "Email di reset inviata",
+    "resetEmailSentBody": "Controlla la tua email per il link di reset. Clicca sul link per reimpostare la password.",
+    "ok": "OK"
+  },
+  "VerifyCode": {
+    "title": "Verifica codice",
+    "desc": "Inserisci il codice a 5 cifre inviato a",
+    "notreceived": "Non hai ricevuto il codice?",
+    "resend": "Reinvia",
+    "submit": "Invia"
+  },
+  "ResetPassword": {
+    "title": "Crea una nuova password",
+    "desc": "Inserisci la nuova password qui sotto",
+    "newPasswordPlaceholder": "Nuova password",
+    "confirmPasswordPlaceholder": "Conferma password",
+    "submit": "Reimposta password"
+  },
+  "ManagerPin": {
+    "title": "Crea un PIN Genitore",
+    "desc": "Questo PIN a 4 cifre permette a un genitore o tutore di gestire l'account e creare compiti per lo studente. Tienilo segreto.",
+    "pin": "PIN (4 cifre)",
+    "confirmPinPlaceholder": "Conferma PIN",
+    "continue": "Continua"
+  },
+  "Home": {
+    "takeoff": "Decollo",
+    "coachMarktaskstitle": "Aggiungi nuovi compiti",
+    "coachMarktasks": "Tocca qui per aggiungere nuovi compiti, impostare ricompense e personalizzare le sessioni di concentrazione!",
+    "coachMarkProfiletitle": "Visualizza il tuo profilo",
+    "coachMarkProfile": "Tocca qui per vedere il tuo profilo, monitorare i progressi e personalizzare il tuo avatar!",
+    "coachMarksettings": "Tocca qui per regolare le preferenze, gestire le notifiche e altro!",
+    "coachMarktakeoff": "Tocca qui per iniziare una sessione di concentrazione e partire verso i tuoi obiettivi!",
+    "coachMarkshop": "Tocca qui per visitare il negozio e personalizzare il tuo avatar con nuovi corpi e ali!",
+    "playerLevel": "Livello Giocatore",
+    "Level Rewards": "Ricompense di Livello",
+    "Claimed": "Riscattato",
+    "Claim": "Riscatta",
+    "Claiming": "Riscatto in corso...",
+    "expLabel": "EXP",
+    "levelShort": "Lv",
+    "Locked": "Bloccato",
+    "Crystals": "Cristalli",
+    "galaxyCrystals": "Cristalli Galattici",
+    "level": "Livello",
+    "coachMarklevel": "Questo è il tuo livello giocatore attuale. Guadagna punti esperienza completando compiti e sessioni di concentrazione per salire di livello e ottenere ricompense!"
+  },
+  "Settings": {
+    "title": "Impostazioni",
+    "sound": "Effetti Sonori",
+    "music": "Musica",
+    "notifications": "Notifiche",
+    "privacy": "Privacy",
+    "Help": "Aiuto e Supporto",
+    "About": "Informazioni",
+    "Logout": "Esci",
+    "accessibility": "Accessibilità",
+    "language": "Lingua",
+    "colorBlind": "Modalità daltonismo",
+    "textSize": "Dimensione testo",
+    "highContrast": "Alto contrasto",
+    "reduceMotion": "Riduci movimenti",
+    "voice": "Voce",
+    "tts": "Sintesi vocale",
+    "ttsDesc": "Leggi ad alta voce il contenuto dello schermo",
+    "defaultColors": "Colori predefiniti",
+    "redGreenDeficiency": "Deficienza rosso/verde",
+    "redDeficiency": "Deficienza del rosso",
+    "blueYellowDeficiency": "Deficienza blu/giallo",
+    "done": "Fatto",
+    "logout": "Esci",
+    "switchProfile": "Cambia profilo",
+    "logoutText": "Sei sicuro di voler uscire?",
+    "parentAccount": "👤 Account Genitore",
+    "noFilter": "Nessun filtro",
+    "deuteranopia": "Deuteranopia",
+    "protanopia": "Protanopia",
+    "tritanopia": "Tritanopia",
+    "customize": "Tocca per personalizzare",
+    "replayTutorial": "Riguarda il tutorial"
+  },
+  "PrivacyScreen": {
+    "lastUpdated": "Ultimo aggiornamento: 30 marzo 2026",
+    "intro": "In TaskBlast la tua privacy è importante per noi. Questa Informativa sulla Privacy spiega quali informazioni raccogliamo, come le utilizziamo e le scelte che hai a disposizione. Leggila attentamente.",
+    "backToSettings": "Indietro",
+    "sections": {
+      "informationCollect": {
+        "title": "Informazioni che raccogliamo",
+        "body": "Raccogliamo le informazioni che fornisci durante la creazione dell'account, come nome, indirizzo email e data di nascita. Per gli account minori, un genitore o tutore deve autorizzare l'account. Raccogliamo anche dati di utilizzo come compiti completati, tempo trascorso nelle sessioni di concentrazione e acquisti in-app per migliorare la tua esperienza."
+      },
+      "howUse": {
+        "title": "Come utilizziamo le tue informazioni",
+        "body": "Le tue informazioni vengono utilizzate per fornire e migliorare il servizio TaskBlast, personalizzare la tua esperienza, inviare notifiche a cui hai acconsentito e mantenere la sicurezza dell'account. Non vendiamo i tuoi dati personali a terze parti."
+      },
+      "sharing": {
+        "title": "Condivisione delle informazioni",
+        "body": "Non condividiamo le tue informazioni personali con terze parti se non quando richiesto dalla legge o per fornire funzionalità essenziali dell'app (ad es. autenticazione Firebase e archiviazione cloud). I servizi di terze parti che utilizziamo sono vincolati dalle loro politiche sulla privacy."
+      },
+      "security": {
+        "title": "Sicurezza dei dati",
+        "body": "Utilizziamo crittografia standard del settore e le regole di sicurezza di Firebase per proteggere i tuoi dati. L'accesso alle informazioni personali è limitato solo al personale autorizzato. Tuttavia, nessun metodo di trasmissione su Internet è sicuro al 100%."
+      },
+      "children": {
+        "title": "Privacy dei minori",
+        "body": "TaskBlast è progettato per utenti di tutte le età. Gli account per utenti sotto i 13 anni sono gestiti da un genitore o tutore tramite la funzione di account gestito. Non raccogliamo consapevolmente informazioni personali da minori di 13 anni senza il consenso verificato dei genitori."
+      },
+      "notifications": {
+        "title": "Notifiche",
+        "body": "Possiamo inviare notifiche push relative a promemoria dei compiti e aggiornamenti dell'app. Puoi gestire le preferenze di notifica in qualsiasi momento nel menu Impostazioni."
+      },
+      "rights": {
+        "title": "I tuoi diritti",
+        "body": "Puoi richiedere in qualsiasi momento l'accesso, la correzione o la cancellazione dei tuoi dati personali contattandoci. Puoi anche eliminare il tuo account direttamente dall'app, che rimuoverà tutti i dati associati dai nostri sistemi."
+      },
+      "changes": {
+        "title": "Modifiche a questa informativa",
+        "body": "Possiamo aggiornare questa Informativa sulla Privacy di tanto in tanto. Ti informeremo di eventuali modifiche significative via email o con una notifica in-app. L'uso continuato di TaskBlast dopo l'entrata in vigore delle modifiche costituisce accettazione della nuova versione."
+      },
+      "contact": {
+        "title": "Contattaci",
+        "body": "Per qualsiasi domanda su questa Informativa sulla Privacy, contattaci all'indirizzo kryptocapstone@gmail.com. Ci impegniamo a rispondere a tutte le richieste entro 5 giorni lavorativi."
+      }
+    }
+  },
+  "SupportScreen": {
+    "title": "Aiuto e Supporto",
+    "intro": "Hai bisogno di aiuto per navigare nel Sistema Solare? Consulta le FAQ qui sotto o contatta direttamente il nostro equipaggio.",
+    "faqHeading": "Domande Frequenti",
+    "contactHeading": "Contattaci",
+    "responseTime": "Ci impegniamo a rispondere a tutte le richieste entro 5 giorni lavorativi.",
+    "back": "Indietro",
+    "contactCards": {
+      "generalSupport": "Supporto Generale",
+      "privacyEnquiries": "Richieste sulla Privacy"
+    },
+    "faq": {
+      "items": {
+        "1": {
+          "question": "Come aggiungo un nuovo compito?",
+          "answer": "Tocca l'icona dei compiti nella schermata Home per aprire la lista. Poi tocca 'Aggiungi nuovo compito', compila nome, descrizione opzionale e ricompensa in rocce, e tocca 'Aggiungi compito'."
+        },
+        "2": {
+          "question": "Come funzionano le sessioni di concentrazione?",
+          "answer": "TaskBlast usa la tecnica Pomodoro: alterna cicli di lavoro e pausa. Seleziona un compito e tocca 'Decollo' per iniziare. Puoi mettere in pausa o atterrare in anticipo in qualsiasi momento e guadagnerai rocce al completamento."
+        },
+        "3": {
+          "question": "Cosa sono le Rocce e i Cristalli Galattici?",
+          "answer": "Le Rocce si guadagnano completando compiti e sessioni di concentrazione. I Cristalli Galattici sono una valuta premium ottenuta con i traguardi di livello. Entrambi possono essere spesi nel Negozio per sbloccare personalizzazioni dell'avatar."
+        },
+        "4": {
+          "question": "Come creo un account per mio figlio?",
+          "answer": "Dal tuo profilo tocca 'Aggiungi account figlio'. Ti verrà chiesto di impostare un account gestito con un PIN Genitore. Il bambino potrà poi selezionare il suo profilo dalla schermata di selezione."
+        },
+        "5": {
+          "question": "Ho dimenticato il mio PIN Genitore. Cosa devo fare?",
+          "answer": "Attualmente i PIN Genitore sono memorizzati in modo sicuro sul tuo account. Contattaci a {{email}} con l'email registrata e ti aiuteremo a recuperare l'accesso."
+        },
+        "6": {
+          "question": "Come cambio la lingua dell'app?",
+          "answer": "Vai su Impostazioni e tocca 'Lingua'. Puoi scegliere tra Inglese, Spagnolo, Portoghese, Francese, Tedesco, Russo, Arabo, Bengalese, Cinese, Hindi e Pirata."
+        },
+        "7": {
+          "question": "L'app ha un aspetto diverso – cosa sono le modalità daltonismo?",
+          "answer": "Nelle Impostazioni tocca 'Accessibilità' per trovare temi adatti ai daltonici (Deuteranopia, Protanopia, Tritanopia, Acromatopsia), modalità alto contrasto e riduzione dei movimenti."
+        },
+        "8": {
+          "question": "Come disattivo le notifiche?",
+          "answer": "Vai su Impostazioni e tocca 'Notifiche'. Puoi attivare o disattivare singoli tipi di notifica in qualsiasi momento."
+        },
+        "9": {
+          "question": "Come elimino il mio account?",
+          "answer": "Per richiedere l'eliminazione dell'account, contattaci a {{email}} dall'indirizzo email registrato. Elaboreremo la richiesta entro 5 giorni lavorativi e rimuoveremo tutti i dati associati."
+        }
+      }
+    }
+  },
+  "AboutScreen": {
+    "title": "Informazioni",
+    "tagline": "Decolla. Concentrati. Sali di livello.",
+    "back": "Indietro",
+    "sections": {
+      "mission": {
+        "title": "La nostra missione",
+        "body": "TaskBlast è stato creato per rendere la produttività divertente. Crediamo che concentrazione e senso di realizzazione non debbano sembrare un obbligo, quindi le abbiamo avvolte in un'avventura spaziale. La nostra missione è aiutare studenti di tutte le età a costruire abitudini sane attraverso una gestione dei compiti gamificata."
+      },
+      "howItWorks": {
+        "title": "Come funziona",
+        "body": "Aggiungi compiti, decolla nelle sessioni di concentrazione basate sulla tecnica Pomodoro e atterra su nuovi pianeti man mano che raggiungi i tuoi obiettivi. Guadagna Rocce e Cristalli Galattici, sali di livello e sblocca ricompense cosmetiche lungo il percorso."
+      },
+      "forEveryone": {
+        "title": "Pensato per tutti",
+        "body": "TaskBlast supporta sia studenti indipendenti che account gestiti per gli utenti più giovani. Genitori e tutori possono creare account per i figli, assegnare compiti e impostare un PIN genitore per tenere tutto sotto controllo, senza rovinare il divertimento."
+      },
+      "accessibility": {
+        "title": "Accessibilità al primo posto",
+        "body": "Ci impegniamo per un'esperienza inclusiva. TaskBlast include temi adatti ai daltonici, modalità alto contrasto, dimensione testo regolabile, supporto per riduzione dei movimenti e un sistema completo di sintesi vocale."
+      },
+      "languages": {
+        "title": "Supporto multilingua",
+        "body": "TaskBlast è disponibile in Inglese, Spagnolo, Portoghese, Francese, Tedesco, Russo, Arabo, Bengalese, Cinese, Hindi e persino Pirata. Stiamo lavorando continuamente per espandere le lingue supportate."
+      },
+      "privacy": {
+        "title": "Privacy e Sicurezza",
+        "body": "Prendiamo sul serio i tuoi dati. TaskBlast utilizza l'infrastruttura di sicurezza standard di Firebase e non vende mai le tue informazioni personali. Gli account minori sono completamente gestiti da genitori o tutori."
+      },
+      "credits": {
+        "title": "Crediti",
+        "body": "Rotating Pixel Art Earth by j_hyde on opengameart.org"
+      },
+      "version": {
+        "title": "Versione",
+        "body": "TaskBlast v1.0.0\nRealizzato con React Native & Expo.\n© 2026 TaskBlast. Tutti i diritti riservati."
+      }
+    }
+  },
+  "Tasks": {
+    "title": "Lista Compiti",
+    "normal": "Normale",
+    "edit": "Modifica",
+    "archive": "Archivia",
+    "empty": "Nessun compito ancora. Aggiungi il primo!",
+    "button": "Aggiungi nuovo compito",
+    "archivedempty": "Nessun compito archiviato.",
+    "new": "Nuovo compito",
+    "desc": "Descrizione (opzionale, max 200 caratteri)",
+    "reward": "Ricompensa (rocce)",
+    "min": "Consenti minimizzazione",
+    "settings": "Impostazioni Pomodoro",
+    "worktime": "Tempo di lavoro (minuti)",
+    "playtime": "Tempo di pausa (minuti)",
+    "cycles": "Numero di cicli",
+    "cancel": "Annulla",
+    "add": "Aggiungi compito",
+    "planetDisclaimer": "Riceverai il moltiplicatore di cristalli più alto sbloccato per i compiti personalizzati.",
+    "editTask": "Modifica compito",
+    "save": "Salva",
+    "coachMarkdesc": "Qui puoi gestire i tuoi compiti. Tocca un compito per vedere i dettagli, iniziare una sessione di concentrazione o modificarlo. Usa le schede per passare tra compiti attivi e archiviati.",
+    "Done": "Fatto",
+    "TaskName": "Nome compito",
+    "description": "Descrizione",
+    "reward2": "Ricompensa",
+    "status": "Stato",
+    "complete": "Completato",
+    "incomplete": "Incompleto",
+    "yes": "Sì",
+    "no": "No",
+    "workTime": "Tempo di lavoro",
+    "playTime": "Tempo di pausa",
+    "Cycles": "Cicli",
+    "created": "Creato",
+    "details": "Info compito",
+    "close": "Chiudi",
+    "minutesShort": "min",
+    "hoursShort": "h",
+    "managerAccess": "Accesso Genitore",
+    "managerAccessDesc": "Inserisci il PIN a 4 cifre per accedere alla modalità modifica con permessi elevati.",
+    "unlock": "Sblocca"
+  },
+  "Traits": {
+    "ADHD": "ADHD",
+    "Aspergers": "Sindrome di Asperger",
+    "Autism": "Autismo",
+    "DevelopmentalLanguageDisorder": "Disturbo dello Sviluppo del Linguaggio",
+    "Disability Confident": "Disabilità Consapevole",
+    "Dyscalculia": "Discalculia",
+    "Dysgraphia": "Disgrafia",
+    "Dyslexia": "Dislessia",
+    "Dyspraxia": "Disprassia",
+    "Hyperlexia": "Iperlessia",
+    "Irlen Syndrome": "Sindrome di Irlen",
+    "OCD": "Disturbo Ossessivo-Compulsivo",
+    "Synthesia": "Sinestesia",
+    "Tourette's Syndrome": "Sindrome di Tourette",
+    "selectTraits": "Seleziona caratteristiche",
+    "saveTraits": "Salva caratteristiche"
+  },
+  "Profile": {
+    "traits": "Caratteristiche",
+    "editP": "Modifica profilo",
+    "awards": "Premi",
+    "YourStats": "Le tue statistiche",
+    "rocksEarned": "Cristalli totali guadagnati: ",
+    "rocksSpent": "Cristalli totali spesi: ",
+    "AvgWorkCycle": "Durata media ciclo di lavoro: ",
+    "AvgPlayCycle": "Durata media ciclo di pausa: ",
+    "work": "Rapporto Lavoro/Pausa: ",
+    "level": "Livello attuale: ",
+    "planets": "Pianeti scoperti: ",
+    "total": "Tempo totale dedicato ai compiti: ",
+    "AddChildAccount": "Aggiungi account figlio",
+    "SwitchProfile": "Cambia profilo",
+    "Logout": "Esci",
+    "coachMarkeditP": "Tocca qui per aggiornare le informazioni del tuo profilo!",
+    "coachMarkTraitsTitle": "Visualizza caratteristiche",
+    "coachMarkTraits": "Qui puoi vedere le tue caratteristiche e aggiungerne di nuove!",
+    "coachMarkAwardsTitle": "Visualizza premi",
+    "coachMarkAwards": "Qui puoi vedere i tuoi premi e riconoscimenti!",
+    "coachMarkStatsTitle": "Visualizza statistiche",
+    "coachMarkStats": "Qui puoi vedere le tue statistiche e monitorare i progressi nel tempo!",
+    "edit": "Modifica",
+    "advanced": "Avanzate",
+    "deleteAccount": "Elimina account"
+  },
+  "EditProfileModal": {
+    "title": "Modifica profilo",
+    "tapToChangePicture": "Tocca per cambiare l'immagine del profilo",
+    "firstName": "Nome",
+    "firstNamePlaceholder": "Nome",
+    "lastName": "Cognome",
+    "lastNamePlaceholder": "Cognome",
+    "displayName": "Nome visualizzato (soprannome)",
+    "displayNamePlaceholder": "Nome visualizzato",
+    "email": "Email",
+    "emailPlaceholder": "Email",
+    "birthdate": "Data di nascita (MM/GG/AAAA)",
+    "birthdatePlaceholder": "MM/GG/AAAA",
+    "saveChanges": "Salva modifiche",
+    "errors": {
+      "loginToUpdatePicture": "Devi essere loggato per aggiornare l'immagine del profilo",
+      "failedToUpdatePicture": "Aggiornamento immagine del profilo fallito",
+      "firstAndLastRequired": "Nome e cognome sono obbligatori",
+      "displayNameRequired": "Il nome visualizzato è obbligatorio",
+      "emailRequired": "L'email è obbligatoria",
+      "invalidEmail": "Inserisci un indirizzo email valido",
+      "loginToUpdateProfile": "Devi essere loggato per aggiornare il profilo",
+      "childProfileMissing": "Profilo figlio attivo non trovato",
+      "failedToSave": "Salvataggio del profilo fallito. Riprova."
+    }
+  },
+  "AnalyticsChartsModal": {
+    "title": "Grafici di analisi",
+    "charts": {
+      "common": {
+        "date": "Data"
+      },
+      "totalRocks": {
+        "title": "Cristalli totali guadagnati dai giochi",
+        "yAxis": "Cristalli"
+      },
+      "workTime": {
+        "title": "Tempo di lavoro cumulativo",
+        "yAxis": "Minuti"
+      },
+      "playTime": {
+        "title": "Tempo di pausa cumulativo",
+        "yAxis": "Minuti"
+      }
+    },
+    "empty": {
+      "noRockStats": "Ancora nessuna statistica sui cristalli.",
+      "noWorkSessions": "Ancora nessuna sessione di lavoro.",
+      "noPlaySessions": "Ancora nessuna sessione di pausa."
+    }
+  },
+  "Pomodoro": {
+    "time": "Tempo rimanente",
+    "work": "Sessione di lavoro",
+    "Resume": "Riprendi",
+    "Pause": "Pausa",
+    "Land": "Atterra",
+    "Play": "Gioca",
+    "coachMarkTime": "Questo è il tempo rimanente nella sessione attuale. Alla fine potrai atterrare sul tuo pianeta o giocare. Concentrati e guarda il conto alla rovescia!",
+    "coachMarkwork": "Indica se sei in una sessione di lavoro o di pausa. Rimani concentrato durante il lavoro e rilassati durante le pause!",
+    "coachMarkPause": "Tocca qui per mettere in pausa la sessione se hai bisogno di una pausa non programmata.",
+    "coachMarkLand": "Tocca qui per terminare la sessione e atterrare sul tuo pianeta. Ottimo lavoro sul tempo di concentrazione!",
+    "worksession": "Sessione di lavoro",
+    "freeTime": "Tempo libero",
+    "startTask": "Inizia compito",
+    "ChooseGame": "Scegli il tuo gioco"
+  },
+  "Shop": {
+    "title": "Negozio",
+    "body": "Corpo",
+    "wings": "Ali",
+    "toppers": "Booster",
+    "bBody": "Corpo Blu",
+    "rBody": "Corpo Rosso",
+    "yBody": "Corpo Giallo",
+    "gBody": "Corpo Verde",
+    "dTopper": "Predefinito",
+    "bTopper": "Fiamma Blu",
+    "aTopper": "Lancio Artemis",
+    "bWings": "Ali Blu",
+    "rWings": "Ali Rosse",
+    "yWings": "Ali Gialle",
+    "gWings": "Ali Verdi",
+    "galaxyWings": "Ali Galattiche",
+    "equipped": "Equipaggiato",
+    "owned": "Posseduto",
+    "confirmPurchaseTitle": "Conferma acquisto",
+    "confirmPurchaseText": "Acquistare questo oggetto per {{price}} cristalli?",
+    "confirmPurchaseCrystalText": "Acquistare questo oggetto per {{price}} Cristalli Galattici?",
+    "cancel": "Annulla",
+    "notEnoughCrystalsTitle": "Cristalli insufficienti",
+    "notEnoughCrystalsText": "Ti servono {{price}} cristalli ma ne hai solo {{rocks}}.",
+    "purchase": "Acquista"
+  },
+  "Games": {
+    "chooseTitle": "Scegli il tuo gioco",
+    "asteroidBlaster": "Asteroid Blaster",
+    "asteroidBlasterDesc": "Distruggi gli asteroidi!",
+    "spaceSwerve": "Space Swerve",
+    "spaceSwerveDesc": "Schiva gli asteroidi!",
+    "freeTime": "Tempo libero",
+    "freeTimeDesc": "Prenditi una pausa a modo tuo!",
+    "game2048": "2048",
+    "game2048Desc": "Unisci le tessere. Obiettivo: 2048!",
+    "matchBlast": "Match Blast",
+    "matchBlastDesc": "Abbina le coppie velocemente per rocce bonus!",
+    "sequentBlast": "Sequent Blast",
+    "sequentBlastDesc": "Memorizza e tocca la sequenza nascosta."
+  },
+  "ChildAccount": {
+    "title": "Crea account figlio",
+    "firstName": "Inserisci il nome",
+    "lastName": "Inserisci il cognome",
+    "birthdate": "Data di nascita",
+    "username": "Nome utente",
+    "usernameDesc": "Scegli un nome utente unico",
+    "create": "Crea account figlio"
+  },
+  "ProfileSelection": {
+    "title": "Chi sta usando TaskBlast?",
+    "parentProfile": "Account Genitore",
+    "childProfile": "Account Figlio",
+    "desc": "Ancora nessun account figlio.",
+    "desc2": "Creane uno dall'account genitore",
+    "text": "OPPURE SELEZIONA FIGLIO",
+    "EnterPin": "Inserisci PIN per"
+  },
+  "Planets": {
+    "planet1": "Mercurio",
+    "planet2": "Venere",
+    "planet3": "Terra",
+    "planet4": "Marte",
+    "planet5": "Giove",
+    "planet6": "Saturno",
+    "planet7": "Urano",
+    "planet8": "Nettuno",
+    "planet9": "Plutone",
+    "descriptionBonus": "{{percent}}% cristalli in più",
+    "descriptionBase": "Ricompense cristalli standard",
+    "stats": "{{diameter}} km di diametro · {{distance}} km dal Sole"
+  }
+}

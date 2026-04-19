@@ -1,0 +1,518 @@
+{
+  "language": {
+    "selectLanguage": "Dilini seç",
+    "continue": "Devam et",
+    "backTo": "Geri dön",
+    "Login": "Giriş yap"
+  },
+  "birthdate": {
+    "title": "Doğum tarihin nedir?",
+    "notice": "Kayıt olmak için en az 13 yaşında olmalısın",
+    "month": "Ay",
+    "day": "Gün",
+    "year": "Yıl",
+    "continue": "Devam et",
+    "previousStep": "Önceki adım",
+    "error": "Geçerli bir tarih gir",
+    "age": "Cihazı bir ebeveyne veya vasiye ver",
+    "empty": "Tüm alanları doldur"
+  },
+  "AccountType": {
+    "title": "TaskBlast'i kim kullanacak?",
+    "type": "TaskBlast'in ana kullanıcısını en iyi tanımlayan hesap türünü seç.",
+    "managetitle": "Yönetilen Hesap",
+    "managedesc": "Bağımlı kullanıcılar için. Bazı özellikler ebeveyn/vasi PIN'i ile kısıtlanır ve yönetilir.",
+    "indetitle": "Bağımsız Hesap",
+    "indedesc": "Bireysel öğrenenler için. Kısıtlama olmadan tam erişim.",
+    "continue": "Devam et",
+    "error": "Devam etmek için bir hesap türü seç"
+  },
+  "Name": {
+    "title": "Adın nedir?",
+    "desc": "TaskBlast içinde seni nasıl çağıralım?",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "continue": "Devam et"
+  },
+  "Email": {
+    "title": "E-posta adresin nedir?",
+    "desc": "E-posta adresini doğrulamak için bir doğrulama kodu göndereceğiz",
+    "emailPlaceholder": "E-posta adresi",
+    "send": "Link gönder"
+  },
+  "Password": {
+    "title": "Bir şifre oluştur",
+    "desc": "Hesabını korumak için güçlü bir şifre seç",
+    "passwordPlaceholder": "Şifre",
+    "ConfirmPasswordPlaceholder": "Şifreyi onayla",
+    "submit": "Hesap oluştur",
+    "match": "Şifreler eşleşmiyor",
+    "length": "Şifre en az 8 karakter uzunluğunda olmalı",
+    "emailRequiredError": "E-posta adresi zorunludur.",
+    "emailInUseError": "Bu e-posta adresi zaten kullanılıyor. Giriş yapmayı veya şifreni sıfırlamayı dene.",
+    "invalidEmailError": "Geçerli bir e-posta adresi gir.",
+    "weakPasswordError": "Şifre çok zayıf. En az 8 karakter kullan.",
+    "signUpFailedError": "Kayıt başarısız oldu. Tekrar dene."
+  },
+  "Login": {
+    "title": "Giriş yap",
+    "emailPlaceholder": "E-posta veya kullanıcı adı",
+    "passwordPlaceholder": "Şifre",
+    "forgotPassword": "Şifreni mi unuttun?",
+    "loginButton": "Giriş yap",
+    "noAccount": "Hesabın yok mu?",
+    "signUp": "Kayıt ol",
+    "verifyEmailTitle": "E-postanı doğrula",
+    "verifyEmailBody": "Doğrulama e-postası gönderildi. Giriş yapmadan önce e-posta adresini doğrula. Görmezsen spam/junk klasörünü kontrol et.",
+    "ok": "Tamam"
+  },
+  "ForgotPassword": {
+    "title": "Şifreni mi unuttun?",
+    "desc": "E-posta adresini gir, şifreni sıfırlamak için bir kod göndereceğiz",
+    "emailPlaceholder": "E-posta adresi",
+    "submit": "Gönder",
+    "resetEmailSentTitle": "Sıfırlama e-postası gönderildi",
+    "resetEmailSentBody": "E-postanda sıfırlama linkini kontrol et. Linke tıklayarak şifreni sıfırla.",
+    "ok": "Tamam"
+  },
+  "VerifyCode": {
+    "title": "Kodu doğrula",
+    "desc": "Gönderilen 5 haneli kodu gir",
+    "notreceived": "Kodu almadın mı?",
+    "resend": "Yeniden gönder",
+    "submit": "Gönder"
+  },
+  "ResetPassword": {
+    "title": "Yeni şifre oluştur",
+    "desc": "Aşağıya yeni şifreni gir",
+    "newPasswordPlaceholder": "Yeni şifre",
+    "confirmPasswordPlaceholder": "Şifreyi onayla",
+    "submit": "Şifreyi sıfırla"
+  },
+  "ManagerPin": {
+    "title": "Ebeveyn PIN'i oluştur",
+    "desc": "Bu 4 haneli PIN, ebeveyn veya vasinin hesabı yönetmesini ve öğrenciye görev oluşturmasını sağlar. Gizli tut.",
+    "pin": "PIN (4 hane)",
+    "confirmPinPlaceholder": "PIN'i onayla",
+    "continue": "Devam et"
+  },
+  "Home": {
+    "takeoff": "Kalkış",
+    "coachMarktaskstitle": "Yeni görev ekle",
+    "coachMarktasks": "Buraya dokunarak yeni görev ekle, ödüller belirle ve odak seanslarını özelleştir!",
+    "coachMarkProfiletitle": "Profilini görüntüle",
+    "coachMarkProfile": "Buraya dokunarak profilini gör, ilerlemeni takip et ve avatarını özelleştir!",
+    "coachMarksettings": "Buraya dokunarak tercihlerini ayarla, bildirimleri yönet ve daha fazlasını yap!",
+    "coachMarktakeoff": "Buraya dokunarak bir odak seansı başlat ve hedeflerine doğru roketle!",
+    "coachMarkshop": "Buraya dokunarak mağazayı ziyaret et ve yeni gövde ile kanatlarla avatarını kişiselleştir!",
+    "playerLevel": "Oyuncu Seviyesi",
+    "Level Rewards": "Seviye Ödülleri",
+    "Claimed": "Alındı",
+    "Claim": "Al",
+    "Claiming": "Alınıyor...",
+    "expLabel": "EXP",
+    "levelShort": "Sv",
+    "Locked": "Kilitli",
+    "Crystals": "Kristal",
+    "galaxyCrystals": "Galaktik Kristal",
+    "level": "Seviye",
+    "coachMarklevel": "Bu senin mevcut oyuncu seviyen. Görevleri ve odak seanslarını tamamlayarak deneyim puanı kazan, seviye atla ve ödüller elde et!"
+  },
+  "Settings": {
+    "title": "Ayarlar",
+    "sound": "Ses Efektleri",
+    "music": "Müzik",
+    "notifications": "Bildirimler",
+    "privacy": "Gizlilik",
+    "Help": "Yardım ve Destek",
+    "About": "Hakkında",
+    "Logout": "Çıkış yap",
+    "accessibility": "Erişilebilirlik",
+    "language": "Dil",
+    "colorBlind": "Renk körü modu",
+    "textSize": "Yazı boyutu",
+    "highContrast": "Yüksek kontrast",
+    "reduceMotion": "Hareketi azalt",
+    "voice": "Ses",
+    "tts": "Metinden sese",
+    "ttsDesc": "Ekran içeriğini sesli oku",
+    "defaultColors": "Varsayılan renkler",
+    "redGreenDeficiency": "Kırmızı/yeşil eksikliği",
+    "redDeficiency": "Kırmızı eksikliği",
+    "blueYellowDeficiency": "Mavi/sarı eksikliği",
+    "done": "Tamam",
+    "logout": "Çıkış yap",
+    "switchProfile": "Profil değiştir",
+    "logoutText": "Çıkış yapmak istediğinden emin misin?",
+    "parentAccount": "👤 Ebeveyn Hesabı",
+    "noFilter": "Filtre yok",
+    "deuteranopia": "Deuteranopi",
+    "protanopia": "Protanopi",
+    "tritanopia": "Tritanopi",
+    "customize": "Özelleştirmek için dokun",
+    "replayTutorial": "Eğitimi yeniden oynat"
+  },
+  "PrivacyScreen": {
+    "lastUpdated": "Son güncelleme: 30 Mart 2026",
+    "intro": "TaskBlast'te gizliliğin senin için önemli. Bu Gizlilik Politikası, hangi bilgileri topladığımızı, nasıl kullandığımızı ve senin hangi seçimlere sahip olduğunu açıklar. Lütfen dikkatlice oku.",
+    "backToSettings": "Geri",
+    "sections": {
+      "informationCollect": {
+        "title": "Topladığımız bilgiler",
+        "body": "Hesap oluştururken verdiğin bilgileri (ad, soyad, e-posta adresi, doğum tarihi vb.) topluyoruz. Çocuk hesapları için ebeveyn veya vasi onayı zorunludur. Ayrıca tamamlanan görevler, odak seansı süresi ve uygulama içi satın alımlar gibi kullanım verilerini deneyimini iyileştirmek için topluyoruz."
+      },
+      "howUse": {
+        "title": "Bilgilerini nasıl kullanıyoruz",
+        "body": "Bilgilerin TaskBlast hizmetini sunmak ve geliştirmek, deneyimini kişiselleştirmek, onayladığın bildirimleri göndermek ve hesap güvenliğini sağlamak için kullanılır. Kişisel verilerini üçüncü taraflara satmayız."
+      },
+      "sharing": {
+        "title": "Bilgi paylaşımı",
+        "body": "Kişisel bilgilerini yasal zorunluluklar veya uygulamanın temel işlevleri (örneğin Firebase kimlik doğrulama ve bulut depolama) dışında üçüncü taraflarla paylaşmayız. Kullandığımız üçüncü taraf hizmetler kendi gizlilik politikalarına tabidir."
+      },
+      "security": {
+        "title": "Veri güvenliği",
+        "body": "Endüstri standardı şifreleme ve Firebase güvenlik kurallarını kullanarak verilerini koruyoruz. Kişisel bilgilere erişim yalnızca yetkili personel ile sınırlıdır. Ancak internet üzerinden hiçbir iletim %100 güvenli değildir."
+      },
+      "children": {
+        "title": "Çocuk gizliliği",
+        "body": "TaskBlast her yaştan kullanıcı için tasarlanmıştır. 13 yaş altı kullanıcı hesapları, yönetilen hesap özelliği ile ebeveyn veya vasi tarafından yönetilir. 13 yaş altı çocuklardan doğrulanmış ebeveyn izni olmadan kişisel bilgi toplamayız."
+      },
+      "notifications": {
+        "title": "Bildirimler",
+        "body": "Görev hatırlatmaları ve uygulama güncellemeleriyle ilgili push bildirimleri gönderebiliriz. Bildirim tercihlerini Ayarlar menüsünden istediğin zaman yönetebilirsin."
+      },
+      "rights": {
+        "title": "Hakların",
+        "body": "Kişisel verilerine erişim, düzeltme veya silme talebinde bulunmak için istediğin zaman bizimle iletişime geçebilirsin. Hesabını uygulamadan doğrudan da silebilirsin; bu durumda tüm ilişkili veriler sistemimizden silinir."
+      },
+      "changes": {
+        "title": "Bu politikadaki değişiklikler",
+        "body": "Bu Gizlilik Politikasını zaman zaman güncelleyebiliriz. Önemli değişiklikleri e-posta veya uygulama içi bildirimle haber vereceğiz. Değişikliklerden sonra TaskBlast'i kullanmaya devam etmen, güncellenmiş politikayı kabul ettiğin anlamına gelir."
+      },
+      "contact": {
+        "title": "Bize ulaş",
+        "body": "Bu Gizlilik Politikası hakkında herhangi bir sorunun varsa kryptocapstone@gmail.com adresinden bize ulaş. Tüm taleplere 5 iş günü içinde yanıt vermeye çalışıyoruz."
+      }
+    }
+  },
+  "SupportScreen": {
+    "title": "Yardım ve Destek",
+    "intro": "Güneş Sisteminde gezinirken yardıma mı ihtiyacın var? Aşağıdaki SSS'lere göz at veya ekibimizle doğrudan iletişime geç.",
+    "faqHeading": "Sık Sorulan Sorular",
+    "contactHeading": "Bize Ulaş",
+    "responseTime": "Tüm sorulara 5 iş günü içinde yanıt vermeye çalışıyoruz.",
+    "back": "Geri",
+    "contactCards": {
+      "generalSupport": "Genel Destek",
+      "privacyEnquiries": "Gizlilik Soruları"
+    },
+    "faq": {
+      "items": {
+        "1": {
+          "question": "Yeni bir görev nasıl eklerim?",
+          "answer": "Ana ekrandaki görev ikonuna dokunarak görev listesini aç. 'Yeni görev ekle'ye dokun, görev adını, isteğe bağlı açıklamayı ve rock ödülünü gir ve 'Görev ekle'ye dokun."
+        },
+        "2": {
+          "question": "Odak seansları nasıl çalışır?",
+          "answer": "TaskBlast Pomodoro tekniğini kullanır – çalışma ve mola döngüleri arasında geçiş yapar. Bir görev seç ve 'Kalkış'a dokunarak seansı başlat. İstediğin zaman duraklatabilir veya erken iniş yapabilirsin; tamamlayınca rock kazanırsın."
+        },
+        "3": {
+          "question": "Rocks ve Galaktik Kristal nedir?",
+          "answer": "Rocks görevleri ve odak seanslarını tamamlayarak kazanılır. Galaktik Kristal seviye atlama kilometre taşlarıyla elde edilen premium para birimidir. İkisini de mağazada avatar özelleştirmeleri için kullanabilirsin."
+        },
+        "4": {
+          "question": "Çocuk hesabı nasıl oluştururum?",
+          "answer": "Profil ekranından 'Çocuk hesabı ekle'ye dokun. Yönetilen hesap oluşturmak için Ebeveyn PIN'i ayarlaman istenecek. Çocuk daha sonra profil seçim ekranından kendi profilini seçebilir."
+        },
+        "5": {
+          "question": "Ebeveyn PIN'imi unuttum. Ne yapmalıyım?",
+          "answer": "Ebeveyn PIN'leri hesabında güvenli bir şekilde saklanır. Kayıtlı e-posta adresinle birlikte {{email}} adresine ulaş, erişimini geri kazanmana yardımcı olalım."
+        },
+        "6": {
+          "question": "Uygulama dilini nasıl değiştiririm?",
+          "answer": "Ayarlar'a git ve 'Dil'e dokun. İngilizce, İspanyolca, Portekizce, Fransızca, Almanca, Rusça, Arapça, Bengalce, Çince, Hintçe ve Korsan dili arasından seçim yapabilirsin."
+        },
+        "7": {
+          "question": "Uygulama farklı görünüyor – renk körü modları nedir?",
+          "answer": "Ayarlar'da 'Erişilebilirlik'e dokunarak renk körü dostu temaları (Deuteranopi, Protanopi, Tritanopi), yüksek kontrast modu ve hareket azaltma seçeneklerini bulabilirsin."
+        },
+        "8": {
+          "question": "Bildirimleri nasıl kapatırım?",
+          "answer": "Ayarlar'da 'Bildirimler'e dokun. Bireysel bildirim türlerini istediğin zaman açıp kapatabilirsin."
+        },
+        "9": {
+          "question": "Hesabımı nasıl silebilirim?",
+          "answer": "Hesap silme talebi için kayıtlı e-posta adresinden {{email}} adresine ulaş. Talebini 5 iş günü içinde işleme alıp tüm ilgili verileri sileceğiz."
+        }
+      }
+    }
+  },
+  "AboutScreen": {
+    "title": "Hakkında",
+    "tagline": "Kalkış yap. Odaklan. Seviye atla.",
+    "back": "Geri",
+    "sections": {
+      "mission": {
+        "title": "Misyonumuz",
+        "body": "TaskBlast üretkenliği eğlenceli hale getirmek için tasarlandı. Odaklanma ve başarı hissini angarya gibi hissettirmemek için bunları bir uzay macerasına sardık. Misyonumuz, her yaştan öğrenene oyunlaştırılmış görev yönetimiyle sağlıklı alışkanlıklar kazandırmaktır."
+      },
+      "howItWorks": {
+        "title": "Nasıl çalışır",
+        "body": "Görev ekle, Pomodoro tekniğiyle çalışan odak seanslarına kalkış yap ve hedeflerini tamamladıkça yeni gezegenlere iniş yap. Rocks ve Galaktik Kristal kazan, seviye atla ve kozmetik ödülleri aç."
+      },
+      "forEveryone": {
+        "title": "Herkes için",
+        "body": "TaskBlast hem bağımsız öğrenenleri hem de genç kullanıcılar için yönetilen hesapları destekler. Ebeveynler ve vasiler çocuk hesabı oluşturabilir, görev atayabilir ve Ebeveyn PIN'i ayarlayabilir; tüm bunlar eğlenceyi bozmadan yapılır."
+      },
+      "accessibility": {
+        "title": "Erişilebilirlik önceliğimiz",
+        "body": "Herkesin rahatça kullanabileceği bir deneyim sunuyoruz. Renk körü dostu temalar, yüksek kontrast modu, ayarlanabilir yazı boyutu, hareket azaltma ve tam metinden sese sistemi içerir."
+      },
+      "languages": {
+        "title": "Çok dilli destek",
+        "body": "TaskBlast İngilizce, İspanyolca, Portekizce, Fransızca, Almanca, Rusça, Arapça, Bengalce, Çince, Hintçe ve hatta Korsan diliyle kullanılabilir. Dil desteğini genişletmeye devam ediyoruz."
+      },
+      "privacy": {
+        "title": "Gizlilik ve Güvenlik",
+        "body": "Verilerini ciddiye alıyoruz. TaskBlast Firebase'in endüstri standardı güvenlik altyapısını kullanır ve kişisel bilgilerini asla satmaz. Çocuk hesapları tamamen ebeveyn veya vasi tarafından yönetilir."
+      },
+      "credits": {
+        "title": "Katkıda bulunanlar",
+        "body": "Rotating Pixel Art Earth by j_hyde on opengameart.org"
+      },
+      "version": {
+        "title": "Sürüm",
+        "body": "TaskBlast v1.0.0\nReact Native & Expo ile geliştirildi.\n© 2026 TaskBlast. Tüm hakları saklıdır."
+      }
+    }
+  },
+  "Tasks": {
+    "title": "Görev Listesi",
+    "normal": "Normal",
+    "edit": "Düzenle",
+    "archive": "Arşivle",
+    "empty": "Henüz görev yok. İlk görevini ekle!",
+    "button": "Yeni görev ekle",
+    "archivedempty": "Arşivlenmiş görev yok.",
+    "new": "Yeni görev",
+    "desc": "Açıklama (isteğe bağlı, maks. 200 karakter)",
+    "reward": "Ödül (rocks)",
+    "min": "Küçültmeye izin ver",
+    "settings": "Pomodoro Ayarları",
+    "worktime": "Çalışma süresi (dakika)",
+    "playtime": "Mola süresi (dakika)",
+    "cycles": "Döngü sayısı",
+    "cancel": "İptal",
+    "add": "Görev ekle",
+    "planetDisclaimer": "Özel görevlerde en yüksek açılmış kristal çarpanı uygulanır.",
+    "editTask": "Görev düzenle",
+    "save": "Kaydet",
+    "coachMarkdesc": "Buradan görevlerini yönetebilirsin. Bir göreve dokunarak detayları gör, odak seansı başlat veya düzenle. Sekmelerle aktif ve arşivlenmiş görevler arasında geçiş yap.",
+    "Done": "Tamamlandı",
+    "TaskName": "Görev adı",
+    "description": "Açıklama",
+    "reward2": "Ödül",
+    "status": "Durum",
+    "complete": "Tamamlandı",
+    "incomplete": "Tamamlanmadı",
+    "yes": "Evet",
+    "no": "Hayır",
+    "workTime": "Çalışma süresi",
+    "playTime": "Mola süresi",
+    "Cycles": "Döngü",
+    "created": "Oluşturulma",
+    "details": "Görev bilgisi",
+    "close": "Kapat",
+    "minutesShort": "dk",
+    "hoursShort": "s",
+    "managerAccess": "Ebeveyn Erişimi",
+    "managerAccessDesc": "Yüksek izinli düzenleme moduna erişmek için 4 haneli PIN'i gir.",
+    "unlock": "Kilidi aç"
+  },
+  "Traits": {
+    "ADHD": "ADHD",
+    "Aspergers": "Asperger Sendromu",
+    "Autism": "Otizm",
+    "DevelopmentalLanguageDisorder": "Gelişimsel Dil Bozukluğu",
+    "Disability Confident": "Engelli Dostu",
+    "Dyscalculia": "Diskalkuli",
+    "Dysgraphia": "Disgrafi",
+    "Dyslexia": "Disleksi",
+    "Dyspraxia": "Dispraksi",
+    "Hyperlexia": "Hiperleksi",
+    "Irlen Syndrome": "Irlen Sendromu",
+    "OCD": "OKB (Obsesif Kompulsif Bozukluk)",
+    "Synthesia": "Sineztezi",
+    "Tourette's Syndrome": "Tourette Sendromu",
+    "selectTraits": "Özellikleri seç",
+    "saveTraits": "Özellikleri kaydet"
+  },
+  "Profile": {
+    "traits": "Özellikler",
+    "editP": "Profili düzenle",
+    "awards": "Ödüller",
+    "YourStats": "İstatistiklerin",
+    "rocksEarned": "Toplam kazanılan kristal: ",
+    "rocksSpent": "Toplam harcanan kristal: ",
+    "AvgWorkCycle": "Ortalama çalışma döngüsü süresi: ",
+    "AvgPlayCycle": "Ortalama mola döngüsü süresi: ",
+    "work": "Çalışma/Mola oranı: ",
+    "level": "Mevcut seviye: ",
+    "planets": "Keşfedilen gezegenler: ",
+    "total": "Görevlere harcanan toplam süre: ",
+    "AddChildAccount": "Çocuk hesabı ekle",
+    "SwitchProfile": "Profil değiştir",
+    "Logout": "Çıkış yap",
+    "coachMarkeditP": "Profil bilgilerini güncellemek için buraya dokun!",
+    "coachMarkTraitsTitle": "Özellikleri görüntüle",
+    "coachMarkTraits": "Buradan kendi özelliklerini görebilir ve yenilerini ekleyebilirsin!",
+    "coachMarkAwardsTitle": "Ödülleri görüntüle",
+    "coachMarkAwards": "Buradan ödüllerini ve başarılarını görebilirsin!",
+    "coachMarkStatsTitle": "İstatistikleri görüntüle",
+    "coachMarkStats": "Buradan istatistiklerini görebilir ve zaman içindeki ilerlemeni takip edebilirsin!",
+    "edit": "Düzenle",
+    "advanced": "Gelişmiş",
+    "deleteAccount": "Hesabı sil"
+  },
+  "EditProfileModal": {
+    "title": "Profili düzenle",
+    "tapToChangePicture": "Profil fotoğrafını değiştirmek için dokun",
+    "firstName": "Ad",
+    "firstNamePlaceholder": "Ad",
+    "lastName": "Soyad",
+    "lastNamePlaceholder": "Soyad",
+    "displayName": "Görünen ad (takma ad)",
+    "displayNamePlaceholder": "Görünen ad",
+    "email": "E-posta",
+    "emailPlaceholder": "E-posta",
+    "birthdate": "Doğum tarihi (AA/GG/YYYY)",
+    "birthdatePlaceholder": "AA/GG/YYYY",
+    "saveChanges": "Değişiklikleri kaydet",
+    "errors": {
+      "loginToUpdatePicture": "Profil fotoğrafını güncellemek için giriş yapmalısın",
+      "failedToUpdatePicture": "Profil fotoğrafı güncellenemedi",
+      "firstAndLastRequired": "Ad ve soyad zorunludur",
+      "displayNameRequired": "Görünen ad zorunludur",
+      "emailRequired": "E-posta zorunludur",
+      "invalidEmail": "Geçerli bir e-posta adresi gir",
+      "loginToUpdateProfile": "Profili güncellemek için giriş yapmalısın",
+      "childProfileMissing": "Aktif çocuk profili bulunamadı",
+      "failedToSave": "Profil kaydedilemedi. Tekrar dene."
+    }
+  },
+  "AnalyticsChartsModal": {
+    "title": "Analiz grafikleri",
+    "charts": {
+      "common": {
+        "date": "Tarih"
+      },
+      "totalRocks": {
+        "title": "Oyunlardan kazanılan toplam kristal",
+        "yAxis": "Kristal"
+      },
+      "workTime": {
+        "title": "Toplam çalışma süresi",
+        "yAxis": "Dakika"
+      },
+      "playTime": {
+        "title": "Toplam mola süresi",
+        "yAxis": "Dakika"
+      }
+    },
+    "empty": {
+      "noRockStats": "Henüz kristal istatistiği yok.",
+      "noWorkSessions": "Henüz çalışma seansı yok.",
+      "noPlaySessions": "Henüz mola seansı yok."
+    }
+  },
+  "Pomodoro": {
+    "time": "Kalan süre",
+    "work": "Çalışma seansı",
+    "Resume": "Devam et",
+    "Pause": "Duraklat",
+    "Land": "İniş",
+    "Play": "Oyna",
+    "coachMarkTime": "Mevcut seanstaki kalan süre. Bittiğinde gezegenine inebilir veya oyun oynayabilirsin. Odaklan ve geri sayımı izle!",
+    "coachMarkwork": "Şu anda çalışma seansında mı yoksa molada mı olduğunu gösterir. Çalışırken odaklan, molada rahatla!",
+    "coachMarkPause": "Planlanmamış bir molaya ihtiyacın olursa buraya dokunarak seansı duraklat.",
+    "coachMarkLand": "Buraya dokunarak seansı bitir ve gezegenine in. Odaklanma süren için tebrikler!",
+    "worksession": "Çalışma seansı",
+    "freeTime": "Serbest zaman",
+    "startTask": "Görev başlat",
+    "ChooseGame": "Oyunu seç"
+  },
+  "Shop": {
+    "title": "Mağaza",
+    "body": "Gövde",
+    "wings": "Kanatlar",
+    "toppers": "Booster",
+    "bBody": "Mavi Gövde",
+    "rBody": "Kırmızı Gövde",
+    "yBody": "Sarı Gövde",
+    "gBody": "Yeşil Gövde",
+    "dTopper": "Varsayılan",
+    "bTopper": "Mavi Alev",
+    "aTopper": "Artemis Fırlatma",
+    "bWings": "Mavi Kanatlar",
+    "rWings": "Kırmızı Kanatlar",
+    "yWings": "Sarı Kanatlar",
+    "gWings": "Yeşil Kanatlar",
+    "galaxyWings": "Galaktik Kanatlar",
+    "equipped": "Kullanılan",
+    "owned": "Sahip olunan",
+    "confirmPurchaseTitle": "Satın alma onayı",
+    "confirmPurchaseText": "Bu öğeyi {{price}} kristale satın almak istiyor musun?",
+    "confirmPurchaseCrystalText": "Bu öğeyi {{price}} Galaktik Kristale satın almak istiyor musun?",
+    "cancel": "İptal",
+    "notEnoughCrystalsTitle": "Yeterli kristal yok",
+    "notEnoughCrystalsText": "{{price}} kristal gerekiyor ama sende sadece {{rocks}} var.",
+    "purchase": "Satın al"
+  },
+  "Games": {
+    "chooseTitle": "Oyunu seç",
+    "asteroidBlaster": "Asteroit Vurucu",
+    "asteroidBlasterDesc": "Asteroitleri patlat!",
+    "spaceSwerve": "Uzay Savuşturma",
+    "spaceSwerveDesc": "Asteroitlerden kaçın!",
+    "freeTime": "Serbest zaman",
+    "freeTimeDesc": "Molanı kendi tarzında geçir!",
+    "game2048": "2048",
+    "game2048Desc": "Kareleri birleştir. 2048 hedefine ulaş!",
+    "matchBlast": "Eşleştirme Patlaması",
+    "matchBlastDesc": "Çiftleri hızlı eşleştir ve bonus rocks kazan!",
+    "sequentBlast": "Sıra Patlaması",
+    "sequentBlastDesc": "Gizli diziyi ezberle ve dokun."
+  },
+  "ChildAccount": {
+    "title": "Çocuk hesabı oluştur",
+    "firstName": "Ad gir",
+    "lastName": "Soyad gir",
+    "birthdate": "Doğum tarihi",
+    "username": "Kullanıcı adı",
+    "usernameDesc": "Benzersiz bir kullanıcı adı seç",
+    "create": "Çocuk hesabı oluştur"
+  },
+  "ProfileSelection": {
+    "title": "TaskBlast'i kim kullanıyor?",
+    "parentProfile": "Ebeveyn Hesabı",
+    "childProfile": "Çocuk Hesabı",
+    "desc": "Henüz çocuk hesabı yok.",
+    "desc2": "Ebeveyn hesabından oluştur",
+    "text": "VEYA ÇOCUK SEÇ",
+    "EnterPin": "PIN gir"
+  },
+  "Planets": {
+    "planet1": "Merkür",
+    "planet2": "Venüs",
+    "planet3": "Dünya",
+    "planet4": "Mars",
+    "planet5": "Jüpiter",
+    "planet6": "Satürn",
+    "planet7": "Uranüs",
+    "planet8": "Neptün",
+    "planet9": "Plüton",
+    "descriptionBonus": "%{{percent}} daha fazla kristal",
+    "descriptionBase": "Standart kristal ödülleri",
+    "stats": "{{diameter}} km çap · Güneş'ten {{distance}} km uzaklık"
+  }
+}

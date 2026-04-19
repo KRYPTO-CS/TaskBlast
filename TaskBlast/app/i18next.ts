@@ -78,6 +78,27 @@ i18n
       },
       pi: {
         translation: normalizeLocale(require("./locales/pi/translation.json")),
+      },
+      jp: {
+        translation: normalizeLocale(require("./locales/jp/translation.json")),
+      },
+      kr: {
+        translation: normalizeLocale(require("./locales/kr/translation.json")),
+      },
+      it: {
+        translation: normalizeLocale(require("./locales/it/translation.json")),
+      },
+      nl: {
+        translation: normalizeLocale(require("./locales/nl/translation.json")),
+      },
+      tr: {
+        translation: normalizeLocale(require("./locales/tr/translation.json")),
+      },
+      vn: {
+        translation: normalizeLocale(require("./locales/vn/translation.json")),
+      },
+      id: {
+        translation: normalizeLocale(require("./locales/id/translation.json")),
       }
     },
     interpolation: {

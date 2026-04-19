@@ -1,0 +1,518 @@
+{
+  "language": {
+    "selectLanguage": "Chọn ngôn ngữ của bạn",
+    "continue": "Tiếp tục",
+    "backTo": "Quay lại",
+    "Login": "Đăng nhập"
+  },
+  "birthdate": {
+    "title": "Ngày sinh của bạn là gì?",
+    "notice": "Bạn phải ít nhất 13 tuổi để đăng ký",
+    "month": "Tháng",
+    "day": "Ngày",
+    "year": "Năm",
+    "continue": "Tiếp tục",
+    "previousStep": "Bước trước",
+    "error": "Vui lòng nhập ngày hợp lệ",
+    "age": "Hãy đưa thiết bị cho cha mẹ hoặc người giám hộ",
+    "empty": "Vui lòng điền đầy đủ tất cả các trường"
+  },
+  "AccountType": {
+    "title": "Ai sẽ sử dụng TaskBlast?",
+    "type": "Chọn loại tài khoản phù hợp nhất với người dùng chính của TaskBlast.",
+    "managetitle": "Tài khoản Quản lý",
+    "managedesc": "Dành cho trẻ em hoặc người phụ thuộc. Một số tính năng bị hạn chế và được kiểm soát bởi PIN của cha mẹ/người giám hộ.",
+    "indetitle": "Tài khoản Độc lập",
+    "indedesc": "Dành cho người học độc lập. Truy cập đầy đủ không có hạn chế.",
+    "continue": "Tiếp tục",
+    "error": "Vui lòng chọn loại tài khoản để tiếp tục"
+  },
+  "Name": {
+    "title": "Tên của bạn là gì?",
+    "desc": "Hãy cho chúng tôi biết cách xưng hô với bạn khi dùng TaskBlast",
+    "firstName": "Tên",
+    "lastName": "Họ",
+    "continue": "Tiếp tục"
+  },
+  "Email": {
+    "title": "Địa chỉ email của bạn là gì?",
+    "desc": "Chúng tôi sẽ gửi mã xác thực đến email để xác nhận địa chỉ của bạn",
+    "emailPlaceholder": "Địa chỉ Email",
+    "send": "Gửi Link"
+  },
+  "Password": {
+    "title": "Tạo mật khẩu",
+    "desc": "Chọn một mật khẩu mạnh để bảo vệ tài khoản của bạn",
+    "passwordPlaceholder": "Mật khẩu",
+    "ConfirmPasswordPlaceholder": "Xác nhận mật khẩu",
+    "submit": "Tạo tài khoản",
+    "match": "Mật khẩu không khớp",
+    "length": "Mật khẩu phải có ít nhất 8 ký tự",
+    "emailRequiredError": "Email là bắt buộc.",
+    "emailInUseError": "Email này đã được sử dụng. Vui lòng đăng nhập hoặc đặt lại mật khẩu.",
+    "invalidEmailError": "Vui lòng nhập địa chỉ email hợp lệ.",
+    "weakPasswordError": "Mật khẩu quá yếu. Vui lòng sử dụng ít nhất 8 ký tự.",
+    "signUpFailedError": "Đăng ký thất bại. Vui lòng thử lại."
+  },
+  "Login": {
+    "title": "Đăng nhập",
+    "emailPlaceholder": "Email hoặc tên người dùng",
+    "passwordPlaceholder": "Mật khẩu",
+    "forgotPassword": "Quên mật khẩu?",
+    "loginButton": "Đăng nhập",
+    "noAccount": "Chưa có tài khoản?",
+    "signUp": "Đăng ký",
+    "verifyEmailTitle": "Xác thực Email",
+    "verifyEmailBody": "Chúng tôi đã gửi email xác thực. Vui lòng xác thực email trước khi đăng nhập. Kiểm tra thư mục spam/junk nếu không thấy email.",
+    "ok": "OK"
+  },
+  "ForgotPassword": {
+    "title": "Quên mật khẩu?",
+    "desc": "Nhập địa chỉ email của bạn, chúng tôi sẽ gửi mã để đặt lại mật khẩu",
+    "emailPlaceholder": "Địa chỉ Email",
+    "submit": "Gửi",
+    "resetEmailSentTitle": "Email đặt lại đã được gửi",
+    "resetEmailSentBody": "Vui lòng kiểm tra email để nhận link đặt lại mật khẩu. Nhấp vào link để đặt lại mật khẩu.",
+    "ok": "OK"
+  },
+  "VerifyCode": {
+    "title": "Xác thực mã",
+    "desc": "Nhập mã 5 chữ số được gửi đến",
+    "notreceived": "Không nhận được mã?",
+    "resend": "Gửi lại",
+    "submit": "Gửi"
+  },
+  "ResetPassword": {
+    "title": "Tạo mật khẩu mới",
+    "desc": "Nhập mật khẩu mới của bạn bên dưới",
+    "newPasswordPlaceholder": "Mật khẩu mới",
+    "confirmPasswordPlaceholder": "Xác nhận mật khẩu",
+    "submit": "Đặt lại mật khẩu"
+  },
+  "ManagerPin": {
+    "title": "Tạo PIN Quản lý",
+    "desc": "PIN 4 chữ số này cho phép cha mẹ hoặc người giám hộ quản lý tài khoản và tạo nhiệm vụ cho người học. Hãy giữ bí mật.",
+    "pin": "PIN (4 chữ số)",
+    "confirmPinPlaceholder": "Xác nhận PIN",
+    "continue": "Tiếp tục"
+  },
+  "Home": {
+    "takeoff": "Cất cánh",
+    "coachMarktaskstitle": "Thêm nhiệm vụ mới",
+    "coachMarktasks": "Nhấn vào đây để thêm nhiệm vụ mới, thiết lập phần thưởng và tùy chỉnh phiên tập trung!",
+    "coachMarkProfiletitle": "Xem hồ sơ của bạn",
+    "coachMarkProfile": "Nhấn vào đây để xem hồ sơ, theo dõi tiến độ và tùy chỉnh avatar!",
+    "coachMarksettings": "Nhấn vào đây để điều chỉnh cài đặt, quản lý thông báo và nhiều hơn nữa!",
+    "coachMarktakeoff": "Nhấn vào đây để bắt đầu phiên tập trung và bay về phía mục tiêu của bạn!",
+    "coachMarkshop": "Nhấn vào đây để vào cửa hàng và tùy chỉnh avatar với thân mới và cánh mới!",
+    "playerLevel": "Cấp độ người chơi",
+    "Level Rewards": "Phần thưởng cấp độ",
+    "Claimed": "Đã nhận",
+    "Claim": "Nhận",
+    "Claiming": "Đang nhận...",
+    "expLabel": "EXP",
+    "levelShort": "Lv",
+    "Locked": "Đã khóa",
+    "Crystals": "Tinh thể",
+    "galaxyCrystals": "Tinh thể Ngân Hà",
+    "level": "Cấp độ",
+    "coachMarklevel": "Đây là cấp độ người chơi hiện tại của bạn. Hoàn thành nhiệm vụ và phiên tập trung để kiếm điểm kinh nghiệm, lên cấp và nhận phần thưởng!"
+  },
+  "Settings": {
+    "title": "Cài đặt",
+    "sound": "Hiệu ứng âm thanh",
+    "music": "Nhạc nền",
+    "notifications": "Thông báo",
+    "privacy": "Quyền riêng tư",
+    "Help": "Trợ giúp & Hỗ trợ",
+    "About": "Giới thiệu",
+    "Logout": "Đăng xuất",
+    "accessibility": "Trợ năng",
+    "language": "Ngôn ngữ",
+    "colorBlind": "Chế độ mù màu",
+    "textSize": "Kích thước chữ",
+    "highContrast": "Tương phản cao",
+    "reduceMotion": "Giảm chuyển động",
+    "voice": "Giọng nói",
+    "tts": "Chuyển văn bản thành giọng nói",
+    "ttsDesc": "Đọc to nội dung màn hình",
+    "defaultColors": "Màu mặc định",
+    "redGreenDeficiency": "Thiếu màu đỏ/xanh lá",
+    "redDeficiency": "Thiếu màu đỏ",
+    "blueYellowDeficiency": "Thiếu màu xanh dương/vàng",
+    "done": "Hoàn tất",
+    "logout": "Đăng xuất",
+    "switchProfile": "Chuyển hồ sơ",
+    "logoutText": "Bạn có chắc chắn muốn đăng xuất không?",
+    "parentAccount": "👤 Tài khoản Cha mẹ",
+    "noFilter": "Không lọc",
+    "deuteranopia": "Deuteranopia",
+    "protanopia": "Protanopia",
+    "tritanopia": "Tritanopia",
+    "customize": "Nhấn để tùy chỉnh",
+    "replayTutorial": "Phát lại hướng dẫn"
+  },
+  "PrivacyScreen": {
+    "lastUpdated": "Cập nhật lần cuối: 30 tháng 3 năm 2026",
+    "intro": "Tại TaskBlast, quyền riêng tư của bạn rất quan trọng với chúng tôi. Chính sách Quyền riêng tư này giải thích những thông tin chúng tôi thu thập, cách chúng tôi sử dụng và những lựa chọn bạn có. Vui lòng đọc kỹ.",
+    "backToSettings": "Quay lại",
+    "sections": {
+      "informationCollect": {
+        "title": "Thông tin chúng tôi thu thập",
+        "body": "Chúng tôi thu thập thông tin bạn cung cấp khi tạo tài khoản như tên, địa chỉ email và ngày sinh. Với tài khoản trẻ em, cha mẹ hoặc người giám hộ phải xác nhận. Chúng tôi cũng thu thập dữ liệu sử dụng như nhiệm vụ đã hoàn thành, thời gian phiên tập trung và mua hàng trong ứng dụng để cải thiện trải nghiệm của bạn."
+      },
+      "howUse": {
+        "title": "Cách chúng tôi sử dụng thông tin của bạn",
+        "body": "Thông tin của bạn được sử dụng để cung cấp và cải thiện dịch vụ TaskBlast, cá nhân hóa trải nghiệm, gửi thông báo bạn đã chọn và bảo vệ an ninh tài khoản. Chúng tôi không bán dữ liệu cá nhân của bạn cho bên thứ ba."
+      },
+      "sharing": {
+        "title": "Chia sẻ thông tin",
+        "body": "Chúng tôi không chia sẻ thông tin cá nhân của bạn với bên thứ ba trừ khi pháp luật yêu cầu hoặc để cung cấp chức năng cốt lõi của ứng dụng (ví dụ: xác thực Firebase và lưu trữ đám mây). Các dịch vụ bên thứ ba chúng tôi sử dụng tuân theo chính sách quyền riêng tư của họ."
+      },
+      "security": {
+        "title": "Bảo mật dữ liệu",
+        "body": "Chúng tôi sử dụng mã hóa tiêu chuẩn ngành và quy tắc bảo mật của Firebase để bảo vệ dữ liệu của bạn. Truy cập vào thông tin cá nhân chỉ dành cho nhân viên được ủy quyền. Tuy nhiên, không có phương thức truyền nào qua internet là 100% an toàn."
+      },
+      "children": {
+        "title": "Quyền riêng tư của trẻ em",
+        "body": "TaskBlast được thiết kế cho mọi lứa tuổi. Tài khoản của người dùng dưới 13 tuổi được quản lý bởi cha mẹ hoặc người giám hộ thông qua tính năng tài khoản được quản lý. Chúng tôi không cố ý thu thập thông tin cá nhân từ trẻ em dưới 13 tuổi mà không có sự đồng ý đã xác minh của cha mẹ."
+      },
+      "notifications": {
+        "title": "Thông báo",
+        "body": "Chúng tôi có thể gửi thông báo đẩy về nhắc nhở nhiệm vụ và cập nhật ứng dụng. Bạn có thể quản lý cài đặt thông báo bất kỳ lúc nào trong menu Cài đặt."
+      },
+      "rights": {
+        "title": "Quyền của bạn",
+        "body": "Bạn có thể yêu cầu truy cập, sửa chữa hoặc xóa dữ liệu cá nhân bất kỳ lúc nào bằng cách liên hệ với chúng tôi. Bạn cũng có thể xóa tài khoản trực tiếp trong ứng dụng, lúc đó tất cả dữ liệu liên quan sẽ bị xóa khỏi hệ thống của chúng tôi."
+      },
+      "changes": {
+        "title": "Thay đổi chính sách",
+        "body": "Chúng tôi có thể cập nhật Chính sách Quyền riêng tư này theo thời gian. Chúng tôi sẽ thông báo cho bạn về những thay đổi quan trọng qua email hoặc thông báo trong ứng dụng. Việc tiếp tục sử dụng TaskBlast sau khi thay đổi có nghĩa là bạn chấp nhận chính sách đã sửa đổi."
+      },
+      "contact": {
+        "title": "Liên hệ với chúng tôi",
+        "body": "Nếu bạn có bất kỳ câu hỏi nào về Chính sách Quyền riêng tư này, vui lòng liên hệ với chúng tôi tại kryptocapstone@gmail.com. Chúng tôi sẽ cố gắng trả lời tất cả các câu hỏi trong vòng 5 ngày làm việc."
+      }
+    }
+  },
+  "SupportScreen": {
+    "title": "Trợ giúp & Hỗ trợ",
+    "intro": "Cần hỗ trợ khi khám phá Hệ Mặt Trời? Hãy xem các câu hỏi thường gặp bên dưới hoặc liên hệ trực tiếp với đội ngũ của chúng tôi.",
+    "faqHeading": "Câu hỏi thường gặp",
+    "contactHeading": "Liên hệ chúng tôi",
+    "responseTime": "Chúng tôi cố gắng trả lời tất cả các câu hỏi trong vòng 5 ngày làm việc.",
+    "back": "Quay lại",
+    "contactCards": {
+      "generalSupport": "Hỗ trợ chung",
+      "privacyEnquiries": "Hỏi về quyền riêng tư"
+    },
+    "faq": {
+      "items": {
+        "1": {
+          "question": "Làm thế nào để thêm nhiệm vụ mới?",
+          "answer": "Nhấn vào biểu tượng nhiệm vụ trên màn hình chính để mở Danh sách Nhiệm vụ. Nhấn 'Thêm nhiệm vụ mới', điền tên nhiệm vụ, mô tả (tùy chọn) và phần thưởng rocks, sau đó nhấn 'Thêm nhiệm vụ'."
+        },
+        "2": {
+          "question": "Phiên tập trung hoạt động như thế nào?",
+          "answer": "TaskBlast sử dụng kỹ thuật Pomodoro – xen kẽ giữa phiên làm việc và nghỉ ngơi. Chọn một nhiệm vụ và nhấn 'Cất cánh' để bắt đầu. Bạn có thể tạm dừng hoặc hạ cánh sớm bất kỳ lúc nào và sẽ nhận được rocks khi hoàn thành."
+        },
+        "3": {
+          "question": "Rocks và Tinh thể Ngân Hà là gì?",
+          "answer": "Rocks được kiếm bằng cách hoàn thành nhiệm vụ và phiên tập trung. Tinh thể Ngân Hà là đơn vị tiền tệ cao cấp nhận được khi lên cấp. Cả hai đều có thể dùng trong Cửa hàng để tùy chỉnh avatar."
+        },
+        "4": {
+          "question": "Làm thế nào để tạo tài khoản cho con?",
+          "answer": "Từ màn hình Hồ sơ, nhấn 'Thêm tài khoản con'. Bạn sẽ được yêu cầu thiết lập tài khoản được quản lý với PIN Quản lý. Sau đó trẻ có thể chọn hồ sơ của mình từ màn hình Chọn hồ sơ."
+        },
+        "5": {
+          "question": "Tôi quên PIN Quản lý. Phải làm gì?",
+          "answer": "PIN Quản lý được lưu trữ an toàn trong tài khoản của bạn. Vui lòng liên hệ chúng tôi tại {{email}} với email đã đăng ký, chúng tôi sẽ giúp bạn khôi phục quyền truy cập."
+        },
+        "6": {
+          "question": "Làm thế nào để thay đổi ngôn ngữ ứng dụng?",
+          "answer": "Vào Cài đặt và nhấn 'Ngôn ngữ'. Bạn có thể chọn tiếng Anh, Tây Ban Nha, Bồ Đào Nha, Pháp, Đức, Nga, Ả Rập, Bengali, Trung, Hindi và cả tiếng Cướp biển."
+        },
+        "7": {
+          "question": "Ứng dụng trông khác đi – chế độ mù màu là gì?",
+          "answer": "Trong Cài đặt, nhấn 'Trợ năng' để tìm các chủ đề thân thiện với người mù màu (Deuteranopia, Protanopia, Tritanopia), chế độ tương phản cao và giảm chuyển động."
+        },
+        "8": {
+          "question": "Làm thế nào để tắt thông báo?",
+          "answer": "Vào Cài đặt và nhấn 'Thông báo'. Bạn có thể bật/tắt từng loại thông báo bất kỳ lúc nào."
+        },
+        "9": {
+          "question": "Làm thế nào để xóa tài khoản của tôi?",
+          "answer": "Để yêu cầu xóa tài khoản, vui lòng liên hệ chúng tôi tại {{email}} từ địa chỉ email đã đăng ký. Chúng tôi sẽ xử lý yêu cầu trong vòng 5 ngày làm việc và xóa toàn bộ dữ liệu liên quan."
+        }
+      }
+    }
+  },
+  "AboutScreen": {
+    "title": "Giới thiệu",
+    "tagline": "Cất cánh. Tập trung. Lên cấp.",
+    "back": "Quay lại",
+    "sections": {
+      "mission": {
+        "title": "Sứ mệnh của chúng tôi",
+        "body": "TaskBlast được tạo ra để biến việc nâng cao năng suất thành một trải nghiệm vui vẻ. Chúng tôi tin rằng sự tập trung và cảm giác thành tựu không nên là gánh nặng, vì vậy chúng tôi đã gói gọn chúng trong một cuộc phiêu lưu vũ trụ. Sứ mệnh của chúng tôi là giúp người học mọi lứa tuổi xây dựng thói quen lành mạnh thông qua quản lý nhiệm vụ được trò chơi hóa."
+      },
+      "howItWorks": {
+        "title": "Cách hoạt động",
+        "body": "Thêm nhiệm vụ, cất cánh vào các phiên tập trung dựa trên kỹ thuật Pomodoro và hạ cánh xuống những hành tinh mới khi bạn hoàn thành mục tiêu. Kiếm Rocks và Tinh thể Ngân Hà, lên cấp và mở khóa phần thưởng trang trí dọc đường."
+      },
+      "forEveryone": {
+        "title": "Dành cho mọi người",
+        "body": "TaskBlast hỗ trợ cả người học độc lập và tài khoản được quản lý cho người dùng nhỏ tuổi. Cha mẹ và người giám hộ có thể tạo tài khoản con, giao nhiệm vụ và thiết lập PIN Quản lý mà không làm mất đi niềm vui."
+      },
+      "accessibility": {
+        "title": "Trợ năng là ưu tiên hàng đầu",
+        "body": "Chúng tôi cam kết mang đến trải nghiệm hòa nhập. TaskBlast bao gồm các chủ đề thân thiện với người mù màu, chế độ tương phản cao, kích thước chữ có thể điều chỉnh, hỗ trợ giảm chuyển động và hệ thống chuyển văn bản thành giọng nói đầy đủ."
+      },
+      "languages": {
+        "title": "Hỗ trợ đa ngôn ngữ",
+        "body": "TaskBlast có sẵn bằng tiếng Anh, Tây Ban Nha, Bồ Đào Nha, Pháp, Đức, Nga, Ả Rập, Bengali, Trung, Hindi và thậm chí là tiếng Cướp biển. Chúng tôi đang tiếp tục mở rộng hỗ trợ ngôn ngữ."
+      },
+      "privacy": {
+        "title": "Quyền riêng tư & An toàn",
+        "body": "Chúng tôi coi trọng dữ liệu của bạn. TaskBlast sử dụng hạ tầng bảo mật tiêu chuẩn ngành của Firebase và không bao giờ bán thông tin cá nhân của bạn. Tài khoản trẻ em được quản lý hoàn toàn bởi cha mẹ hoặc người giám hộ."
+      },
+      "credits": {
+        "title": "Công trạng",
+        "body": "Rotating Pixel Art Earth by j_hyde on opengameart.org"
+      },
+      "version": {
+        "title": "Phiên bản",
+        "body": "TaskBlast v1.0.0\nĐược xây dựng bằng React Native & Expo.\n© 2026 TaskBlast. All rights reserved."
+      }
+    }
+  },
+  "Tasks": {
+    "title": "Danh sách Nhiệm vụ",
+    "normal": "Bình thường",
+    "edit": "Chỉnh sửa",
+    "archive": "Lưu trữ",
+    "empty": "Chưa có nhiệm vụ nào. Hãy thêm nhiệm vụ đầu tiên!",
+    "button": "Thêm nhiệm vụ mới",
+    "archivedempty": "Không có nhiệm vụ nào đã lưu trữ.",
+    "new": "Nhiệm vụ mới",
+    "desc": "Mô tả (tùy chọn, tối đa 200 ký tự)",
+    "reward": "Phần thưởng (rocks)",
+    "min": "Cho phép thu nhỏ",
+    "settings": "Cài đặt Pomodoro",
+    "worktime": "Thời gian làm việc (phút)",
+    "playtime": "Thời gian nghỉ (phút)",
+    "cycles": "Số chu kỳ",
+    "cancel": "Hủy",
+    "add": "Thêm nhiệm vụ",
+    "planetDisclaimer": "Bạn sẽ nhận được hệ số nhân tinh thể cao nhất đã mở khóa cho nhiệm vụ tùy chỉnh.",
+    "editTask": "Chỉnh sửa nhiệm vụ",
+    "save": "Lưu",
+    "coachMarkdesc": "Đây là nơi bạn quản lý nhiệm vụ. Nhấn vào một nhiệm vụ để xem chi tiết, bắt đầu phiên tập trung hoặc chỉnh sửa. Sử dụng các tab để chuyển giữa nhiệm vụ đang hoạt động và đã lưu trữ.",
+    "Done": "Hoàn thành",
+    "TaskName": "Tên nhiệm vụ",
+    "description": "Mô tả",
+    "reward2": "Phần thưởng",
+    "status": "Trạng thái",
+    "complete": "Hoàn thành",
+    "incomplete": "Chưa hoàn thành",
+    "yes": "Có",
+    "no": "Không",
+    "workTime": "Thời gian làm việc",
+    "playTime": "Thời gian nghỉ",
+    "Cycles": "Chu kỳ",
+    "created": "Ngày tạo",
+    "details": "Thông tin nhiệm vụ",
+    "close": "Đóng",
+    "minutesShort": "phút",
+    "hoursShort": "giờ",
+    "managerAccess": "Truy cập Quản lý",
+    "managerAccessDesc": "Nhập PIN 4 chữ số để truy cập chế độ chỉnh sửa với quyền cao hơn.",
+    "unlock": "Mở khóa"
+  },
+  "Traits": {
+    "ADHD": "ADHD",
+    "Aspergers": "Hội chứng Asperger",
+    "Autism": "Tự kỷ",
+    "DevelopmentalLanguageDisorder": "Rối loạn ngôn ngữ phát triển",
+    "Disability Confident": "Thân thiện với người khuyết tật",
+    "Dyscalculia": "Rối loạn tính toán",
+    "Dysgraphia": "Rối loạn viết",
+    "Dyslexia": "Chứng khó đọc",
+    "Dyspraxia": "Rối loạn phối hợp vận động",
+    "Hyperlexia": "Siêu đọc",
+    "Irlen Syndrome": "Hội chứng Irlen",
+    "OCD": "Rối loạn ám ảnh cưỡng chế (OCD)",
+    "Synthesia": "Hội chứng synesthesia",
+    "Tourette's Syndrome": "Hội chứng Tourette",
+    "selectTraits": "Chọn đặc điểm",
+    "saveTraits": "Lưu đặc điểm"
+  },
+  "Profile": {
+    "traits": "Đặc điểm",
+    "editP": "Chỉnh sửa hồ sơ",
+    "awards": "Giải thưởng",
+    "YourStats": "Thống kê của bạn",
+    "rocksEarned": "Tổng tinh thể kiếm được: ",
+    "rocksSpent": "Tổng tinh thể đã dùng: ",
+    "AvgWorkCycle": "Thời gian trung bình chu kỳ làm việc: ",
+    "AvgPlayCycle": "Thời gian trung bình chu kỳ nghỉ: ",
+    "work": "Tỷ lệ Làm việc/Nghỉ ngơi: ",
+    "level": "Cấp độ hiện tại: ",
+    "planets": "Số hành tinh đã khám phá: ",
+    "total": "Tổng thời gian dành cho nhiệm vụ: ",
+    "AddChildAccount": "Thêm tài khoản con",
+    "SwitchProfile": "Chuyển hồ sơ",
+    "Logout": "Đăng xuất",
+    "coachMarkeditP": "Nhấn vào đây để cập nhật thông tin hồ sơ của bạn!",
+    "coachMarkTraitsTitle": "Xem đặc điểm",
+    "coachMarkTraits": "Ở đây bạn có thể xem đặc điểm của mình và thêm mới!",
+    "coachMarkAwardsTitle": "Xem giải thưởng",
+    "coachMarkAwards": "Ở đây bạn có thể xem giải thưởng và thành tựu của mình!",
+    "coachMarkStatsTitle": "Xem thống kê",
+    "coachMarkStats": "Ở đây bạn có thể xem thống kê và theo dõi tiến độ theo thời gian!",
+    "edit": "Chỉnh sửa",
+    "advanced": "Nâng cao",
+    "deleteAccount": "Xóa tài khoản"
+  },
+  "EditProfileModal": {
+    "title": "Chỉnh sửa hồ sơ",
+    "tapToChangePicture": "Nhấn để thay đổi ảnh hồ sơ",
+    "firstName": "Tên",
+    "firstNamePlaceholder": "Tên",
+    "lastName": "Họ",
+    "lastNamePlaceholder": "Họ",
+    "displayName": "Tên hiển thị (biệt danh)",
+    "displayNamePlaceholder": "Tên hiển thị",
+    "email": "Email",
+    "emailPlaceholder": "Email",
+    "birthdate": "Ngày sinh (MM/DD/YYYY)",
+    "birthdatePlaceholder": "MM/DD/YYYY",
+    "saveChanges": "Lưu thay đổi",
+    "errors": {
+      "loginToUpdatePicture": "Bạn phải đăng nhập để cập nhật ảnh hồ sơ",
+      "failedToUpdatePicture": "Cập nhật ảnh hồ sơ thất bại",
+      "firstAndLastRequired": "Tên và họ là bắt buộc",
+      "displayNameRequired": "Tên hiển thị là bắt buộc",
+      "emailRequired": "Email là bắt buộc",
+      "invalidEmail": "Vui lòng nhập địa chỉ email hợp lệ",
+      "loginToUpdateProfile": "Bạn phải đăng nhập để cập nhật hồ sơ",
+      "childProfileMissing": "Không tìm thấy hồ sơ con đang hoạt động",
+      "failedToSave": "Lưu hồ sơ thất bại. Vui lòng thử lại."
+    }
+  },
+  "AnalyticsChartsModal": {
+    "title": "Biểu đồ phân tích",
+    "charts": {
+      "common": {
+        "date": "Ngày"
+      },
+      "totalRocks": {
+        "title": "Tổng tinh thể kiếm được từ trò chơi",
+        "yAxis": "Tinh thể"
+      },
+      "workTime": {
+        "title": "Tổng thời gian làm việc",
+        "yAxis": "Phút"
+      },
+      "playTime": {
+        "title": "Tổng thời gian nghỉ",
+        "yAxis": "Phút"
+      }
+    },
+    "empty": {
+      "noRockStats": "Chưa có thống kê tinh thể.",
+      "noWorkSessions": "Chưa có phiên làm việc.",
+      "noPlaySessions": "Chưa có phiên nghỉ."
+    }
+  },
+  "Pomodoro": {
+    "time": "Thời gian còn lại",
+    "work": "Phiên làm việc",
+    "Resume": "Tiếp tục",
+    "Pause": "Tạm dừng",
+    "Land": "Hạ cánh",
+    "Play": "Chơi game",
+    "coachMarkTime": "Đây là thời gian còn lại trong phiên hiện tại. Khi kết thúc bạn có thể hạ cánh xuống hành tinh hoặc chơi game. Hãy tập trung và theo dõi đồng hồ đếm ngược!",
+    "coachMarkwork": "Điều này cho biết bạn đang ở phiên làm việc hay nghỉ ngơi. Hãy tập trung khi làm việc và thư giãn khi nghỉ!",
+    "coachMarkPause": "Nhấn vào đây để tạm dừng phiên nếu bạn cần nghỉ không theo kế hoạch.",
+    "coachMarkLand": "Nhấn vào đây để kết thúc phiên và hạ cánh xuống hành tinh của bạn. Chúc mừng bạn đã tập trung tốt!",
+    "worksession": "Phiên làm việc",
+    "freeTime": "Thời gian tự do",
+    "startTask": "Bắt đầu nhiệm vụ",
+    "ChooseGame": "Chọn trò chơi"
+  },
+  "Shop": {
+    "title": "Cửa hàng",
+    "body": "Thân",
+    "wings": "Cánh",
+    "toppers": "Booster",
+    "bBody": "Thân Xanh dương",
+    "rBody": "Thân Đỏ",
+    "yBody": "Thân Vàng",
+    "gBody": "Thân Xanh lá",
+    "dTopper": "Mặc định",
+    "bTopper": "Lửa Xanh dương",
+    "aTopper": "Phóng Artemis",
+    "bWings": "Cánh Xanh dương",
+    "rWings": "Cánh Đỏ",
+    "yWings": "Cánh Vàng",
+    "gWings": "Cánh Xanh lá",
+    "galaxyWings": "Cánh Ngân Hà",
+    "equipped": "Đang dùng",
+    "owned": "Đã sở hữu",
+    "confirmPurchaseTitle": "Xác nhận mua hàng",
+    "confirmPurchaseText": "Mua vật phẩm này với giá {{price}} tinh thể?",
+    "confirmPurchaseCrystalText": "Mua vật phẩm này với giá {{price}} Tinh thể Ngân Hà?",
+    "cancel": "Hủy",
+    "notEnoughCrystalsTitle": "Không đủ tinh thể",
+    "notEnoughCrystalsText": "Bạn cần {{price}} tinh thể nhưng chỉ có {{rocks}}.",
+    "purchase": "Mua"
+  },
+  "Games": {
+    "chooseTitle": "Chọn trò chơi của bạn",
+    "asteroidBlaster": "Bắn tiểu hành tinh",
+    "asteroidBlasterDesc": "Phá hủy các tiểu hành tinh!",
+    "spaceSwerve": "Né tiểu hành tinh",
+    "spaceSwerveDesc": "Tránh các tiểu hành tinh!",
+    "freeTime": "Thời gian tự do",
+    "freeTimeDesc": "Nghỉ ngơi theo cách của bạn!",
+    "game2048": "2048",
+    "game2048Desc": "Ghép ô. Hướng tới 2048!",
+    "matchBlast": "Nổ ghép đôi",
+    "matchBlastDesc": "Ghép đôi nhanh để nhận rocks thưởng!",
+    "sequentBlast": "Nổ theo thứ tự",
+    "sequentBlastDesc": "Nhớ và nhấn vào chuỗi ẩn."
+  },
+  "ChildAccount": {
+    "title": "Tạo tài khoản con",
+    "firstName": "Nhập tên",
+    "lastName": "Nhập họ",
+    "birthdate": "Ngày sinh",
+    "username": "Tên người dùng",
+    "usernameDesc": "Chọn tên người dùng duy nhất",
+    "create": "Tạo tài khoản con"
+  },
+  "ProfileSelection": {
+    "title": "Ai đang sử dụng TaskBlast?",
+    "parentProfile": "Tài khoản Cha mẹ",
+    "childProfile": "Tài khoản Con",
+    "desc": "Chưa có tài khoản con nào.",
+    "desc2": "Tạo từ tài khoản cha mẹ",
+    "text": "HOẶC CHỌN CON",
+    "EnterPin": "Nhập PIN cho"
+  },
+  "Planets": {
+    "planet1": "Thủy Tinh",
+    "planet2": "Kim Tinh",
+    "planet3": "Trái Đất",
+    "planet4": "Hỏa Tinh",
+    "planet5": "Mộc Tinh",
+    "planet6": "Thổ Tinh",
+    "planet7": "Thiên Vương Tinh",
+    "planet8": "Hải Vương Tinh",
+    "planet9": "Diêm Vương Tinh",
+    "descriptionBonus": "Tăng {{percent}}% tinh thể",
+    "descriptionBase": "Phần thưởng tinh thể tiêu chuẩn",
+    "stats": "{{diameter}} km đường kính · Cách Mặt Trời {{distance}} km"
+  }
+}
