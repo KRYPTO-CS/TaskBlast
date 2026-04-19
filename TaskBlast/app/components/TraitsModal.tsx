@@ -64,10 +64,11 @@ export default function TraitsModal({
   const { t } = useTranslation();
   const { getChildDocRef, profileType } = useActiveProfile();
 
-  // Update local state when userProfile prop changes
   useEffect(() => {
-    setSelectedTraits((userProfile.traits || []).map(normalizeTraitKey));
-  }, [userProfile]);
+    if (visible) {
+      setSelectedTraits((userProfile.traits || []).map(normalizeTraitKey));
+    }
+  }, [visible, userProfile.traits]);
 
   const toggleTrait = (trait: string) => {
     setSelectedTraits((prev) => {

@@ -142,21 +142,110 @@ export default function ProfileScreen() {
     [t],
   );
 
-  // Load user profile on component mount
+  const loadAllTimeStats = useCallback(async () => {
+    try {
+      const authInstance = getAuth();
+      const user = authInstance.currentUser;
+      if (!user || isProfileLoading) return;
+
+      let userDoc;
+
+      if (profileType === "child") {
+        userDoc = await getDoc(getProfileDocRef());
+      } else {
+        const profileData = await getUserProfile(user.uid);
+        if (!profileData) return;
+        userDoc = {
+          exists: () => true,
+          data: () => profileData,
+        };
+      }
+
+      if (!userDoc || !userDoc.exists()) return;
+
+      const data: any = userDoc.data();
+      const rocksArr: number[] = data.allTimeRocksArr || [];
+      const wtArr: number[] = data.workTimeMinutesArr || [];
+      const ptArr: number[] = data.playTimeMinutesArr || [];
+      const rocksDates: string[] = data.allTimeRocksDateArr || [];
+      const workDates: string[] = data.workTimeDateArr || [];
+      const playDates: string[] = data.playTimeDateArr || [];
+
+      const MAX_POINTS = 20;
+      const slicedRocks = rocksArr.slice(-MAX_POINTS);
+      const slicedWt = wtArr.slice(-MAX_POINTS);
+      const slicedPt = ptArr.slice(-MAX_POINTS);
+
+      setTotalRocksAllTime(
+        Number.isNaN(Number(data.allTimeRocks))
+          ? 0
+          : Math.max(0, Math.floor(Number(data.allTimeRocks ?? 0))),
+      );
+      setrocksSpent(
+        Number.isNaN(Number(data.rocksSpent))
+          ? 0
+          : Math.max(0, Math.floor(Number(data.rocksSpent ?? 0))),
+      );
+      setLevel(
+        Number.isNaN(Number(data.currentLevel))
+          ? 0
+          : Math.max(0, Math.floor(Number(data.currentLevel ?? 0))),
+      );
+      setPlanets(
+        Number.isNaN(Number(data.planets))
+          ? 0
+          : Math.max(0, Math.floor(Number(data.planets ?? 0))),
+      );
+      setCurrentRocks(
+        Number.isNaN(Number(data.rocks))
+          ? 0
+          : Math.max(0, Math.floor(Number(data.rocks ?? 0))),
+      );
+
+      setStatsValues(slicedRocks);
+      setStatsLabels(
+        slicedRocks.map((_, index) => {
+          const dateIndex = rocksDates.length - slicedRocks.length + index;
+          return dateIndex >= 0
+            ? (rocksDates[dateIndex] ?? `#${rocksArr.length - slicedRocks.length + index + 1}`)
+            : `#${rocksArr.length - slicedRocks.length + index + 1}`;
+        }),
+      );
+      setWorkTimes(slicedWt);
+      setWorkLabels(
+        slicedWt.map((_, index) => {
+          const dateIndex = workDates.length - slicedWt.length + index;
+          return dateIndex >= 0
+            ? (workDates[dateIndex] ?? `#${wtArr.length - slicedWt.length + index + 1}`)
+            : `#${wtArr.length - slicedWt.length + index + 1}`;
+        }),
+      );
+      setPlayTimes(slicedPt);
+      setPlayLabels(
+        slicedPt.map((_, index) => {
+          const dateIndex = playDates.length - slicedPt.length + index;
+          return dateIndex >= 0
+            ? (playDates[dateIndex] ?? `#${ptArr.length - slicedPt.length + index + 1}`)
+            : `#${ptArr.length - slicedPt.length + index + 1}`;
+        }),
+      );
+    } catch (error) {
+      console.warn("Failed to load stats", error);
+    }
+  }, [getProfileDocRef, isProfileLoading, profileType]);
+
   useEffect(() => {
     const loadUserProfile = async () => {
       try {
         const currentUser = auth.currentUser;
-        if (!currentUser) return;
+        if (!currentUser || isProfileLoading) return;
 
-        if (isProfileLoading) return;
-
-        let profileData = null;
+        let profileData: UserProfile | null = null;
 
         if (profileType === "child") {
           const childDoc = await getDoc(getProfileDocRef());
           if (childDoc.exists()) {
-            const childData = childDoc.data();
+            const childData: any = childDoc.data();
             profileData = {
               uid: currentUser.uid,
               firstName: childData.firstName || "",
@@ -176,7 +265,6 @@ export default function ProfileScreen() {
         if (profileData) {
           setUserProfile(profileData);
         } else {
-          // Set default profile if none exists
           setUserProfile({
             uid: currentUser.uid,
             firstName: "Space",
@@ -202,102 +290,6 @@ export default function ProfileScreen() {
     loadUserProfile();
     loadAllTimeStats();
   }, [getProfileDocRef, isProfileLoading, loadAllTimeStats, profileType]);
-
-  async function loadAllTimeStats() {
-    try {
-      const auth = getAuth();
-      const user = auth.currentUser;
-      if (!user) return;
-
-      if (isProfileLoading) return;
-
-      let userDoc;
-
-      if (profileType === "child") {
-        userDoc = await getDoc(getProfileDocRef());
-      } else {
-        const profileData = await getUserProfile(user.uid);
-        if (!profileData) return;
-        userDoc = {
-          exists: () => true,
-          data: () => profileData,
-        };
-      }
-
-      if (userDoc && userDoc.exists()) {
-        const data: any = userDoc.data();
-        const rocksArr: number[] = data.allTimeRocksArr || [];
-        const wtArr: number[] = data.workTimeMinutesArr || [];
-        const ptArr: number[] = data.playTimeMinutesArr || [];
-        const rocksDates: string[] = data.allTimeRocksDateArr || [];
-        const workDates: string[] = data.workTimeDateArr || [];
-        const playDates: string[] = data.playTimeDateArr || [];
-        const totalAllTime = Number(data.allTimeRocks ?? 0);
-
-        const MAX_POINTS = 20;
-
-        const slicedRocks = rocksArr.slice(-MAX_POINTS);
-        const slicedWt = wtArr.slice(-MAX_POINTS);
-        const slicedPt = ptArr.slice(-MAX_POINTS);
-
-        setTotalRocksAllTime(
-          Number.isNaN(totalAllTime)
-            ? 0
-            : Math.max(0, Math.floor(totalAllTime)),
-        );
-        setrocksSpent(
-          Number.isNaN(data.rocksSpent)
-            ? 0
-            : Math.max(0, Math.floor(data.rocksSpent)),
-        );
-        setLevel(
-          Number.isNaN(data.level)
-            ? 0
-            : Math.max(0, Math.floor(data.currentLevel)),
-        );
-        setPlanets(
-          Number.isNaN(data.planets)
-            ? 0
-            : Math.max(0, Math.floor(data.currPlanet)),
-        );
-        setCurrentRocks(
-          Number.isNaN(data.rocks) ? 0 : Math.max(0, Math.floor(data.rocks)),
-        );
-        setStatsLabels(
-          slicedRocks.map((_, i) => {
-            const dateIdx = rocksDates.length - slicedRocks.length + i;
-            return dateIdx >= 0
-              ? (rocksDates[dateIdx] ??
-                  `#${rocksArr.length - slicedRocks.length + i + 1}`)
-              : `#${rocksArr.length - slicedRocks.length + i + 1}`;
-          }),
-        );
-        setWorkLabels(
-          slicedWt.map((_, i) => {
-            const dateIdx = workDates.length - slicedWt.length + i;
-            return dateIdx >= 0
-              ? (workDates[dateIdx] ??
-                  `#${wtArr.length - slicedWt.length + i + 1}`)
-              : `#${wtArr.length - slicedWt.length + i + 1}`;
-          }),
-        );
-        setPlayLabels(
-          slicedPt.map((_, i) => {
-            const dateIdx = playDates.length - slicedPt.length + i;
-            return dateIdx >= 0
-              ? (playDates[dateIdx] ??
-                  `#${ptArr.length - slicedPt.length + i + 1}`)
-              : `#${ptArr.length - slicedPt.length + i + 1}`;
-          }),
-        );
-        setStatsValues(slicedRocks);
-        setWorkTimes(slicedWt);
-        setPlayTimes(slicedPt);
-      }
-    } catch (e) {
-      console.warn("Failed to load stats", e);
-    }
-  }
 
   const handleSwitchProfile = () => {
     router.push("/pages/ProfileSelection");
