@@ -18,13 +18,13 @@
     "empty": "Please fill out all fields"
   },
   "AccountType": {
-    "title": "Who's will be using TaskBlast?",
+    "title": "Who's going to be using TaskBlast?",
     "type": "Choose the account type that best describes the primary user of TaskBlast.",
     "managetitle": "Managed Account",
-    "managedesc": "For depends. SOme features are restricted and controlled by a parent/guardian PIN.",
+    "managedesc": "For dependents. Some features are restricted and controlled by a parent/guardian PIN.",
     "indetitle": "Independent Account",
     "indedesc": "For individual learners. Full access without restrictions.",
-    "continue": "continue",
+    "continue": "Continue",
     "error": "Please choose an account type to continue"
   },
   "Name": {
