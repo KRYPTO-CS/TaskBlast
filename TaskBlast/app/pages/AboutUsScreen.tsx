@@ -61,6 +61,11 @@ const ABOUT_SECTIONS: AboutSection[] = [
   },
 ];
 
+const EXTRA_CREDITS = [
+  "8-Bit Epic Space Shooter Music by HydroGene on opengameart.org",
+  "8-Bit Space Adventure Theme by emanresU on opengameart.org",
+];
+
 export default function AboutUsScreen() {
   const router = useRouter();
   const palette = useColorPalette();
@@ -165,10 +170,22 @@ export default function AboutUsScreen() {
               style={{ backgroundColor: palette.divider }}
             />
 
-            {/* Body */}
-            <Text className="font-madimi text-white/80 text-sm leading-6">
-              {t(section.bodyKey)}
-            </Text>
+            {section.titleKey === "AboutScreen.sections.credits.title" ? (
+              <View>
+                {[t(section.bodyKey), ...EXTRA_CREDITS].map((credit) => (
+                  <Text
+                    key={credit}
+                    className="font-madimi text-white/80 text-sm leading-6"
+                  >
+                    {`- ${credit}`}
+                  </Text>
+                ))}
+              </View>
+            ) : (
+              <Text className="font-madimi text-white/80 text-sm leading-6">
+                {t(section.bodyKey)}
+              </Text>
+            )}
           </View>
         ))}
 
