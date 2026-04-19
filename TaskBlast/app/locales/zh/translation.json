@@ -47,7 +47,12 @@
     "ConfirmPasswordPlaceholder": "确认密码",
     "submit": "创建账户",
     "match": "密码不匹配",
-    "length": "密码长度必须至少为 8 个字符"
+    "length": "密码长度必须至少为 8 个字符",
+    "emailRequiredError": "电子邮箱为必填项。",
+    "emailInUseError": "该电子邮箱已被使用。请登录或重置密码。",
+    "invalidEmailError": "请输入有效的电子邮箱地址。",
+    "weakPasswordError": "密码强度太弱。请至少使用 8 个字符。",
+    "signUpFailedError": "注册失败，请重试。"
   },
   "Login": {
     "title": "登录",

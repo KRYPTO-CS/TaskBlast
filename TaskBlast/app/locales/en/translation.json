@@ -47,7 +47,12 @@
     "ConfirmPasswordPlaceholder": "Confirm Password",
     "submit": "Create Account",
     "match": "Passwords do not match",
-    "length": "Password must be at least 8 characters long"
+    "length": "Password must be at least 8 characters long",
+    "emailRequiredError": "Email is required.",
+    "emailInUseError": "This email is already in use. Try logging in or resetting your password.",
+    "invalidEmailError": "Please enter a valid email address.",
+    "weakPasswordError": "Password is too weak. Please use at least 8 characters.",
+    "signUpFailedError": "Sign up failed. Please try again."
   },
   "Login": {
     "title": "Login",

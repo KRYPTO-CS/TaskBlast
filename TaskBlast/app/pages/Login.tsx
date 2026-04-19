@@ -59,7 +59,7 @@ export default function Login() {
   const [currentScreen, setCurrentScreen] = useState<Screen>("login");
   const [resetEmail, setResetEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
-  const [t, i18n] = useTranslation();
+  const { t } = useTranslation();
   const { checkEligibility, clearAdminSession } = useAdmin();
   const { activeChildUsername, refreshProfile } = useActiveProfile();
 
@@ -77,6 +77,21 @@ export default function Login() {
     managerialPin: null as string | null,
   });
   const [signUpLoading, setSignUpLoading] = useState(false);
+  const [signUpSubmitError, setSignUpSubmitError] = useState("");
+
+  const getSignUpErrorMessage = (error: any): string => {
+    const code = error?.code;
+    switch (code) {
+      case "auth/email-already-in-use":
+        return t("Password.emailInUseError");
+      case "auth/invalid-email":
+        return t("Password.invalidEmailError");
+      case "auth/weak-password":
+        return t("Password.weakPasswordError");
+      default:
+        return t("Password.signUpFailedError");
+    }
+  };
 
   useEffect(() => {
     const checkAuthAndProfile = async () => {
@@ -222,19 +237,23 @@ export default function Login() {
   const handleSignUpEmailSubmit = (email: string) => {
     // Save email and skip code entry screen: go straight to password creation
     setSignUpData({ ...signUpData, email });
+    setSignUpSubmitError("");
     setCurrentScreen("signUpCreatePassword");
   };
 
   const handleSignUpPasswordSubmit = async (password: string) => {
+    setSignUpSubmitError("");
     const payload = { ...signUpData, password };
 
     if (!payload.email) {
       console.error("Sign up error: email is required");
+      setSignUpSubmitError(t("Password.emailRequiredError"));
       return;
     }
 
     if (!password || password.length < 6) {
       console.error("Sign up error: password must be at least 6 characters");
+      setSignUpSubmitError(t("Password.weakPasswordError"));
       return;
     }
 
@@ -317,6 +336,7 @@ export default function Login() {
       }
     } catch (error: any) {
       console.error("Sign up error:", error?.code ?? error?.message ?? error);
+      setSignUpSubmitError(getSignUpErrorMessage(error));
       return;
     } finally {
       setSignUpLoading(false);
@@ -325,6 +345,7 @@ export default function Login() {
 
   const handleBackToLoginFromSignUp = () => {
     setCurrentScreen("login");
+    setSignUpSubmitError("");
     setSignUpData({
       birthdate: "",
       firstName: "",
@@ -422,6 +443,7 @@ export default function Login() {
     return (
       <SignUpCreatePassword
         onSubmit={handleSignUpPasswordSubmit}
+        submitError={signUpSubmitError}
         // Since we skip the verification code screen, back should return to the email entry
         onBack={() => setCurrentScreen("signUpEmail")}
       />

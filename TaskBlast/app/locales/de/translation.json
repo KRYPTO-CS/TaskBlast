@@ -40,6 +40,20 @@
     "emailPlaceholder": "E-Mail-Adresse",
     "send": "Link senden"
   },
+  "Password": {
+    "title": "Passwort erstellen",
+    "desc": "Wahlen Sie ein starkes Passwort, um Ihr Konto zu schutzen",
+    "passwordPlaceholder": "Passwort",
+    "ConfirmPasswordPlaceholder": "Passwort bestatigen",
+    "submit": "Konto erstellen",
+    "match": "Passworter stimmen nicht uberein",
+    "length": "Das Passwort muss mindestens 8 Zeichen lang sein",
+    "emailRequiredError": "E-Mail ist erforderlich.",
+    "emailInUseError": "Diese E-Mail wird bereits verwendet. Melden Sie sich an oder setzen Sie Ihr Passwort zurück.",
+    "invalidEmailError": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "weakPasswordError": "Das Passwort ist zu schwach. Verwenden Sie mindestens 8 Zeichen.",
+    "signUpFailedError": "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut."
+  },
   "Login": {
     "title": "Anmelden",
     "emailPlaceholder": "E-Mail oder Benutzername",

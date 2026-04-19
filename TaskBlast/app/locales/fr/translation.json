@@ -45,7 +45,12 @@
     "ConfirmPasswordPlaceholder": "Confirmer le mot de passe",
     "submit": "Créer un compte",
     "match": "Les mots de passe ne correspondent pas",
-    "length": "Le mot de passe doit contenir au moins 8 caractères"
+    "length": "Le mot de passe doit contenir au moins 8 caractères",
+    "emailRequiredError": "L'e-mail est obligatoire.",
+    "emailInUseError": "Cet e-mail est déjà utilisé. Connectez-vous ou réinitialisez votre mot de passe.",
+    "invalidEmailError": "Veuillez entrer une adresse e-mail valide.",
+    "weakPasswordError": "Le mot de passe est trop faible. Utilisez au moins 8 caractères.",
+    "signUpFailedError": "Échec de l'inscription. Veuillez réessayer."
   },
   "Login": {
     "title": "Connexion",

@@ -40,6 +40,20 @@
     "emailPlaceholder": "Correo electrónico",
     "send": "Enviar enlace"
   },
+  "Password": {
+    "title": "Crea una contraseña",
+    "desc": "Elige una contraseña segura para proteger tu cuenta",
+    "passwordPlaceholder": "Contraseña",
+    "ConfirmPasswordPlaceholder": "Confirmar contraseña",
+    "submit": "Crear cuenta",
+    "match": "Las contraseñas no coinciden",
+    "length": "La contraseña debe tener al menos 8 caracteres",
+    "emailRequiredError": "El correo electrónico es obligatorio.",
+    "emailInUseError": "Este correo electrónico ya está en uso. Inicia sesión o restablece tu contraseña.",
+    "invalidEmailError": "Ingresa una dirección de correo válida.",
+    "weakPasswordError": "La contraseña es demasiado débil. Usa al menos 8 caracteres.",
+    "signUpFailedError": "No se pudo completar el registro. Inténtalo de nuevo."
+  },
   "Login": {
     "title": "Iniciar sesión",
     "emailPlaceholder": "Correo electrónico o nombre de usuario",

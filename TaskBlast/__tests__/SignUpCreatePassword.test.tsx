@@ -34,4 +34,23 @@ describe("SignUpCreatePassword", () => {
     fireEvent.press(getByText(/Back to\s+Previous Step/i));
     expect(onBack).toHaveBeenCalled();
   });
+
+  it("shows submit error from parent signup flow", () => {
+    const onSubmit = jest.fn();
+    const onBack = jest.fn();
+
+    const { getByText } = render(
+      <SignUpCreatePassword
+        onSubmit={onSubmit}
+        onBack={onBack}
+        submitError="This email is already in use. Try logging in or resetting your password."
+      />,
+    );
+
+    expect(
+      getByText(
+        "This email is already in use. Try logging in or resetting your password.",
+      ),
+    ).toBeTruthy();
+  });
 });

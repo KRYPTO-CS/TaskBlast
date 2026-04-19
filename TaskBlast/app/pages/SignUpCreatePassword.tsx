@@ -15,11 +15,13 @@ import { useTranslation } from "react-i18next";
 interface SignUpCreatePasswordProps {
   onSubmit: (password: string) => void;
   onBack: () => void;
+  submitError?: string;
 }
 
 export default function SignUpCreatePassword({
   onSubmit,
   onBack,
+  submitError,
 }: SignUpCreatePasswordProps) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -114,9 +116,9 @@ export default function SignUpCreatePassword({
               </View>
             </View>
 
-            {error ? (
+            {error || submitError ? (
               <Text className="font-madimi text-sm text-red-300 mb-4 text-left drop-shadow-md">
-                {error}
+                {error || submitError}
               </Text>
             ) : null}
 

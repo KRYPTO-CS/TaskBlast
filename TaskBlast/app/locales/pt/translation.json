@@ -40,6 +40,20 @@
     "emailPlaceholder": "Endereço de e-mail",
     "send": "Enviar link"
   },
+  "Password": {
+    "title": "Crie uma senha",
+    "desc": "Escolha uma senha forte para proteger sua conta",
+    "passwordPlaceholder": "Senha",
+    "ConfirmPasswordPlaceholder": "Confirmar senha",
+    "submit": "Criar conta",
+    "match": "As senhas nao coincidem",
+    "length": "A senha deve ter pelo menos 8 caracteres",
+    "emailRequiredError": "E-mail e obrigatório.",
+    "emailInUseError": "Este e-mail ja está em uso. Faça login ou redefina sua senha.",
+    "invalidEmailError": "Digite um endereço de e-mail válido.",
+    "weakPasswordError": "A senha está muito fraca. Use pelo menos 8 caracteres.",
+    "signUpFailedError": "Falha no cadastro. Tente novamente."
+  },
   "Login": {
     "title": "Entrar",
     "emailPlaceholder": "E-mail ou nome de usuário",

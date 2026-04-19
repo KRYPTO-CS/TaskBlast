@@ -37,17 +37,22 @@
   "Email": {
     "title": "What be yer email?",
     "desc": "We’ll send ye a message in a bottle (verification code)",
-  "Aspergers": "Asperger's",
-  "Autism": "Autism",
-  "DevelopmentalLanguageDisorder": "Language Trouble",
-  "Disability Confident": "Disability Confidence",
-  "Dyscalculia": "Number Trouble",
-  "Dysgraphia": "Writing Trouble",
-  "Dyslexia": "Reading Trouble",
-  "Dyspraxia": "Movement Trouble",
-  "Hyperlexia": "Hyperlexia",
+    "emailPlaceholder": "Email Address",
+    "send": "Send Link"
+  },
+  "Password": {
+    "title": "Forge a Secret Password",
+    "desc": "Choose a strong secret to protect yer account",
+    "passwordPlaceholder": "Password",
+    "ConfirmPasswordPlaceholder": "Confirm Password",
+    "submit": "Create Account",
     "match": "Yer passwords don’t match, matey",
-    "length": "Password must be at least 8 characters long"
+    "length": "Password must be at least 8 characters long",
+    "emailRequiredError": "Email be required.",
+    "emailInUseError": "That email be already taken. Board ship or reset yer secret.",
+    "invalidEmailError": "Enter a proper email address, matey.",
+    "weakPasswordError": "Yer password be too weak. Use at least 8 characters.",
+    "signUpFailedError": "Sign up failed, matey. Try again."
   },
   "Login": {
     "title": "Board Ship",
