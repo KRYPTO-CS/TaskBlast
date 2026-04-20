@@ -207,7 +207,8 @@ export default function ProfileScreen() {
         slicedRocks.map((_, index) => {
           const dateIndex = rocksDates.length - slicedRocks.length + index;
           return dateIndex >= 0
-            ? (rocksDates[dateIndex] ?? `#${rocksArr.length - slicedRocks.length + index + 1}`)
+            ? (rocksDates[dateIndex] ??
+                `#${rocksArr.length - slicedRocks.length + index + 1}`)
             : `#${rocksArr.length - slicedRocks.length + index + 1}`;
         }),
       );
@@ -216,7 +217,8 @@ export default function ProfileScreen() {
         slicedWt.map((_, index) => {
           const dateIndex = workDates.length - slicedWt.length + index;
           return dateIndex >= 0
-            ? (workDates[dateIndex] ?? `#${wtArr.length - slicedWt.length + index + 1}`)
+            ? (workDates[dateIndex] ??
+                `#${wtArr.length - slicedWt.length + index + 1}`)
             : `#${wtArr.length - slicedWt.length + index + 1}`;
         }),
       );
@@ -225,7 +227,8 @@ export default function ProfileScreen() {
         slicedPt.map((_, index) => {
           const dateIndex = playDates.length - slicedPt.length + index;
           return dateIndex >= 0
-            ? (playDates[dateIndex] ?? `#${ptArr.length - slicedPt.length + index + 1}`)
+            ? (playDates[dateIndex] ??
+                `#${ptArr.length - slicedPt.length + index + 1}`)
             : `#${ptArr.length - slicedPt.length + index + 1}`;
         }),
       );
@@ -363,9 +366,7 @@ export default function ProfileScreen() {
         return;
       }
 
-      const newImageUrl = await updateProfilePicture(
-        userProfile.profilePicture || undefined,
-      );
+      const newImageUrl = await updateProfilePicture();
 
       if (newImageUrl) {
         if (profileType === "child") {
@@ -616,7 +617,9 @@ export default function ProfileScreen() {
                     }}
                   >
                     <Text className="font-orbitron-semibold text-xl text-white text-sm">
-                      {t(`Traits.${normalizeTraitKey(trait)}`, { defaultValue: trait })}
+                      {t(`Traits.${normalizeTraitKey(trait)}`, {
+                        defaultValue: trait,
+                      })}
                     </Text>
                   </View>
                 ))}

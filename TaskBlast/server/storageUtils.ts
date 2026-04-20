@@ -2,6 +2,53 @@ import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage
 import { storage, auth } from "./firebase";
 import * as ImagePicker from "expo-image-picker";
 
+const FIREBASE_STORAGE_HOSTS = [
+  "firebasestorage.googleapis.com",
+  "storage.googleapis.com",
+];
+
+const getProfilePictureOwnerId = (storagePath: string): string | null => {
+  const pathParts = storagePath.split("/");
+  if (pathParts.length >= 3 && pathParts[0] === "profilePictures") {
+    return pathParts[1] || null;
+  }
+  return null;
+};
+
+const getStoragePathFromUrl = (imageUrl: string): string | null => {
+  try {
+    if (imageUrl.startsWith("gs://")) {
+      const withoutScheme = imageUrl.replace("gs://", "");
+      const firstSlash = withoutScheme.indexOf("/");
+      return firstSlash >= 0 ? withoutScheme.slice(firstSlash + 1) : null;
+    }
+
+    const parsedUrl = new URL(imageUrl);
+
+    if (!FIREBASE_STORAGE_HOSTS.includes(parsedUrl.hostname)) {
+      return null;
+    }
+
+    // Firebase download URLs keep the storage path in /o/<encoded-path>.
+    const firebaseMatch = parsedUrl.pathname.match(/\/o\/(.+)$/);
+    if (firebaseMatch?.[1]) {
+      return decodeURIComponent(firebaseMatch[1]);
+    }
+
+    // GCS URLs are usually /<bucket>/<path>.
+    if (parsedUrl.hostname === "storage.googleapis.com") {
+      const pathParts = parsedUrl.pathname.split("/").filter(Boolean);
+      if (pathParts.length > 1) {
+        return decodeURIComponent(pathParts.slice(1).join("/"));
+      }
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+};
+
 /**
  * Request permissions for accessing the image library
  */
@@ -77,17 +124,13 @@ export const uploadProfilePicture = async (
  */
 export const deleteProfilePicture = async (imageUrl: string): Promise<void> => {
   try {
-    // Extract the path from the download URL
-    const url = new URL(imageUrl);
-    const pathMatch = url.pathname.match(/\/o\/(.+)\?/);
-    
-    if (!pathMatch || !pathMatch[1]) {
+    const imagePath = getStoragePathFromUrl(imageUrl);
+
+    if (!imagePath) {
       throw new Error("Invalid image URL");
     }
 
-    const imagePath = decodeURIComponent(pathMatch[1]);
     const imageRef = ref(storage, imagePath);
-
     await deleteObject(imageRef);
   } catch (error) {
     console.error("Error deleting profile picture:", error);
@@ -102,7 +145,6 @@ export const deleteProfilePicture = async (imageUrl: string): Promise<void> => {
  * @returns The new profile picture URL or null if cancelled
  */
 export const updateProfilePicture = async (
-  currentImageUrl?: string
 ): Promise<string | null> => {
   try {
     const currentUser = auth.currentUser;
@@ -116,16 +158,6 @@ export const updateProfilePicture = async (
 
     // Upload the new image
     const newImageUrl = await uploadProfilePicture(imageUri, currentUser.uid);
-
-    // Delete the old image if it exists and is from Firebase Storage
-    if (currentImageUrl && currentImageUrl.includes("firebase")) {
-      try {
-        await deleteProfilePicture(currentImageUrl);
-      } catch (error) {
-        console.warn("Could not delete old profile picture:", error);
-        // Continue anyway since the new image was uploaded successfully
-      }
-    }
 
     return newImageUrl;
   } catch (error) {

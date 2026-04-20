@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { Text } from '../../TTS';
+import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import { updateProfilePicture } from "../../server/storageUtils";
 import {
@@ -41,7 +41,7 @@ export default function EditProfileModal({
   const [email, setEmail] = useState(userProfile.email || "");
   const [birthdate, setBirthdate] = useState(userProfile.birthdate || "");
   const [profilePicture, setProfilePicture] = useState(
-    userProfile.profilePicture
+    userProfile.profilePicture,
   );
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -72,11 +72,26 @@ export default function EditProfileModal({
         return;
       }
 
-      const newImageUrl = await updateProfilePicture(
-        profilePicture || undefined
-      );
+      const newImageUrl = await updateProfilePicture();
       if (newImageUrl) {
         setProfilePicture(newImageUrl);
+        setError("");
+
+        if (profileType === "child") {
+          const childRef = getChildDocRef();
+          if (childRef) {
+            await updateDoc(childRef, { profilePicture: newImageUrl });
+          }
+        } else {
+          await updateUserProfile(currentUser.uid, {
+            profilePicture: newImageUrl,
+          });
+        }
+
+        onProfileUpdate({
+          ...userProfile,
+          profilePicture: newImageUrl,
+        });
       }
     } catch (error) {
       console.error("Error updating profile picture:", error);
