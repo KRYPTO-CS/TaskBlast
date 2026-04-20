@@ -423,6 +423,15 @@
       "noRockStats": "아직 크리스탈 통계가 없습니다.",
       "noWorkSessions": "아직 작업 세션이 없습니다.",
       "noPlaySessions": "아직 휴식 세션이 없습니다."
+    },
+    "actions": {
+      "expand": "차트 확대",
+      "close": "차트 닫기",
+      "closeExpanded": "확대된 차트 닫기"
+    },
+    "hints": {
+      "expand": "이 차트에 집중하려면 탭하세요",
+      "swipeDown": "닫으려면 X를 탭하세요"
     }
   },
   "Pomodoro": {

@@ -207,42 +207,42 @@
       "privacyEnquiries": "Datenschutzanfragen"
     },
     "faq": {
-  "NotificationPreferencesModal": {
-    "title": "Benachrichtigungen",
-    "reminderTime": "Erinnerungszeit",
-    "settingsSavedTitle": "Einstellungen gespeichert",
-    "settingsSavedBody": "Deine Benachrichtigungseinstellungen wurden aktualisiert!",
-    "permissionsGrantedTitle": "Berechtigungen erteilt",
-    "permissionsGrantedBody": "Benachrichtigungen sind jetzt aktiviert!",
-    "permissionsNeededTitle": "Berechtigungen erforderlich",
-    "permissionsNeededBody": "Bitte aktiviere Benachrichtigungen in den Geräteeinstellungen, um diese Funktion zu nutzen.",
-    "permissionsRequiredTitle": "Berechtigungen erforderlich",
-    "permissionsRequiredBody": "Bitte aktiviere zuerst Benachrichtigungen, um die tägliche Erinnerung zu testen.",
-    "permissionsDisabledBody": "Benachrichtigungen sind derzeit deaktiviert. Aktiviere sie, um Aufgaben-Erinnerungen zu erhalten.",
-    "enableNotifications": "Benachrichtigungen aktivieren",
-    "mainSettings": "Haupteinstellungen",
-    "enableNotificationsDescription": "Alle Benachrichtigungen ein- oder ausschalten",
-    "sensorySettings": "Sensorische Einstellungen",
-    "sensorySettingsDescription": "Steuere, wie Benachrichtigungen deine Aufmerksamkeit erhalten",
-    "sound": "Ton",
-    "soundDescription": "Benachrichtigungston abspielen",
-    "vibration": "Vibration",
-    "vibrationDescription": "Bei eingehender Benachrichtigung vibrieren",
-    "dailyReminderTitle": "Tägliche Aufgaben-Erinnerung",
-    "dailyReminderDescription": "Erhalte eine tägliche Erinnerung an deine unvollständigen Aufgaben",
-    "enableDailyReminder": "Tägliche Erinnerung aktivieren",
-    "enableDailyReminderDescription": "Tägliche Benachrichtigung mit Aufgabenanzahl erhalten",
-    "testButton": "Testbenachrichtigung senden",
-    "testNotificationTitle": "TaskBlast-Erinnerung",
-    "testNotificationBody": "Du hast 3 Aufgaben offen! Bereit, sie anzugehen?",
-    "testSentTitle": "Test gesendet!",
-    "testSentBody": "Sieh in deine Benachrichtigungen, um zu sehen, wie die tägliche Erinnerung aussieht.",
-    "testFailedTitle": "Test fehlgeschlagen",
-    "testFailedBody": "Die Testbenachrichtigung konnte nicht gesendet werden. Bitte versuche es erneut.",
-    "ok": "OK",
-    "cancel": "Abbrechen",
-    "save": "Speichern"
-  },
+      "NotificationPreferencesModal": {
+        "title": "Benachrichtigungen",
+        "reminderTime": "Erinnerungszeit",
+        "settingsSavedTitle": "Einstellungen gespeichert",
+        "settingsSavedBody": "Deine Benachrichtigungseinstellungen wurden aktualisiert!",
+        "permissionsGrantedTitle": "Berechtigungen erteilt",
+        "permissionsGrantedBody": "Benachrichtigungen sind jetzt aktiviert!",
+        "permissionsNeededTitle": "Berechtigungen erforderlich",
+        "permissionsNeededBody": "Bitte aktiviere Benachrichtigungen in den Geräteeinstellungen, um diese Funktion zu nutzen.",
+        "permissionsRequiredTitle": "Berechtigungen erforderlich",
+        "permissionsRequiredBody": "Bitte aktiviere zuerst Benachrichtigungen, um die tägliche Erinnerung zu testen.",
+        "permissionsDisabledBody": "Benachrichtigungen sind derzeit deaktiviert. Aktiviere sie, um Aufgaben-Erinnerungen zu erhalten.",
+        "enableNotifications": "Benachrichtigungen aktivieren",
+        "mainSettings": "Haupteinstellungen",
+        "enableNotificationsDescription": "Alle Benachrichtigungen ein- oder ausschalten",
+        "sensorySettings": "Sensorische Einstellungen",
+        "sensorySettingsDescription": "Steuere, wie Benachrichtigungen deine Aufmerksamkeit erhalten",
+        "sound": "Ton",
+        "soundDescription": "Benachrichtigungston abspielen",
+        "vibration": "Vibration",
+        "vibrationDescription": "Bei eingehender Benachrichtigung vibrieren",
+        "dailyReminderTitle": "Tägliche Aufgaben-Erinnerung",
+        "dailyReminderDescription": "Erhalte eine tägliche Erinnerung an deine unvollständigen Aufgaben",
+        "enableDailyReminder": "Tägliche Erinnerung aktivieren",
+        "enableDailyReminderDescription": "Tägliche Benachrichtigung mit Aufgabenanzahl erhalten",
+        "testButton": "Testbenachrichtigung senden",
+        "testNotificationTitle": "TaskBlast-Erinnerung",
+        "testNotificationBody": "Du hast 3 Aufgaben offen! Bereit, sie anzugehen?",
+        "testSentTitle": "Test gesendet!",
+        "testSentBody": "Sieh in deine Benachrichtigungen, um zu sehen, wie die tägliche Erinnerung aussieht.",
+        "testFailedTitle": "Test fehlgeschlagen",
+        "testFailedBody": "Die Testbenachrichtigung konnte nicht gesendet werden. Bitte versuche es erneut.",
+        "ok": "OK",
+        "cancel": "Abbrechen",
+        "save": "Speichern"
+      },
       "items": {
         "1": {
           "question": "Wie fige ich eine neue Aufgabe hinzu?",
@@ -364,30 +364,26 @@
     "managerAccess": "Manager-Zugriff",
     "managerAccessDesc": "Geben Sie eine 4-stellige PIN ein, um Zugriff auf den erweiterten Bearbeitungsmodus zu erhalten.",
     "unlock": "Entsperren"
-
   },
 
   "Traits": {
-
-  "ADHD" : "ADHS",
-  "Aspergers": "Asperger-Syndrom",
-  "Autism": "Autismus",
-  "DevelopmentalLanguageDisorder": "Entwicklungsbedingte Sprachstörung",
-  "Disability Confident": "Sicher im Umgang mit Behinderung",
-  "Dyscalculia": "Dyskalkulie",
-  "Dysgraphia": "Dysgraphie",
-  "Dyslexia": "Dyslexie",
-  "Dyspraxia": "Dyspraxie",
-  "Hyperlexia": "Hyperlexie",
-  "Irlen Syndrome": "Irlen-Syndrom",
-  "OCD": "Zwangsstörung",
-  "Synthesia": "Synästhesie",
-  "Tourette's Syndrome": "Tourette-Syndrom",
-  "selectTraits": "Eigenschaften auswählen",
-  "saveTraits"  : "Eigenschaften speichern"
-
+    "ADHD": "ADHS",
+    "Aspergers": "Asperger-Syndrom",
+    "Autism": "Autismus",
+    "DevelopmentalLanguageDisorder": "Entwicklungsbedingte Sprachstörung",
+    "Disability Confident": "Sicher im Umgang mit Behinderung",
+    "Dyscalculia": "Dyskalkulie",
+    "Dysgraphia": "Dysgraphie",
+    "Dyslexia": "Dyslexie",
+    "Dyspraxia": "Dyspraxie",
+    "Hyperlexia": "Hyperlexie",
+    "Irlen Syndrome": "Irlen-Syndrom",
+    "OCD": "Zwangsstörung",
+    "Synthesia": "Synästhesie",
+    "Tourette's Syndrome": "Tourette-Syndrom",
+    "selectTraits": "Eigenschaften auswählen",
+    "saveTraits": "Eigenschaften speichern"
   },
-
 
   "Profile": {
     "traits": "Eigenschaften",
@@ -464,6 +460,15 @@
       "noRockStats": "Noch keine Felsenstatistiken.",
       "noWorkSessions": "Noch keine Arbeitssitzungen.",
       "noPlaySessions": "Noch keine Pausensitzungen."
+    },
+    "actions": {
+      "expand": "Diagramm erweitern",
+      "close": "Diagramme schließen",
+      "closeExpanded": "Erweitertes Diagramm schließen"
+    },
+    "hints": {
+      "expand": "Tippe, um dieses Diagramm zu fokussieren",
+      "swipeDown": "Tippe X zum Schließen"
     }
   },
   "Pomodoro": {
@@ -556,5 +561,4 @@
     "descriptionBase": "Standard-Edelsteinbelohnungen",
     "stats": "{{diameter}} km Durchmesser · {{distance}} km von der Sonne"
   }
-
 }

@@ -33,7 +33,8 @@
     "firstName": "Prénom",
     "lastName": "Nom",
     "continue": "Continuer"
-  },  "Email": {
+  },
+  "Email": {
     "title": "Quel est votre e-mail ?",
     "desc": "Nous vous enverrons un code de vérification pour confirmer votre adresse e-mail",
     "emailPlaceholder": "Adresse e-mail",
@@ -41,7 +42,8 @@
   },
   "Password": {
     "title": "Créer un mot de passe",
-    "desc": "Choisissez un mot de passe fort pour protéger votre compte",    "passwordPlaceholder": "Mot de passe",
+    "desc": "Choisissez un mot de passe fort pour protéger votre compte",
+    "passwordPlaceholder": "Mot de passe",
     "ConfirmPasswordPlaceholder": "Confirmer le mot de passe",
     "submit": "Créer un compte",
     "match": "Les mots de passe ne correspondent pas",
@@ -205,42 +207,42 @@
       "privacyEnquiries": "Demandes de confidentialite"
     },
     "faq": {
-  "NotificationPreferencesModal": {
-    "title": "Notifications",
-    "reminderTime": "Heure du rappel",
-    "settingsSavedTitle": "Paramètres enregistrés",
-    "settingsSavedBody": "Vos préférences de notification ont été mises à jour !",
-    "permissionsGrantedTitle": "Autorisations accordées",
-    "permissionsGrantedBody": "Les notifications sont maintenant activées !",
-    "permissionsNeededTitle": "Autorisations requises",
-    "permissionsNeededBody": "Veuillez activer les notifications dans les paramètres de votre appareil pour utiliser cette fonctionnalité.",
-    "permissionsRequiredTitle": "Autorisations requises",
-    "permissionsRequiredBody": "Veuillez activer les notifications d'abord pour tester le rappel quotidien.",
-    "permissionsDisabledBody": "Les notifications sont actuellement désactivées. Activez-les pour recevoir des rappels de tâches.",
-    "enableNotifications": "Activer les notifications",
-    "mainSettings": "Paramètres principaux",
-    "enableNotificationsDescription": "Activer ou désactiver toutes les notifications",
-    "sensorySettings": "Paramètres sensoriels",
-    "sensorySettingsDescription": "Contrôlez la manière dont les notifications attirent votre attention",
-    "sound": "Son",
-    "soundDescription": "Lire le son de notification",
-    "vibration": "Vibration",
-    "vibrationDescription": "Vibrer lors de l'arrivée d'une notification",
-    "dailyReminderTitle": "Rappel quotidien des tâches",
-    "dailyReminderDescription": "Recevez un rappel quotidien concernant vos tâches incomplètes",
-    "enableDailyReminder": "Activer le rappel quotidien",
-    "enableDailyReminderDescription": "Recevoir une notification quotidienne avec le nombre de tâches",
-    "testButton": "Envoyer une notification de test",
-    "testNotificationTitle": "Rappel TaskBlast",
-    "testNotificationBody": "Vous avez 3 tâches en attente ! Prêt à vous y attaquer ?",
-    "testSentTitle": "Test envoyé !",
-    "testSentBody": "Consultez votre centre de notifications pour voir à quoi ressemble le rappel quotidien.",
-    "testFailedTitle": "Échec du test",
-    "testFailedBody": "Impossible d'envoyer la notification de test. Veuillez réessayer.",
-    "ok": "OK",
-    "cancel": "Annuler",
-    "save": "Enregistrer"
-  },
+      "NotificationPreferencesModal": {
+        "title": "Notifications",
+        "reminderTime": "Heure du rappel",
+        "settingsSavedTitle": "Paramètres enregistrés",
+        "settingsSavedBody": "Vos préférences de notification ont été mises à jour !",
+        "permissionsGrantedTitle": "Autorisations accordées",
+        "permissionsGrantedBody": "Les notifications sont maintenant activées !",
+        "permissionsNeededTitle": "Autorisations requises",
+        "permissionsNeededBody": "Veuillez activer les notifications dans les paramètres de votre appareil pour utiliser cette fonctionnalité.",
+        "permissionsRequiredTitle": "Autorisations requises",
+        "permissionsRequiredBody": "Veuillez activer les notifications d'abord pour tester le rappel quotidien.",
+        "permissionsDisabledBody": "Les notifications sont actuellement désactivées. Activez-les pour recevoir des rappels de tâches.",
+        "enableNotifications": "Activer les notifications",
+        "mainSettings": "Paramètres principaux",
+        "enableNotificationsDescription": "Activer ou désactiver toutes les notifications",
+        "sensorySettings": "Paramètres sensoriels",
+        "sensorySettingsDescription": "Contrôlez la manière dont les notifications attirent votre attention",
+        "sound": "Son",
+        "soundDescription": "Lire le son de notification",
+        "vibration": "Vibration",
+        "vibrationDescription": "Vibrer lors de l'arrivée d'une notification",
+        "dailyReminderTitle": "Rappel quotidien des tâches",
+        "dailyReminderDescription": "Recevez un rappel quotidien concernant vos tâches incomplètes",
+        "enableDailyReminder": "Activer le rappel quotidien",
+        "enableDailyReminderDescription": "Recevoir une notification quotidienne avec le nombre de tâches",
+        "testButton": "Envoyer une notification de test",
+        "testNotificationTitle": "Rappel TaskBlast",
+        "testNotificationBody": "Vous avez 3 tâches en attente ! Prêt à vous y attaquer ?",
+        "testSentTitle": "Test envoyé !",
+        "testSentBody": "Consultez votre centre de notifications pour voir à quoi ressemble le rappel quotidien.",
+        "testFailedTitle": "Échec du test",
+        "testFailedBody": "Impossible d'envoyer la notification de test. Veuillez réessayer.",
+        "ok": "OK",
+        "cancel": "Annuler",
+        "save": "Enregistrer"
+      },
       "items": {
         "1": {
           "question": "Comment ajouter une nouvelle tache ?",
@@ -364,27 +366,25 @@
     "unlock": "Débloquer"
   },
 
-"Traits": {
-
-  "ADHD" : "TDAH",
-  "Aspergers": "Syndrome d'Asperger",
-  "Autism": "Autisme",
-  "DevelopmentalLanguageDisorder": "Trouble développemental du langage",
-  "Disability Confident": "Confiance en situation de handicap",
-  "Dyscalculia": "Dyscalculie",
-  "Dysgraphia": "Dysgraphie",
-  "Dyslexia": "Dyslexie",
-  "Dyspraxia": "Dyspraxie",
-  "Hyperlexia": "Hyperlexie",
-  "Irlen Syndrome": "Syndrome d'Irlen",
-  "OCD": "TOC",
-  "Synthesia": "Synesthésie",
-  "Tourette's Syndrome": "Syndrome de Tourette",
-  "selectTraits": "Sélectionner les Traits",
-  "saveTraits"  : "Enregistrer les Traits"
-
+  "Traits": {
+    "ADHD": "TDAH",
+    "Aspergers": "Syndrome d'Asperger",
+    "Autism": "Autisme",
+    "DevelopmentalLanguageDisorder": "Trouble développemental du langage",
+    "Disability Confident": "Confiance en situation de handicap",
+    "Dyscalculia": "Dyscalculie",
+    "Dysgraphia": "Dysgraphie",
+    "Dyslexia": "Dyslexie",
+    "Dyspraxia": "Dyspraxie",
+    "Hyperlexia": "Hyperlexie",
+    "Irlen Syndrome": "Syndrome d'Irlen",
+    "OCD": "TOC",
+    "Synthesia": "Synesthésie",
+    "Tourette's Syndrome": "Syndrome de Tourette",
+    "selectTraits": "Sélectionner les Traits",
+    "saveTraits": "Enregistrer les Traits"
   },
-  
+
   "Profile": {
     "traits": "Traits",
     "editP": "Editer Profil",
@@ -460,6 +460,15 @@
       "noRockStats": "Aucune statistique de roches pour le moment.",
       "noWorkSessions": "Aucune session de travail pour le moment.",
       "noPlaySessions": "Aucune session de pause pour le moment."
+    },
+    "actions": {
+      "expand": "Agrandir le graphique",
+      "close": "Fermer les graphiques",
+      "closeExpanded": "Fermer le graphique agrandi"
+    },
+    "hints": {
+      "expand": "Touchez pour vous concentrer sur ce graphique",
+      "swipeDown": "Touchez X pour fermer"
     }
   },
   "Pomodoro": {
@@ -553,5 +562,4 @@
     "descriptionBase": "Récompenses de gemmes standard",
     "stats": "{{diameter}} km de diamètre · {{distance}} km du Soleil"
   }
-
 }

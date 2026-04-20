@@ -117,8 +117,8 @@
     "galaxyCrystals": "Галактические кристаллы",
     "level": "Уровень",
     "coachMarklevel": "Это ваш текущий уровень игрока. Зарабатывайте очки опыта, выполняя задачи и сеансы фокусировки, чтобы повышать уровень и получать награды!"
-   },
-   "Settings": {
+  },
+  "Settings": {
     "title": "Настройки",
     "sound": "Звуковые эффекты",
     "music": "Музыка",
@@ -207,42 +207,42 @@
       "privacyEnquiries": "Вопросы по конфиденциальности"
     },
     "faq": {
-  "NotificationPreferencesModal": {
-    "title": "Уведомления",
-    "reminderTime": "Время напоминания",
-    "settingsSavedTitle": "Настройки сохранены",
-    "settingsSavedBody": "Ваши настройки уведомлений обновлены!",
-    "permissionsGrantedTitle": "Разрешения выданы",
-    "permissionsGrantedBody": "Уведомления теперь включены!",
-    "permissionsNeededTitle": "Требуются разрешения",
-    "permissionsNeededBody": "Включите уведомления в настройках устройства, чтобы использовать эту функцию.",
-    "permissionsRequiredTitle": "Требуются разрешения",
-    "permissionsRequiredBody": "Сначала включите уведомления, чтобы протестировать ежедневное напоминание.",
-    "permissionsDisabledBody": "Уведомления сейчас отключены. Включите их, чтобы получать напоминания о задачах.",
-    "enableNotifications": "Включить уведомления",
-    "mainSettings": "Основные настройки",
-    "enableNotificationsDescription": "Включить или выключить все уведомления",
-    "sensorySettings": "Сенсорные настройки",
-    "sensorySettingsDescription": "Управляйте тем, как уведомления привлекают ваше внимание",
-    "sound": "Звук",
-    "soundDescription": "Воспроизводить звук уведомления",
-    "vibration": "Вибрация",
-    "vibrationDescription": "Вибрировать при получении уведомления",
-    "dailyReminderTitle": "Ежедневное напоминание о задачах",
-    "dailyReminderDescription": "Получайте ежедневное напоминание о незавершенных задачах",
-    "enableDailyReminder": "Включить ежедневное напоминание",
-    "enableDailyReminderDescription": "Получать ежедневное уведомление с количеством задач",
-    "testButton": "Отправить тестовое уведомление",
-    "testNotificationTitle": "Напоминание TaskBlast",
-    "testNotificationBody": "У вас ждут 3 задачи! Готовы взяться за них?",
-    "testSentTitle": "Тест отправлен!",
-    "testSentBody": "Проверьте панель уведомлений, чтобы увидеть, как выглядит ежедневное напоминание.",
-    "testFailedTitle": "Сбой теста",
-    "testFailedBody": "Не удалось отправить тестовое уведомление. Попробуйте еще раз.",
-    "ok": "OK",
-    "cancel": "Отмена",
-    "save": "Сохранить"
-  },
+      "NotificationPreferencesModal": {
+        "title": "Уведомления",
+        "reminderTime": "Время напоминания",
+        "settingsSavedTitle": "Настройки сохранены",
+        "settingsSavedBody": "Ваши настройки уведомлений обновлены!",
+        "permissionsGrantedTitle": "Разрешения выданы",
+        "permissionsGrantedBody": "Уведомления теперь включены!",
+        "permissionsNeededTitle": "Требуются разрешения",
+        "permissionsNeededBody": "Включите уведомления в настройках устройства, чтобы использовать эту функцию.",
+        "permissionsRequiredTitle": "Требуются разрешения",
+        "permissionsRequiredBody": "Сначала включите уведомления, чтобы протестировать ежедневное напоминание.",
+        "permissionsDisabledBody": "Уведомления сейчас отключены. Включите их, чтобы получать напоминания о задачах.",
+        "enableNotifications": "Включить уведомления",
+        "mainSettings": "Основные настройки",
+        "enableNotificationsDescription": "Включить или выключить все уведомления",
+        "sensorySettings": "Сенсорные настройки",
+        "sensorySettingsDescription": "Управляйте тем, как уведомления привлекают ваше внимание",
+        "sound": "Звук",
+        "soundDescription": "Воспроизводить звук уведомления",
+        "vibration": "Вибрация",
+        "vibrationDescription": "Вибрировать при получении уведомления",
+        "dailyReminderTitle": "Ежедневное напоминание о задачах",
+        "dailyReminderDescription": "Получайте ежедневное напоминание о незавершенных задачах",
+        "enableDailyReminder": "Включить ежедневное напоминание",
+        "enableDailyReminderDescription": "Получать ежедневное уведомление с количеством задач",
+        "testButton": "Отправить тестовое уведомление",
+        "testNotificationTitle": "Напоминание TaskBlast",
+        "testNotificationBody": "У вас ждут 3 задачи! Готовы взяться за них?",
+        "testSentTitle": "Тест отправлен!",
+        "testSentBody": "Проверьте панель уведомлений, чтобы увидеть, как выглядит ежедневное напоминание.",
+        "testFailedTitle": "Сбой теста",
+        "testFailedBody": "Не удалось отправить тестовое уведомление. Попробуйте еще раз.",
+        "ok": "OK",
+        "cancel": "Отмена",
+        "save": "Сохранить"
+      },
       "items": {
         "1": {
           "question": "Как добавить новую задачу?",
@@ -367,26 +367,23 @@
   },
 
   "Traits": {
-
-  "ADHD" : "СДВГ",
-  "Aspergers": "Синдром Аспергера",
-  "Autism": "Аутизм",
-  "DevelopmentalLanguageDisorder": "Расстройство развития речи",
-  "Disability Confident": "Уверенность при инвалидности",
-  "Dyscalculia": "Дискалькулия",
-  "Dysgraphia": "Дисграфия",
-  "Dyslexia": "Дислексия",
-  "Dyspraxia": "Диспраксия",
-  "Hyperlexia": "Гиперлексия",
-  "Irlen Syndrome": "Синдром Ирлен",
-  "OCD": "ОКР",
-  "Synthesia": "Синестезия",
-  "Tourette's Syndrome": "Синдром Туретта",
-  "selectTraits": "Выбрать особенности",
-  "saveTraits"  : "Сохранить особенности"
-
+    "ADHD": "СДВГ",
+    "Aspergers": "Синдром Аспергера",
+    "Autism": "Аутизм",
+    "DevelopmentalLanguageDisorder": "Расстройство развития речи",
+    "Disability Confident": "Уверенность при инвалидности",
+    "Dyscalculia": "Дискалькулия",
+    "Dysgraphia": "Дисграфия",
+    "Dyslexia": "Дислексия",
+    "Dyspraxia": "Диспраксия",
+    "Hyperlexia": "Гиперлексия",
+    "Irlen Syndrome": "Синдром Ирлен",
+    "OCD": "ОКР",
+    "Synthesia": "Синестезия",
+    "Tourette's Syndrome": "Синдром Туретта",
+    "selectTraits": "Выбрать особенности",
+    "saveTraits": "Сохранить особенности"
   },
-
 
   "Profile": {
     "traits": "Особенности",
@@ -463,6 +460,15 @@
       "noRockStats": "Пока нет статистики по камням.",
       "noWorkSessions": "Пока нет рабочих сессий.",
       "noPlaySessions": "Пока нет сессий отдыха."
+    },
+    "actions": {
+      "expand": "Развернуть график",
+      "close": "Закрыть графики",
+      "closeExpanded": "Закрыть развернутый график"
+    },
+    "hints": {
+      "expand": "Нажмите, чтобы сфокусироваться на этом графике",
+      "swipeDown": "Нажмите X, чтобы закрыть"
     }
   },
   "Pomodoro": {
@@ -555,5 +561,4 @@
     "descriptionBase": "Стандартные награды самоцветами",
     "stats": "Диаметр {{diameter}} км · {{distance}} км от Солнца"
   }
-
 }

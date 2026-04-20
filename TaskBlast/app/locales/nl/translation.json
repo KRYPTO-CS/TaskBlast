@@ -423,6 +423,15 @@
       "noRockStats": "Nog geen rock-statistieken.",
       "noWorkSessions": "Nog geen werksessies.",
       "noPlaySessions": "Nog geen pauzesessies."
+    },
+    "actions": {
+      "expand": "Grafiek vergroten",
+      "close": "Grafieken sluiten",
+      "closeExpanded": "Vergrote grafiek sluiten"
+    },
+    "hints": {
+      "expand": "Tik om op deze grafiek te focussen",
+      "swipeDown": "Tik op X om te sluiten"
     }
   },
   "Pomodoro": {

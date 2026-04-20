@@ -423,6 +423,15 @@
       "noRockStats": "Belum ada statistik kristal.",
       "noWorkSessions": "Belum ada sesi kerja.",
       "noPlaySessions": "Belum ada sesi istirahat."
+    },
+    "actions": {
+      "expand": "Perluas grafik",
+      "close": "Tutup grafik",
+      "closeExpanded": "Tutup grafik yang diperbesar"
+    },
+    "hints": {
+      "expand": "Ketuk untuk fokus pada grafik ini",
+      "swipeDown": "Ketuk X untuk menutup"
     }
   },
   "Pomodoro": {

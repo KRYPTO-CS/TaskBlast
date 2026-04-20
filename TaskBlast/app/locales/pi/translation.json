@@ -207,42 +207,42 @@
       "privacyEnquiries": "Privacy Enquiries"
     },
     "faq": {
-  "NotificationPreferencesModal": {
-    "title": "Ship Alerts",
-    "reminderTime": "Bell Time",
-    "settingsSavedTitle": "Settings Saved",
-    "settingsSavedBody": "Yer ship alert preferences be updated!",
-    "permissionsGrantedTitle": "Permissions Granted",
-    "permissionsGrantedBody": "Ship alerts be enabled now!",
-    "permissionsNeededTitle": "Permissions Needed",
-    "permissionsNeededBody": "Enable ship alerts in yer device settings to use this feature.",
-    "permissionsRequiredTitle": "Permissions Required",
-    "permissionsRequiredBody": "Enable ship alerts first to test the daily reminder.",
-    "permissionsDisabledBody": "Ship alerts be disabled. Enable em to receive task reminders.",
-    "enableNotifications": "Enable Ship Alerts",
-    "mainSettings": "Main Settings",
-    "enableNotificationsDescription": "Turn all ship alerts on or off",
-    "sensorySettings": "Sensory Settings",
-    "sensorySettingsDescription": "Control how ship alerts catch yer attention",
-    "sound": "Sound",
-    "soundDescription": "Play alert sound",
-    "vibration": "Vibration",
-    "vibrationDescription": "Vibrate when an alert arrives",
-    "dailyReminderTitle": "Daily Task Alert",
-    "dailyReminderDescription": "Get a daily alert about yer unfinished tasks",
-    "enableDailyReminder": "Enable Daily Reminder",
-    "enableDailyReminderDescription": "Receive a daily alert with task count",
-    "testButton": "Send Test Alert",
-    "testNotificationTitle": "TaskBlast Alert",
-    "testNotificationBody": "Ye have 3 tasks waitin! Ready to tackle em?",
-    "testSentTitle": "Test Sent!",
-    "testSentBody": "Check yer notification tray to see how the daily alert looks.",
-    "testFailedTitle": "Test Failed",
-    "testFailedBody": "Could not send test alert. Try again, matey.",
-    "ok": "OK",
-    "cancel": "Cancel",
-    "save": "Save"
-  },
+      "NotificationPreferencesModal": {
+        "title": "Ship Alerts",
+        "reminderTime": "Bell Time",
+        "settingsSavedTitle": "Settings Saved",
+        "settingsSavedBody": "Yer ship alert preferences be updated!",
+        "permissionsGrantedTitle": "Permissions Granted",
+        "permissionsGrantedBody": "Ship alerts be enabled now!",
+        "permissionsNeededTitle": "Permissions Needed",
+        "permissionsNeededBody": "Enable ship alerts in yer device settings to use this feature.",
+        "permissionsRequiredTitle": "Permissions Required",
+        "permissionsRequiredBody": "Enable ship alerts first to test the daily reminder.",
+        "permissionsDisabledBody": "Ship alerts be disabled. Enable em to receive task reminders.",
+        "enableNotifications": "Enable Ship Alerts",
+        "mainSettings": "Main Settings",
+        "enableNotificationsDescription": "Turn all ship alerts on or off",
+        "sensorySettings": "Sensory Settings",
+        "sensorySettingsDescription": "Control how ship alerts catch yer attention",
+        "sound": "Sound",
+        "soundDescription": "Play alert sound",
+        "vibration": "Vibration",
+        "vibrationDescription": "Vibrate when an alert arrives",
+        "dailyReminderTitle": "Daily Task Alert",
+        "dailyReminderDescription": "Get a daily alert about yer unfinished tasks",
+        "enableDailyReminder": "Enable Daily Reminder",
+        "enableDailyReminderDescription": "Receive a daily alert with task count",
+        "testButton": "Send Test Alert",
+        "testNotificationTitle": "TaskBlast Alert",
+        "testNotificationBody": "Ye have 3 tasks waitin! Ready to tackle em?",
+        "testSentTitle": "Test Sent!",
+        "testSentBody": "Check yer notification tray to see how the daily alert looks.",
+        "testFailedTitle": "Test Failed",
+        "testFailedBody": "Could not send test alert. Try again, matey.",
+        "ok": "OK",
+        "cancel": "Cancel",
+        "save": "Save"
+      },
       "items": {
         "1": {
           "question": "How do I add a new task?",
@@ -367,24 +367,22 @@
   },
 
   "Traits": {
-
-  "ADHD" : "ADHD",
-  "Aspergers": "Asperger's",
-  "Autism": "Autism",
-  "DevelopmentalLanguageDisorder": "Language Trouble",
-  "Disability Confident": "Disability Confidence",
-  "Dyscalculia": "Number Trouble",
-  "Dysgraphia": "Writing Trouble",
-  "Dyslexia": "Reading Trouble",
-  "Dyspraxia": "Movement Trouble",
-  "Hyperlexia": "Hyperlexia",
-  "Irlen Syndrome": "Irlen Syndrome",
-  "OCD": "OCD",
-  "Synthesia": "Synthesia",
-  "Tourette's Syndrome": "Tourette's Syndrome",
-  "selectTraits": "Select Traits",
-  "saveTraits"  : "Save Traits"
-
+    "ADHD": "ADHD",
+    "Aspergers": "Asperger's",
+    "Autism": "Autism",
+    "DevelopmentalLanguageDisorder": "Language Trouble",
+    "Disability Confident": "Disability Confidence",
+    "Dyscalculia": "Number Trouble",
+    "Dysgraphia": "Writing Trouble",
+    "Dyslexia": "Reading Trouble",
+    "Dyspraxia": "Movement Trouble",
+    "Hyperlexia": "Hyperlexia",
+    "Irlen Syndrome": "Irlen Syndrome",
+    "OCD": "OCD",
+    "Synthesia": "Synthesia",
+    "Tourette's Syndrome": "Tourette's Syndrome",
+    "selectTraits": "Select Traits",
+    "saveTraits": "Save Traits"
   },
 
   "Profile": {
@@ -462,6 +460,15 @@
       "noRockStats": "No rock stats yet.",
       "noWorkSessions": "No work sessions yet.",
       "noPlaySessions": "No play sessions yet."
+    },
+    "actions": {
+      "expand": "Expand chart",
+      "close": "Close charts",
+      "closeExpanded": "Close expanded chart"
+    },
+    "hints": {
+      "expand": "Tap to focus this chart",
+      "swipeDown": "Tap X to close"
     }
   },
   "Pomodoro": {
@@ -554,5 +561,4 @@
     "descriptionBase": "Standard loot, matey",
     "stats": "{{diameter}} km wide · {{distance}} km from the Sun, arrr!"
   }
-
 }

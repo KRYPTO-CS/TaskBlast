@@ -423,6 +423,15 @@
       "noRockStats": "まだクリスタル統計がありません。",
       "noWorkSessions": "まだ作業セッションがありません。",
       "noPlaySessions": "まだ休憩セッションがありません。"
+    },
+    "actions": {
+      "expand": "グラフを拡大",
+      "close": "グラフを閉じる",
+      "closeExpanded": "拡大したグラフを閉じる"
+    },
+    "hints": {
+      "expand": "このグラフに注目するにはタップ",
+      "swipeDown": "閉じるにはXをタップ"
     }
   },
   "Pomodoro": {

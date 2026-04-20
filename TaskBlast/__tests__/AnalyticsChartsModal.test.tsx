@@ -11,8 +11,9 @@
  */
 
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { TouchableOpacity } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import AnalyticsChartsModal from "../app/components/AnalyticsChartsModal";
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
@@ -26,6 +27,48 @@ jest.mock("../app/styles/colorBlindThemes", () => ({
     statsBg: "rgba(139,92,246,0.1)",
     statsBgBorder: "rgba(139,92,246,0.3)",
     secondaryLightBorder: "rgba(255,255,255,0.2)",
+  }),
+}));
+
+jest.mock("../app/context/AccessibilityContext", () => ({
+  useAccessibility: () => ({
+    language: "en",
+    colorBlindMode: "none",
+    textSize: "medium",
+    highContrast: false,
+    reduceMotion: false,
+    ttsEnabled: false,
+    textScale: 1,
+    isLoading: false,
+    setLanguage: jest.fn(),
+    setColorBlindMode: jest.fn(),
+    setTextSize: jest.fn(),
+    setHighContrast: jest.fn(),
+    setReduceMotion: jest.fn(),
+    setTtsEnabled: jest.fn(),
+  }),
+}));
+
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key: string, options?: { defaultValue?: string }) => {
+      const dictionary: Record<string, string> = {
+        "AnalyticsChartsModal.title": "Analytics Charts",
+        "AnalyticsChartsModal.empty.noRockStats": "No rock stats yet.",
+        "AnalyticsChartsModal.empty.noWorkSessions": "No work sessions yet.",
+        "AnalyticsChartsModal.empty.noPlaySessions": "No play sessions yet.",
+        "AnalyticsChartsModal.charts.totalRocks.title":
+          "Total Crystals Earned From Games",
+        "AnalyticsChartsModal.charts.totalRocks.yAxis": "Crystals",
+        "AnalyticsChartsModal.charts.workTime.title": "Cumulative Work Time",
+        "AnalyticsChartsModal.charts.workTime.yAxis": "Minutes",
+        "AnalyticsChartsModal.charts.playTime.title": "Cumulative Play Time",
+        "AnalyticsChartsModal.charts.playTime.yAxis": "Minutes",
+        "AnalyticsChartsModal.charts.common.date": "Date",
+      };
+
+      return dictionary[key] ?? options?.defaultValue ?? key;
+    },
   }),
 }));
 
@@ -63,6 +106,8 @@ const emptyProps = {
 
 beforeEach(() => {
   jest.clearAllMocks();
+  (AsyncStorage.getItem as jest.Mock).mockResolvedValue("true");
+  (AsyncStorage.setItem as jest.Mock).mockResolvedValue(undefined);
 });
 
 // ─── Tests ────────────────────────────────────────────────────────────────────
@@ -84,7 +129,9 @@ describe("AnalyticsChartsModal", () => {
     });
 
     it("renders a close button", () => {
-      const { UNSAFE_getAllByType } = render(<AnalyticsChartsModal {...defaultProps} />);
+      const { UNSAFE_getAllByType } = render(
+        <AnalyticsChartsModal {...defaultProps} />,
+      );
       // TouchableOpacity wrapping the close icon
       const buttons = UNSAFE_getAllByType(TouchableOpacity);
       expect(buttons.length).toBeGreaterThanOrEqual(1);
@@ -96,10 +143,10 @@ describe("AnalyticsChartsModal", () => {
   describe("Close button", () => {
     it("calls onClose when the close button is pressed", () => {
       const onClose = jest.fn();
-      const { UNSAFE_getAllByType } = render(
+      const { getByTestId } = render(
         <AnalyticsChartsModal {...defaultProps} onClose={onClose} />,
       );
-      fireEvent.press(UNSAFE_getAllByType(TouchableOpacity)[0]);
+      fireEvent.press(getByTestId("close-analytics-modal"));
       expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
@@ -121,36 +168,51 @@ describe("AnalyticsChartsModal", () => {
       );
       expect(getAllByTestId("webview").length).toBeGreaterThanOrEqual(1);
     });
+
+    it("renders expand buttons for each chart with data", () => {
+      const { getByTestId } = render(
+        <AnalyticsChartsModal {...defaultProps} />,
+      );
+      expect(getByTestId("expand-chart-rocks")).toBeTruthy();
+      expect(getByTestId("expand-chart-work")).toBeTruthy();
+      expect(getByTestId("expand-chart-play")).toBeTruthy();
+    });
+
+    it("opens and closes expanded chart overlay", () => {
+      const { getByTestId, queryByTestId } = render(
+        <AnalyticsChartsModal {...defaultProps} />,
+      );
+
+      expect(queryByTestId("expanded-chart-overlay")).toBeNull();
+      fireEvent.press(getByTestId("expand-chart-rocks"));
+      expect(getByTestId("expanded-chart-overlay")).toBeTruthy();
+      expect(getByTestId("expanded-chart-webview")).toBeTruthy();
+
+      fireEvent.press(getByTestId("close-expanded-chart"));
+      expect(queryByTestId("expanded-chart-overlay")).toBeNull();
+    });
   });
 
   // ── Empty state placeholders ───────────────────────────────────────────────
 
   describe("Empty-state placeholders", () => {
     it("shows 'No rock stats yet.' when statsValues is empty", () => {
-      const { getByText } = render(
-        <AnalyticsChartsModal {...emptyProps} />,
-      );
+      const { getByText } = render(<AnalyticsChartsModal {...emptyProps} />);
       expect(getByText("No rock stats yet.")).toBeTruthy();
     });
 
     it("shows 'No work sessions yet.' when workTimes is empty", () => {
-      const { getByText } = render(
-        <AnalyticsChartsModal {...emptyProps} />,
-      );
+      const { getByText } = render(<AnalyticsChartsModal {...emptyProps} />);
       expect(getByText("No work sessions yet.")).toBeTruthy();
     });
 
     it("shows 'No play sessions yet.' when playTimes is empty", () => {
-      const { getByText } = render(
-        <AnalyticsChartsModal {...emptyProps} />,
-      );
+      const { getByText } = render(<AnalyticsChartsModal {...emptyProps} />);
       expect(getByText("No play sessions yet.")).toBeTruthy();
     });
 
     it("shows all three placeholders simultaneously when all arrays are empty", () => {
-      const { getByText } = render(
-        <AnalyticsChartsModal {...emptyProps} />,
-      );
+      const { getByText } = render(<AnalyticsChartsModal {...emptyProps} />);
       expect(getByText("No rock stats yet.")).toBeTruthy();
       expect(getByText("No work sessions yet.")).toBeTruthy();
       expect(getByText("No play sessions yet.")).toBeTruthy();
@@ -178,6 +240,49 @@ describe("AnalyticsChartsModal", () => {
       expect(getAllByTestId("webview").length).toBe(1);
       expect(getByText("No work sessions yet.")).toBeTruthy();
       expect(getByText("No play sessions yet.")).toBeTruthy();
+    });
+
+    it("does not render expand button for empty charts", () => {
+      const { queryByTestId } = render(
+        <AnalyticsChartsModal
+          {...emptyProps}
+          statsLabels={["Jan 1"]}
+          statsValues={[50]}
+        />,
+      );
+
+      expect(queryByTestId("expand-chart-rocks")).toBeTruthy();
+      expect(queryByTestId("expand-chart-work")).toBeNull();
+      expect(queryByTestId("expand-chart-play")).toBeNull();
+    });
+  });
+
+  describe("Expand hint persistence", () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.runOnlyPendingTimers();
+      jest.useRealTimers();
+    });
+
+    it("shows first-time hint and stores seen flag when expanding", async () => {
+      (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(null);
+      const { getByText, getByTestId } = render(
+        <AnalyticsChartsModal {...defaultProps} />,
+      );
+
+      await waitFor(() => {
+        expect(getByText("Tap to focus this chart")).toBeTruthy();
+      });
+
+      fireEvent.press(getByTestId("expand-chart-rocks"));
+
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+        "analyticsChartsExpandHintSeen",
+        "true",
+      );
     });
   });
 

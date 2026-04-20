@@ -423,6 +423,15 @@
       "noRockStats": "Henüz kristal istatistiği yok.",
       "noWorkSessions": "Henüz çalışma seansı yok.",
       "noPlaySessions": "Henüz mola seansı yok."
+    },
+    "actions": {
+      "expand": "Grafiği genişlet",
+      "close": "Grafikleri kapat",
+      "closeExpanded": "Genişletilmiş grafiği kapat"
+    },
+    "hints": {
+      "expand": "Bu grafiğe odaklanmak için dokunun",
+      "swipeDown": "Kapatmak için X'e dokunun"
     }
   },
   "Pomodoro": {

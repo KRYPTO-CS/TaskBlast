@@ -423,6 +423,15 @@
       "noRockStats": "Chưa có thống kê tinh thể.",
       "noWorkSessions": "Chưa có phiên làm việc.",
       "noPlaySessions": "Chưa có phiên nghỉ."
+    },
+    "actions": {
+      "expand": "Mở rộng biểu đồ",
+      "close": "Đóng biểu đồ",
+      "closeExpanded": "Đóng biểu đồ mở rộng"
+    },
+    "hints": {
+      "expand": "Nhấn để tập trung vào biểu đồ này",
+      "swipeDown": "Nhấn X để đóng"
     }
   },
   "Pomodoro": {

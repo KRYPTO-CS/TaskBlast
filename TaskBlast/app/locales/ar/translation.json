@@ -207,42 +207,42 @@
       "privacyEnquiries": "استفسارات الخصوصية"
     },
     "faq": {
-  "NotificationPreferencesModal": {
-    "title": "الإشعارات",
-    "reminderTime": "وقت التذكير",
-    "settingsSavedTitle": "تم حفظ الإعدادات",
-    "settingsSavedBody": "تم تحديث تفضيلات الإشعارات الخاصة بك!",
-    "permissionsGrantedTitle": "تم منح الأذونات",
-    "permissionsGrantedBody": "تم تفعيل الإشعارات الآن!",
-    "permissionsNeededTitle": "الأذونات مطلوبة",
-    "permissionsNeededBody": "يرجى تفعيل الإشعارات من إعدادات الجهاز لاستخدام هذه الميزة.",
-    "permissionsRequiredTitle": "الأذونات مطلوبة",
-    "permissionsRequiredBody": "يرجى تفعيل الإشعارات أولاً لاختبار التذكير اليومي.",
-    "permissionsDisabledBody": "الإشعارات معطلة حالياً. فعّلها لتلقي تذكيرات المهام.",
-    "enableNotifications": "تفعيل الإشعارات",
-    "mainSettings": "الإعدادات الرئيسية",
-    "enableNotificationsDescription": "تشغيل أو إيقاف جميع الإشعارات",
-    "sensorySettings": "الإعدادات الحسية",
-    "sensorySettingsDescription": "تحكم في كيفية جذب الإشعارات لانتباهك",
-    "sound": "الصوت",
-    "soundDescription": "تشغيل صوت الإشعار",
-    "vibration": "الاهتزاز",
-    "vibrationDescription": "الاهتزاز عند وصول الإشعار",
-    "dailyReminderTitle": "تذكير المهام اليومي",
-    "dailyReminderDescription": "احصل على تذكير يومي بمهامك غير المكتملة",
-    "enableDailyReminder": "تفعيل التذكير اليومي",
-    "enableDailyReminderDescription": "تلقي إشعار يومي بعدد المهام",
-    "testButton": "إرسال إشعار تجريبي",
-    "testNotificationTitle": "تذكير TaskBlast",
-    "testNotificationBody": "لديك 3 مهام بانتظارك! هل أنت مستعد للبدء؟",
-    "testSentTitle": "تم إرسال الاختبار!",
-    "testSentBody": "تحقق من شريط الإشعارات لمعرفة شكل التذكير اليومي.",
-    "testFailedTitle": "فشل الاختبار",
-    "testFailedBody": "تعذر إرسال الإشعار التجريبي. يرجى المحاولة مرة أخرى.",
-    "ok": "OK",
-    "cancel": "إلغاء",
-    "save": "حفظ"
-  },
+      "NotificationPreferencesModal": {
+        "title": "الإشعارات",
+        "reminderTime": "وقت التذكير",
+        "settingsSavedTitle": "تم حفظ الإعدادات",
+        "settingsSavedBody": "تم تحديث تفضيلات الإشعارات الخاصة بك!",
+        "permissionsGrantedTitle": "تم منح الأذونات",
+        "permissionsGrantedBody": "تم تفعيل الإشعارات الآن!",
+        "permissionsNeededTitle": "الأذونات مطلوبة",
+        "permissionsNeededBody": "يرجى تفعيل الإشعارات من إعدادات الجهاز لاستخدام هذه الميزة.",
+        "permissionsRequiredTitle": "الأذونات مطلوبة",
+        "permissionsRequiredBody": "يرجى تفعيل الإشعارات أولاً لاختبار التذكير اليومي.",
+        "permissionsDisabledBody": "الإشعارات معطلة حالياً. فعّلها لتلقي تذكيرات المهام.",
+        "enableNotifications": "تفعيل الإشعارات",
+        "mainSettings": "الإعدادات الرئيسية",
+        "enableNotificationsDescription": "تشغيل أو إيقاف جميع الإشعارات",
+        "sensorySettings": "الإعدادات الحسية",
+        "sensorySettingsDescription": "تحكم في كيفية جذب الإشعارات لانتباهك",
+        "sound": "الصوت",
+        "soundDescription": "تشغيل صوت الإشعار",
+        "vibration": "الاهتزاز",
+        "vibrationDescription": "الاهتزاز عند وصول الإشعار",
+        "dailyReminderTitle": "تذكير المهام اليومي",
+        "dailyReminderDescription": "احصل على تذكير يومي بمهامك غير المكتملة",
+        "enableDailyReminder": "تفعيل التذكير اليومي",
+        "enableDailyReminderDescription": "تلقي إشعار يومي بعدد المهام",
+        "testButton": "إرسال إشعار تجريبي",
+        "testNotificationTitle": "تذكير TaskBlast",
+        "testNotificationBody": "لديك 3 مهام بانتظارك! هل أنت مستعد للبدء؟",
+        "testSentTitle": "تم إرسال الاختبار!",
+        "testSentBody": "تحقق من شريط الإشعارات لمعرفة شكل التذكير اليومي.",
+        "testFailedTitle": "فشل الاختبار",
+        "testFailedBody": "تعذر إرسال الإشعار التجريبي. يرجى المحاولة مرة أخرى.",
+        "ok": "OK",
+        "cancel": "إلغاء",
+        "save": "حفظ"
+      },
       "items": {
         "1": {
           "question": "كيف أضيف مهمة جديدة؟",
@@ -364,30 +364,26 @@
     "managerAccess": "الوصول إلى الإدارة",
     "managerAccessDesc": "أدخل رمز PIN من 4 أرقام للوصول إلى وضع التحرير مع الصلاحيات المرتفعة.",
     "unlock": "فتح القفل"
-
   },
 
   "Traits": {
-
-  "ADHD" : "اضطراب فرط الحركة وتشتت الانتباه",
-  "Aspergers": "متلازمة أسبرجر",
-  "Autism": "التوحد",
-  "DevelopmentalLanguageDisorder": "اضطراب تطور اللغة",
-  "Disability Confident": "الثقة مع الإعاقة",
-  "Dyscalculia": "عسر الحساب",
-  "Dysgraphia": "عسر الكتابة",
-  "Dyslexia": "عسر القراءة",
-  "Dyspraxia": "تعذر الأداء",
-  "Hyperlexia": "فرط القراءة",
-  "Irlen Syndrome": "متلازمة إيرلن",
-  "OCD": "الوسواس القهري",
-  "Synthesia": "الحس المرافق",
-  "Tourette's Syndrome": "متلازمة توريت",
-  "selectTraits": "اختر الخصائص",
-  "saveTraits"  : "احفظ الخصائص"
-
+    "ADHD": "اضطراب فرط الحركة وتشتت الانتباه",
+    "Aspergers": "متلازمة أسبرجر",
+    "Autism": "التوحد",
+    "DevelopmentalLanguageDisorder": "اضطراب تطور اللغة",
+    "Disability Confident": "الثقة مع الإعاقة",
+    "Dyscalculia": "عسر الحساب",
+    "Dysgraphia": "عسر الكتابة",
+    "Dyslexia": "عسر القراءة",
+    "Dyspraxia": "تعذر الأداء",
+    "Hyperlexia": "فرط القراءة",
+    "Irlen Syndrome": "متلازمة إيرلن",
+    "OCD": "الوسواس القهري",
+    "Synthesia": "الحس المرافق",
+    "Tourette's Syndrome": "متلازمة توريت",
+    "selectTraits": "اختر الخصائص",
+    "saveTraits": "احفظ الخصائص"
   },
-
 
   "Profile": {
     "traits": "الخصائص",
@@ -464,6 +460,15 @@
       "noRockStats": "لا توجد إحصاءات للصخور بعد.",
       "noWorkSessions": "لا توجد جلسات عمل بعد.",
       "noPlaySessions": "لا توجد جلسات استراحة بعد."
+    },
+    "actions": {
+      "expand": "توسيع الرسم البياني",
+      "close": "إغلاق الرسوم البيانية",
+      "closeExpanded": "إغلاق الرسم المكبر"
+    },
+    "hints": {
+      "expand": "اضغط للتركيز على هذا الرسم البياني",
+      "swipeDown": "اضغط X للإغلاق"
     }
   },
   "Pomodoro": {
@@ -497,7 +502,9 @@
     "bWings": "الкрыات الزرقاء",
     "rWings": "الкрыات الحمراء",
     "yWings": "الкрыات الصفراء",
-    "gWings": "الкрыات الخضراء",    "galaxyWings": "أجنحة المجرة",    "equipped": "تم التجهيز",
+    "gWings": "الкрыات الخضراء",
+    "galaxyWings": "أجنحة المجرة",
+    "equipped": "تم التجهيز",
     "owned": "تم امتلاكه",
     "confirmPurchaseTitle": "تأكيد الشراء",
     "confirmPurchaseText": "شراء هذا العنصر مقابل {{price}} بلورات؟",
@@ -554,5 +561,4 @@
     "descriptionBase": "مكافآت الجواهر القياسية",
     "stats": "قطر {{diameter}} كم · {{distance}} كم من الشمس"
   }
-
 }

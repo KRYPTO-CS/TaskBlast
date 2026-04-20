@@ -108,7 +108,7 @@
     "playerLevel": "Nível do jogador",
     "Level Rewards": "Recompensas de nível",
     "Claimed": "Reivindicado",
-    "Claim": "Reivindicar",   
+    "Claim": "Reivindicar",
     "Claiming": "Reivindicando...",
     "expLabel": "EXP",
     "levelShort": "Nv",
@@ -117,7 +117,6 @@
     "galaxyCrystals": "Cristais galácticos",
     "level": "Nível",
     "coachMarklevel": "Este é o seu nível atual de jogador. Ganhe pontos de experiência completando tarefas e sessões de foco para subir de nível e ganhar recompensas!"
-
   },
   "Settings": {
     "title": "Configurações",
@@ -208,42 +207,42 @@
       "privacyEnquiries": "Consultas de privacidade"
     },
     "faq": {
-  "NotificationPreferencesModal": {
-    "title": "Notificações",
-    "reminderTime": "Hora do lembrete",
-    "settingsSavedTitle": "Configurações salvas",
-    "settingsSavedBody": "Suas preferências de notificação foram atualizadas!",
-    "permissionsGrantedTitle": "Permissões concedidas",
-    "permissionsGrantedBody": "As notificações agora estão ativadas!",
-    "permissionsNeededTitle": "Permissões necessárias",
-    "permissionsNeededBody": "Ative as notificações nas configurações do seu dispositivo para usar este recurso.",
-    "permissionsRequiredTitle": "Permissões necessárias",
-    "permissionsRequiredBody": "Ative as notificações primeiro para testar o lembrete diário.",
-    "permissionsDisabledBody": "As notificações estão desativadas no momento. Ative-as para receber lembretes de tarefas.",
-    "enableNotifications": "Ativar notificações",
-    "mainSettings": "Configurações principais",
-    "enableNotificationsDescription": "Ativar ou desativar todas as notificações",
-    "sensorySettings": "Configurações sensoriais",
-    "sensorySettingsDescription": "Controle como as notificações chamam sua atenção",
-    "sound": "Som",
-    "soundDescription": "Tocar som da notificação",
-    "vibration": "Vibração",
-    "vibrationDescription": "Vibrar quando uma notificação chegar",
-    "dailyReminderTitle": "Lembrete diário de tarefas",
-    "dailyReminderDescription": "Receba um lembrete diário sobre suas tarefas incompletas",
-    "enableDailyReminder": "Ativar lembrete diário",
-    "enableDailyReminderDescription": "Receber uma notificação diária com a contagem de tarefas",
-    "testButton": "Enviar notificação de teste",
-    "testNotificationTitle": "Lembrete TaskBlast",
-    "testNotificationBody": "Você tem 3 tarefas esperando! Pronto para encarar?",
-    "testSentTitle": "Teste enviado!",
-    "testSentBody": "Verifique sua central de notificações para ver como o lembrete diário aparece.",
-    "testFailedTitle": "Teste falhou",
-    "testFailedBody": "Não foi possível enviar a notificação de teste. Tente novamente.",
-    "ok": "OK",
-    "cancel": "Cancelar",
-    "save": "Salvar"
-  },
+      "NotificationPreferencesModal": {
+        "title": "Notificações",
+        "reminderTime": "Hora do lembrete",
+        "settingsSavedTitle": "Configurações salvas",
+        "settingsSavedBody": "Suas preferências de notificação foram atualizadas!",
+        "permissionsGrantedTitle": "Permissões concedidas",
+        "permissionsGrantedBody": "As notificações agora estão ativadas!",
+        "permissionsNeededTitle": "Permissões necessárias",
+        "permissionsNeededBody": "Ative as notificações nas configurações do seu dispositivo para usar este recurso.",
+        "permissionsRequiredTitle": "Permissões necessárias",
+        "permissionsRequiredBody": "Ative as notificações primeiro para testar o lembrete diário.",
+        "permissionsDisabledBody": "As notificações estão desativadas no momento. Ative-as para receber lembretes de tarefas.",
+        "enableNotifications": "Ativar notificações",
+        "mainSettings": "Configurações principais",
+        "enableNotificationsDescription": "Ativar ou desativar todas as notificações",
+        "sensorySettings": "Configurações sensoriais",
+        "sensorySettingsDescription": "Controle como as notificações chamam sua atenção",
+        "sound": "Som",
+        "soundDescription": "Tocar som da notificação",
+        "vibration": "Vibração",
+        "vibrationDescription": "Vibrar quando uma notificação chegar",
+        "dailyReminderTitle": "Lembrete diário de tarefas",
+        "dailyReminderDescription": "Receba um lembrete diário sobre suas tarefas incompletas",
+        "enableDailyReminder": "Ativar lembrete diário",
+        "enableDailyReminderDescription": "Receber uma notificação diária com a contagem de tarefas",
+        "testButton": "Enviar notificação de teste",
+        "testNotificationTitle": "Lembrete TaskBlast",
+        "testNotificationBody": "Você tem 3 tarefas esperando! Pronto para encarar?",
+        "testSentTitle": "Teste enviado!",
+        "testSentBody": "Verifique sua central de notificações para ver como o lembrete diário aparece.",
+        "testFailedTitle": "Teste falhou",
+        "testFailedBody": "Não foi possível enviar a notificação de teste. Tente novamente.",
+        "ok": "OK",
+        "cancel": "Cancelar",
+        "save": "Salvar"
+      },
       "items": {
         "1": {
           "question": "Como adiciono uma nova tarefa?",
@@ -367,24 +366,22 @@
   },
 
   "Traits": {
-
-  "ADHD" : "TDAH",
-  "Aspergers": "Síndrome de Asperger",
-  "Autism": "Autismo",
-  "DevelopmentalLanguageDisorder": "Transtorno do desenvolvimento da linguagem",
-  "Disability Confident": "Confiança na deficiência",
-  "Dyscalculia": "Discalculia",
-  "Dysgraphia": "Disgrafia",
-  "Dyslexia": "Dislexia",
-  "Dyspraxia": "Dispraxia",
-  "Hyperlexia": "Hiperlexia",
-  "Irlen Syndrome": "Síndrome de Irlen",
-  "OCD": "TOC",
-  "Synthesia": "Sinestesia",
-  "Tourette's Syndrome": "Síndrome de Tourette",
-  "selectTraits": "Selecionar Traits",
-  "saveTraits"  : "Salvar Traits"
-
+    "ADHD": "TDAH",
+    "Aspergers": "Síndrome de Asperger",
+    "Autism": "Autismo",
+    "DevelopmentalLanguageDisorder": "Transtorno do desenvolvimento da linguagem",
+    "Disability Confident": "Confiança na deficiência",
+    "Dyscalculia": "Discalculia",
+    "Dysgraphia": "Disgrafia",
+    "Dyslexia": "Dislexia",
+    "Dyspraxia": "Dispraxia",
+    "Hyperlexia": "Hiperlexia",
+    "Irlen Syndrome": "Síndrome de Irlen",
+    "OCD": "TOC",
+    "Synthesia": "Sinestesia",
+    "Tourette's Syndrome": "Síndrome de Tourette",
+    "selectTraits": "Selecionar Traits",
+    "saveTraits": "Salvar Traits"
   },
 
   "Profile": {
@@ -462,6 +459,15 @@
       "noRockStats": "Ainda não há estatísticas de rochas.",
       "noWorkSessions": "Ainda não há sessões de trabalho.",
       "noPlaySessions": "Ainda não há sessões de pausa."
+    },
+    "actions": {
+      "expand": "Expandir gráfico",
+      "close": "Fechar gráficos",
+      "closeExpanded": "Fechar gráfico expandido"
+    },
+    "hints": {
+      "expand": "Toque para focar neste gráfico",
+      "swipeDown": "Toque em X para fechar"
     }
   },
   "Pomodoro": {
@@ -554,5 +560,4 @@
     "descriptionBase": "Recompensas de gemas padrão",
     "stats": "{{diameter}} km de diâmetro · {{distance}} km do Sol"
   }
-
 }

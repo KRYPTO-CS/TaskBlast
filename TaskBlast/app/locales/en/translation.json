@@ -207,42 +207,42 @@
       "privacyEnquiries": "Privacy Enquiries"
     },
     "faq": {
-  "NotificationPreferencesModal": {
-    "title": "Notifications",
-    "reminderTime": "Reminder Time",
-    "settingsSavedTitle": "Settings Saved",
-    "settingsSavedBody": "Your notification preferences have been updated!",
-    "permissionsGrantedTitle": "Permissions Granted",
-    "permissionsGrantedBody": "Notifications are now enabled!",
-    "permissionsNeededTitle": "Permissions Needed",
-    "permissionsNeededBody": "Please enable notifications in your device settings to use this feature.",
-    "permissionsRequiredTitle": "Permissions Required",
-    "permissionsRequiredBody": "Please enable notifications first to test the daily reminder.",
-    "permissionsDisabledBody": "Notifications are currently disabled. Enable them to receive task reminders.",
-    "enableNotifications": "Enable Notifications",
-    "mainSettings": "Main Settings",
-    "enableNotificationsDescription": "Turn all notifications on or off",
-    "sensorySettings": "Sensory Settings",
-    "sensorySettingsDescription": "Control how notifications get your attention",
-    "sound": "Sound",
-    "soundDescription": "Play notification sound",
-    "vibration": "Vibration",
-    "vibrationDescription": "Vibrate when notification arrives",
-    "dailyReminderTitle": "Daily Task Reminder",
-    "dailyReminderDescription": "Get a daily reminder about your incomplete tasks",
-    "enableDailyReminder": "Enable Daily Reminder",
-    "enableDailyReminderDescription": "Receive a daily notification with task count",
-    "testButton": "Send Test Notification",
-    "testNotificationTitle": "TaskBlast Reminder",
-    "testNotificationBody": "You have 3 tasks waiting! Ready to tackle them?",
-    "testSentTitle": "Test Sent!",
-    "testSentBody": "Check your notification tray to see what the daily reminder looks like.",
-    "testFailedTitle": "Test Failed",
-    "testFailedBody": "Could not send test notification. Please try again.",
-    "ok": "OK",
-    "cancel": "Cancel",
-    "save": "Save"
-  },
+      "NotificationPreferencesModal": {
+        "title": "Notifications",
+        "reminderTime": "Reminder Time",
+        "settingsSavedTitle": "Settings Saved",
+        "settingsSavedBody": "Your notification preferences have been updated!",
+        "permissionsGrantedTitle": "Permissions Granted",
+        "permissionsGrantedBody": "Notifications are now enabled!",
+        "permissionsNeededTitle": "Permissions Needed",
+        "permissionsNeededBody": "Please enable notifications in your device settings to use this feature.",
+        "permissionsRequiredTitle": "Permissions Required",
+        "permissionsRequiredBody": "Please enable notifications first to test the daily reminder.",
+        "permissionsDisabledBody": "Notifications are currently disabled. Enable them to receive task reminders.",
+        "enableNotifications": "Enable Notifications",
+        "mainSettings": "Main Settings",
+        "enableNotificationsDescription": "Turn all notifications on or off",
+        "sensorySettings": "Sensory Settings",
+        "sensorySettingsDescription": "Control how notifications get your attention",
+        "sound": "Sound",
+        "soundDescription": "Play notification sound",
+        "vibration": "Vibration",
+        "vibrationDescription": "Vibrate when notification arrives",
+        "dailyReminderTitle": "Daily Task Reminder",
+        "dailyReminderDescription": "Get a daily reminder about your incomplete tasks",
+        "enableDailyReminder": "Enable Daily Reminder",
+        "enableDailyReminderDescription": "Receive a daily notification with task count",
+        "testButton": "Send Test Notification",
+        "testNotificationTitle": "TaskBlast Reminder",
+        "testNotificationBody": "You have 3 tasks waiting! Ready to tackle them?",
+        "testSentTitle": "Test Sent!",
+        "testSentBody": "Check your notification tray to see what the daily reminder looks like.",
+        "testFailedTitle": "Test Failed",
+        "testFailedBody": "Could not send test notification. Please try again.",
+        "ok": "OK",
+        "cancel": "Cancel",
+        "save": "Save"
+      },
       "items": {
         "1": {
           "question": "How do I add a new task?",
@@ -367,24 +367,22 @@
   },
 
   "Traits": {
-
-  "ADHD" : "ADHD",
-  "Aspergers": "Aspergers",
-  "Autism": "Autism",
-  "DevelopmentalLanguageDisorder": "Developmental Language Disorder",
-  "Disability Confident": "Disability Confident",
-  "Dyscalculia": "Dyscalculia",
-  "Dysgraphia": "Dysgraphia",
-  "Dyslexia": "Dyslexia",
-  "Dyspraxia": "Dyspraxia",
-  "Hyperlexia": "Hyperlexia",
-  "Irlen Syndrome": "Irlen Syndrome",
-  "OCD": "OCD",
-  "Synthesia": "Synthesia",
-  "Tourette's Syndrome": "Tourette's Syndrome",
-  "selectTraits": "Select Traits",
-  "saveTraits"  : "Save Traits"
-
+    "ADHD": "ADHD",
+    "Aspergers": "Aspergers",
+    "Autism": "Autism",
+    "DevelopmentalLanguageDisorder": "Developmental Language Disorder",
+    "Disability Confident": "Disability Confident",
+    "Dyscalculia": "Dyscalculia",
+    "Dysgraphia": "Dysgraphia",
+    "Dyslexia": "Dyslexia",
+    "Dyspraxia": "Dyspraxia",
+    "Hyperlexia": "Hyperlexia",
+    "Irlen Syndrome": "Irlen Syndrome",
+    "OCD": "OCD",
+    "Synthesia": "Synthesia",
+    "Tourette's Syndrome": "Tourette's Syndrome",
+    "selectTraits": "Select Traits",
+    "saveTraits": "Save Traits"
   },
 
   "Profile": {
@@ -463,6 +461,15 @@
       "noRockStats": "No rock stats yet.",
       "noWorkSessions": "No work sessions yet.",
       "noPlaySessions": "No play sessions yet."
+    },
+    "actions": {
+      "expand": "Expand chart",
+      "close": "Close charts",
+      "closeExpanded": "Close expanded chart"
+    },
+    "hints": {
+      "expand": "Tap to focus this chart",
+      "swipeDown": "Tap X to close"
     }
   },
   "Pomodoro": {
@@ -480,7 +487,6 @@
     "freeTime": "Free Time",
     "startTask": "Start Task",
     "ChooseGame": "Choose Your Game"
-
   },
   "Shop": {
     "title": "Shop",
@@ -524,7 +530,7 @@
     "sequentBlast": "Sequent Blast",
     "sequentBlastDesc": "Memorize and tap the hidden sequence."
   },
-    "ChildAccount": {
+  "ChildAccount": {
     "title": "Create Child Account",
     "firstName": "Enter first name",
     "lastName": "Enter last name",
@@ -556,5 +562,4 @@
     "descriptionBase": "Standard crystal rewards",
     "stats": "{{diameter}} km diameter · {{distance}} km from the Sun"
   }
-
 }

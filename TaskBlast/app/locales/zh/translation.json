@@ -207,42 +207,42 @@
       "privacyEnquiries": "隐私咨询"
     },
     "faq": {
-  "NotificationPreferencesModal": {
-    "title": "通知",
-    "reminderTime": "提醒时间",
-    "settingsSavedTitle": "设置已保存",
-    "settingsSavedBody": "你的通知偏好已更新！",
-    "permissionsGrantedTitle": "权限已授予",
-    "permissionsGrantedBody": "通知现已启用！",
-    "permissionsNeededTitle": "需要权限",
-    "permissionsNeededBody": "请在设备设置中启用通知以使用此功能。",
-    "permissionsRequiredTitle": "需要权限",
-    "permissionsRequiredBody": "请先启用通知以测试每日提醒。",
-    "permissionsDisabledBody": "通知当前已关闭。启用后即可接收任务提醒。",
-    "enableNotifications": "启用通知",
-    "mainSettings": "主要设置",
-    "enableNotificationsDescription": "开启或关闭所有通知",
-    "sensorySettings": "感知设置",
-    "sensorySettingsDescription": "控制通知如何吸引你的注意",
-    "sound": "声音",
-    "soundDescription": "播放通知声音",
-    "vibration": "振动",
-    "vibrationDescription": "通知到达时振动",
-    "dailyReminderTitle": "每日任务提醒",
-    "dailyReminderDescription": "每天提醒你未完成的任务",
-    "enableDailyReminder": "启用每日提醒",
-    "enableDailyReminderDescription": "接收包含任务数量的每日通知",
-    "testButton": "发送测试通知",
-    "testNotificationTitle": "TaskBlast 提醒",
-    "testNotificationBody": "你有 3 个任务待完成！准备开始吗？",
-    "testSentTitle": "测试已发送！",
-    "testSentBody": "请查看通知栏，了解每日提醒的显示效果。",
-    "testFailedTitle": "测试失败",
-    "testFailedBody": "无法发送测试通知。请重试。",
-    "ok": "OK",
-    "cancel": "取消",
-    "save": "保存"
-  },
+      "NotificationPreferencesModal": {
+        "title": "通知",
+        "reminderTime": "提醒时间",
+        "settingsSavedTitle": "设置已保存",
+        "settingsSavedBody": "你的通知偏好已更新！",
+        "permissionsGrantedTitle": "权限已授予",
+        "permissionsGrantedBody": "通知现已启用！",
+        "permissionsNeededTitle": "需要权限",
+        "permissionsNeededBody": "请在设备设置中启用通知以使用此功能。",
+        "permissionsRequiredTitle": "需要权限",
+        "permissionsRequiredBody": "请先启用通知以测试每日提醒。",
+        "permissionsDisabledBody": "通知当前已关闭。启用后即可接收任务提醒。",
+        "enableNotifications": "启用通知",
+        "mainSettings": "主要设置",
+        "enableNotificationsDescription": "开启或关闭所有通知",
+        "sensorySettings": "感知设置",
+        "sensorySettingsDescription": "控制通知如何吸引你的注意",
+        "sound": "声音",
+        "soundDescription": "播放通知声音",
+        "vibration": "振动",
+        "vibrationDescription": "通知到达时振动",
+        "dailyReminderTitle": "每日任务提醒",
+        "dailyReminderDescription": "每天提醒你未完成的任务",
+        "enableDailyReminder": "启用每日提醒",
+        "enableDailyReminderDescription": "接收包含任务数量的每日通知",
+        "testButton": "发送测试通知",
+        "testNotificationTitle": "TaskBlast 提醒",
+        "testNotificationBody": "你有 3 个任务待完成！准备开始吗？",
+        "testSentTitle": "测试已发送！",
+        "testSentBody": "请查看通知栏，了解每日提醒的显示效果。",
+        "testFailedTitle": "测试失败",
+        "testFailedBody": "无法发送测试通知。请重试。",
+        "ok": "OK",
+        "cancel": "取消",
+        "save": "保存"
+      },
       "items": {
         "1": {
           "question": "如何添加新任务？",
@@ -366,9 +366,8 @@
     "unlock": "解锁"
   },
 
-    "Traits": {
-
-    "ADHD" : "注意缺陷多动障碍",
+  "Traits": {
+    "ADHD": "注意缺陷多动障碍",
     "Aspergers": "阿斯伯格综合征",
     "Autism": "自闭症",
     "DevelopmentalLanguageDisorder": "发展性语言障碍",
@@ -382,9 +381,8 @@
     "OCD": "强迫症",
     "Synthesia": "联觉",
     "Tourette's Syndrome": "图雷特综合征",
-  "selectTraits": "选择特征",
-  "saveTraits"  : "保存特征"
-
+    "selectTraits": "选择特征",
+    "saveTraits": "保存特征"
   },
 
   "Profile": {
@@ -462,6 +460,15 @@
       "noRockStats": "暂无岩石统计。",
       "noWorkSessions": "暂无工作会话。",
       "noPlaySessions": "暂无休息会话。"
+    },
+    "actions": {
+      "expand": "展开图表",
+      "close": "关闭图表",
+      "closeExpanded": "关闭放大的图表"
+    },
+    "hints": {
+      "expand": "点击以聚焦此图表",
+      "swipeDown": "点击 X 关闭"
     }
   },
   "Pomodoro": {
@@ -554,5 +561,4 @@
     "descriptionBase": "标准宝石奖励",
     "stats": "直径 {{diameter}} 千米 · 距太阳 {{distance}} 千米"
   }
-
 }

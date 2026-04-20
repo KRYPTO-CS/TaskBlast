@@ -70,7 +70,7 @@
     "title": "पासवर्ड भूल गए?",
     "desc": "अपना ईमेल दर्ज करें और हम पासवर्ड रीसेट करने के लिए एक कोड भेजेंगे",
     "emailPlaceholder": "ईमेल पता",
-      "submit": "जमा करें",
+    "submit": "जमा करें",
     "resetEmailSentTitle": "रीसेट ईमेल भेज दिया गया",
     "resetEmailSentBody": "रीसेट लिंक के लिए अपना ईमेल देखें। अपना पासवर्ड रीसेट करने के लिए लिंक पर क्लिक करें।",
     "ok": "ठीक है"
@@ -207,42 +207,42 @@
       "privacyEnquiries": "गोपनीयता संबंधी पूछताछ"
     },
     "faq": {
-  "NotificationPreferencesModal": {
-    "title": "सूचनाएं",
-    "reminderTime": "रिमाइंडर समय",
-    "settingsSavedTitle": "सेटिंग्स सहेजी गईं",
-    "settingsSavedBody": "आपकी नोटिफिकेशन प्राथमिकताएं अपडेट हो गई हैं!",
-    "permissionsGrantedTitle": "अनुमतियां मिल गईं",
-    "permissionsGrantedBody": "नोटिफिकेशन अब चालू हैं!",
-    "permissionsNeededTitle": "अनुमतियां आवश्यक हैं",
-    "permissionsNeededBody": "इस सुविधा का उपयोग करने के लिए कृपया डिवाइस सेटिंग्स में नोटिफिकेशन चालू करें।",
-    "permissionsRequiredTitle": "अनुमतियां आवश्यक हैं",
-    "permissionsRequiredBody": "दैनिक रिमाइंडर का परीक्षण करने के लिए पहले नोटिफिकेशन चालू करें।",
-    "permissionsDisabledBody": "नोटिफिकेशन फिलहाल बंद हैं। टास्क रिमाइंडर पाने के लिए इन्हें चालू करें।",
-    "enableNotifications": "नोटिफिकेशन चालू करें",
-    "mainSettings": "मुख्य सेटिंग्स",
-    "enableNotificationsDescription": "सभी नोटिफिकेशन चालू या बंद करें",
-    "sensorySettings": "संवेदी सेटिंग्स",
-    "sensorySettingsDescription": "नियंत्रित करें कि नोटिफिकेशन आपका ध्यान कैसे आकर्षित करें",
-    "sound": "ध्वनि",
-    "soundDescription": "नोटिफिकेशन ध्वनि चलाएं",
-    "vibration": "कंपन",
-    "vibrationDescription": "नोटिफिकेशन आने पर कंपन करें",
-    "dailyReminderTitle": "दैनिक कार्य रिमाइंडर",
-    "dailyReminderDescription": "अपनी अधूरी कार्यसूची के बारे में दैनिक रिमाइंडर पाएं",
-    "enableDailyReminder": "दैनिक रिमाइंडर चालू करें",
-    "enableDailyReminderDescription": "कार्य संख्या के साथ दैनिक नोटिफिकेशन प्राप्त करें",
-    "testButton": "टेस्ट नोटिफिकेशन भेजें",
-    "testNotificationTitle": "TaskBlast रिमाइंडर",
-    "testNotificationBody": "आपके 3 कार्य बाकी हैं! शुरू करने के लिए तैयार हैं?",
-    "testSentTitle": "टेस्ट भेजा गया!",
-    "testSentBody": "दैनिक रिमाइंडर कैसा दिखता है, यह देखने के लिए अपनी नोटिफिकेशन ट्रे देखें।",
-    "testFailedTitle": "टेस्ट विफल",
-    "testFailedBody": "टेस्ट नोटिफिकेशन भेजा नहीं जा सका। कृपया फिर से प्रयास करें।",
-    "ok": "OK",
-    "cancel": "रद्द करें",
-    "save": "सहेजें"
-  },
+      "NotificationPreferencesModal": {
+        "title": "सूचनाएं",
+        "reminderTime": "रिमाइंडर समय",
+        "settingsSavedTitle": "सेटिंग्स सहेजी गईं",
+        "settingsSavedBody": "आपकी नोटिफिकेशन प्राथमिकताएं अपडेट हो गई हैं!",
+        "permissionsGrantedTitle": "अनुमतियां मिल गईं",
+        "permissionsGrantedBody": "नोटिफिकेशन अब चालू हैं!",
+        "permissionsNeededTitle": "अनुमतियां आवश्यक हैं",
+        "permissionsNeededBody": "इस सुविधा का उपयोग करने के लिए कृपया डिवाइस सेटिंग्स में नोटिफिकेशन चालू करें।",
+        "permissionsRequiredTitle": "अनुमतियां आवश्यक हैं",
+        "permissionsRequiredBody": "दैनिक रिमाइंडर का परीक्षण करने के लिए पहले नोटिफिकेशन चालू करें।",
+        "permissionsDisabledBody": "नोटिफिकेशन फिलहाल बंद हैं। टास्क रिमाइंडर पाने के लिए इन्हें चालू करें।",
+        "enableNotifications": "नोटिफिकेशन चालू करें",
+        "mainSettings": "मुख्य सेटिंग्स",
+        "enableNotificationsDescription": "सभी नोटिफिकेशन चालू या बंद करें",
+        "sensorySettings": "संवेदी सेटिंग्स",
+        "sensorySettingsDescription": "नियंत्रित करें कि नोटिफिकेशन आपका ध्यान कैसे आकर्षित करें",
+        "sound": "ध्वनि",
+        "soundDescription": "नोटिफिकेशन ध्वनि चलाएं",
+        "vibration": "कंपन",
+        "vibrationDescription": "नोटिफिकेशन आने पर कंपन करें",
+        "dailyReminderTitle": "दैनिक कार्य रिमाइंडर",
+        "dailyReminderDescription": "अपनी अधूरी कार्यसूची के बारे में दैनिक रिमाइंडर पाएं",
+        "enableDailyReminder": "दैनिक रिमाइंडर चालू करें",
+        "enableDailyReminderDescription": "कार्य संख्या के साथ दैनिक नोटिफिकेशन प्राप्त करें",
+        "testButton": "टेस्ट नोटिफिकेशन भेजें",
+        "testNotificationTitle": "TaskBlast रिमाइंडर",
+        "testNotificationBody": "आपके 3 कार्य बाकी हैं! शुरू करने के लिए तैयार हैं?",
+        "testSentTitle": "टेस्ट भेजा गया!",
+        "testSentBody": "दैनिक रिमाइंडर कैसा दिखता है, यह देखने के लिए अपनी नोटिफिकेशन ट्रे देखें।",
+        "testFailedTitle": "टेस्ट विफल",
+        "testFailedBody": "टेस्ट नोटिफिकेशन भेजा नहीं जा सका। कृपया फिर से प्रयास करें।",
+        "ok": "OK",
+        "cancel": "रद्द करें",
+        "save": "सहेजें"
+      },
       "items": {
         "1": {
           "question": "मैं नया कार्य कैसे जोड़ूं?",
@@ -367,24 +367,22 @@
   },
 
   "Traits": {
-
-  "ADHD" : "एडीएचडी",
-  "Aspergers": "एस्पर्जर सिंड्रोम",
-  "Autism": "ऑटिज़्म",
-  "DevelopmentalLanguageDisorder": "विकासात्मक भाषा विकार",
-  "Disability Confident": "विकलांगता आत्मविश्वास",
-  "Dyscalculia": "डिस्कैल्कुलिया",
-  "Dysgraphia": "डिसग्राफिया",
-  "Dyslexia": "डिस्लेक्सिया",
-  "Dyspraxia": "डिस्प्रैक्सिया",
-  "Hyperlexia": "हाइपरलेक्सिया",
-  "Irlen Syndrome": "इरलेन सिंड्रोम",
-  "OCD": "ओसीडी",
-  "Synthesia": "सिनेस्थेसिया",
-  "Tourette's Syndrome": "टॉरेट सिंड्रोम",
-  "selectTraits": "ट्रेट्स चुनें",
-  "saveTraits"  : "ट्रेट्स सहेजें"
-
+    "ADHD": "एडीएचडी",
+    "Aspergers": "एस्पर्जर सिंड्रोम",
+    "Autism": "ऑटिज़्म",
+    "DevelopmentalLanguageDisorder": "विकासात्मक भाषा विकार",
+    "Disability Confident": "विकलांगता आत्मविश्वास",
+    "Dyscalculia": "डिस्कैल्कुलिया",
+    "Dysgraphia": "डिसग्राफिया",
+    "Dyslexia": "डिस्लेक्सिया",
+    "Dyspraxia": "डिस्प्रैक्सिया",
+    "Hyperlexia": "हाइपरलेक्सिया",
+    "Irlen Syndrome": "इरलेन सिंड्रोम",
+    "OCD": "ओसीडी",
+    "Synthesia": "सिनेस्थेसिया",
+    "Tourette's Syndrome": "टॉरेट सिंड्रोम",
+    "selectTraits": "ट्रेट्स चुनें",
+    "saveTraits": "ट्रेट्स सहेजें"
   },
 
   "Profile": {
@@ -462,6 +460,15 @@
       "noRockStats": "अभी तक कोई रॉक आँकड़े नहीं हैं।",
       "noWorkSessions": "अभी तक कोई कार्य सत्र नहीं हैं।",
       "noPlaySessions": "अभी तक कोई विश्राम सत्र नहीं हैं।"
+    },
+    "actions": {
+      "expand": "चार्ट बड़ा करें",
+      "close": "चार्ट बंद करें",
+      "closeExpanded": "बड़ा किया गया चार्ट बंद करें"
+    },
+    "hints": {
+      "expand": "इस चार्ट पर फोकस करने के लिए टैप करें",
+      "swipeDown": "बंद करने के लिए X दबाएं"
     }
   },
   "Pomodoro": {
@@ -554,5 +561,4 @@
     "descriptionBase": "मानक रत्न पुरस्कार",
     "stats": "व्यास {{diameter}} कि.मी. · सूर्य से {{distance}} कि.मी."
   }
-
 }

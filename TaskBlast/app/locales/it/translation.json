@@ -423,6 +423,15 @@
       "noRockStats": "Ancora nessuna statistica sui cristalli.",
       "noWorkSessions": "Ancora nessuna sessione di lavoro.",
       "noPlaySessions": "Ancora nessuna sessione di pausa."
+    },
+    "actions": {
+      "expand": "Espandi grafico",
+      "close": "Chiudi grafici",
+      "closeExpanded": "Chiudi grafico espanso"
+    },
+    "hints": {
+      "expand": "Tocca per mettere a fuoco questo grafico",
+      "swipeDown": "Tocca X per chiudere"
     }
   },
   "Pomodoro": {

@@ -207,42 +207,42 @@
       "privacyEnquiries": "Consultas de privacidad"
     },
     "faq": {
-  "NotificationPreferencesModal": {
-    "title": "Notificaciones",
-    "reminderTime": "Hora del recordatorio",
-    "settingsSavedTitle": "Configuración guardada",
-    "settingsSavedBody": "¡Tus preferencias de notificación se han actualizado!",
-    "permissionsGrantedTitle": "Permisos concedidos",
-    "permissionsGrantedBody": "¡Las notificaciones ya están activadas!",
-    "permissionsNeededTitle": "Permisos necesarios",
-    "permissionsNeededBody": "Activa las notificaciones en la configuración de tu dispositivo para usar esta función.",
-    "permissionsRequiredTitle": "Permisos requeridos",
-    "permissionsRequiredBody": "Activa primero las notificaciones para probar el recordatorio diario.",
-    "permissionsDisabledBody": "Las notificaciones están desactivadas actualmente. Actívalas para recibir recordatorios de tareas.",
-    "enableNotifications": "Activar notificaciones",
-    "mainSettings": "Configuración principal",
-    "enableNotificationsDescription": "Activar o desactivar todas las notificaciones",
-    "sensorySettings": "Configuración sensorial",
-    "sensorySettingsDescription": "Controla cómo llaman tu atención las notificaciones",
-    "sound": "Sonido",
-    "soundDescription": "Reproducir sonido de notificación",
-    "vibration": "Vibración",
-    "vibrationDescription": "Vibrar cuando llegue una notificación",
-    "dailyReminderTitle": "Recordatorio diario de tareas",
-    "dailyReminderDescription": "Recibe un recordatorio diario sobre tus tareas incompletas",
-    "enableDailyReminder": "Activar recordatorio diario",
-    "enableDailyReminderDescription": "Recibir una notificación diaria con el número de tareas",
-    "testButton": "Enviar notificación de prueba",
-    "testNotificationTitle": "Recordatorio de TaskBlast",
-    "testNotificationBody": "¡Tienes 3 tareas pendientes! ¿Listo para empezar?",
-    "testSentTitle": "¡Prueba enviada!",
-    "testSentBody": "Revisa la bandeja de notificaciones para ver cómo se ve el recordatorio diario.",
-    "testFailedTitle": "Error en la prueba",
-    "testFailedBody": "No se pudo enviar la notificación de prueba. Inténtalo de nuevo.",
-    "ok": "OK",
-    "cancel": "Cancelar",
-    "save": "Guardar"
-  },
+      "NotificationPreferencesModal": {
+        "title": "Notificaciones",
+        "reminderTime": "Hora del recordatorio",
+        "settingsSavedTitle": "Configuración guardada",
+        "settingsSavedBody": "¡Tus preferencias de notificación se han actualizado!",
+        "permissionsGrantedTitle": "Permisos concedidos",
+        "permissionsGrantedBody": "¡Las notificaciones ya están activadas!",
+        "permissionsNeededTitle": "Permisos necesarios",
+        "permissionsNeededBody": "Activa las notificaciones en la configuración de tu dispositivo para usar esta función.",
+        "permissionsRequiredTitle": "Permisos requeridos",
+        "permissionsRequiredBody": "Activa primero las notificaciones para probar el recordatorio diario.",
+        "permissionsDisabledBody": "Las notificaciones están desactivadas actualmente. Actívalas para recibir recordatorios de tareas.",
+        "enableNotifications": "Activar notificaciones",
+        "mainSettings": "Configuración principal",
+        "enableNotificationsDescription": "Activar o desactivar todas las notificaciones",
+        "sensorySettings": "Configuración sensorial",
+        "sensorySettingsDescription": "Controla cómo llaman tu atención las notificaciones",
+        "sound": "Sonido",
+        "soundDescription": "Reproducir sonido de notificación",
+        "vibration": "Vibración",
+        "vibrationDescription": "Vibrar cuando llegue una notificación",
+        "dailyReminderTitle": "Recordatorio diario de tareas",
+        "dailyReminderDescription": "Recibe un recordatorio diario sobre tus tareas incompletas",
+        "enableDailyReminder": "Activar recordatorio diario",
+        "enableDailyReminderDescription": "Recibir una notificación diaria con el número de tareas",
+        "testButton": "Enviar notificación de prueba",
+        "testNotificationTitle": "Recordatorio de TaskBlast",
+        "testNotificationBody": "¡Tienes 3 tareas pendientes! ¿Listo para empezar?",
+        "testSentTitle": "¡Prueba enviada!",
+        "testSentBody": "Revisa la bandeja de notificaciones para ver cómo se ve el recordatorio diario.",
+        "testFailedTitle": "Error en la prueba",
+        "testFailedBody": "No se pudo enviar la notificación de prueba. Inténtalo de nuevo.",
+        "ok": "OK",
+        "cancel": "Cancelar",
+        "save": "Guardar"
+      },
       "items": {
         "1": {
           "question": "¿Cómo agrego una nueva tarea?",
@@ -358,7 +358,7 @@
     "Cycles": "Ciclos",
     "created": "Creada",
     "details": "informacion",
-    "close" : "Cerrar",
+    "close": "Cerrar",
     "minutesShort": "min",
     "hoursShort": "h",
     "managerAccess": "Acceso de gestor",
@@ -367,24 +367,22 @@
   },
 
   "Traits": {
-
-  "ADHD" : "TDAH",
-  "Aspergers": "Síndrome de Asperger",
-  "Autism": "Autismo",
-  "DevelopmentalLanguageDisorder": "Trastorno del desarrollo del lenguaje",
-  "Disability Confident": "Confianza en la discapacidad",
-  "Dyscalculia": "Discalculia",
-  "Dysgraphia": "Disgrafía",
-  "Dyslexia": "Dislexia",
-  "Dyspraxia": "Dispraxia",
-  "Hyperlexia": "Hiperlexia",
-  "Irlen Syndrome": "Síndrome de Irlen",
-  "OCD": "TOC",
-  "Synthesia": "Sinestesia",
-  "Tourette's Syndrome": "Síndrome de Tourette",
-  "selectTraits": "Seleccionar Rasgos",
-  "saveTraits"  : "Guardar Rasgos"
-
+    "ADHD": "TDAH",
+    "Aspergers": "Síndrome de Asperger",
+    "Autism": "Autismo",
+    "DevelopmentalLanguageDisorder": "Trastorno del desarrollo del lenguaje",
+    "Disability Confident": "Confianza en la discapacidad",
+    "Dyscalculia": "Discalculia",
+    "Dysgraphia": "Disgrafía",
+    "Dyslexia": "Dislexia",
+    "Dyspraxia": "Dispraxia",
+    "Hyperlexia": "Hiperlexia",
+    "Irlen Syndrome": "Síndrome de Irlen",
+    "OCD": "TOC",
+    "Synthesia": "Sinestesia",
+    "Tourette's Syndrome": "Síndrome de Tourette",
+    "selectTraits": "Seleccionar Rasgos",
+    "saveTraits": "Guardar Rasgos"
   },
 
   "Profile": {
@@ -462,6 +460,15 @@
       "noRockStats": "Aún no hay estadísticas de rocas.",
       "noWorkSessions": "Aún no hay sesiones de trabajo.",
       "noPlaySessions": "Aún no hay sesiones de descanso."
+    },
+    "actions": {
+      "expand": "Ampliar gráfico",
+      "close": "Cerrar gráficos",
+      "closeExpanded": "Cerrar gráfico ampliado"
+    },
+    "hints": {
+      "expand": "Toca para enfocar este gráfico",
+      "swipeDown": "Toca X para cerrar"
     }
   },
   "Pomodoro": {
@@ -555,5 +562,4 @@
     "descriptionBase": "Recompensas de gemas estándar",
     "stats": "{{diameter}} km de diámetro · {{distance}} km del Sol"
   }
-
 }

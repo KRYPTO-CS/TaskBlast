@@ -204,42 +204,42 @@
       "privacyEnquiries": "গোপনীয়তা সংক্রান্ত জিজ্ঞাসা"
     },
     "faq": {
-  "NotificationPreferencesModal": {
-    "title": "বিজ্ঞপ্তি",
-    "reminderTime": "রিমাইন্ডারের সময়",
-    "settingsSavedTitle": "সেটিংস সংরক্ষিত",
-    "settingsSavedBody": "আপনার নোটিফিকেশন পছন্দসমূহ আপডেট হয়েছে!",
-    "permissionsGrantedTitle": "অনুমতি প্রদান করা হয়েছে",
-    "permissionsGrantedBody": "নোটিফিকেশন এখন চালু হয়েছে!",
-    "permissionsNeededTitle": "অনুমতি প্রয়োজন",
-    "permissionsNeededBody": "এই ফিচার ব্যবহার করতে ডিভাইস সেটিংসে নোটিফিকেশন চালু করুন।",
-    "permissionsRequiredTitle": "অনুমতি প্রয়োজন",
-    "permissionsRequiredBody": "দৈনিক রিমাইন্ডার পরীক্ষা করতে আগে নোটিফিকেশন চালু করুন।",
-    "permissionsDisabledBody": "নোটিফিকেশন বর্তমানে বন্ধ আছে। টাস্ক রিমাইন্ডার পেতে এটি চালু করুন।",
-    "enableNotifications": "নোটিফিকেশন চালু করুন",
-    "mainSettings": "প্রধান সেটিংস",
-    "enableNotificationsDescription": "সব নোটিফিকেশন চালু বা বন্ধ করুন",
-    "sensorySettings": "সংবেদী সেটিংস",
-    "sensorySettingsDescription": "নোটিফিকেশন কীভাবে আপনার মনোযোগ আকর্ষণ করবে তা নিয়ন্ত্রণ করুন",
-    "sound": "শব্দ",
-    "soundDescription": "নোটিফিকেশন শব্দ বাজান",
-    "vibration": "কম্পন",
-    "vibrationDescription": "নোটিফিকেশন এলে কম্পন দিন",
-    "dailyReminderTitle": "দৈনিক কাজের রিমাইন্ডার",
-    "dailyReminderDescription": "অসম্পূর্ণ কাজ সম্পর্কে দৈনিক রিমাইন্ডার পান",
-    "enableDailyReminder": "দৈনিক রিমাইন্ডার চালু করুন",
-    "enableDailyReminderDescription": "কাজের সংখ্যা সহ দৈনিক নোটিফিকেশন পান",
-    "testButton": "টেস্ট নোটিফিকেশন পাঠান",
-    "testNotificationTitle": "TaskBlast রিমাইন্ডার",
-    "testNotificationBody": "আপনার ৩টি কাজ অপেক্ষায় আছে! শুরু করতে প্রস্তুত?",
-    "testSentTitle": "টেস্ট পাঠানো হয়েছে!",
-    "testSentBody": "দৈনিক রিমাইন্ডারটি কেমন দেখায় তা দেখতে নোটিফিকেশন ট্রে দেখুন।",
-    "testFailedTitle": "টেস্ট ব্যর্থ",
-    "testFailedBody": "টেস্ট নোটিফিকেশন পাঠানো যায়নি। আবার চেষ্টা করুন।",
-    "ok": "OK",
-    "cancel": "বাতিল",
-    "save": "সংরক্ষণ করুন"
-  },
+      "NotificationPreferencesModal": {
+        "title": "বিজ্ঞপ্তি",
+        "reminderTime": "রিমাইন্ডারের সময়",
+        "settingsSavedTitle": "সেটিংস সংরক্ষিত",
+        "settingsSavedBody": "আপনার নোটিফিকেশন পছন্দসমূহ আপডেট হয়েছে!",
+        "permissionsGrantedTitle": "অনুমতি প্রদান করা হয়েছে",
+        "permissionsGrantedBody": "নোটিফিকেশন এখন চালু হয়েছে!",
+        "permissionsNeededTitle": "অনুমতি প্রয়োজন",
+        "permissionsNeededBody": "এই ফিচার ব্যবহার করতে ডিভাইস সেটিংসে নোটিফিকেশন চালু করুন।",
+        "permissionsRequiredTitle": "অনুমতি প্রয়োজন",
+        "permissionsRequiredBody": "দৈনিক রিমাইন্ডার পরীক্ষা করতে আগে নোটিফিকেশন চালু করুন।",
+        "permissionsDisabledBody": "নোটিফিকেশন বর্তমানে বন্ধ আছে। টাস্ক রিমাইন্ডার পেতে এটি চালু করুন।",
+        "enableNotifications": "নোটিফিকেশন চালু করুন",
+        "mainSettings": "প্রধান সেটিংস",
+        "enableNotificationsDescription": "সব নোটিফিকেশন চালু বা বন্ধ করুন",
+        "sensorySettings": "সংবেদী সেটিংস",
+        "sensorySettingsDescription": "নোটিফিকেশন কীভাবে আপনার মনোযোগ আকর্ষণ করবে তা নিয়ন্ত্রণ করুন",
+        "sound": "শব্দ",
+        "soundDescription": "নোটিফিকেশন শব্দ বাজান",
+        "vibration": "কম্পন",
+        "vibrationDescription": "নোটিফিকেশন এলে কম্পন দিন",
+        "dailyReminderTitle": "দৈনিক কাজের রিমাইন্ডার",
+        "dailyReminderDescription": "অসম্পূর্ণ কাজ সম্পর্কে দৈনিক রিমাইন্ডার পান",
+        "enableDailyReminder": "দৈনিক রিমাইন্ডার চালু করুন",
+        "enableDailyReminderDescription": "কাজের সংখ্যা সহ দৈনিক নোটিফিকেশন পান",
+        "testButton": "টেস্ট নোটিফিকেশন পাঠান",
+        "testNotificationTitle": "TaskBlast রিমাইন্ডার",
+        "testNotificationBody": "আপনার ৩টি কাজ অপেক্ষায় আছে! শুরু করতে প্রস্তুত?",
+        "testSentTitle": "টেস্ট পাঠানো হয়েছে!",
+        "testSentBody": "দৈনিক রিমাইন্ডারটি কেমন দেখায় তা দেখতে নোটিফিকেশন ট্রে দেখুন।",
+        "testFailedTitle": "টেস্ট ব্যর্থ",
+        "testFailedBody": "টেস্ট নোটিফিকেশন পাঠানো যায়নি। আবার চেষ্টা করুন।",
+        "ok": "OK",
+        "cancel": "বাতিল",
+        "save": "সংরক্ষণ করুন"
+      },
       "items": {
         "1": {
           "question": "আমি নতুন টাস্ক কীভাবে যোগ করব?",
@@ -361,28 +361,25 @@
     "managerAccess": "পরিচালনা অ্যাক্সেস",
     "managerAccessDesc": "উন্নত অনুমতির সাথে সম্পাদনা মোডে প্রবেশ করতে 4 অংকের PIN লিখুন।",
     "unlock": "আনলক"
-
   },
 
   "Traits": {
-
-  "ADHD" : "এডিএইচডি",
-  "Aspergers": "অ্যাসপার্গার সিনড্রোম",
-  "Autism": "অটিজম",
-  "DevelopmentalLanguageDisorder": "বিকাশজনিত ভাষা ব্যাধি",
-  "Disability Confident": "প্রতিবন্ধিতা আত্মবিশ্বাস",
-  "Dyscalculia": "ডিসক্যালকুলিয়া",
-  "Dysgraphia": "ডিসগ্রাফিয়া",
-  "Dyslexia": "ডিসলেক্সিয়া",
-  "Dyspraxia": "ডিসপ্র্যাক্সিয়া",
-  "Hyperlexia": "হাইপারলেক্সিয়া",
-  "Irlen Syndrome": "ইরলেন সিনড্রোম",
-  "OCD": "ওসিডি",
-  "Synthesia": "সিনেস্থেসিয়া",
-  "Tourette's Syndrome": "টুরেট সিনড্রোম",
-  "selectTraits": "বৈশিষ্ট্য নির্বাচন করুন",
-  "saveTraits"  : "বৈশিষ্ট্য সংরক্ষণ করুন"
-
+    "ADHD": "এডিএইচডি",
+    "Aspergers": "অ্যাসপার্গার সিনড্রোম",
+    "Autism": "অটিজম",
+    "DevelopmentalLanguageDisorder": "বিকাশজনিত ভাষা ব্যাধি",
+    "Disability Confident": "প্রতিবন্ধিতা আত্মবিশ্বাস",
+    "Dyscalculia": "ডিসক্যালকুলিয়া",
+    "Dysgraphia": "ডিসগ্রাফিয়া",
+    "Dyslexia": "ডিসলেক্সিয়া",
+    "Dyspraxia": "ডিসপ্র্যাক্সিয়া",
+    "Hyperlexia": "হাইপারলেক্সিয়া",
+    "Irlen Syndrome": "ইরলেন সিনড্রোম",
+    "OCD": "ওসিডি",
+    "Synthesia": "সিনেস্থেসিয়া",
+    "Tourette's Syndrome": "টুরেট সিনড্রোম",
+    "selectTraits": "বৈশিষ্ট্য নির্বাচন করুন",
+    "saveTraits": "বৈশিষ্ট্য সংরক্ষণ করুন"
   },
 
   "Profile": {
@@ -410,7 +407,6 @@
     "coachMarkStats": "এখানে আপনি আপনার পরিসংখ্যান দেখতে পারেন এবং সময়ের সাথে আপনার অগ্রগতি ট্র্যাক করতে পারেন!",
     "edit": "সম্পাদনা",
     "advanced": "উন্নত"
-
   },
   "EditProfileModal": {
     "title": "প্রোফাইল সম্পাদনা করুন",
@@ -461,6 +457,15 @@
       "noRockStats": "এখনও কোনো রক পরিসংখ্যান নেই।",
       "noWorkSessions": "এখনও কোনো কাজের সেশন নেই।",
       "noPlaySessions": "এখনও কোনো বিরতির সেশন নেই।"
+    },
+    "actions": {
+      "expand": "চার্ট বড় করুন",
+      "close": "চার্ট বন্ধ করুন",
+      "closeExpanded": "বড় করা চার্ট বন্ধ করুন"
+    },
+    "hints": {
+      "expand": "এই চার্টে ফোকাস করতে ট্যাপ করুন",
+      "swipeDown": "বন্ধ করতে X চাপুন"
     }
   },
   "Pomodoro": {
@@ -553,5 +558,4 @@
     "descriptionBase": "স্ট্যান্ডার্ড রত্নপাথর পুরস্কার",
     "stats": "ব্যাস {{diameter}} কিমি · সূর্য থেকে {{distance}} কিমি"
   }
-
 }
