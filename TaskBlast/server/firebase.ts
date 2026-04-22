@@ -10,14 +10,19 @@ It is important to configure our Firebase security rules as time goes on to prot
 */
 
 import { initializeApp } from "firebase/app";
-import { initializeAuth, getReactNativePersistence } from "firebase/auth";
+import {
+  browserLocalPersistence,
+  getAuth,
+  initializeAuth,
+} from "firebase/auth";
 import { getDatabase } from "firebase/database";
 import { getFirestore } from "firebase/firestore";
 import { getFunctions } from "firebase/functions";
 import { getStorage } from "firebase/storage";
+import { Platform } from "react-native";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAJ5Ftr3TNWIgC6UTWNqiJAz77iYBg2Hpg",
@@ -33,10 +38,25 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Auth with AsyncStorage persistence
-export const auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(AsyncStorage)
-});
+function createAuth() {
+  try {
+    if (Platform.OS === "web") {
+      return initializeAuth(app, {
+        persistence: browserLocalPersistence,
+      });
+    }
+
+    const { getReactNativePersistence } = require("firebase/auth/react-native");
+    return initializeAuth(app, {
+      persistence: getReactNativePersistence(AsyncStorage),
+    });
+  } catch {
+    // Reuse existing instance during HMR/tests where Auth may already be initialized.
+    return getAuth(app);
+  }
+}
+
+export const auth = createAuth();
 
 export const db = getDatabase(app);
 export const firestore = getFirestore(app);
