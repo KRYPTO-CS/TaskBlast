@@ -518,8 +518,13 @@ export default function AnalyticsChartsModal({
         {hasData ? (
           <>
             <WebView
+              testID={`inline-chart-webview-${chart.id}`}
               originWhitelist={["*"]}
               pointerEvents="none"
+              javaScriptEnabled={true}
+              domStorageEnabled={false}
+              startInLoadingState={false}
+              overScrollMode={Platform.OS === "android" ? "never" : undefined}
               source={{
                 html: buildChartHtml({
                   labels: chart.labels,
@@ -534,7 +539,17 @@ export default function AnalyticsChartsModal({
                 }),
               }}
               scrollEnabled={false}
+              bounces={false}
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
               style={{ backgroundColor: "transparent" }}
+              onError={(syntheticEvent) => {
+                // Handle WebView errors silently on both platforms
+                console.warn(
+                  "Chart WebView error:",
+                  syntheticEvent.nativeEvent,
+                );
+              }}
             />
             <TouchableOpacity
               testID={`expand-chart-${chart.id}`}
@@ -545,7 +560,7 @@ export default function AnalyticsChartsModal({
               onPress={() => openExpanded(chart)}
               style={{
                 position: "absolute",
-                top: 8,
+                bottom: 8,
                 right: 8,
                 width: EXPAND_TOUCH_TARGET,
                 height: EXPAND_TOUCH_TARGET,
@@ -748,6 +763,12 @@ export default function AnalyticsChartsModal({
                     <WebView
                       testID="expanded-chart-webview"
                       originWhitelist={["*"]}
+                      javaScriptEnabled={true}
+                      domStorageEnabled={false}
+                      startInLoadingState={true}
+                      overScrollMode={
+                        Platform.OS === "android" ? "always" : undefined
+                      }
                       source={{
                         html: buildChartHtml({
                           labels: expandedChart.labels,
@@ -762,9 +783,20 @@ export default function AnalyticsChartsModal({
                           expanded: true,
                         }),
                       }}
-                      nestedScrollEnabled
+                      nestedScrollEnabled={Platform.OS === "ios"}
                       scrollEnabled
+                      bounces={Platform.OS === "ios"}
+                      showsVerticalScrollIndicator={false}
+                      showsHorizontalScrollIndicator={true}
                       onLoadEnd={() => setIsExpandedLoading(false)}
+                      onError={(syntheticEvent) => {
+                        // Handle WebView errors on both platforms
+                        console.warn(
+                          "Expanded chart WebView error:",
+                          syntheticEvent.nativeEvent,
+                        );
+                        setIsExpandedLoading(false);
+                      }}
                       style={{ backgroundColor: "transparent" }}
                     />
 
