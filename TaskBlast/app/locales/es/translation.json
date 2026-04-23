@@ -365,7 +365,6 @@
     "managerAccessDesc": "Ingresa el PIN de 4 dígitos para acceder al modo de edición con permisos elevados.",
     "unlock": "Desbloquear"
   },
-
   "Traits": {
     "ADHD": "TDAH",
     "Aspergers": "Síndrome de Asperger",
@@ -384,7 +383,6 @@
     "selectTraits": "Seleccionar Rasgos",
     "saveTraits": "Guardar Rasgos"
   },
-
   "Profile": {
     "traits": "Rasgos",
     "editP": "Editar Perfil",
@@ -529,7 +527,6 @@
     "sequentBlast": "Explosión secuencial",
     "sequentBlastDesc": "Memoriza y toca la secuencia oculta."
   },
-
   "ChildAccount": {
     "title": "Crear Cuenta de Niño",
     "firstName": "Ingrese nombre",
@@ -561,5 +558,23 @@
     "descriptionBonus": "{{percent}}% más gemas",
     "descriptionBase": "Recompensas de gemas estándar",
     "stats": "{{diameter}} km de diámetro · {{distance}} km del Sol"
+  },
+  "ResetManagerPin": {
+    "button": "Restablecer PIN de administrador",
+    "title": "Restablecer PIN de administrador",
+    "subtitle": "Verifica tu contrasena y establece un nuevo PIN.",
+    "passwordPlaceholder": "Introduce la contrasena de la cuenta",
+    "newPinPlaceholder": "Nuevo PIN (4 digitos)",
+    "confirmPinPlaceholder": "Confirmar nuevo PIN",
+    "submit": "Restablecer PIN",
+    "forgotPin": "Olvidaste el PIN? Restablecelo aqui",
+    "successTitle": "PIN actualizado",
+    "successBody": "Tu PIN de administrador se ha restablecido correctamente.",
+    "errorNotSignedIn": "No has iniciado sesion.",
+    "errorPasswordRequired": "Introduce tu contrasena de cuenta.",
+    "errorPinLength": "El PIN debe tener exactamente 4 digitos.",
+    "errorPinMismatch": "Los PIN no coinciden.",
+    "errorWrongPassword": "Contrasena incorrecta. Intentalo de nuevo.",
+    "errorFailed": "Error al restablecer el PIN. Intentalo de nuevo."
   }
 }

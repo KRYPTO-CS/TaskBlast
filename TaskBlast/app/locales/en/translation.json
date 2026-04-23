@@ -365,7 +365,6 @@
     "managerAccessDesc": "Enter the 4-digit PIN to access edit mode wiht elevated permissions.",
     "unlock": "Unlock"
   },
-
   "Traits": {
     "ADHD": "ADHD",
     "Aspergers": "Aspergers",
@@ -384,7 +383,6 @@
     "selectTraits": "Select Traits",
     "saveTraits": "Save Traits"
   },
-
   "Profile": {
     "traits": "Traits",
     "editP": "Edit Profile",
@@ -561,5 +559,23 @@
     "descriptionBonus": "{{percent}}% more crystals",
     "descriptionBase": "Standard crystal rewards",
     "stats": "{{diameter}} km diameter · {{distance}} km from the Sun"
+  },
+  "ResetManagerPin": {
+    "button": "Reset Manager PIN",
+    "title": "Reset Manager PIN",
+    "subtitle": "Verify your account password, then set a new PIN.",
+    "passwordPlaceholder": "Enter account password",
+    "newPinPlaceholder": "New PIN (4 digits)",
+    "confirmPinPlaceholder": "Confirm new PIN",
+    "submit": "Reset PIN",
+    "forgotPin": "Forgot PIN? Reset here",
+    "successTitle": "PIN Updated",
+    "successBody": "Your manager PIN has been reset successfully.",
+    "errorNotSignedIn": "Not signed in.",
+    "errorPasswordRequired": "Please enter your account password.",
+    "errorPinLength": "PIN must be exactly 4 digits.",
+    "errorPinMismatch": "PINs do not match.",
+    "errorWrongPassword": "Incorrect password. Please try again.",
+    "errorFailed": "Failed to reset PIN. Please try again."
   }
 }

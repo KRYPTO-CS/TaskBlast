@@ -365,7 +365,6 @@
     "managerAccessDesc": "输入 4 位数字 PIN 以访问具有提升权限的编辑模式。",
     "unlock": "解锁"
   },
-
   "Traits": {
     "ADHD": "注意缺陷多动障碍",
     "Aspergers": "阿斯伯格综合征",
@@ -384,7 +383,6 @@
     "selectTraits": "选择特征",
     "saveTraits": "保存特征"
   },
-
   "Profile": {
     "traits": "特征",
     "editP": "编辑个人资料",
@@ -560,5 +558,23 @@
     "descriptionBonus": "多 {{percent}}% 宝石",
     "descriptionBase": "标准宝石奖励",
     "stats": "直径 {{diameter}} 千米 · 距太阳 {{distance}} 千米"
+  },
+  "ResetManagerPin": {
+    "button": "重置管理员PIN",
+    "title": "重置管理员PIN",
+    "subtitle": "验证账户密码后设置新PIN。",
+    "passwordPlaceholder": "输入账户密码",
+    "newPinPlaceholder": "新PIN（4位数字）",
+    "confirmPinPlaceholder": "确认新PIN",
+    "submit": "重置 PIN",
+    "forgotPin": "忘记PIN？在此重置",
+    "successTitle": "PIN已更新",
+    "successBody": "您的管理员PIN已成功重置。",
+    "errorNotSignedIn": "未登录。",
+    "errorPasswordRequired": "请输入账户密码。",
+    "errorPinLength": "PIN必须恰好为4位数字。",
+    "errorPinMismatch": "PIN不匹配。",
+    "errorWrongPassword": "密码错误，请重试。",
+    "errorFailed": "重置PIN失败，请重试。"
   }
 }

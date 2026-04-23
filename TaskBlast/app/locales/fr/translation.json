@@ -365,7 +365,6 @@
     "managerAccessDesc": "Entrez le code PIN à 4 chiffres pour accéder au mode édition avec des permissions élevées.",
     "unlock": "Débloquer"
   },
-
   "Traits": {
     "ADHD": "TDAH",
     "Aspergers": "Syndrome d'Asperger",
@@ -384,7 +383,6 @@
     "selectTraits": "Sélectionner les Traits",
     "saveTraits": "Enregistrer les Traits"
   },
-
   "Profile": {
     "traits": "Traits",
     "editP": "Editer Profil",
@@ -561,5 +559,23 @@
     "descriptionBonus": "{{percent}}% de gemmes en plus",
     "descriptionBase": "Récompenses de gemmes standard",
     "stats": "{{diameter}} km de diamètre · {{distance}} km du Soleil"
+  },
+  "ResetManagerPin": {
+    "button": "Reinitialiser le PIN",
+    "title": "Reinitialiser le PIN",
+    "subtitle": "Verifiez votre mot de passe, puis definissez un nouveau PIN.",
+    "passwordPlaceholder": "Saisir le mot de passe du compte",
+    "newPinPlaceholder": "Nouveau PIN (4 chiffres)",
+    "confirmPinPlaceholder": "Confirmer le nouveau PIN",
+    "submit": "Reinitialiser le PIN",
+    "forgotPin": "PIN oublie ? Reinitialisez ici",
+    "successTitle": "PIN mis a jour",
+    "successBody": "Votre PIN a ete reinitialise avec succes.",
+    "errorNotSignedIn": "Non connecte.",
+    "errorPasswordRequired": "Veuillez saisir votre mot de passe.",
+    "errorPinLength": "Le PIN doit comporter exactement 4 chiffres.",
+    "errorPinMismatch": "Les PIN ne correspondent pas.",
+    "errorWrongPassword": "Mot de passe incorrect. Reessayez.",
+    "errorFailed": "Echec de la reinitialisation du PIN. Reessayez."
   }
 }

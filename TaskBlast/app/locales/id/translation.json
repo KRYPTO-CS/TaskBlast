@@ -523,5 +523,23 @@
     "descriptionBonus": "{{percent}}% lebih banyak kristal",
     "descriptionBase": "Hadiah kristal standar",
     "stats": "{{diameter}} km diameter · {{distance}} km dari Matahari"
+  },
+  "ResetManagerPin": {
+    "button": "Reset PIN Manajer",
+    "title": "Reset PIN Manajer",
+    "subtitle": "Verifikasi kata sandi akun Anda, lalu tetapkan PIN baru.",
+    "passwordPlaceholder": "Masukkan kata sandi akun",
+    "newPinPlaceholder": "PIN baru (4 digit)",
+    "confirmPinPlaceholder": "Konfirmasi PIN baru",
+    "submit": "Reset PIN",
+    "forgotPin": "Lupa PIN? Reset di sini",
+    "successTitle": "PIN Diperbarui",
+    "successBody": "PIN manajer Anda telah berhasil direset.",
+    "errorNotSignedIn": "Belum masuk.",
+    "errorPasswordRequired": "Masukkan kata sandi akun Anda.",
+    "errorPinLength": "PIN harus tepat 4 digit.",
+    "errorPinMismatch": "PIN tidak cocok.",
+    "errorWrongPassword": "Kata sandi salah. Coba lagi.",
+    "errorFailed": "Gagal mereset PIN. Coba lagi."
   }
 }

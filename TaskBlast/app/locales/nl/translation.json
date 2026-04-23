@@ -523,5 +523,23 @@
     "descriptionBonus": "{{percent}}% meer kristallen",
     "descriptionBase": "Standaard kristalbeloningen",
     "stats": "{{diameter}} km diameter · {{distance}} km van de Zon"
+  },
+  "ResetManagerPin": {
+    "button": "Manager-PIN resetten",
+    "title": "Manager-PIN resetten",
+    "subtitle": "Verifieer je accountwachtwoord en stel daarna een nieuwe PIN in.",
+    "passwordPlaceholder": "Accountwachtwoord invoeren",
+    "newPinPlaceholder": "Nieuwe PIN (4 cijfers)",
+    "confirmPinPlaceholder": "Nieuwe PIN bevestigen",
+    "submit": "PIN resetten",
+    "forgotPin": "PIN vergeten? Reset hier",
+    "successTitle": "PIN bijgewerkt",
+    "successBody": "Je manager-PIN is succesvol gereset.",
+    "errorNotSignedIn": "Niet ingelogd.",
+    "errorPasswordRequired": "Voer je accountwachtwoord in.",
+    "errorPinLength": "De PIN moet precies 4 cijfers bevatten.",
+    "errorPinMismatch": "PIN-codes komen niet overeen.",
+    "errorWrongPassword": "Onjuist wachtwoord. Probeer het opnieuw.",
+    "errorFailed": "Resetten van PIN mislukt. Probeer het opnieuw."
   }
 }

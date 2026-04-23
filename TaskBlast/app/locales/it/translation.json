@@ -523,5 +523,23 @@
     "descriptionBonus": "{{percent}}% cristalli in più",
     "descriptionBase": "Ricompense cristalli standard",
     "stats": "{{diameter}} km di diametro · {{distance}} km dal Sole"
+  },
+  "ResetManagerPin": {
+    "button": "Reimposta PIN manager",
+    "title": "Reimposta PIN manager",
+    "subtitle": "Verifica la password del tuo account, poi imposta un nuovo PIN.",
+    "passwordPlaceholder": "Inserisci la password dell'account",
+    "newPinPlaceholder": "Nuovo PIN (4 cifre)",
+    "confirmPinPlaceholder": "Conferma nuovo PIN",
+    "submit": "Reimposta PIN",
+    "forgotPin": "PIN dimenticato? Reimpostalo qui",
+    "successTitle": "PIN aggiornato",
+    "successBody": "Il tuo PIN manager e stato reimpostato con successo.",
+    "errorNotSignedIn": "Non hai effettuato l'accesso.",
+    "errorPasswordRequired": "Inserisci la password del tuo account.",
+    "errorPinLength": "Il PIN deve avere esattamente 4 cifre.",
+    "errorPinMismatch": "I PIN non corrispondono.",
+    "errorWrongPassword": "Password errata. Riprova.",
+    "errorFailed": "Reimpostazione PIN non riuscita. Riprova."
   }
 }

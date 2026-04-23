@@ -523,5 +523,23 @@
     "descriptionBonus": "%{{percent}} daha fazla kristal",
     "descriptionBase": "Standart kristal ödülleri",
     "stats": "{{diameter}} km çap · Güneş'ten {{distance}} km uzaklık"
+  },
+  "ResetManagerPin": {
+    "button": "Yönetici PIN'ini Sıfırla",
+    "title": "Yönetici PIN'ini Sıfırla",
+    "subtitle": "Hesap şifrenizi doğrulayın, ardından yeni bir PIN belirleyin.",
+    "passwordPlaceholder": "Hesap şifresini girin",
+    "newPinPlaceholder": "Yeni PIN (4 rakam)",
+    "confirmPinPlaceholder": "Yeni PIN'i onayla",
+    "submit": "PIN'i Sıfırla",
+    "forgotPin": "PIN'inizi mi unuttunuz? Buradan sıfırlayın",
+    "successTitle": "PIN Güncellendi",
+    "successBody": "Yönetici PIN'iniz başarıyla sıfırlandı.",
+    "errorNotSignedIn": "Giriş yapılmadı.",
+    "errorPasswordRequired": "Hesap şifrenizi girin.",
+    "errorPinLength": "PIN tam olarak 4 rakam olmalıdır.",
+    "errorPinMismatch": "PIN'ler eşleşmiyor.",
+    "errorWrongPassword": "Yanlış şifre. Tekrar deneyin.",
+    "errorFailed": "PIN sıfırlanamadı. Tekrar deneyin."
   }
 }

@@ -365,7 +365,6 @@
     "managerAccessDesc": "Geben Sie eine 4-stellige PIN ein, um Zugriff auf den erweiterten Bearbeitungsmodus zu erhalten.",
     "unlock": "Entsperren"
   },
-
   "Traits": {
     "ADHD": "ADHS",
     "Aspergers": "Asperger-Syndrom",
@@ -384,7 +383,6 @@
     "selectTraits": "Eigenschaften auswählen",
     "saveTraits": "Eigenschaften speichern"
   },
-
   "Profile": {
     "traits": "Eigenschaften",
     "editP": "Profil bearbeiten",
@@ -560,5 +558,23 @@
     "descriptionBonus": "{{percent}}% mehr Edelsteine",
     "descriptionBase": "Standard-Edelsteinbelohnungen",
     "stats": "{{diameter}} km Durchmesser · {{distance}} km von der Sonne"
+  },
+  "ResetManagerPin": {
+    "button": "Manager-PIN zurucksetzen",
+    "title": "Manager-PIN zurucksetzen",
+    "subtitle": "Bestatige dein Passwort und lege dann einen neuen PIN fest.",
+    "passwordPlaceholder": "Kontopasswort eingeben",
+    "newPinPlaceholder": "Neuer PIN (4 Ziffern)",
+    "confirmPinPlaceholder": "Neuen PIN bestatigen",
+    "submit": "PIN zurucksetzen",
+    "forgotPin": "PIN vergessen? Hier zurucksetzen",
+    "successTitle": "PIN aktualisiert",
+    "successBody": "Dein Manager-PIN wurde erfolgreich zuruckgesetzt.",
+    "errorNotSignedIn": "Nicht angemeldet.",
+    "errorPasswordRequired": "Bitte gib dein Kontopasswort ein.",
+    "errorPinLength": "Der PIN muss genau 4 Ziffern haben.",
+    "errorPinMismatch": "PINs stimmen nicht uberein.",
+    "errorWrongPassword": "Falsches Passwort. Bitte erneut versuchen.",
+    "errorFailed": "PIN zurucksetzen fehlgeschlagen. Bitte erneut versuchen."
   }
 }

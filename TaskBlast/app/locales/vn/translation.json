@@ -523,5 +523,23 @@
     "descriptionBonus": "Tăng {{percent}}% tinh thể",
     "descriptionBase": "Phần thưởng tinh thể tiêu chuẩn",
     "stats": "{{diameter}} km đường kính · Cách Mặt Trời {{distance}} km"
+  },
+  "ResetManagerPin": {
+    "button": "Đặt lại PIN quản lý",
+    "title": "Đặt lại PIN quản lý",
+    "subtitle": "Xác minh mật khẩu tài khoản, sau đó đặt PIN mới.",
+    "passwordPlaceholder": "Nhập mật khẩu tài khoản",
+    "newPinPlaceholder": "PIN mới (4 chữ số)",
+    "confirmPinPlaceholder": "Xác nhận PIN mới",
+    "submit": "Đặt lại PIN",
+    "forgotPin": "Quên PIN? Đặt lại tại đây",
+    "successTitle": "Đã cập nhật PIN",
+    "successBody": "PIN quản lý của bạn đã được đặt lại thành công.",
+    "errorNotSignedIn": "Chưa đăng nhập.",
+    "errorPasswordRequired": "Nhập mật khẩu tài khoản.",
+    "errorPinLength": "PIN phải có đúng 4 chữ số.",
+    "errorPinMismatch": "Các PIN không khớp.",
+    "errorWrongPassword": "Mật khẩu không đúng. Vui lòng thử lại.",
+    "errorFailed": "Đặt lại PIN thất bại. Vui lòng thử lại."
   }
 }

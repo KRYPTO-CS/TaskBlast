@@ -523,5 +523,23 @@
     "descriptionBonus": "{{percent}}% クリスタル増加",
     "descriptionBase": "標準クリスタル報酬",
     "stats": "直径 {{diameter}} km ・ 太陽からの距離 {{distance}} km"
+  },
+  "ResetManagerPin": {
+    "button": "マネージャーPINをリセット",
+    "title": "マネージャーPINをリセット",
+    "subtitle": "アカウントのパスワードを確認してから新しいPINを設定してください。",
+    "passwordPlaceholder": "アカウントパスワードを入力",
+    "newPinPlaceholder": "新しいPIN（4桌）",
+    "confirmPinPlaceholder": "新しいPINを確認",
+    "submit": "PINをリセット",
+    "forgotPin": "PINを忘れた場合はこちらでリセット",
+    "successTitle": "PINが更新されました",
+    "successBody": "マネージャーPINが正常にリセットされました。",
+    "errorNotSignedIn": "サインインしていません。",
+    "errorPasswordRequired": "アカウントのパスワードを入力してください。",
+    "errorPinLength": "PINは正確に4桌でなければなりません。",
+    "errorPinMismatch": "PINが一致しません。",
+    "errorWrongPassword": "パスワードが間違っています。もう一度お試しください。",
+    "errorFailed": "PINのリセットに失敗しました。もう一度お試しください。"
   }
 }

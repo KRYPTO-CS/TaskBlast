@@ -365,7 +365,6 @@
     "managerAccessDesc": "Введите 4-значный PIN-код, чтобы получить доступ к режиму редактирования с повышенными разрешениями.",
     "unlock": "Разблокировать"
   },
-
   "Traits": {
     "ADHD": "СДВГ",
     "Aspergers": "Синдром Аспергера",
@@ -384,7 +383,6 @@
     "selectTraits": "Выбрать особенности",
     "saveTraits": "Сохранить особенности"
   },
-
   "Profile": {
     "traits": "Особенности",
     "editP": "Редактировать профиль",
@@ -560,5 +558,23 @@
     "descriptionBonus": "{{percent}}% больше самоцветов",
     "descriptionBase": "Стандартные награды самоцветами",
     "stats": "Диаметр {{diameter}} км · {{distance}} км от Солнца"
+  },
+  "ResetManagerPin": {
+    "button": "Сбросить PIN менеджера",
+    "title": "Сбросить PIN менеджера",
+    "subtitle": "Подтвердите пароль аккаунта, затем установите новый PIN.",
+    "passwordPlaceholder": "Введите пароль аккаунта",
+    "newPinPlaceholder": "Новый PIN (4 цифры)",
+    "confirmPinPlaceholder": "Подтвердите новый PIN",
+    "submit": "Сбросить PIN",
+    "forgotPin": "Забыли PIN? Сбросить здесь",
+    "successTitle": "PIN обновлён",
+    "successBody": "Ваш PIN менеджера успешно сброшен.",
+    "errorNotSignedIn": "Вы не вошли в систему.",
+    "errorPasswordRequired": "Введите пароль аккаунта.",
+    "errorPinLength": "PIN должен содержать ровно 4 цифры.",
+    "errorPinMismatch": "PIN-коды не совпадают.",
+    "errorWrongPassword": "Неверный пароль. Попробуйте ещё раз.",
+    "errorFailed": "Не удалось сбросить PIN. Попробуйте ещё раз."
   }
 }

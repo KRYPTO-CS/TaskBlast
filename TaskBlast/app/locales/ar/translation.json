@@ -365,7 +365,6 @@
     "managerAccessDesc": "أدخل رمز PIN من 4 أرقام للوصول إلى وضع التحرير مع الصلاحيات المرتفعة.",
     "unlock": "فتح القفل"
   },
-
   "Traits": {
     "ADHD": "اضطراب فرط الحركة وتشتت الانتباه",
     "Aspergers": "متلازمة أسبرجر",
@@ -384,7 +383,6 @@
     "selectTraits": "اختر الخصائص",
     "saveTraits": "احفظ الخصائص"
   },
-
   "Profile": {
     "traits": "الخصائص",
     "editP": "تعديل الملف الشخصي",
@@ -560,5 +558,23 @@
     "descriptionBonus": "{{percent}}% قيمة جواهر إضافية",
     "descriptionBase": "مكافآت الجواهر القياسية",
     "stats": "قطر {{diameter}} كم · {{distance}} كم من الشمس"
+  },
+  "ResetManagerPin": {
+    "button": "إعادة تعيين رقم PIN",
+    "title": "إعادة تعيين رقم PIN",
+    "subtitle": "تحقق من كلمة مرور حسابك ثم عيّن رقم PIN جديدًا.",
+    "passwordPlaceholder": "أدخل كلمة مرور الحساب",
+    "newPinPlaceholder": "رقم PIN جديد (4 أرقام)",
+    "confirmPinPlaceholder": "تأكيد رقم PIN الجديد",
+    "submit": "إعادة تعيين PIN",
+    "forgotPin": "نسيت PIN؟ أعد التعيين هنا",
+    "successTitle": "تم تحديث PIN",
+    "successBody": "تمت إعادة تعيين رقم PIN بنجاح.",
+    "errorNotSignedIn": "لم تسجل الدخول.",
+    "errorPasswordRequired": "يرجى إدخال كلمة مرور حسابك.",
+    "errorPinLength": "يجب أن يتكون رقم PIN من 4 أرقام بالضبط.",
+    "errorPinMismatch": "أرقام PIN غير متطابقة.",
+    "errorWrongPassword": "كلمة مرور غير صحيحة. حاول مرة أخرى.",
+    "errorFailed": "فشل إعادة تعيين PIN. حاول مرة أخرى."
   }
 }

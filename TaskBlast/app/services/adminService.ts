@@ -201,3 +201,12 @@ export const logAdminActionClient = async (
     createdAt: serverTimestamp(),
   });
 };
+
+export const resetManagerPin = async (newPin: string): Promise<AdminActionResponse> => {
+  const callable = httpsCallable<{ newPin: string }, AdminActionResponse>(
+    functions,
+    "resetManagerPin",
+  );
+  const result = await callable({ newPin });
+  return result.data;
+};

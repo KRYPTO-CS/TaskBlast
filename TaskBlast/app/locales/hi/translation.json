@@ -365,7 +365,6 @@
     "managerAccessDesc": "उन्नत अनुमतियों के साथ संपादन मोड तक पहुंचने के लिए 4-अंकीय PIN दर्ज करें।",
     "unlock": "अनलॉक करें"
   },
-
   "Traits": {
     "ADHD": "एडीएचडी",
     "Aspergers": "एस्पर्जर सिंड्रोम",
@@ -384,7 +383,6 @@
     "selectTraits": "ट्रेट्स चुनें",
     "saveTraits": "ट्रेट्स सहेजें"
   },
-
   "Profile": {
     "traits": "Traits",
     "editP": "प्रोफ़ाइल संपादित करें",
@@ -560,5 +558,23 @@
     "descriptionBonus": "{{percent}}% अधिक रत्न",
     "descriptionBase": "मानक रत्न पुरस्कार",
     "stats": "व्यास {{diameter}} कि.मी. · सूर्य से {{distance}} कि.मी."
+  },
+  "ResetManagerPin": {
+    "button": "मैनेजर पिन रीसेट करें",
+    "title": "मैनेजर पिन रीसेट करें",
+    "subtitle": "अपना खाता पासवर्ड सत्यापित करें, फिर नया पिन सेट करें।",
+    "passwordPlaceholder": "खाता पासवर्ड दर्ज करें",
+    "newPinPlaceholder": "नया पिन (4 अंक)",
+    "confirmPinPlaceholder": "नया पिन की पुष्टि करें",
+    "submit": "पिन रीसेट करें",
+    "forgotPin": "पिन भूल गए? यहाँ रीसेट करें",
+    "successTitle": "पिन अपडेट हुआ",
+    "successBody": "आपका मैनेजर पिन सफलतापूर्वक रीसेट हो गया है।",
+    "errorNotSignedIn": "साइन इन नहीं है।",
+    "errorPasswordRequired": "अपना खाता पासवर्ड दर्ज करें।",
+    "errorPinLength": "पिन में बिल्कुल 4 अंक होने चाहिए।",
+    "errorPinMismatch": "पिन मेल नहीं खाते।",
+    "errorWrongPassword": "गलत पासवर्ड। फिर से प्रयास करें।",
+    "errorFailed": "पिन रीसेट विफल रहा। फिर से प्रयास करें।"
   }
 }

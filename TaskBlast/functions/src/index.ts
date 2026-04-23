@@ -1161,6 +1161,53 @@ export const disableAdminSession = onCall(
   },
 );
 
+export const resetManagerPin = onCall(
+  { invoker: "public" },
+  async (request: CallableRequest<unknown>) => {
+    if (!request.auth?.uid) {
+      throw new HttpsError("unauthenticated", "Authentication is required.");
+    }
+
+    const { newPin } = request.data as { newPin?: string };
+    if (!newPin || !/^\d{4}$/.test(newPin)) {
+      throw new HttpsError("invalid-argument", "PIN must be exactly 4 digits.");
+    }
+
+    const uid = request.auth.uid;
+    const email = await resolveCallerEmail(request.auth);
+    const pinHash = await bcrypt.hash(newPin, 10);
+
+    await db.collection("users").doc(uid).set(
+      { managerialPin: newPin, updatedAt: admin.firestore.FieldValue.serverTimestamp() },
+      { merge: true },
+    );
+
+    const adminRef = db.collection("admins").doc(email);
+    const adminSnap = await adminRef.get();
+    if (adminSnap.exists) {
+      await adminRef.set(
+        {
+          pinHash,
+          failedAttempts: 0,
+          lockoutUntil: null,
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        },
+        { merge: true },
+      );
+    }
+
+    const sessionRef = db.collection("adminSessions").doc(uid);
+    const sessionSnap = await sessionRef.get();
+    if (sessionSnap.exists) {
+      await sessionRef.delete();
+    }
+
+    await writeAdminAuditLog(email, "reset_manager_pin", uid, {}, { pinUpdated: true });
+
+    return { success: true, message: "Manager PIN has been reset successfully." };
+  },
+);
+
 export const updateUserRocks = onCall(
   { invoker: "public" },
   async (request: CallableRequest<unknown>) => {

@@ -365,7 +365,6 @@
     "managerAccessDesc": "Enter the 4-digit PIN to access edit mode with elevated permissions.",
     "unlock": "Unlock"
   },
-
   "Traits": {
     "ADHD": "ADHD",
     "Aspergers": "Asperger's",
@@ -384,7 +383,6 @@
     "selectTraits": "Select Traits",
     "saveTraits": "Save Traits"
   },
-
   "Profile": {
     "traits": "Traits",
     "editP": "Edit Profile",
@@ -560,5 +558,23 @@
     "descriptionBonus": "{{percent}}% more loot, arrr!",
     "descriptionBase": "Standard loot, matey",
     "stats": "{{diameter}} km wide · {{distance}} km from the Sun, arrr!"
+  },
+  "ResetManagerPin": {
+    "button": "Reset Quartermaster's PIN",
+    "title": "Reset Quartermaster's PIN",
+    "subtitle": "Prove yer worth with yer password, then set a new PIN, ye scallywag!",
+    "passwordPlaceholder": "Enter yer account password",
+    "newPinPlaceholder": "New PIN (4 digits)",
+    "confirmPinPlaceholder": "Confirm new PIN",
+    "submit": "Reset PIN",
+    "forgotPin": "Forgot PIN? Reset here, matey",
+    "successTitle": "PIN Updated, Ahoy!",
+    "successBody": "Yer quartermaster PIN has been reset successfully!",
+    "errorNotSignedIn": "Ye haven't signed in, landlubber!",
+    "errorPasswordRequired": "Enter yer account password, matey.",
+    "errorPinLength": "Yer PIN must be exactly 4 digits, arrr!",
+    "errorPinMismatch": "Yer PINs don't match, scallywag!",
+    "errorWrongPassword": "Wrong password, landlubber! Try again.",
+    "errorFailed": "Failed to reset PIN, arrr! Try again."
   }
 }

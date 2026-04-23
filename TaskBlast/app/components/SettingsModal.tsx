@@ -3,16 +3,22 @@ import {
   View,
   Modal,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   ScrollView,
   Switch,
   Alert,
   TextInput,
   ActivityIndicator,
+  Keyboard,
 } from "react-native";
 import { Text } from "../../TTS";
 import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../../server/firebase";
-import { signOut } from "firebase/auth";
+import {
+  signOut,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAudio } from "../context/AudioContext";
 import { useNotifications } from "../context/NotificationContext";
@@ -25,6 +31,7 @@ import { useTranslation } from "react-i18next";
 import { useAdmin } from "../context/AdminContext";
 import { useActiveProfile } from "../context/ActiveProfileContext";
 import { deleteChildAccount } from "../services/accountService";
+import { resetManagerPin } from "../services/adminService";
 import {
   CoachmarkAnchor,
   useCoachmark,
@@ -83,6 +90,12 @@ export default function SettingsModal({
   const [isVerifyingAdmin, setIsVerifyingAdmin] = useState(false);
   const [isDisablingAdmin, setIsDisablingAdmin] = useState(false);
   const [isDeletingChild, setIsDeletingChild] = useState(false);
+  const [showResetPinModal, setShowResetPinModal] = useState(false);
+  const [resetPassword, setResetPassword] = useState("");
+  const [resetNewPin, setResetNewPin] = useState("");
+  const [resetConfirmPin, setResetConfirmPin] = useState("");
+  const [isResettingPin, setIsResettingPin] = useState(false);
+  const [resetPinError, setResetPinError] = useState("");
   const { start } = useCoachmark();
 
   // Check for active child profile when modal opens
@@ -217,6 +230,54 @@ export default function SettingsModal({
         },
       ],
     );
+  };
+
+  const handleOpenResetPin = () => {
+    setShowAdminPinModal(false);
+    setResetPassword("");
+    setResetNewPin("");
+    setResetConfirmPin("");
+    setResetPinError("");
+    setShowResetPinModal(true);
+  };
+
+  const handleResetPinSubmit = async () => {
+    setResetPinError("");
+    const email = auth.currentUser?.email;
+    if (!email) {
+      setResetPinError(t("ResetManagerPin.errorNotSignedIn"));
+      return;
+    }
+    if (!resetPassword) {
+      setResetPinError(t("ResetManagerPin.errorPasswordRequired"));
+      return;
+    }
+    if (!/^\d{4}$/.test(resetNewPin)) {
+      setResetPinError(t("ResetManagerPin.errorPinLength"));
+      return;
+    }
+    if (resetNewPin !== resetConfirmPin) {
+      setResetPinError(t("ResetManagerPin.errorPinMismatch"));
+      return;
+    }
+
+    setIsResettingPin(true);
+    try {
+      const credential = EmailAuthProvider.credential(email, resetPassword);
+      await reauthenticateWithCredential(auth.currentUser!, credential);
+      await resetManagerPin(resetNewPin);
+      setShowResetPinModal(false);
+      Alert.alert(t("ResetManagerPin.successTitle"), t("ResetManagerPin.successBody"));
+    } catch (err: any) {
+      const code = String(err?.code ?? "");
+      if (code.includes("wrong-password") || code.includes("invalid-credential")) {
+        setResetPinError(t("ResetManagerPin.errorWrongPassword"));
+      } else {
+        setResetPinError(err.message || t("ResetManagerPin.errorFailed"));
+      }
+    } finally {
+      setIsResettingPin(false);
+    }
   };
 
   const handleDeleteChildAccount = () => {
@@ -568,6 +629,34 @@ export default function SettingsModal({
               </TouchableOpacity>
             )}
 
+            {/* Reset Manager PIN - all parent accounts */}
+            {currentProfileType === "parent" && (
+              <TouchableOpacity
+                className="flex-row items-center p-4 rounded-xl mb-3"
+                style={{
+                  backgroundColor: palette.secondaryMed,
+                  borderWidth: 1,
+                  borderColor: palette.rowBorderPrimary,
+                }}
+                onPress={handleOpenResetPin}
+              >
+                <Ionicons
+                  name="key-outline"
+                  size={24}
+                  color={palette.secondary}
+                  style={{ marginRight: 12 }}
+                />
+                <Text className="font-orbitron-semibold text-white text-base flex-1">
+                  {t("ResetManagerPin.button")}
+                </Text>
+                <Ionicons
+                  name="chevron-forward"
+                  size={20}
+                  color={palette.secondary}
+                />
+              </TouchableOpacity>
+            )}
+
             {currentProfileType === "parent" &&
               isAdminEligible &&
               !isAdminVerified && (
@@ -873,8 +962,113 @@ export default function SettingsModal({
                 {t("Tasks.cancel")}
               </Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={handleOpenResetPin}
+              disabled={isVerifyingAdmin}
+              className="rounded-xl p-3 mt-1 items-center"
+            >
+              <Text className="font-orbitron text-gray-400 text-sm">
+                {t("ResetManagerPin.forgotPin")}
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
+      </Modal>
+
+      {/* Reset Manager PIN Modal */}
+      <Modal
+        animationType={reduceMotion ? "fade" : "slide"}
+        transparent={true}
+        visible={showResetPinModal}
+        onRequestClose={() => !isResettingPin && setShowResetPinModal(false)}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View className="flex-1 justify-center items-center bg-black/70">
+          <View
+            className="w-10/12 max-w-sm rounded-3xl p-6"
+            style={{
+              backgroundColor: "rgba(15, 23, 42, 0.95)",
+              borderWidth: 2,
+              borderColor: palette.modalBorder,
+            }}
+          >
+            <Text className="font-orbitron-semibold text-white text-xl text-center mb-1">
+              {t("ResetManagerPin.title")}
+            </Text>
+            <Text className="font-orbitron text-gray-300 text-xs text-center mb-4">
+              {t("ResetManagerPin.subtitle")}
+            </Text>
+
+            <TextInput
+              value={resetPassword}
+              onChangeText={setResetPassword}
+              secureTextEntry
+              placeholder={t("ResetManagerPin.passwordPlaceholder")}
+              placeholderTextColor="rgba(255,255,255,0.4)"
+              className="bg-white/15 text-white text-center rounded-xl p-4 mb-3"
+              autoCapitalize="none"
+              editable={!isResettingPin}
+            />
+
+            <TextInput
+              value={resetNewPin}
+              onChangeText={(v) => setResetNewPin(v.replace(/[^0-9]/g, "").slice(0, 4))}
+              secureTextEntry
+              keyboardType="number-pad"
+              maxLength={4}
+              placeholder={t("ResetManagerPin.newPinPlaceholder")}
+              placeholderTextColor="rgba(255,255,255,0.4)"
+              className="bg-white/15 text-white text-center text-xl rounded-xl p-4 mb-3"
+              editable={!isResettingPin}
+            />
+
+            <TextInput
+              value={resetConfirmPin}
+              onChangeText={(v) => setResetConfirmPin(v.replace(/[^0-9]/g, "").slice(0, 4))}
+              secureTextEntry
+              keyboardType="number-pad"
+              maxLength={4}
+              placeholder={t("ResetManagerPin.confirmPinPlaceholder")}
+              placeholderTextColor="rgba(255,255,255,0.4)"
+              className="bg-white/15 text-white text-center text-xl rounded-xl p-4 mb-3"
+              editable={!isResettingPin}
+            />
+
+            {resetPinError ? (
+              <Text className="font-orbitron text-red-400 text-xs text-center mb-3">
+                {resetPinError}
+              </Text>
+            ) : null}
+
+            <TouchableOpacity
+              onPress={handleResetPinSubmit}
+              disabled={isResettingPin}
+              className="rounded-xl p-4 mb-3"
+              style={{ backgroundColor: palette.secondary }}
+            >
+              {isResettingPin ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text className="font-orbitron-semibold text-white text-center">
+                  {t("ResetManagerPin.submit")}
+                </Text>
+              )}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => setShowResetPinModal(false)}
+              disabled={isResettingPin}
+              className="rounded-xl p-4"
+              style={{ backgroundColor: palette.tertiarySoft }}
+            >
+              <Text className="font-orbitron-semibold text-white text-center">
+                {t("Tasks.cancel")}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        </TouchableWithoutFeedback>
       </Modal>
     </Modal>
   );

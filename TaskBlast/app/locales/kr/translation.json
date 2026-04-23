@@ -523,5 +523,23 @@
     "descriptionBonus": "{{percent}}% 더 많은 크리스탈",
     "descriptionBase": "기본 크리스탈 보상",
     "stats": "지름 {{diameter}} km · 태양으로부터 {{distance}} km"
+  },
+  "ResetManagerPin": {
+    "button": "매니저 PIN 재설정",
+    "title": "매니저 PIN 재설정",
+    "subtitle": "계정 비밀번호를 확인한 후 새 PIN을 설정하세요.",
+    "passwordPlaceholder": "계정 비밀번호 입력",
+    "newPinPlaceholder": "새 PIN (4자리)",
+    "confirmPinPlaceholder": "새 PIN 확인",
+    "submit": "PIN 재설정",
+    "forgotPin": "PIN을 잊으셨나요? 여기서 재설정",
+    "successTitle": "PIN 업데이트됨",
+    "successBody": "매니저 PIN이 성공적으로 재설정되었습니다.",
+    "errorNotSignedIn": "로그인되어 있지 않습니다.",
+    "errorPasswordRequired": "계정 비밀번호를 입력해 주세요.",
+    "errorPinLength": "PIN은 정확히 4자리여야 합니다.",
+    "errorPinMismatch": "PIN이 일치하지 않습니다.",
+    "errorWrongPassword": "비밀번호가 올바르지 않습니다. 다시 시도하세요.",
+    "errorFailed": "PIN 재설정에 실패했습니다. 다시 시도하세요."
   }
 }

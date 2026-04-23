@@ -364,7 +364,6 @@
     "managerAccessDesc": "Digite o PIN de 4 dígitos para acessar o modo de edição com permissões elevadas.",
     "unlock": "Desbloquear"
   },
-
   "Traits": {
     "ADHD": "TDAH",
     "Aspergers": "Síndrome de Asperger",
@@ -383,7 +382,6 @@
     "selectTraits": "Selecionar Traits",
     "saveTraits": "Salvar Traits"
   },
-
   "Profile": {
     "traits": "Traits",
     "editP": "Editar Perfil",
@@ -559,5 +557,23 @@
     "descriptionBonus": "{{percent}}% mais gemas",
     "descriptionBase": "Recompensas de gemas padrão",
     "stats": "{{diameter}} km de diâmetro · {{distance}} km do Sol"
+  },
+  "ResetManagerPin": {
+    "button": "Redefinir PIN do gestor",
+    "title": "Redefinir PIN do gestor",
+    "subtitle": "Verifique sua senha de conta e defina um novo PIN.",
+    "passwordPlaceholder": "Inserir senha da conta",
+    "newPinPlaceholder": "Novo PIN (4 digitos)",
+    "confirmPinPlaceholder": "Confirmar novo PIN",
+    "submit": "Redefinir PIN",
+    "forgotPin": "Esqueceu o PIN? Redefina aqui",
+    "successTitle": "PIN atualizado",
+    "successBody": "Seu PIN de gestor foi redefinido com sucesso.",
+    "errorNotSignedIn": "Nao esta conectado.",
+    "errorPasswordRequired": "Insira sua senha de conta.",
+    "errorPinLength": "O PIN deve ter exatamente 4 digitos.",
+    "errorPinMismatch": "Os PINs nao coincidem.",
+    "errorWrongPassword": "Senha incorreta. Tente novamente.",
+    "errorFailed": "Falha ao redefinir o PIN. Tente novamente."
   }
 }
