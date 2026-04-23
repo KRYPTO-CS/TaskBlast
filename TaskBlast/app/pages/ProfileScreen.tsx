@@ -815,7 +815,16 @@ export default function ProfileScreen() {
 
           {/* Add Child Button - NEW */}
           {currentProfileType === "parent" && (
-            <View className="items-center mb-4">
+            <View
+              className="items-center mb-4"
+              style={{
+                shadowColor: palette.buttonPrimaryBg,
+                shadowOffset: { width: 0, height: 0 },
+                shadowOpacity: 0.9,
+                shadowRadius: 16,
+                elevation: 10,
+              }}
+            >
               <MainButton
                 title={t("Profile.AddChildAccount")}
                 variant="primary"

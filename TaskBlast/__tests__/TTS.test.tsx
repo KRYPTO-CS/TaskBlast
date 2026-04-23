@@ -1,6 +1,5 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { Text as NativeText, GestureResponderEvent } from "react-native";
 
 // We'll control these values from tests below.
 let mockTtsEnabled = false;

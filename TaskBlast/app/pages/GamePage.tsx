@@ -11,6 +11,7 @@ import {
   View,
   Pressable,
   TouchableOpacity,
+  Text as RNText,
 } from "react-native";
 import { Text } from "../../TTS";
 import { useRouter, useLocalSearchParams } from "expo-router";
@@ -656,7 +657,7 @@ export default function GamePage() {
             style={styles.backButton}
             testID="back-button"
           >
-            <Text style={styles.backText}>{"< Back"}</Text>
+            <RNText style={styles.backText}>{"< Back"}</RNText>
           </Pressable>
           <TouchableOpacity
             onPress={handleTimerTap}

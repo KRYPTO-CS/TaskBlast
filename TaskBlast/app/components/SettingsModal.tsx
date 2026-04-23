@@ -749,42 +749,6 @@ export default function SettingsModal({
               </TouchableOpacity>
             )}
 
-            {currentProfileType === "child" && (
-              <TouchableOpacity
-                className="flex-row items-center p-4 rounded-xl mb-3"
-                style={{
-                  backgroundColor: palette.errorSoft,
-                  borderWidth: 1,
-                  borderColor: palette.errorSoftBorder,
-                  opacity: isDeletingChild ? 0.7 : 1,
-                }}
-                onPress={handleDeleteChildAccount}
-                disabled={isDeletingChild || !childDocId}
-              >
-                {isDeletingChild ? (
-                  <ActivityIndicator
-                    color={palette.errorIcon}
-                    style={{ marginRight: 12 }}
-                  />
-                ) : (
-                  <Ionicons
-                    name="trash-outline"
-                    size={24}
-                    color={palette.errorIcon}
-                    style={{ marginRight: 12 }}
-                  />
-                )}
-                <Text
-                  className="font-orbitron-semibold text-base flex-1"
-                  style={{ color: palette.errorIcon }}
-                >
-                  {isDeletingChild
-                    ? "Deleting Child Account..."
-                    : "Delete Child Account"}
-                </Text>
-              </TouchableOpacity>
-            )}
-
             {/*Support*/}
             <TouchableOpacity
               className="flex-row items-center p-4 rounded-xl mb-3"
@@ -873,6 +837,42 @@ export default function SettingsModal({
                   : t("Settings.logout")}
               </Text>
             </TouchableOpacity>
+
+            {currentProfileType === "child" && (
+              <TouchableOpacity
+                className="flex-row items-center justify-center p-4 rounded-xl mt-3"
+                style={{
+                  backgroundColor: palette.errorSoft,
+                  borderWidth: 1,
+                  borderColor: palette.errorSoftBorder,
+                  opacity: isDeletingChild ? 0.7 : 1,
+                }}
+                onPress={handleDeleteChildAccount}
+                disabled={isDeletingChild || !childDocId}
+              >
+                {isDeletingChild ? (
+                  <ActivityIndicator
+                    color={palette.errorIcon}
+                    style={{ marginRight: 12 }}
+                  />
+                ) : (
+                  <Ionicons
+                    name="trash-outline"
+                    size={24}
+                    color={palette.errorIcon}
+                    style={{ marginRight: 12 }}
+                  />
+                )}
+                <Text
+                  className="font-orbitron-semibold text-base"
+                  style={{ color: palette.errorIcon }}
+                >
+                  {isDeletingChild
+                    ? "Deleting Child Account..."
+                    : "Delete Child Account"}
+                </Text>
+              </TouchableOpacity>
+            )}
           </ScrollView>
 
           {/* App Version */}
