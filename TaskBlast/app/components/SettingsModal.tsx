@@ -629,34 +629,6 @@ export default function SettingsModal({
               </TouchableOpacity>
             )}
 
-            {/* Reset Manager PIN - all parent accounts */}
-            {currentProfileType === "parent" && (
-              <TouchableOpacity
-                className="flex-row items-center p-4 rounded-xl mb-3"
-                style={{
-                  backgroundColor: palette.secondaryMed,
-                  borderWidth: 1,
-                  borderColor: palette.rowBorderPrimary,
-                }}
-                onPress={handleOpenResetPin}
-              >
-                <Ionicons
-                  name="key-outline"
-                  size={24}
-                  color={palette.secondary}
-                  style={{ marginRight: 12 }}
-                />
-                <Text className="font-orbitron-semibold text-white text-base flex-1">
-                  {t("ResetManagerPin.button")}
-                </Text>
-                <Ionicons
-                  name="chevron-forward"
-                  size={20}
-                  color={palette.secondary}
-                />
-              </TouchableOpacity>
-            )}
-
             {currentProfileType === "parent" &&
               isAdminEligible &&
               !isAdminVerified && (
@@ -806,6 +778,34 @@ export default function SettingsModal({
                 color={palette.tertiary}
               />
             </TouchableOpacity>
+
+            {/* Reset Manager PIN - parent accounts */}
+            {currentProfileType === "parent" && (
+              <TouchableOpacity
+                className="flex-row items-center p-4 rounded-xl mb-3"
+                style={{
+                  backgroundColor: "rgba(244, 63, 94, 0.22)",
+                  borderWidth: 1,
+                  borderColor: "rgba(244, 63, 94, 0.34)",
+                }}
+                onPress={handleOpenResetPin}
+              >
+                <Ionicons
+                  name="key-outline"
+                  size={24}
+                  color="#f43f5e"
+                  style={{ marginRight: 12 }}
+                />
+                <Text className="font-orbitron-semibold text-white text-base flex-1">
+                  {t("ResetManagerPin.button")}
+                </Text>
+                <Ionicons
+                  name="chevron-forward"
+                  size={20}
+                  color="#f43f5e"
+                />
+              </TouchableOpacity>
+            )}
 
             {/* Logout/Switch Profile Button */}
             <TouchableOpacity

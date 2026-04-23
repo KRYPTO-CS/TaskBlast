@@ -13,6 +13,7 @@ import { initializeApp } from "firebase/app";
 import {
   browserLocalPersistence,
   getAuth,
+  getReactNativePersistence,
   initializeAuth,
 } from "firebase/auth";
 import { getDatabase } from "firebase/database";
@@ -46,12 +47,19 @@ function createAuth() {
       });
     }
 
-    const { getReactNativePersistence } = require("firebase/auth/react-native");
     return initializeAuth(app, {
       persistence: getReactNativePersistence(AsyncStorage),
     });
-  } catch {
+  } catch (error: any) {
     // Reuse existing instance during HMR/tests where Auth may already be initialized.
+    if (
+      String(error?.code || "").includes("already-initialized") ||
+      String(error?.message || "").toLowerCase().includes("already")
+    ) {
+      return getAuth(app);
+    }
+
+    console.warn("Firebase Auth initialization fell back to existing auth instance", error);
     return getAuth(app);
   }
 }
