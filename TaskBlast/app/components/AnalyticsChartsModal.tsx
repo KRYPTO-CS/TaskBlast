@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
-  Dimensions,
   PanResponder,
   Platform,
   StyleSheet,
@@ -10,6 +9,7 @@ import {
   ImageBackground,
   ScrollView,
   Modal,
+  useWindowDimensions,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Text } from "../../TTS";
@@ -68,12 +68,35 @@ interface ChartHtmlParams {
   expanded?: boolean;
 }
 
+const INLINE_PREVIEW_POINTS = 5;
+
 const toCumulativeValues = (values: number[]) => {
   let runningTotal = 0;
   return values.map((value) => {
     runningTotal += value;
     return runningTotal;
   });
+};
+
+const getRecentSeries = (
+  labels: string[],
+  values: number[],
+  maxPoints: number,
+) => {
+  const pairCount = Math.min(labels.length, values.length);
+
+  if (pairCount === 0) {
+    return { labels: [], values: [] };
+  }
+
+  const alignedLabels = labels.slice(labels.length - pairCount);
+  const alignedValues = values.slice(values.length - pairCount);
+  const startIndex = Math.max(0, pairCount - maxPoints);
+
+  return {
+    labels: alignedLabels.slice(startIndex),
+    values: alignedValues.slice(startIndex),
+  };
 };
 
 const buildChartHtml = ({
@@ -156,7 +179,7 @@ const buildChartHtml = ({
     const maxTicksLimit = denseData
       ? Math.max(4, Math.min(isExpanded ? 10 : 7, Math.floor(viewportWidth / (isExpanded ? 68 : 78))))
       : Math.min(pointCount || 1, isExpanded ? 10 : 8);
-    const xTickRotation = pointCount > (isExpanded ? 9 : 7) ? 34 : 0;
+    const xTickRotation = isExpanded ? (pointCount > 9 ? 34 : 0) : 30;
 
     const abbreviateLabel = (rawLabel) => {
       if (typeof rawLabel !== 'string') return rawLabel;
@@ -302,8 +325,8 @@ export default function AnalyticsChartsModal({
   const [showExpandHint, setShowExpandHint] = useState(false);
   const [isExpandedLoading, setIsExpandedLoading] = useState(true);
 
-  const panelOffsetY = useSharedValue(24);
-  const panelOpacity = useSharedValue(0);
+  const panelOffsetY = useSharedValue(0);
+  const panelOpacity = useSharedValue(1);
   const dragY = useSharedValue(0);
 
   const chartDescriptors = useMemo<ChartDescriptor[]>(
@@ -484,10 +507,13 @@ export default function AnalyticsChartsModal({
     defaultValue: t("Tasks.close", { defaultValue: "Close" }),
   });
   const closeHintFallback = `${closeExpandedLabel} (X)`;
-  const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const expandedChartHeight = Math.max(
-    320,
-    Math.min(Math.floor(screenHeight * 0.72), 560),
+    Platform.OS === "ios" ? 360 : 320,
+    Math.min(
+      Math.floor(screenHeight * (Platform.OS === "ios" ? 0.78 : 0.72)),
+      Platform.OS === "ios" ? 700 : 560,
+    ),
   );
   const closeMainModal = useCallback(() => {
     if (expandedChart) {
@@ -502,7 +528,12 @@ export default function AnalyticsChartsModal({
     marginBottom: number,
     showHintForCard: boolean,
   ) => {
-    const hasData = chart.values.length > 0;
+    const previewSeries = getRecentSeries(
+      chart.labels,
+      chart.values,
+      INLINE_PREVIEW_POINTS,
+    );
+    const hasData = previewSeries.values.length > 0;
 
     return (
       <View
@@ -527,8 +558,8 @@ export default function AnalyticsChartsModal({
               overScrollMode={Platform.OS === "android" ? "never" : undefined}
               source={{
                 html: buildChartHtml({
-                  labels: chart.labels,
-                  values: chart.values,
+                  labels: previewSeries.labels,
+                  values: previewSeries.values,
                   chartColor: palette.statsAccent,
                   chartBorder: palette.statsChartBorder,
                   chartFill: palette.statsChartFill,
@@ -551,6 +582,21 @@ export default function AnalyticsChartsModal({
                 );
               }}
             />
+            {Platform.OS === "ios" ? (
+              <TouchableOpacity
+                testID={`expand-chart-overlay-${chart.id}`}
+                accessibilityRole="button"
+                accessibilityLabel={t("AnalyticsChartsModal.actions.expand", {
+                  defaultValue: "Expand chart",
+                })}
+                onPress={() => openExpanded(chart)}
+                activeOpacity={1}
+                style={{
+                  ...StyleSheet.absoluteFillObject,
+                  zIndex: 2,
+                }}
+              />
+            ) : null}
             <TouchableOpacity
               testID={`expand-chart-${chart.id}`}
               accessibilityRole="button"
@@ -558,6 +604,7 @@ export default function AnalyticsChartsModal({
                 defaultValue: "Expand chart",
               })}
               onPress={() => openExpanded(chart)}
+              hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
               style={{
                 position: "absolute",
                 bottom: 8,
@@ -621,71 +668,69 @@ export default function AnalyticsChartsModal({
   };
 
   return (
-    <>
-      <Modal
-        visible={visible}
-        transparent
-        animationType="slide"
-        onRequestClose={closeMainModal}
-      >
-        <View className="flex-1">
-          <ImageBackground
-            source={starBackground}
-            className="absolute inset-0 w-full h-full"
-            resizeMode="cover"
-          />
-          <ScrollView
-            className="flex-1 p-5 pt-16"
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 56 }}
+    <Modal
+      visible={visible}
+      transparent
+      animationType="slide"
+      onRequestClose={closeMainModal}
+    >
+      <View className="flex-1">
+        <ImageBackground
+          source={starBackground}
+          className="absolute inset-0 w-full h-full"
+          resizeMode="cover"
+        />
+        <ScrollView
+          className="flex-1 p-5 pt-16"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 56 }}
+          scrollEnabled={!expandedChart}
+        >
+          <View className="flex-row justify-between items-center mb-6">
+            <Text
+              className="font-orbitron-semibold text-xl text-white"
+              style={{
+                textShadowColor: palette.statsAccentGlow,
+                textShadowOffset: { width: 0, height: 0 },
+                textShadowRadius: 10,
+              }}
+            >
+              {t("AnalyticsChartsModal.title")}
+            </Text>
+            <TouchableOpacity
+              testID="close-analytics-modal"
+              accessibilityRole="button"
+              accessibilityLabel={t("AnalyticsChartsModal.actions.close", {
+                defaultValue: "Close charts",
+              })}
+              onPress={closeMainModal}
+              className="w-10 h-10 bg-white/10 rounded-full items-center justify-center"
+              style={{
+                borderWidth: 1,
+                borderColor: palette.secondaryLightBorder,
+              }}
+            >
+              <Ionicons name="close" size={20} color="white" />
+            </TouchableOpacity>
+          </View>
+
+          {chartDescriptors.map((chart, index) =>
+            renderChartCard(
+              chart,
+              index === chartDescriptors.length - 1 ? 40 : 20,
+              index === 0 && showExpandHint,
+            ),
+          )}
+        </ScrollView>
+
+        {expandedChart ? (
+          <View
+            style={{
+              ...StyleSheet.absoluteFillObject,
+              justifyContent: "center",
+            }}
+            testID="expanded-chart-overlay"
           >
-            <View className="flex-row justify-between items-center mb-6">
-              <Text
-                className="font-orbitron-semibold text-xl text-white"
-                style={{
-                  textShadowColor: palette.statsAccentGlow,
-                  textShadowOffset: { width: 0, height: 0 },
-                  textShadowRadius: 10,
-                }}
-              >
-                {t("AnalyticsChartsModal.title")}
-              </Text>
-              <TouchableOpacity
-                testID="close-analytics-modal"
-                accessibilityRole="button"
-                accessibilityLabel={t("AnalyticsChartsModal.actions.close", {
-                  defaultValue: "Close charts",
-                })}
-                onPress={closeMainModal}
-                className="w-10 h-10 bg-white/10 rounded-full items-center justify-center"
-                style={{
-                  borderWidth: 1,
-                  borderColor: palette.secondaryLightBorder,
-                }}
-              >
-                <Ionicons name="close" size={20} color="white" />
-              </TouchableOpacity>
-            </View>
-
-            {chartDescriptors.map((chart, index) =>
-              renderChartCard(
-                chart,
-                index === chartDescriptors.length - 1 ? 40 : 20,
-                index === 0 && showExpandHint,
-              ),
-            )}
-          </ScrollView>
-        </View>
-      </Modal>
-
-      <Modal
-        visible={Boolean(expandedChart)}
-        transparent
-        animationType="none"
-        statusBarTranslucent
-        onRequestClose={closeExpanded}
-      >
-        <View style={{ flex: 1 }} testID="expanded-chart-overlay">
           <Animated.View
             style={[
               {
@@ -704,6 +749,7 @@ export default function AnalyticsChartsModal({
               {...swipeDownResponder.panHandlers}
               style={[
                 {
+                  maxHeight: Math.floor(screenHeight * 0.94),
                   backgroundColor: "rgba(15, 23, 42, 0.97)",
                   borderRadius: 24,
                   borderWidth: 1,
@@ -761,6 +807,7 @@ export default function AnalyticsChartsModal({
                 {expandedChart ? (
                   <>
                     <WebView
+                      key={`expanded-chart-${expandedChart.id}-${Math.floor(screenWidth)}x${Math.floor(screenHeight)}`}
                       testID="expanded-chart-webview"
                       originWhitelist={["*"]}
                       javaScriptEnabled={true}
@@ -797,7 +844,7 @@ export default function AnalyticsChartsModal({
                         );
                         setIsExpandedLoading(false);
                       }}
-                      style={{ backgroundColor: "transparent" }}
+                      style={{ flex: 1, backgroundColor: "transparent" }}
                     />
 
                     {isExpandedLoading && (
@@ -833,8 +880,9 @@ export default function AnalyticsChartsModal({
               </Text>
             </Animated.View>
           </SafeAreaView>
-        </View>
-      </Modal>
-    </>
+          </View>
+        ) : null}
+      </View>
+    </Modal>
   );
 }
