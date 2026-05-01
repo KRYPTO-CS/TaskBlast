@@ -120,8 +120,7 @@ export default function PomodoroScreen() {
   const [inFreeTimeMode, setInFreeTimeMode] = useState(false);
   const totalTime = workTime * 60; // Total duration in seconds
   const backgroundTime = useRef<number | null>(null);
-  const tapCount = useRef(0);
-  const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Removed triple-tap bypass: taps no longer skip timers
   const hasRecordedRef = useRef(false);
 
   const starBackground = require("../../assets/backgrounds/starsAnimated.gif");
@@ -588,26 +587,7 @@ export default function PomodoroScreen() {
     handleResumeTask();
   };
 
-  const handleRocketTap = () => {
-    tapCount.current += 1;
-
-    // Clear existing timer
-    if (tapTimer.current) {
-      clearTimeout(tapTimer.current);
-    }
-
-    // Check if triple tap achieved
-    if (tapCount.current === 3) {
-      // Admin bypass: set timer to 3 seconds
-      setTimeLeft(3);
-      tapCount.current = 0;
-    } else {
-      // Reset tap count after 500ms if not triple tapped
-      tapTimer.current = setTimeout(() => {
-        tapCount.current = 0;
-      }, 500);
-    }
-  };
+  // Triple-tap bypass removed: tapping the rocket no longer skips the timer.
 
   const GifHeights: Record<number, number> = {
     0: 288,
@@ -770,7 +750,7 @@ export default function PomodoroScreen() {
 
         {/* Player Image - Centered */}
         <View className="flex-1 items-center justify-center">
-          <TouchableOpacity onPress={handleRocketTap} activeOpacity={1}>
+          <TouchableOpacity activeOpacity={1}>
             <Animated.View
               testID="spaceship-image"
               className="w-72 h-72"

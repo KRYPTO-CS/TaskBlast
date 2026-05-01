@@ -167,8 +167,7 @@ export default function GamePage() {
   const [timeLeft, setTimeLeft] = useState(playTime * 60); // Convert minutes to seconds
   const [equipped, setEquipped] = useState<number[]>([0, 1, 0]);
   const [activePlanetId, setActivePlanetId] = useState<number>(1);
-  const tapCount = useRef(0);
-  const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Removed admin triple-tap bypass: no tap-to-skip behavior allowed
   const rewardsProcessedRef = useRef(false);
   const scorePersistQueueRef = useRef<Promise<void>>(Promise.resolve());
   const godotReadyRef = useRef(false);
@@ -382,26 +381,7 @@ export default function GamePage() {
     return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
   };
 
-  const handleTimerTap = () => {
-    tapCount.current += 1;
-
-    // Clear existing timer
-    if (tapTimer.current) {
-      clearTimeout(tapTimer.current);
-    }
-
-    // Check if triple tap achieved
-    if (tapCount.current === 3) {
-      // Admin bypass: set timer to 3 seconds
-      setTimeLeft(3);
-      tapCount.current = 0;
-    } else {
-      // Reset tap count after 500ms if not triple tapped
-      tapTimer.current = setTimeout(() => {
-        tapCount.current = 0;
-      }, 500);
-    }
-  };
+  // Triple-tap bypass removed: timer taps are ignored.
 
   const handleMessage = useCallback(
     (event: any) => {
@@ -659,11 +639,7 @@ export default function GamePage() {
           >
             <RNText style={styles.backText}>{"< Back"}</RNText>
           </Pressable>
-          <TouchableOpacity
-            onPress={handleTimerTap}
-            activeOpacity={1}
-            style={styles.timerContainer}
-          >
+          <TouchableOpacity activeOpacity={1} style={styles.timerContainer}>
             <Text style={styles.timerText}>{formatTime(timeLeft)}</Text>
           </TouchableOpacity>
           <View style={styles.rightButton} />
