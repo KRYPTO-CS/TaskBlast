@@ -671,3 +671,27 @@ global.console = {
   warn: jest.fn(),
   // Keep log for debugging
 };
+
+// Clean up timers and mocks after each test
+afterEach(() => {
+  jest.clearAllTimers();
+  jest.clearAllMocks();
+  jest.restoreAllMocks();
+  
+  // Clear AppState listeners
+  if (global.mockAppState) {
+    global.mockAppState.clear();
+  }
+  
+  // Clear Alert state
+  if (global.mockAlert) {
+    global.mockAlert.clear();
+  }
+});
+
+// Clean up after all tests
+afterAll(() => {
+  jest.clearAllTimers();
+  jest.clearAllMocks();
+  jest.restoreAllMocks();
+});

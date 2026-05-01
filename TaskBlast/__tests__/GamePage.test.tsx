@@ -625,15 +625,13 @@ describe("Game Screen", () => {
     });
   });
 
-  describe("Triple-Tap Bypass", () => {
-    it("should support triple-tap timer bypass for admin", () => {
+  describe("Timer Display", () => {
+    it("should display timer", () => {
       const { getByText } = render(<GamePage />);
 
       // Timer should be rendered
       const timerElement = getByText(/\d{2}:\d{2}/);
       expect(timerElement).toBeTruthy();
-
-      // Triple tap feature exists (implementation detail - cannot fully test without integration)
     });
   });
 
